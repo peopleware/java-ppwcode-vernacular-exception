@@ -30,4 +30,3 @@ ppw-i18n											ppw-i18n											&ppw-libraries-settings
 ppw-exception								ppw-exception								&ppw-libraries-settings
 ppw-bean											ppw-bean     								&ppw-libraries-settings
 ppw-value										ppw-value     								&ppw-libraries-settings
-ppw-value-hibernate					ppw-value-hibernate     			&ppw-libraries-settings
