@@ -3,31 +3,26 @@ package be.peopleware.struts_I.persistentBean;
 
 import java.util.Arrays;
 import java.util.Vector;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
 import be.peopleware.bean_I.BeanInstantiationException;
 import be.peopleware.bean_I.CompoundPropertyException;
 import be.peopleware.bean_I.persistent.AsynchronousCRUD;
 import be.peopleware.bean_I.persistent.IdException;
 import be.peopleware.bean_I.persistent.PersistentBean;
 import be.peopleware.exception_I.TechnicalException;
-import be.peopleware.securityfilter.HibernatePrincipal;
-import be.peopleware.securityfilter.IllegalAccessException;
+import be.peopleware.struts_I.IllegalAccessException;
 import be.peopleware.struts_I.persistentBean.event.CommittedEvent;
 import be.peopleware.struts_I.persistentBean.event.CommittedEventListener;
 import be.peopleware.struts_I.persistentBean.event.CreatedEvent;
 import be.peopleware.struts_I.persistentBean.event.DeletedEvent;
 import be.peopleware.struts_I.persistentBean.event.UpdatedEvent;
-import be.peopleware.value_I.Role;
 
 
 /**
@@ -289,7 +284,6 @@ public abstract class DetailAction extends CrudAction {
         = ((CrudDynaActionForm)actionForm);
     ActionForward forward;
     if (requestParamExistsAndIsNotEmpty(REQUEST_MODE_CANCEL_NEW, request)) {
-      //forward = actionMapping.findForward(FORWARD_CANCEL_NEW);
       String referer = request.getParameter("referer"); //$NON-NLS-1$
       referer = referer.replaceAll("https?://.*/.*/", "/"); //$NON-NLS-1$ //$NON-NLS-2$
       forward = new ActionForward(referer);
@@ -298,26 +292,56 @@ public abstract class DetailAction extends CrudAction {
       try {
         if (requestParamExistsAndIsNotEmpty(REQUEST_MODE_DISPLAY,
                                             request)) {
+          if (getSecurityStrategy() != null) {
+            getSecurityStrategy().checkDisplayRigths(request,
+                                                     actionMapping,
+                                                     actionForm);
+          }
           templateRetrieve(form, false, request);
         }
         if (requestParamExistsAndIsNotEmpty(REQUEST_MODE_EDIT,
                                             request)) {
+          if (getSecurityStrategy() != null) {
+            getSecurityStrategy().checkEditRights(request,
+                                                  actionMapping,
+                                                  actionForm);
+          }
           templateRetrieve(form, true, request);
         }
         else if (requestParamExistsAndIsNotEmpty(REQUEST_MODE_NEW,
                                                  request)) {
+          if (getSecurityStrategy() != null) {
+            getSecurityStrategy().checkNewRights(request,
+                                                 actionMapping,
+                                                 actionForm);
+          }
           templateNew(form, request);
         }
         else if (requestParamExistsAndIsNotEmpty(REQUEST_MODE_UPDATE,
                                                  request)) {
+          if (getSecurityStrategy() != null) {
+            getSecurityStrategy().checkUpdateRights(request,
+                                                    actionMapping,
+                                                    actionForm);
+          }
           templateUpdate(form, request); // return to edit mode on errors
         }
         else if (requestParamExistsAndIsNotEmpty(REQUEST_MODE_CREATE,
                                                  request)) {
+          if (getSecurityStrategy() != null) {
+            getSecurityStrategy().checkCreateRights(request,
+                                                    actionMapping,
+                                                    actionForm);
+          }
           templateCreate(form, request); // return to edit mode on errors
         }
         else if (requestParamExistsAndIsNotEmpty(REQUEST_MODE_DELETE,
                                                  request)) {
+          if (getSecurityStrategy() != null) {
+            getSecurityStrategy().checkDeleteRights(request,
+                                                    actionMapping,
+                                                    actionForm);
+          }
           templateDelete(form, request);
         }
         else {
@@ -325,12 +349,15 @@ public abstract class DetailAction extends CrudAction {
             LOG.debug("no dispatch parameter match foud; " //$NON-NLS-1$
                       + "doing default display retrieve"); //$NON-NLS-1$
           }
+          if (getSecurityStrategy() != null) {
+            getSecurityStrategy().checkDisplayRigths(request,
+                                                     actionMapping,
+                                                     actionForm);
+          }
           templateRetrieve(form, false, request);
         }
         forward = actionMapping.getInputForward();
         form.releaseBean();
-        // Perform some security actions.
-        crudSecurity(form, request, actionMapping.getPath());
       }
       catch (IllegalAccessException iaExc) {
         forward = actionMapping.findForward(ILLEGAL_ACCESS);
@@ -692,86 +719,47 @@ public abstract class DetailAction extends CrudAction {
                               final HttpServletRequest request)
       throws CompoundPropertyException,
              IdException,
-             TechnicalException,
-             IllegalAccessException {
+             TechnicalException {
     assert form != null;
     // assert form.getPersistentBean() != null;
     assert request != null;
     if (LOG.isDebugEnabled()) {
       LOG.debug("delete action ..."); //$NON-NLS-1$
     }
-    // Only users in administrator role are allowed to delete.
-    if (request.isUserInRole(Role.ADMINISTRATOR.toString())) {
-      form.setViewModeEdit(false);
-      AsynchronousCRUD asyncCRUD =  createAsynchronousCRUD(request);
-      DeletedEvent pbdEvent = null;
-      try {
-        asyncCRUD.startTransaction();
-        retrieveWithId(form, asyncCRUD); // IdException
-        assert form.getPersistentBean() != null;
-        pbdEvent = new DeletedEvent(form.getPersistentBean());
-        asyncCRUD.deletePersistentBean(form.getPersistentBean());
-        asyncCRUD.commitTransaction(form.getPersistentBean());
-        assert form.getPersistentBean().getId() == null;
-        form.beanToId(); // must be null
-        form.setViewModeDeleted(true); //rae.isEmpty());
-        if (LOG.isDebugEnabled()) {
-          LOG.debug("delete action succeeded"); //$NON-NLS-1$
-        }
-      }
-      catch (CompoundPropertyException cpExc) {
-        asyncCRUD.cancelTransaction();
-        form.setViewModeDeleted(false);
-        throw cpExc;
-      }
-      catch (IdException pkvExc) {
-        asyncCRUD.cancelTransaction();
-        form.setViewModeDeleted(false);
-        throw pkvExc;
-      }
-      finally {
-        form.beanToForm(asyncCRUD);
-        releaseAsynchronousCRUD(asyncCRUD);
-      }
-      fireCommittedEvent(pbdEvent);
-      assert !form.isViewModeNew();
-      assert !form.isViewModeEdit();
-    }
-    else {
-      throw new IllegalAccessException("Incorrect user rights", //$NON-NLS-1$
-                                       null,
-                                       request.getUserPrincipal(),
-                                       request.getRequestURI());
-    }
-  }
-
-  // @mudo (dvankeer): This needs to be moved to an ismar specifix package and
-  //                   some generalization must be done.
-  private void crudSecurity(final CrudDynaActionForm form,
-                            final HttpServletRequest request,
-                            final String requestedPath)
-      throws IllegalAccessException {
-    if (request.isUserInRole(Role.EDITOR.toString())
-        || request.isUserInRole(Role.REVIEWER.toString())
-        || request.isUserInRole(Role.ADMINISTRATOR.toString())) {
-     form.setViewModeEditable(true);
-    }
-    else if (requestedPath.equals("/HibernateUserDetail")) { //$NON-NLS-1$
-      if (request.getParameter("id").equals( //$NON-NLS-1$
-              ((HibernatePrincipal)request.getUserPrincipal())
-                  .getId().toString())) {
-        form.setViewModeEditable(true);
-      }
-      else {
-        throw new IllegalAccessException("Incorrect user rights", //$NON-NLS-1$
-                                         null,
-                                         request.getUserPrincipal(),
-                                         requestedPath);
+    form.setViewModeEdit(false);
+    AsynchronousCRUD asyncCRUD =  createAsynchronousCRUD(request);
+    DeletedEvent pbdEvent = null;
+    try {
+      asyncCRUD.startTransaction();
+      retrieveWithId(form, asyncCRUD); // IdException
+      assert form.getPersistentBean() != null;
+      pbdEvent = new DeletedEvent(form.getPersistentBean());
+      asyncCRUD.deletePersistentBean(form.getPersistentBean());
+      asyncCRUD.commitTransaction(form.getPersistentBean());
+      assert form.getPersistentBean().getId() == null;
+      form.beanToId(); // must be null
+      form.setViewModeDeleted(true); //rae.isEmpty());
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("delete action succeeded"); //$NON-NLS-1$
       }
     }
-    else {
-      form.setViewModeEditable(false);
+    catch (CompoundPropertyException cpExc) {
+      asyncCRUD.cancelTransaction();
+      form.setViewModeDeleted(false);
+      throw cpExc;
     }
+    catch (IdException pkvExc) {
+      asyncCRUD.cancelTransaction();
+      form.setViewModeDeleted(false);
+      throw pkvExc;
+    }
+    finally {
+      form.beanToForm(asyncCRUD);
+      releaseAsynchronousCRUD(asyncCRUD);
+    }
+    fireCommittedEvent(pbdEvent);
+    assert !form.isViewModeNew();
+    assert !form.isViewModeEdit();
   }
 
   /**

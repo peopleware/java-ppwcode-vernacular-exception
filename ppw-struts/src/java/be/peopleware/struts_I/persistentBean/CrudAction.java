@@ -59,5 +59,22 @@ public abstract class CrudAction extends Action {
   protected abstract void releaseAsynchronousCRUD(
       final AsynchronousCRUD asyncCRUD);
 
+  
+  /**
+   * @basic
+   */
+  final public CrudActionSecurityStrategy getSecurityStrategy() {
+    return $securityStrategy;
+  }
+  
+  /**
+   * @post new.getSecurityStragegy() == securityStrategy;
+   */
+  final public void setSecurityStrategy(CrudActionSecurityStrategy securityStrategy) {
+    $securityStrategy = securityStrategy;
+  }
+  
+  private CrudActionSecurityStrategy $securityStrategy;
+  
 }
 
