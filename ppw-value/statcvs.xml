@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<statcvs>
+  <settings>
+    <exclude>ppw-libraries-settings/**/*;ppw-project-settings/**/*</exclude>
+    <authors type="map">
+      <jand>Jan Dockx</jand>
+      <dvankeer>David Van Keer</dvankeer>
+      <rclerckx>René Clerckx</rclerckx>
+      <ashoudou>Abdulvakhid Shoudouev</ashoudou>
+    </authors>
+  </settings>
+</statcvs>
