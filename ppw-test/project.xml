@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <extend>ppw-libraries.xml</extend>
+  <extend>ppw-libraries-settings/project.xml</extend>
   <name>Unit Test Library</name>
   <artifactId>ppw-test-I</artifactId>
-  <description>Support for unit testing. This is not very much. There
-    is also no link to JUnit yet. There are also no Unit Tests.</description>
+  <description>Support for unit testing. This is not very much. There is
+    also no link to JUnit yet. There are also no Unit Tests.</description>
   <shortDescription>Support for unit testing.</shortDescription>
   <inceptionYear>2004</inceptionYear>
-
   <currentVersion>1.0</currentVersion>
-
   <package>be.peopleware.test</package>
-
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
   -->
-
   <developers>
     <developer>
       <name>Jan Dockx</name>
@@ -54,7 +50,5 @@
       <timezone>+1</timezone>
     </contributor>
   </contributors>
-
   <properties/>
-
 </project>
