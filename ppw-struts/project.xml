@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
+<project>
+  <extend>ppw-libraries-settings/project.xml</extend>
+  <pomVersion>4</pomVersion>
+  <name>Struts Library</name>
+  <groupId>ppw-libraries</groupId>
+  <artifactId>ppw-struts-I</artifactId>
+  <shortDescription>Extensions that support the PeopleWare way of working with Struts.</shortDescription>
+  <description>This library contains extension that support the PeopleWare way
+    of working with Struts. This code is mainly aimed at CRUD (Create, Retrieve,
+    Update, Delete) databse applications.</description>
+  <inceptionYear>2004</inceptionYear>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.struts_I</package>
+  <!--
+  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jand</id>
+      <email>Jan.Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+    <developer>
+      <name>David Van Keer</name>
+      <id>dvankeer</id>
+      <email>David_Van_Keer@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Dirk Couck</name>
+      <email>Dirk_Couck@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </contributor>
+  </contributors>
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-bean-I</artifactId>
+      <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-exception-I</artifactId>
+      <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
+  </dependencies>
+  <properties />
+</project>
+

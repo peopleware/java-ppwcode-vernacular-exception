@@ -1,0 +1,108 @@
+<tag>
+  <display-name>ppw_form:listField</display-name>
+  <name>listField</name>
+  <description>
+    Generates a list of options in edit mode, when in view mode the tag
+    generates a link based upon the selected options.
+  </description>
+  <example>
+    &lt;ppw_form:listField actionForm=&quot;${detailActionForm}&quot;
+        detailDisplayAction=&quot;${expertDetailAction}&quot;
+        property=&quot;expert&quot;
+        collection=&quot;${detailActionForm.map.expertOptions}&quot;
+        displaySelector=&quot;fullName&quot; /&gt;
+  </example>
+  <body-content>empty</body-content>
+  <attribute>
+    <name>actionForm</name>
+    <description>
+      The struts action form containing all object properties that can be used.
+    </description>
+    <type>be.peopleware.web.struts.PersistentBeanDynaActionForm</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>detailDisplayAction</name>
+    <description>
+      The detail action to link to in view mode.
+    </description>
+    <type>java.lang.String</type>
+    <required>false</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>property</name>
+    <description>
+      The property of the action form that is going to be used.
+    </description>
+    <type>java.lang.String</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>collection</name>
+    <description>
+      The collection of options to use when generating the selection list for
+      edit mode.
+    </description>
+    <type>java.util.Collection</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>size</name>
+    <description>
+      The size of the list in edit mode. By default a dropdown box will be
+      generated.
+    </description>
+    <type>java.lang.Integer</type>
+    <required>false</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>displaySelector</name>
+    <description>
+      The property of the object to show in the selection box.
+    </description>
+    <type>java.lang.String</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>allowNull</name>
+    <description>
+      Allow a null value or not.
+    </description>
+    <type>java.lang.Boolean</type>
+    <required>false</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+
+
+<!--
+  <document-info>
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>David Van Keer</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source$</path>
+      <revision>$Revision$</revision>
+      <date>$Date$ (UTC)</date>
+      <state>$State$</state>
+      <release>$Name$</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+-->
+
+</tag>

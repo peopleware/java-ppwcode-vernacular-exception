@@ -1,0 +1,46 @@
+<tag>
+  <display-name>ppw_form:crudButtons</display-name>
+  <name>crudButtons</name>
+  <description>
+    Shows the CRUD buttons for a form.
+  </description>
+  <example>
+    &lt;ppw_form:crudButtons &quot;${actionForm}&quot;/&gt;
+  </example>
+  <body-content>empty</body-content>
+  <attribute>
+    <name>actionForm</name>
+    <description>
+      The struts action form containing all object properties that can be used.
+    </description>
+    <type>be.peopleware.web.struts.PersistentBeanDynaActionForm</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+
+<!--
+  <document-info>
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>David Van Keer</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source$</path>
+      <revision>$Revision$</revision>
+      <date>$Date$ (UTC)</date>
+      <state>$State$</state>
+      <release>$Name$</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+-->
+
+</tag>

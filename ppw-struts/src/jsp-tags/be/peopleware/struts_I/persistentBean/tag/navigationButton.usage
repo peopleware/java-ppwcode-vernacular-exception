@@ -1,0 +1,65 @@
+<tag>
+  <display-name>ppw_form:navigationButton</display-name>
+  <name>navigationButton</name>
+  <description>
+    @todo   
+  </description>
+  <example>
+    &lt;ppw_form:navigationButton action=&quot;${listActionLink}&quot;
+        type=&quot;list&quot; name=&quot;LIST&quot; /&gt;
+  </example>
+  <body-content>JSP</body-content>
+  <attribute>
+    <name>action</name>
+    <description>
+      The struts action to generate a navigation button for.
+    </description>
+    <type>java.lang.String</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>type</name>
+    <description>
+      @todo
+    </description>
+    <type>java.lang.String</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>name</name>
+    <description>
+      @todo
+    </description>
+    <type>java.lang.String</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+
+<!--
+  <document-info>
+	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>David Van Keer</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source$</path>
+      <revision>$Revision$</revision>
+      <date>$Date$ (UTC)</date>
+      <state>$State$</state>
+      <release>$Name$</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
+			<p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+			<p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+-->
+
+</tag>
