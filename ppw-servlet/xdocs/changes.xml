@@ -12,11 +12,5 @@
       </action>              
     </release>
 
-    <release version="I v1.0.1/1.0" date="2004-12-21" description="Checkstyle">
-      <action dev="jand" type="fix">
-        Added javadoc descriptions in response to Checkstyle report.
-      </action>              
-    </release>
-
   </body>
 </document>
