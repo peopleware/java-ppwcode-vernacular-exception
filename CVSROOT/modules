@@ -25,8 +25,9 @@
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
 
-ppw-test						ppw-test						&ppw-libraries-settings
-ppw-i18n						ppw-i18n						&ppw-libraries-settings
-ppw-exception			ppw-exception			&ppw-libraries-settings
-ppw-bean						ppw-bean     			&ppw-libraries-settings
-ppw-value					ppw-value     			&ppw-libraries-settings
+ppw-test											ppw-test											&ppw-libraries-settings
+ppw-i18n											ppw-i18n											&ppw-libraries-settings
+ppw-exception								ppw-exception								&ppw-libraries-settings
+ppw-bean											ppw-bean     								&ppw-libraries-settings
+ppw-value										ppw-value     								&ppw-libraries-settings
+ppw-value-hibernate					ppw-value-hibernate     			&ppw-libraries-settings
