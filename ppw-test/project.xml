@@ -2,7 +2,9 @@
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
   <extend>ppw-libraries-settings/project.xml</extend>
+  <pomVersion>4</pomVersion>
   <name>Unit Test Library</name>
+  <groupId>ppw-test-I</groupId>
   <artifactId>ppw-test-I</artifactId>
   <shortDescription>Support for unit testing.</shortDescription>
   <description>Support for unit testing. This is not very much. There is
@@ -20,13 +22,6 @@
       <email>Jan.Dockx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>architect</role>
-        <role>developer</role>
-        <role>lead</role>
-        <role>management</role>
-        <role>planning</role>
-      </roles>
     </developer>
     <developer>
       <name>David Van Keer</name>
@@ -34,9 +29,6 @@
       <email>David_Van_Keer@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>developer</role>
-      </roles>
     </developer>
     <developer>
       <name>Rene Clerckx</name>
@@ -44,9 +36,6 @@
       <email>Rene.Clerckx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>developer</role>
-      </roles>
     </developer>
   </developers>
   <contributors>
@@ -55,11 +44,8 @@
       <email>Dirk_Couck@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>management</role>
-        <role>planning</role>
-      </roles>
     </contributor>
   </contributors>
-  <properties/>
+  <properties />
 </project>
+

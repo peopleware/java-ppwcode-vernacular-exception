@@ -2,7 +2,9 @@
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
   <extend>ppw-libraries-settings/project.xml</extend>
+  <pomVersion>4</pomVersion>
   <name>Internationalization Library</name>
+  <groupId>ppw-i18n-I</groupId>
   <artifactId>ppw-i18n-I</artifactId>
   <shortDescription>Support for i18n.</shortDescription>
   <description>Support for i18n, in general, and for a strategy for binding i18n labels
@@ -24,13 +26,6 @@
       <email>Jan.Dockx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>architect</role>
-        <role>developer</role>
-        <role>lead</role>
-        <role>management</role>
-        <role>planning</role>
-      </roles>
     </developer>
     <developer>
       <name>David Van Keer</name>
@@ -38,9 +33,6 @@
       <email>David_Van_Keer@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>developer</role>
-      </roles>
     </developer>
     <developer>
       <name>Rene Clerckx</name>
@@ -48,9 +40,6 @@
       <email>Rene.Clerckx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>developer</role>
-      </roles>
     </developer>
   </developers>
   <contributors>
@@ -59,10 +48,6 @@
       <email>Dirk_Couck@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>management</role>
-        <role>planning</role>
-      </roles>
     </contributor>
   </contributors>
   <dependencies>
@@ -72,5 +57,6 @@
       <version>1.0.1-1.0</version>
     </dependency>
   </dependencies>
-  <properties/>
+  <properties />
 </project>
+

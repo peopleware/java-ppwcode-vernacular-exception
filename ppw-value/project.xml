@@ -4,7 +4,6 @@
   <extend>ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
   <name>Value Type Library</name>
-  <groupId>ppw-value-I</groupId>
   <artifactId>ppw-value-I</artifactId>
   <shortDescription>Patterns for value types, and some common value types.</shortDescription>
   <description>Support for value types. Value types are algebra's, and not classes, but

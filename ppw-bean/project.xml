@@ -4,6 +4,7 @@
   <extend>ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
   <name>JavaBeans Library</name>
+  <groupId>ppw-bean-I</groupId>
   <artifactId>ppw-bean-I</artifactId>
   <shortDescription>Support for JavaBeans, including persistency.</shortDescription>
   <description>Support for JavaBeans. General superclasses and utility
