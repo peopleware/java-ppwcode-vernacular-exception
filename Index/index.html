@@ -1,4 +1,6 @@
-<html>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      xmlns:chars="http://www.example.com/characterElements EntitiesSchema.txt">
   <head>
     <title>PeopleWare Java Libraries</title>
 		<!-- PeopleWare kleuren
@@ -128,10 +130,10 @@
 					<form method="get" action="http://maven.ozacc.com/search">
 						<table>
 							<tr>
-								<td><input type="text" name="keyword" class="search-box" />&nbsp;<input type="submit" value="Search" /></td>
+								<td><input type="text" name="keyword" class="search-box" /><chars:nbsp/><input type="submit" value="Search" /></td>
 							</tr>
 							<tr>
-								<td><strong>Type:</strong>&nbsp;<input type="radio" name="type" id="typeAll" value="all" checked="checked" /><label for="typeAll">all</label>&nbsp;<input type="radio" name="type" id="typeJar" value="jar" /><label for="typeJar">jar</label>&nbsp;<input type="radio" name="type" id="typePlugin" value="plugin" /><label for="typePlugin">plugin</label>&nbsp;<input type="radio" name="type" id="typeTld" value="tld" /><label for="typeTld">tld</label>
+								<td><strong>Type:</strong><chars:nbsp/><input type="radio" name="type" id="typeAll" value="all" checked="checked" /><label for="typeAll">all</label><chars:nbsp/><input type="radio" name="type" id="typeJar" value="jar" /><label for="typeJar">jar</label><chars:nbsp/><input type="radio" name="type" id="typePlugin" value="plugin" /><label for="typePlugin">plugin</label><chars:nbsp/><input type="radio" name="type" id="typeTld" value="tld" /><label for="typeTld">tld</label>
 								</td>
 							</tr>
 						</table>
@@ -254,11 +256,11 @@
         3, pure JDBC, etcetara. All these implementations are, or will be, gathered
         in specific subpackages of the API, and included in the library that
         carries
-        the API.<br>
+        the API.<br />
       This means that, for compilation of those subpackages, the external libraries
       this code depends on (in casu, <kbd>hibernate.jar</kbd>, the jars for JDO
       and J2EE, etcetera), are needed in the classpath. The project maven settings
-      take care of this.<br>
+      take care of this.<br />
       It would be bad however if a developer would need to provide the J2EE jars
       in finished application that uses the Hibernate persistence technology,
       and doesn't use J2EE at all. But luckily, through the magic of dynamic
