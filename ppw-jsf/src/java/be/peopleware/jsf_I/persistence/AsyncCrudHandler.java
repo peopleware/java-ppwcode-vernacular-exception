@@ -84,7 +84,14 @@ public class AsyncCrudHandler extends AbstractHandler {
   
   /*</property>*/
 
-  
+  public final void setTypeName(String typename) {
+  	try {
+  		setType (Class.forName(typename));
+  	} catch (ClassNotFoundException e) {
+  		// TODO Auto-generated catch block
+  		e.printStackTrace();
+  	}
+  }
   
   /*<property name="id">*/
   //------------------------------------------------------------------
