@@ -55,7 +55,9 @@
         <report>maven-jdepend-plugin</report>
         <report>maven-changelog-plugin</report>
         <report>maven-changes-plugin</report>
+<!--
         <report>maven-jdiff-plugin</report>
+-->
         <report>maven-checkstyle-plugin</report>
         <report>maven-linkcheck-plugin</report>
         <report>maven-simian-plugin</report>
