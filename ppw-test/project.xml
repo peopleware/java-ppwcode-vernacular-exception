@@ -14,4 +14,43 @@
   -->
   <currentVersion>0.1</currentVersion>
 
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>1</id>
+      <email>Jan.Dockx@peopleware.be</email>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+        <role>lead</role>
+        <role>management</role>
+        <role>planning</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <name>David Van Keer</name>
+      <id>2</id>
+      <email>David_Van_Keer@peopleware.be</email>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Dirk Couck</name>
+      <email>Dirk_Couck@peopleware.be</email>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>management</role>
+        <role>planning</role>
+      </roles>
+      <timezone>+1</timezone>
+    </contributor>
+  </contributors>
+
 </project>
