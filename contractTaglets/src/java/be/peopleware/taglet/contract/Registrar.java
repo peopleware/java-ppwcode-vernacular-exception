@@ -21,9 +21,10 @@ public abstract class Registrar implements Taglet {
 
   public static final Taglet[] TAGLETS
       = new Taglet[] {new InvarTaglet(),
-                      new PostTaglet(),
+                      new BasicTaglet(),
                       new PreTaglet(),
-                      new ResultTaglet()};
+                      new ResultTaglet(),
+                      new PostTaglet()};
   
   /**
    * Register all taglets defined in this package.

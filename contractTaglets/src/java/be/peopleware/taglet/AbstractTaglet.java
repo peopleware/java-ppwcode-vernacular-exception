@@ -32,6 +32,12 @@ import com.sun.tools.doclets.Taglet;
 public abstract class AbstractTaglet implements Taglet {
   
   /**
+   * <p>The empty String, which is nice to have for subclasses.</p>
+   * <p><strong>value = {@value}</strong></p>
+   */
+  public final static String EMPTY = ""; //$NON-NLS-1$
+  
+  /**
    * Used to determine if this taglet can be used in 
    * <strong>field documentation</strong>.
    * <br />Default value is <code>false</code>.

@@ -10,7 +10,7 @@ import be.peopleware.taglet.AbstractInlineTaglet;
  *
  * @author    Jan Dockx
  * @author    David Van Keer
- * @author    René Clerckx
+ * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */

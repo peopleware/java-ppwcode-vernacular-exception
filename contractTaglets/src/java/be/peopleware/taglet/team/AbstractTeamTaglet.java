@@ -6,10 +6,12 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
 
 /**
  * Abstract superclass for common code in team taglets.
+ * 
+ * @mudo at-link stuff in tag text should become a link like in the rest of the Javadoc
  *
  * @author    Jan Dockx
  * @author    David Van Keer
- * @author    René Clerckx
+ * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
