@@ -27,7 +27,7 @@ public abstract class AbstractStandaloneTaglet extends AbstractTaglet {
    * 
    * @basic
    * 
-   * @return    getHeader() != null && getHeader().length() > 0 
+   * @return    getHeader() != null && getHeader().length() > 0; 
    */
   public abstract String getHeader();
 
