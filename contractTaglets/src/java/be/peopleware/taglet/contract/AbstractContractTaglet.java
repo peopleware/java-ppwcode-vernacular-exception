@@ -1,8 +1,12 @@
 package be.peopleware.taglet.contract;
 
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.apache.commons.jexl.parser.Parser;
+import org.apache.commons.jexl.parser.SimpleNode;
 
 import com.sun.javadoc.Tag;
 
@@ -170,43 +174,56 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
   		return origExpr;
   	}
 
-  	//Add leading and trailing spaces. We can now safely 
-  	// 	retrieve chars from the left and from the right side of the keyword.
-  	String expr = " " + origExpr + " "; //$NON-NLS-1$ //$NON-NLS-2$
-  	StringBuffer result = new StringBuffer();
-  	int notParsedFrom = 0;
-		int keywordBegin = expr.indexOf(keyword);
-		int keywordEnd   = keywordBegin + keyword.length();
-		while	(keywordBegin >= 0) {
-			//if the chars at the left and at the right are not 
-			//  part of the identifier, then the keyword is found.
-			char charLeft  = expr.charAt(keywordBegin - 1);
-			char charRight = expr.charAt(keywordEnd);
-			if (! Character.isLetterOrDigit(charLeft) 
-							&& ! Character.isLetterOrDigit(charRight)) {
-				// the keyword is found
-				result.append(expr.substring(notParsedFrom, keywordBegin));
+  	Parser parser = new Parser(new StringReader(";"));
+  	SimpleNode sn = null;
+  	try {
+		sn = parser.parse(new StringReader(origExpr));
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+	}
+  	StringBuffer htmlResult = new StringBuffer();
+  	HtmlGenerator htmlGenerator = new HtmlGenerator();
+  	htmlGenerator.visit(sn, htmlResult);
 
-				if (! canContainKeyword(keyword)) {
-					signalParseError(tag, getName() 
-															+ " taglet can not contain "  //$NON-NLS-1$
-															+ keyword + " keyword");  //$NON-NLS-1$
-				}
-				
-	  		result.append(makeupKeyword(keyword));
-	  		
-				notParsedFrom = keywordEnd;
-			}
-			keywordBegin = expr.indexOf(keyword, keywordEnd);
-			keywordEnd   = keywordBegin + keyword.length();
-		}
-		result.append(expr.substring(notParsedFrom, expr.length()));
-		
-		//strip out leading and trailing spaces, added in the begin of this method.
-		result.deleteCharAt(0);
-		result.deleteCharAt(result.length() - 1);
-
-  	return result.toString();
+	return htmlResult.toString();
+	
+//  	//Add leading and trailing spaces. We can now safely 
+//  	// 	retrieve chars from the left and from the right side of the keyword.
+//  	String expr = " " + origExpr + " "; //$NON-NLS-1$ //$NON-NLS-2$
+//  	StringBuffer result = new StringBuffer();
+//  	int notParsedFrom = 0;
+//		int keywordBegin = expr.indexOf(keyword);
+//		int keywordEnd   = keywordBegin + keyword.length();
+//		while	(keywordBegin >= 0) {
+//			//if the chars at the left and at the right are not 
+//			//  part of the identifier, then the keyword is found.
+//			char charLeft  = expr.charAt(keywordBegin - 1);
+//			char charRight = expr.charAt(keywordEnd);
+//			if (! Character.isLetterOrDigit(charLeft) 
+//							&& ! Character.isLetterOrDigit(charRight)) {
+//				// the keyword is found
+//				result.append(expr.substring(notParsedFrom, keywordBegin));
+//
+//				if (! canContainKeyword(keyword)) {
+//					signalParseError(tag, getName() 
+//															+ " taglet can not contain "  //$NON-NLS-1$
+//															+ keyword + " keyword");  //$NON-NLS-1$
+//				}
+//				
+//	  		result.append(makeupKeyword(keyword));
+//	  		
+//				notParsedFrom = keywordEnd;
+//			}
+//			keywordBegin = expr.indexOf(keyword, keywordEnd);
+//			keywordEnd   = keywordBegin + keyword.length();
+//		}
+//		result.append(expr.substring(notParsedFrom, expr.length()));
+//		
+//		//strip out leading and trailing spaces, added in the begin of this method.
+//		result.deleteCharAt(0);
+//		result.deleteCharAt(result.length() - 1);
+//
+//  	return result.toString();
   }
   
   private String getKeywordColor(String keyword) {
