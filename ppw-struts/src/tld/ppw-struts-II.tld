@@ -111,6 +111,16 @@
     <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/textareaField.tagx</path>
   </tag-file>
 
+  <tag-file>
+    <name>urlField</name>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/urlField.tagx</path>
+  </tag-file>
+
+  <tag-file>
+    <name>emailField</name>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/emailField.tagx</path>
+  </tag-file>
+
 </taglib>
 
 <!--
