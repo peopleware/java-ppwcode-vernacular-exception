@@ -11,6 +11,23 @@
   </properties>
   <body>
  
+<!-- next version will be compatible
+    <release version="IV v1.0.2/1.1" date="2005-03-14"
+    			description="CompoundPropertyException close throws exception">
+      <action dev="jand" type="fix">
+		CompoundPropertyException close() now throws IllegalStateException
+		when called when already closed (can't close twice). This was introduced
+		to better trace a weird error that occured in OLTS. This is considered
+		a bug fix in the contract (which is possible because
+		IllegalStateException is a RuntimeException).
+		For OLTS, this change has to appear also in a branch.
+      </action>              
+    </release>
+-->
+
+
+	<!-- this is wrong; version below should have been labeled
+			IV 1.1.0/1.0 -->
     <release version="IV v1.0.1/1.0" date="2005-03-08"
     			description="PropertyException extra constructor">
       <action dev="jand" type="add">
