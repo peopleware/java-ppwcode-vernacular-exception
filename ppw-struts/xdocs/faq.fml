@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+   
+    <faq id="whats-ppw-test">
+      <question>
+        What is PPW-Test?
+      </question>
+      <answer>
+        <p>We don't know ourselfs :-)</p>
+        
+        <source>Test.test()</source>
+      </answer>
+    </faq>
+
+  </part>
+  
+  <part id="install">
+    <title>Installation</title>
+   
+    <faq id="how-install">
+      <question>
+        How do I install PPW Test?
+      </question>
+      <answer>
+        <p>You don't</p>
+      </answer>
+    </faq>
+  </part>  
+</faqs>
