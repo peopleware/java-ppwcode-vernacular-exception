@@ -10,7 +10,7 @@
   <description>Here you find Hibernate User Types for some value types defined in ppw-value.
 These user types take care of RDBMS persistency of objects of these value types.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.1-1.0</currentVersion>
+  <currentVersion>2.0.0-1.0</currentVersion>
   <package>be.peopleware.value_I.hibernate_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
@@ -41,15 +41,15 @@ These user types take care of RDBMS persistency of objects of these value types.
   </contributors>
   <dependencies>
     <dependency>
-      <groupId>ppw-libraries</groupId>
-      <artifactId>ppw-value-I</artifactId>
-      <version>1.1.0-2.0</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
       <groupId>hibernate</groupId>
       <artifactId>hibernate</artifactId>
       <version>2.1.6</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-value-I</artifactId>
+      <version>1.1.0-2.0</version>
       <type>jar</type>
     </dependency>
   </dependencies>

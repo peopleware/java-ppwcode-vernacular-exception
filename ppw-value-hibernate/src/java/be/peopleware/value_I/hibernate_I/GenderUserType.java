@@ -11,6 +11,9 @@ import be.peopleware.value_I.GenderEditor;
  *
  * @author    Jan Dockx
  * @author    Peopleware n.v.
+ * 
+ * @deprecated This package is completely deprecated. It is absorbed by
+ *             library ppw-value I, from version 1.2.0/2.0 on.
  */
 public final class GenderUserType extends AbstractEnumerationUserType {
 
