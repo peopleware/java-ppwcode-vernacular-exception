@@ -25,5 +25,5 @@
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
-ALL mail Jan.Dockx@peopleware.be -s "CVS FVB: %{sVv}"
+ALL mail Jan.Dockx@peopleware.be,bart_farasyn@peopleware.be -s "CVS FVB: %{sVv}"
 
