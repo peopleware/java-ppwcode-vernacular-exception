@@ -83,6 +83,12 @@
       <version>1.0.0-1.0</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-bean-IV</artifactId>
+      <version>1.0.1-1.0</version>
+      <type>jar</type>
+    </dependency>
   </dependencies>
   <properties />
 </project>
