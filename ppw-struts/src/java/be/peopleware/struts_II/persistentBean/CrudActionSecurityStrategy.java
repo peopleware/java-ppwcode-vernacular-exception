@@ -9,8 +9,8 @@ import org.apache.struts.action.ActionMapping;
 import be.peopleware.struts_II.IllegalAccessException;
 
 /**
- * @MUDO AANPASSEn
- * 
+ * @MUDO (jand): AANPASSEN
+ *
  * Security strategy API for {@link CrudAction}s.
  * {@link DetailAction} enables the user to
  * get a page for a new object, to get a page to create an object,
@@ -42,37 +42,37 @@ public class CrudActionSecurityStrategy {
 
   /*</section>*/
 
-  
+
   public boolean hasDisplayRigths(final HttpServletRequest request,
                                   final ActionMapping actionMapping,
                                   final ActionForm actionForm) {
     return true;
   }
-  
+
   public boolean hasEditRights(final HttpServletRequest request,
                                final ActionMapping actionMapping,
                                final ActionForm actionForm) {
     return true;
   }
-  
+
   public boolean hasUpdateRights(final HttpServletRequest request,
                                  final ActionMapping actionMapping,
                                  final ActionForm actionForm) {
     return true;
   }
-  
+
   public boolean hasNewRights(final HttpServletRequest request,
                               final ActionMapping actionMapping,
                               final ActionForm actionForm) {
     return true;
    }
-  
+
   public boolean hasCreateRights(final HttpServletRequest request,
                                  final ActionMapping actionMapping,
                                  final ActionForm actionForm) {
     return true;
   }
-  
+
   public boolean hasDeleteRights(final HttpServletRequest request,
                                  final ActionMapping actionMapping,
                                  final ActionForm actionForm) {
@@ -80,8 +80,8 @@ public class CrudActionSecurityStrategy {
   }
 
   public boolean hasDisplayAllRights(final HttpServletRequest request,
-                                    final ActionMapping actionMapping,
-                                    final ActionForm actionForm) {
+                                     final ActionMapping actionMapping,
+                                     final ActionForm actionForm) {
     return true;
   }
 

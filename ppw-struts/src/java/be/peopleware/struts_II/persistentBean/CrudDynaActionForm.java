@@ -66,8 +66,8 @@ public abstract class CrudDynaActionForm extends DynaActionForm {
   /*</section>*/
 
 
-  private static final Log LOG
-      = LogFactory.getLog(CrudDynaActionForm.class);
+  private static final Log LOG =
+      LogFactory.getLog(CrudDynaActionForm.class);
 
 
   /*<construction>*/
@@ -410,8 +410,8 @@ public abstract class CrudDynaActionForm extends DynaActionForm {
    * @post      new.getPersistentBean != getPersistentBean();
    * @post      (forall PersistentBean po;; po != new.getPersistentBean());
    *              The new persistent bean is a new object.
-   * @throws BeanInstantiationException
-   *         ; could not create the persistent bean
+   * @throws    BeanInstantiationException
+   *            ; could not create the persistent bean
    */
   protected final void initBean() throws BeanInstantiationException {
     if (LOG.isDebugEnabled()) {

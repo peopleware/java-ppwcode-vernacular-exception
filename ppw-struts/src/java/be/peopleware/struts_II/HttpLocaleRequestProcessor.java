@@ -39,8 +39,9 @@ public class HttpLocaleRequestProcessor extends TilesRequestProcessor {
 
   /*</section>*/
 
-  private static final Log LOG
-      = LogFactory.getLog(HttpLocaleRequestProcessor.class);
+  private static final Log LOG =
+      LogFactory.getLog(HttpLocaleRequestProcessor.class);
+
 
   /**
    * Keep the locale of JSTL and the Struts framework in synch by pre-processing

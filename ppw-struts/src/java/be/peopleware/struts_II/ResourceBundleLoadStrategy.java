@@ -34,15 +34,7 @@ public class ResourceBundleLoadStrategy
 
 
 
-  /* <construction> */
-  //------------------------------------------------------------------
-
-  public ResourceBundleLoadStrategy() {
-    // NOP
-  }
-
-  /* </construction> */
-
+  // Default contstructor
 
 
   /* <property name="request"> */
@@ -69,14 +61,13 @@ public class ResourceBundleLoadStrategy
   /* </property> */
 
 
-  private static final String EMPTY = ""; //$NON-NLS-1$
 
   /**
    * @see   be.peopleware.i18n_I.ResourceBundleLoadStrategy#loadResourceBundle(String)
    */
   public ResourceBundle loadResourceBundle(final String basename) {
     ResourceBundle bundle = null;
-    if ((basename != null) && !(basename.equals(EMPTY))) {
+    if ((basename != null) && !(basename.equals(""))) { //$NON-NLS-1$
       // Copied from SetBundleSupport tag (JSTL 1.x)
       Locale locale = null;
       HttpSession session = $request.getSession();

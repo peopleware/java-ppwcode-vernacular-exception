@@ -40,8 +40,8 @@ public abstract class ListAction
 
 
 
-  private static final Log LOG
-      = LogFactory.getLog(ListAction.class);
+  private static final Log LOG =
+      LogFactory.getLog(ListAction.class);
 
   public ActionForward execute(final ActionMapping actionMapping,
                                final ActionForm form,

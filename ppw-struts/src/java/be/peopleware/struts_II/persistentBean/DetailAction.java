@@ -62,8 +62,8 @@ public abstract class DetailAction extends CrudAction {
    * <strong>= </strong> {@value}
    * </p>
    */
-  public static final String REQUEST_ATTRIBUTE_PREFIX
-      = "be.peopleware.struts_II.persistentBean.DetailAction."; //$NON-NLS-1$
+  public static final String REQUEST_ATTRIBUTE_PREFIX =
+      "be.peopleware.struts_II.persistentBean.DetailAction."; //$NON-NLS-1$
 
   /**
    * A prefix for request mode parameter names to make it unlikely that the name
@@ -75,7 +75,7 @@ public abstract class DetailAction extends CrudAction {
    */
   public static final String REQUEST_MODE_PREFIX = REQUEST_ATTRIBUTE_PREFIX
                                                    + "REQUEST_MODE."; //$NON-NLS-1$
-  
+
   /**
    * The parameter value for the mode parameter that asks <samp>display request
    * mode </samp> of this detail action. Display request mode means that the
@@ -204,7 +204,7 @@ public abstract class DetailAction extends CrudAction {
                                          REQUEST_MODE_DISPLAY,
                                          REQUEST_MODE_EDIT,
                                          REQUEST_MODE_UPDATE,
-                                         REQUEST_MODE_DELETE,};
+                                         REQUEST_MODE_DELETE, };
 
   /**
    * Mode is a valid value to express a form mode.
@@ -235,14 +235,14 @@ public abstract class DetailAction extends CrudAction {
     String param = request.getParameter(paramName);
     return ((param != null) && (!param.equals(""))); //$NON-NLS-1$
   }
-  
+
   /* </property> */
-  
-  
+
+
   public static final String FORWARD_NOTFOUND = "notFound"; //$NON-NLS-1$
   public static final String ILLEGAL_ACCESS = "accessDenied"; //$NON-NLS-1$
-  public static final String REQUEST_ATTRIBUTE_KEY_NOTFOUND
-      = REQUEST_ATTRIBUTE_PREFIX  + "EXCEPTION"; //$NON-NLS-1$
+  public static final String REQUEST_ATTRIBUTE_KEY_NOTFOUND =
+      REQUEST_ATTRIBUTE_PREFIX  + "EXCEPTION"; //$NON-NLS-1$
 
   /**
    * @see       Action#execute(ActionMapping, ActionForm, HttpServletRequest,
@@ -354,7 +354,7 @@ public abstract class DetailAction extends CrudAction {
                                                                    actionMapping,
                                                                    actionForm));
         }
-        else {// no security strategy: all is allowed
+        else { // no security strategy: all is allowed
           form.setCreateable(true);
           form.setEditable(true);
           form.setDeleteable(true);
@@ -575,7 +575,6 @@ public abstract class DetailAction extends CrudAction {
     AsynchronousCRUD asyncCRUD = createAsynchronousCRUD(request);
     CompoundPropertyException cpExcStore = null;
     try {
-      // @todo (dvankeer): Why re-use the data?
       try {
         form.formToBean(asyncCRUD);
            /* get the data that is already in this request,
@@ -772,7 +771,7 @@ public abstract class DetailAction extends CrudAction {
       }
     }
   }
-  
+
   private Vector $persistentBeanChangeListeners = new Vector(5, 2);
-  
+
 }

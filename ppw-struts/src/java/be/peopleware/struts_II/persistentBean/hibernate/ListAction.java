@@ -48,8 +48,8 @@ public class ListAction
   protected final AsynchronousCRUD createAsynchronousCRUD(
       final ServletRequest request)
           throws TechnicalException {
-    AsynchronousHibernateCRUD asyncCRUD
-        = new AsynchronousHibernateCRUD();
+    AsynchronousHibernateCRUD asyncCRUD =
+        new AsynchronousHibernateCRUD();
     try {
       asyncCRUD.setSession(SessionInView.getSession(request));
     }

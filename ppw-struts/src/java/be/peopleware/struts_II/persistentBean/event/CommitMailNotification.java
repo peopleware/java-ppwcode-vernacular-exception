@@ -26,8 +26,8 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author    David Van Keer
  * @author    Peopleware n.v.
- * 
- * @invar getSubjectPrefix() != null;
+ *
+ * @invar     getSubjectPrefix() != null;
  */
 public class CommitMailNotification
     implements CommittedEventListener {
@@ -45,48 +45,52 @@ public class CommitMailNotification
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
 
   /*</section>*/
-  
-  
-  
+
+
+
   /**
-   * @pre subjectPrefix != null;
-   * 
-   * @post new.getSubjectPrefix().equals(subjectPrefix):
+   * @pre       subjectPrefix != null;
+   *
+   * @post      new.getSubjectPrefix().equals(subjectPrefix):
    */
   public CommitMailNotification(String subjectPrefix) {
     assert subjectPrefix != null;
     $subjectPrefix = subjectPrefix;
   }
 
-  
-  
+
+
   /*<property name="subjectPrefix">*/
   //------------------------------------------------------------------
-  
+
   /**
    *  @basic
    */
   public final String getSubjectPrefix() {
     return $subjectPrefix;
   }
-  
+
   private String $subjectPrefix =
       "Web Application Commit Notification: "; //$NON-NLS-1$
-  
-  /*</property>*/
-  
-  
 
-  private static final Log LOG
-      = LogFactory.getLog(CommitMailNotification.class);
+  /*</property>*/
+
+
+
+  private static final Log LOG =
+      LogFactory.getLog(CommitMailNotification.class);
 
   private Properties $properties = new Properties();
+  
+  private static final String MAIL_NOT_SEND =
+      "Noticiation mail cannot be send."; //$NON-NLS-1$
 
   /**
    * Process the CommittedEvent. In this case we send a email.
    *
    * If mail cannot be sent for a technical reason, this is logged,
    * but it does not stop the process.
+   *
    * @param     pbEvent
    *            The CommittedEvent to process.
    */
@@ -127,24 +131,20 @@ public class CommitMailNotification
       throw ncdfExc;
     }
     catch (IOException ioExc) {
-      LOG.error("unable to load properties for mail notification; " //$NON-NLS-1$
-                 + "mail cannot be sent", //$NON-NLS-1$
-                 ioExc);
+      LOG.error("Unable to load properties for mail notification; " //$NON-NLS-1$
+                + MAIL_NOT_SEND, ioExc);
     }
     catch (NamingException nExc) {
-      LOG.error("trying to access mail session via JNDI; " //$NON-NLS-1$
-                 + "mail cannot be sent", //$NON-NLS-1$
-                 nExc);
+      LOG.error("Trying to access mail session via JNDI; " //$NON-NLS-1$
+                + MAIL_NOT_SEND, nExc);
     }
     catch (MessagingException mExc) {
-      LOG.error("trying to create and send mail; " //$NON-NLS-1$
-                 + "mail cannot be sent", //$NON-NLS-1$
-                 mExc);
+      LOG.error("Trying to create and send mail; " //$NON-NLS-1$
+                + MAIL_NOT_SEND, mExc);
     }
     catch (Throwable t) {
-      LOG.error("throwable occured when trying to send mail; " //$NON-NLS-1$
-                 + "mail cannot be sent", //$NON-NLS-1$
-                 t);
+      LOG.error("Throwable occured when trying to send mail; " //$NON-NLS-1$
+                + MAIL_NOT_SEND, t);
     }
   }
 
@@ -168,7 +168,7 @@ public class CommitMailNotification
                     + $properties.getProperty("mail.content.update.newPrefix") //$NON-NLS-1$
                     + pbEvent.getNewBean().toString());
   }
-  
+
   private void addMailContent(final MimeMessage message,
                               final DeletedEvent pbEvent)
       throws MessagingException {
@@ -194,18 +194,16 @@ public class CommitMailNotification
     }
     catch (NamingException nExc) {
       LOG.error("failure to retrieve email address(es) for notification; " //$NON-NLS-1$
-                 + "mail cannot be sent", //$NON-NLS-1$
-                 nExc);
+                + MAIL_NOT_SEND, nExc);
     }
     catch (AddressException aExc) {
       LOG.error("invalid email address(es) detected for notification; " //$NON-NLS-1$
-                 + "mail cannot be sent", //$NON-NLS-1$
-                 aExc);
+                + MAIL_NOT_SEND, aExc);
     }
   }
 
   /**
-   * @mudo dirty code
+   * @mudo (dvankeer): dirty code
    */
   private void loadProperties() throws IOException {
     InputStream propStream = getClass().getResourceAsStream(
