@@ -23,9 +23,6 @@
   <jsp:directive.attribute name="displaySelector"
                            type="java.lang.String"
                            required="true" />
-  <jsp:directive.attribute name="allowNull"
-                           type="java.lang.Boolean"
-                           required="false" />
 
   <fmt:setBundle basename="be.peopleware.struts_II.persistentBean.tag.Field"
                  var="fieldBundle" scope="session" />
@@ -46,11 +43,11 @@
         </c:when>
         <c:otherwise>
           <select name="${property}">
-            <c:if test="${allowNull}">
-              <option value=""></option>
-            </c:if>
             <c:forEach items="${collection}" var="element">
                 <c:choose>
+                	<c:when test="${element eq null}">
+				            <option value=""></option>
+				          </c:when>
                   <c:when test="${element.id == actionForm.map[property]}">
                     <option value="${element.id}" selected="selected">${element[displaySelector]}</option>
                   </c:when>

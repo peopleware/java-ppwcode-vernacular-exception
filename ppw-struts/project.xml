@@ -11,7 +11,7 @@
     of working with Struts. This code is mainly aimed at CRUD (Create, Retrieve,
     Update, Delete) databse applications.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.0-1.0</currentVersion>
+  <currentVersion>1.0.1-1.0</currentVersion>
   <package>be.peopleware.struts_II</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>

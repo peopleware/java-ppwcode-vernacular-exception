@@ -1,96 +1,100 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
-					xmlns:c="http://java.sun.com/jsp/jstl/core"
-					xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-					xmlns:ppw="http://www.peopleware.be/tags/jsp-I">
-					
-	<jsp:directive.attribute name="actionForm"
-													 type="be.peopleware.struts_II.persistentBean.CrudDynaActionForm"
-													 required="true" />
-	
-	<fmt:setBundle basename="be.peopleware.struts_II.persistentBean.tag.ButtonLabels"
-	               var="buttonsBundle" scope="session" /> 
-	
-	<fmt:message bundle="${buttonsBundle}" key="message.sureToDelete" var="deleteMessage" />  
-	
-	<script type="text/javascript" language="javascript">
-	  function deleteButton() {
-	    if (confirm('${deleteMessage}')) {
-	      return true;
-	    }
-	    else {
-	      return false;
-	    }
-	  }
-	
-	<![CDATA[<!--
-	  function bePatient(form) {
-	    var theInputs = form.getElementsByTagName('input');
-	    for (var i = 0; i < theInputs.length; i++) {
-	      if ((theInputs[i].type == 'submit') || (theInputs[i].type == 'reset')) {
-	        theInputs[i].style.visibility = 'hidden';
-	      }
-	    }
-	    document.getElementById('busyMessage').style.visibility = 'visible';
-	    return true;
-	  }
-	// -->]]>
-	</script>
-	
-	<span id="busyMessage" style="visibility: hidden;"> <!-- style here is needed for IE 5 on Mac -->
-	  <fmt:message key="message.patience" bundle="${buttonsBundle}" />
-	  <![CDATA[&nbsp;]]>
-	  <img src="img/be/peopleware/jsp/tag/form/gears.gif" alt="[request submitted ...]" width="33" height="30" />
-	</span>
-	
-	<c:choose>
-	  <c:when test="${(actionForm.viewModeNew)}">
-	    <input type="hidden" name="referer" value="${header.referer}" />
-	  	<input type="submit"
-	  				 name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_CREATE')}"
-	           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
-	    <![CDATA[&nbsp;]]>
-	    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
-	    <![CDATA[&nbsp;]]>
-	    <input type="submit"
-	    			 name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_CANCEL_NEW')}"
-	           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
-	  </c:when>
-	  <c:when test="${actionForm.viewModeEdit}">
-	  	<input type="submit"
-	  				 name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_UPDATE')}"
-	           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
-	    <![CDATA[&nbsp;]]> 
-	    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
-	    <![CDATA[&nbsp;]]> 
-	    <input type="submit"
-	    			 name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_DISPLAY')}"
-	           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
-	  </c:when>
-	  <c:when test="${actionForm.viewModeDeleted}">
-	     <!-- NOP -->
-	  </c:when>
-	  <c:otherwise>
-	  	<c:if test="${actionForm.editable}">
-		  	<input type="submit"
-		  	       name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_EDIT')}"
-			 				 value="${ppw:i18nlabel(buttonsBundle, 'edit')}" />
-			  <![CDATA[&nbsp;]]> 
-		 	</c:if>
-	  	<c:if test="${actionForm.deleteable}">
-		    <input type="submit"
-		           name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_DELETE')}"
-		           value="${ppw:i18nlabel(buttonsBundle, 'delete')}"
-		           onclick="return deleteButton();" />
- 		 	</c:if>
-	  </c:otherwise>
-	</c:choose>
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:ppw="http://www.peopleware.be/tags/jsp-I">
+
+  <jsp:directive.attribute name="actionForm"
+                           type="be.peopleware.struts_II.persistentBean.CrudDynaActionForm"
+                           required="true" />
+
+  <fmt:setBundle basename="be.peopleware.struts_II.persistentBean.tag.ButtonLabels"
+                 var="buttonsBundle" scope="session" />
+
+  <fmt:message bundle="${buttonsBundle}" key="message.sureToDelete" var="deleteMessage" />
+
+  <script type="text/javascript" language="javascript">
+    function deleteButton() {
+      if (confirm('${deleteMessage}')) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+  <![CDATA[<!--
+    function bePatient(form) {
+      var theInputs = form.getElementsByTagName('input');
+      for (var i = 0; i < theInputs.length; i++) {
+        if ((theInputs[i].type == 'submit') || (theInputs[i].type == 'reset')) {
+          theInputs[i].style.visibility = 'hidden';
+        }
+      }
+      document.getElementById('busyMessage').style.visibility = 'visible';
+      return true;
+    }
+  // -->]]>
+  </script>
+
+  <span id="busyMessage" style="visibility: hidden;"> <!-- style here is needed for IE 5 on Mac -->
+    <fmt:message key="message.patience" bundle="${buttonsBundle}" />
+    <![CDATA[&nbsp;]]>
+    <img src="img/be/peopleware/jsp/tag/form/gears.gif" alt="[request submitted ...]" width="33" height="30" />
+  </span>
+
+  <c:choose>
+    <c:when test="${(actionForm.viewModeNew)}">
+      <input type="hidden" name="referer" value="${header.referer}" />
+      <c:if test="${(actionForm.submitable)}">
+        <input type="submit"
+               name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_CREATE')}"
+               value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
+        <![CDATA[&nbsp;]]>
+      </c:if>
+      <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
+      <![CDATA[&nbsp;]]>
+      <input type="submit"
+             name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_CANCEL_NEW')}"
+             value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
+    </c:when>
+    <c:when test="${actionForm.viewModeEdit}">
+       <c:if test="${(actionForm.submitable)}">
+        <input type="submit"
+               name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_UPDATE')}"
+               value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
+        <![CDATA[&nbsp;]]>
+      </c:if>
+      <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
+      <![CDATA[&nbsp;]]>
+      <input type="submit"
+             name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_DISPLAY')}"
+             value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
+    </c:when>
+    <c:when test="${actionForm.viewModeDeleted}">
+       <!-- NOP -->
+    </c:when>
+    <c:otherwise>
+      <c:if test="${actionForm.editable}">
+        <input type="submit"
+               name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_EDIT')}"
+                value="${ppw:i18nlabel(buttonsBundle, 'edit')}" />
+        <![CDATA[&nbsp;]]>
+       </c:if>
+      <c:if test="${actionForm.deleteable}">
+        <input type="submit"
+               name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_DELETE')}"
+               value="${ppw:i18nlabel(buttonsBundle, 'delete')}"
+               onclick="return deleteButton();" />
+        </c:if>
+    </c:otherwise>
+  </c:choose>
 
 </jsp:root>
 
 <!--
   <document-info>
-	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
     <authors>
       <author>Jan Dockx</author>
       <author>David Van Keer</author>
@@ -106,8 +110,8 @@
     <copyright xml:lang="en-US">
       <creationdate>2004</creationdate>
       <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
-			<p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
-			<p xml:lang="en-US">This document is copyrighted by the people and
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
                           entities mentioned above in the <author> tag.</p>
     </copyright>
   </document-info>

@@ -6,9 +6,18 @@
   </properties>
   <body>
   
-    <release version="I v1.0.0/1.0" date="2005-01-05" description="Bugfix release">
+    <release version="II v1.0.1/1.0" date="2005-01-05" description="Bugfix release">
       <action dev="dvankeer" type="add">
-      	Tag files still contained old class dependencies, replaced with new ones.
+      	- Tag files still contained old class dependencies, replaced with new ones.
+      	- Cancel new now send a redirect instead of internal redirect.
+      	- Forms now contain a new functionallity isSubmitable() for blocking submit of forms when invars cannot be obtained.
+      </action>              
+    </release>
+
+  
+    <release version="II v1.0.0/1.0" date="2005-01-05" description="Second release">
+      <action dev="dvankeer" type="add">
+      	
       </action>              
     </release>
           

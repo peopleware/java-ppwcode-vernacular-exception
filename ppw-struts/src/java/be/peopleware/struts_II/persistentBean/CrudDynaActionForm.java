@@ -262,7 +262,7 @@ public abstract class CrudDynaActionForm extends DynaActionForm {
   /*</property>*/
 
 
-  
+
   /*<property name="deleteable">*/
   //------------------------------------------------------------------
 
@@ -288,9 +288,9 @@ public abstract class CrudDynaActionForm extends DynaActionForm {
   private boolean $deleteable;
 
   /*</property>*/
-  
-  
-  
+
+
+
   /*<property name="createable">*/
   //------------------------------------------------------------------
 
@@ -316,9 +316,25 @@ public abstract class CrudDynaActionForm extends DynaActionForm {
   private boolean $createable;
 
   /*</property>*/
-  
-  
-  
+
+
+  /*<property name="submitable">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Can we submit any changes to a object represented by this form?
+   *
+   * @basic
+   * @init      true;
+   */
+  public boolean isSubmitable() {
+    return true;
+  }
+
+  /*</property>*/
+
+
+
   /*<property name="locale">*/
   //------------------------------------------------------------------
 

@@ -274,7 +274,7 @@ public abstract class DetailAction extends CrudAction {
     if (requestParamExistsAndIsNotEmpty(REQUEST_MODE_CANCEL_NEW, request)) {
       String referer = request.getParameter("referer"); //$NON-NLS-1$
       referer = referer.replaceAll("https?://.*/.*/", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-      forward = new ActionForward(referer);
+      forward = new ActionForward(referer, true);
     }
     else { // handle each mode, after checking that this user has the rights
       try {
