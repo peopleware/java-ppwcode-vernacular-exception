@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
+<project>
+  <extend>ppw-libraries-settings/project.xml</extend>
+  <pomVersion>4</pomVersion>
+  <name>Value Type Library</name>
+  <groupId>ppw-value-I</groupId>
+  <artifactId>ppw-value-I</artifactId>
+  <shortDescription>Patterns for value types, and some common value types.</shortDescription>
+  <description>Support for value types. Value types are algebra's, and not classes, but
+  	the only thing we have in Java are classes. Here, the most important patterns for
+  	the implementation of value types (including enumeration types), are laid out.
+  	Some common value types are implemented and offered for reuse.</description>
+  <inceptionYear>2004</inceptionYear>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.value_I</package>
+  <!--
+  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jand</id>
+      <email>Jan.Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+    <developer>
+      <name>David Van Keer</name>
+      <id>dvankeer</id>
+      <email>David_Van_Keer@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Dirk Couck</name>
+      <email>Dirk_Couck@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </contributor>
+  </contributors>
+  <dependencies>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-test-I</artifactId>
+      <version>1.0.1-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-i18n-I</artifactId>
+      <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-bean-I</artifactId>
+      <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
+  </dependencies>
+  <properties />
+</project>
+
