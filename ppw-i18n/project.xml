@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
-  <extend>ppw-libraries-settings/project.xml</extend>
+  <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
   <name>Internationalization Library</name>
   <groupId>ppw-libraries</groupId>
