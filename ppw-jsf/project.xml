@@ -60,6 +60,12 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.4-20040521</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-exception-I</artifactId>
       <version>1.0.0-1.0</version>
@@ -69,6 +75,18 @@
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-bean-IV</artifactId>
       <version>1.0.1-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>jsf</groupId>
+      <artifactId>jsf-api</artifactId>
+      <version>1.1.01</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-servlet-I</artifactId>
+      <version>1.0.0-1.0</version>
       <type>jar</type>
     </dependency>
   </dependencies>
