@@ -68,7 +68,9 @@
     <report>maven-pmd-plugin</report>
     <report>maven-tasklist-plugin</report>
     <report>taglib</report>
-	<report>maven-xhtml-plugin</report>
+<!--    
+  	<report>maven-xhtml-plugin</report>
+-->
     <report>maven-statcvs-plugin</report>    
 <!--
   This plugin is usefull when we have different version to compare, currently
