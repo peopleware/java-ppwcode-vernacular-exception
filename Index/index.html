@@ -84,13 +84,19 @@
 		}
     table.librariesLinks th {
 			color: #1A6038;
+			text-align: left;
 		}
-    table.librariesLinks td {
+    table.librariesLinks td.libName, table.librariesLinks td.compVersion {
 			font-family: "Courier New", Courier, mono;
 		}
-    table.librariesLinks td a {
-	font-family: "Courier New", Courier, mono;
-	text-decoration: none;
+    table.librariesLinks td.compVersionUnused {
+	color: #CCCCCC;
+		}
+    table.librariesLinks td.compVersion a {
+			text-decoration: none;
+		}
+    table.librariesLinks td.repoSearch, table.librariesLinks th.repoSearch {
+			padding-left: 50px;
 		}
     </style>
   </head>
@@ -101,38 +107,84 @@
         <a href="maven-repository/">Artifacts repository</a>
       </li>
     </ul>
-    <table class="librariesLinks">
+    <table align="center" class="librariesLinks">
       <tr>
         <th>Library</th>
-        <th colspan="2">Compatibility Versions</th>
+        <th colspan="8">Compatibility Versions</th>
+        <th class="repoSearch">Maven Repo Search</th>
       </tr>
       <tr>
-        <td>ppw-test</td>
-        <td><a href="ppw-test-I/">I</a></td>
-        <td>&nbsp;</td>
+        <td class="libName">ppw-test</td>
+        <td class="compVersion"><a href="ppw-test-I/">I</a></td>
+        <td class="compVersionUnused">II</td>
+        <td class="compVersionUnused">III</td>
+        <td class="compVersionUnused">IV</td>
+        <td class="compVersionUnused">V</td>
+        <td class="compVersionUnused">VI</td>
+        <td class="compVersionUnused">VII</td>
+        <td class="compVersionUnused">VIII</td>
+        <td rowspan="5" class="repoSearch">
+					<p>Courtesy of <a href="http://www.ozacc.com/" target="extern">Ozacc</a></p>
+					<form method="get" action="http://maven.ozacc.com/search">
+						<table>
+							<tr>
+								<td><input type="text" name="keyword" class="search-box" />&nbsp;<input type="submit" value="Search" /></td>
+							</tr>
+							<tr>
+								<td><strong>Type:</strong>&nbsp;<input type="radio" name="type" id="typeAll" value="all" checked="checked" /><label for="typeAll">all</label>&nbsp;<input type="radio" name="type" id="typeJar" value="jar" /><label for="typeJar">jar</label>&nbsp;<input type="radio" name="type" id="typePlugin" value="plugin" /><label for="typePlugin">plugin</label>&nbsp;<input type="radio" name="type" id="typeTld" value="tld" /><label for="typeTld">tld</label>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</td>
       </tr>
       <tr>
-        <td>ppw-i18n</td>
-        <td><a href="ppw-i18n-I/">I</a></td>
-        <td>&nbsp;</td>
+        <td class="libName">ppw-i18n</td>
+        <td class="compVersion"><a href="ppw-i18n-I/">I</a></td>
+        <td class="compVersionUnused">II</td>
+        <td class="compVersionUnused">III</td>
+        <td class="compVersionUnused">IV</td>
+        <td class="compVersionUnused">V</td>
+        <td class="compVersionUnused">VI</td>
+        <td class="compVersionUnused">VII</td>
+        <td class="compVersionUnused">VIII</td>
       </tr>
       <tr>
-        <td>ppw-exception</td>
-        <td><a href="ppw-exception-I/">I</a></td>
-        <td>&nbsp;</td>
+        <td class="libName">ppw-exception</td>
+        <td class="compVersion"><a href="ppw-exception-I/">I</a></td>
+        <td class="compVersionUnused">II</td>
+        <td class="compVersionUnused">III</td>
+        <td class="compVersionUnused">IV</td>
+        <td class="compVersionUnused">V</td>
+        <td class="compVersionUnused">VI</td>
+        <td class="compVersionUnused">VII</td>
+        <td class="compVersionUnused">VIII</td>
       </tr>
       <tr>
-        <td>ppw-bean</td>
-        <td><a href="ppw-bean-I/">I</a></td>
-        <td>&nbsp;</td>
+        <td class="libName">ppw-bean</td>
+        <td class="compVersion"><a href="ppw-bean-I/">I</a></td>
+        <td class="compVersionUnused">II</td>
+        <td class="compVersionUnused">III</td>
+        <td class="compVersionUnused">IV</td>
+        <td class="compVersionUnused">V</td>
+        <td class="compVersionUnused">VI</td>
+        <td class="compVersionUnused">VII</td>
+        <td class="compVersionUnused">VIII</td>
       </tr>
       <tr>
-        <td>ppw-value</td>
-        <td><a href="ppw-value-I/">I</a></td>
-        <td>&nbsp;</td>
+        <td class="libName">ppw-value</td>
+        <td class="compVersion"><a href="ppw-value-I/">I</a></td>
+        <td class="compVersionUnused">II</td>
+        <td class="compVersionUnused">III</td>
+        <td class="compVersionUnused">IV</td>
+        <td class="compVersionUnused">V</td>
+        <td class="compVersionUnused">VI</td>
+        <td class="compVersionUnused">VII</td>
+        <td class="compVersionUnused">VIII</td>
       </tr>
-    </table><h1>Dependecies</h1>
+    </table>
+    <h1>Dependecies</h1>
     <p>Click for the full-size version.</p>
     <a href="docs/Dependencies.gif"><img src="docs/Dependencies.gif" width="768" height="471" border="0" /></a>
-  </body>
+</body>
 </html>
