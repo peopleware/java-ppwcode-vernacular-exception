@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ppw-i18n Overview</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<style type="text/css">
+<!--
+acronym {
+	color: #CC3333;
+}
+-->
+</style>
+</head>
+
+<body>
+<p>API for resource bundle load strategies and support for <acronym title="internationalization">i18n</acronym>  of labels for bean types and bean property labels.</p>
+<h3>Resource Bundle Load Strategy</h3>
+<p><acronym title="internationalized">i15d</acronym> applications generally have a <dfn>default locale</dfn>, which users
+  can <dfn>override</dfn>,
+  and a <dfn>fallback locale</dfn>. The <dfn>default locale</dfn> is dynamic,
+  and depends on user preferences set outside the application. Preferences inside
+  the application make it possible
+  to <dfn>override</dfn> the default locale for the application only. If a locale
+  that is preferred by the user is not supported by the application, the <dfn>fallback
+  locale</dfn>  is used.</p>
+<p>How the <dfn>default locale</dfn> for a given user is determined, differs
+  significantly in different application contexts. In a desktop application,
+  it is often given by OS settings. In a web application however, the the
+  virtual machine runs on the server, and the server OS settings will differ
+  from the preferences of the remote users, which also differ amongst themselves.
+  In the HTTP request header however, there are entries that express the remote
+  user's locale preferences. This information is dealt with differently in different
+  web application frameworks (e.g., JSTL <code>fmt</code>, and Struts).</p>
+<p>Furthermore, applications can have i18n strategies that differ completely
+  from the <dfn>default - override - fallback locale strategy</dfn> described
+  above.</p>
+<p>{@link be.peopleware.i18n_I.ResourceBundleLoadStrategy} is an API that makes
+  it possible to abstract <acronym title="internationalization">i18n</acronym> code from a particular strategy. It implements
+  the <dfn>Strategy Pattern</dfn>. The interface only features 1 method: {@link
+  be.peopleware.i18n_I.ResourceBundleLoadStrategy#loadResourceBundle(String)}.</p>
+<p>{@link be.peopleware.i18n_I.DefaultResourceBundleLoadStrategy} implements
+  a default strategy, that can be used for desktop applications. Other strategies
+  are defined in other libraries.</p>
+<h3>Bean Type Labels and Bean Property Labels</h3>
+<p><acronym title="internationalization">I18n</acronym> is long believed to be
+  an issue in the view layer of an application, and certainly outside the scope
+  of people working on the semantics, the business logic, of the application.
+  We have seen that this is wrong, especially in the case of applications that
+  manage structured data.</p>
+<p>In such applications, a large part of the software developed in the world,
+  the user interface often has a master-detail setup, and the screens features
+  fields and labels for object properties, and a title that names the type of
+  object that the screen displays. These property labels and type labels are
+  what needs to be i15d in these applications. The exact labels are often deeply
+  imbedded in business practices. For the end-user, it is of extreme importance
+  that these labels reflect the day-to-day vocabularium that he is used to in
+  his job.<br />
+  The extraction of this vocabularium, in different languages, is a highly important
+  aspect in the requirements and analysis phase of a software project. These
+  labels are to be considered part of the semantics of the application, and should
+  be guarded as much as the algorithms that implement business processes.<br />
+  We therefor believe that these labels should be under control of the same developers
+  that create and maintain the application semantics, and should be stored next
+  to the Java classes that embed the business semantics.</p>
+<p>This package provides support for the labels of JavaBean types and properties.</p>
+<h4>Properties Files</h4>
+<p>To use these methods, you should create properties files for every bean class
+  you want to define type and properties labels for. The properties files should
+  have the same FQN as the bean class. So, for a bean type:</p>
+<pre>package be.peopleware.example;
+
+
+public class Person {
+
+  public String getName() {
+    return $name;
+  }
+
+  public void setName(String name) {
+    $name = name;
+  }
+
+  private String $name;
+
+}</pre>
+<p>you should create properties files <kbd>$CLASSPATH/be/peopleware/example/Person<var>_locale</var>.properties.</kbd></p>
+<p>In these properties files, you can have any enties you want, but a couple
+  of keys are used by the methods in {@link be.peopleware.i18n.Properties} to
+  return i18n labels for the type of the JavaBean and the properties of the JavaBean.</p>
+<h5>Type Labels</h5>
+<p>For the types of the JavaBean, there is a key for a label for the type ({@link
+  be.peopleware.i18n.Properties. I18N_TYPE_LABEL_KEY} = <code>type</code>) and
+  a key for the plural form of the type ({@link
+  be.peopleware.i18n.Properties. I18N_PLURAL_TYPE_LABEL_KEY} = <code>type.plural</code>).</p>
+<p> In the example, this would give for a file <kbd>$CLASSPATH/be/peopleware/example/Person_en_US.properties</kbd>:</p>
+<pre>type=Person
+type.plural=Persons</pre>
+<p>and for dutch (<kbd>$CLASSPATH/be/peopleware/example/Person_nl_BE.properties</kbd>):</p>
+<pre>type=Persoon
+type.plural=Personen</pre>
+<h5>Property Labels</h5>
+<p>For the property labels, we forsee a regular and a short label (e.g., to be
+  used in the heading of a tabular representation of a collection of persons).
+  The keys are the programmatic name of the JavaBean property (e.g., <code>name</code>)
+  with a prefix, resp., {@link be.peopleware.i18n.Properties. I18N_PROPERTY_LABEL_KEY_PREFIX
+  } = <code>propertyName.&hellip;</code> 
+  and <code>{@link be.peopleware.i18n.Properties. I18N_SHORT_PROPERTY_LABEL_KEY_PREFIX
+  } = <code></code>propertyName.short.&hellip;</code>..</p>
+<p>In the example, this would give for a file <kbd>$CLASSPATH/be/peopleware/example/Person_en_US.properties</kbd>:</p>
+<pre>propertyName.name=Name
+propertyName.short.name=N.</pre>
+<p>and for dutch (<kbd>$CLASSPATH/be/peopleware/example/Person_nl_BE.properties</kbd>):</p>
+<pre>propertyName.name=Naam
+propertyName.short.name=N.</pre>
+<h3>Note on the Acronyms</h3>
+<p>The term <acronym title="internationalization">i18n</acronym> comes
+    from the word <var>internationalization</var>,
+    which has 18 letters between the initial <var>i</var> and the final <var>n</var>.
+    Similarly, <var>internationalized</var> has 15 letters between the <var>i</var> and
+    the <var>d</var>,
+    hence the acronym <acronym title="internationalized">i15d</acronym>. Finally,
+    the word <var>international</var> has 11 letters
+    between the <var>i</var> and the <var>n</var>, and thus we write <acronym title="international">i11n</acronym>.</p>
+</body>
+</html>
