@@ -67,7 +67,7 @@
 
     <!-- Naming -->
 		<module name="PackageName">
-			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$" />
+			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*(_[IVXLCDM]*)*)*$" />
 		</module>
 		<module name="TypeName" />
 		<module name="MethodName" />
