@@ -3,8 +3,23 @@
 <project>
   <extend>ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
-  <name>Servlet Library</name>
+  <name>Java Server Pages Library</name>
   <groupId>ppw-libraries</groupId>
+  <reports>
+    <report>maven-license-plugin</report>       
+    <report>maven-javadoc-plugin</report>
+    <report>maven-faq-plugin</report>
+    <report>maven-jdepend-plugin</report>
+    <report>maven-changelog-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-checkstyle-plugin</report>
+    <report>maven-linkcheck-plugin</report>
+    <report>maven-pmd-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-tasklist-plugin</report>  
+    <report>taglib</report>
+  </reports>
   <artifactId>ppw-jsp-I</artifactId>
   <shortDescription>Support for Java Server Pages.</shortDescription>
   <description>Support for Java Server Pages.</description>
@@ -52,6 +67,12 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>displaytag</groupId>
+      <artifactId>displaytag</artifactId>
+      <version>1.0-rc1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>jspapi</groupId>
       <artifactId>jsp-api</artifactId>
       <version>2.0-20040521</version>
@@ -82,10 +103,11 @@
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>displaytag</groupId>
-      <artifactId>displaytag</artifactId>
-      <version>1.0-rc1</version>
-      <type>jar</type>
+      <groupId>maven-taglib</groupId>
+      <artifactId>maven-taglib-plugin</artifactId>
+      <version>1.2.2</version>
+      <type>plugin</type>
+      <url>http://maven-taglib.sourceforge.net</url>
     </dependency>
   </dependencies>
   <properties />
