@@ -6,9 +6,8 @@ import com.sun.tools.doclets.Taglet;
 
 
 /**
- * <p>Generic Taglet that implements methods from interface
- *  {@link Taglet}.<br />
- * Custom taglets can extend this class and define scopes 
+ * <p>Generic Taglet that implements methods from interface {@link Taglet}.
+ * <br /> Custom taglets can extend this class and define scopes 
  * where they are valid.</p>
  *
  * @invar     getName() != null && getName().length() > 0
@@ -29,50 +28,50 @@ public abstract class AbstractTaglet implements Taglet {
   
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>field documentation</strong>.<br />
-   * Default value is false.
+   * <strong>field documentation</strong>.
+   * <br />Default value is false.
    */
   protected boolean $inField = false;
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>constructor documentation </strong>.<br />
-   * Default value is false.
+   * <strong>constructor documentation </strong>.
+   * <br />Default value is false.
    */
   protected boolean $inConstructor = false;
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>method documentation </strong>.<br />
-   * Default value is false.
+   * <strong>method documentation </strong>.
+   * <br />Default value is false.
    */
   protected boolean $inMethod = false;
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>overview documentation </strong>.<br />
-   * Default value is false.
+   * <strong>overview documentation </strong>.
+   * <br />Default value is false.
    */
   protected boolean $inOverview = false;
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>package documentation </strong>.<br />
-   * Default value is false.
+   * <strong>package documentation </strong>.
+   * <br />Default value is false.
    */
   protected boolean $inPackage = false;
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>type documentation </strong>.<br />
-   * Default value is false.
+   * <strong>type documentation </strong>.
+   * <br />Default value is false.
    */
   protected boolean $inType = false;
 
   /**
    * Used to determine if this taglet is an 
-   * <strong>inline taglet </strong>.<br />
-   * Default value is false.
+   * <strong>inline taglet </strong>.
+   * <br />Default value is false.
    */
   protected boolean $inLine = false;
 
@@ -204,8 +203,8 @@ public abstract class AbstractTaglet implements Taglet {
    *            the <code>com.sun.javadoc.Tag</code> representation of this
    *            custom taglet.
    *
-   * @result    (taglet != null) ? valid html formatting code
-   *                             : null
+   * @result    (taglet != null) ? result == "valid html formatting code"
+   *                             : result == null
    */
   public abstract String toString(Tag taglet);
 
@@ -216,8 +215,8 @@ public abstract class AbstractTaglet implements Taglet {
    * @param     taglets
    *            the array of <code>com.sun.javadoc.Tag</code> s representing of
    *            this custom taglet.
-   * @result    (taglets != null) ? valid html formatting code
-   *                              : null
+   * @result    (taglets != null) ? result == "valid html formatting code"
+   *                              : result == null
    */
   public abstract String toString(Tag[] taglets);
 

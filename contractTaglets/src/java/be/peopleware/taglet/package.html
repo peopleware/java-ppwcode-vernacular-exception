@@ -30,11 +30,11 @@
 	    For example, the following implementation for the class FooTaglet should
 		do the trick:
 		<code>
-		<dl>
-		<dt>public static void register(Map tagletMap) {</dt>
-		<dd>   TagletRegistrar.registerTaglet(tagletMap, new FooTaglet());</dd>
-		<dt>}</dt>
-		<dl>
+		<pre>
+		public static void register(Map tagletMap) {
+			TagletRegistrar.registerTaglet(tagletMap, new FooTaglet());
+		}
+		</pre>
 		</code>
 	</li>
 	<li>Compile your doclet.<br />
@@ -42,13 +42,17 @@
 		The required class files are in the lib\tools.jar file in the SDK.</li>
 	<li>Run the javadoc tool using the -taglet and -tagletpath options.<br />
 	    For example:
+
 		<code>
-		  javadoc -taglet be.peopleware.taglet.standalone.FooTaglet
-		          -tagletpath myTagletClasses_directory
-				  -d javadoc_directory
-				  -classpath "$JAVA_HOME$\lib\tools.jar;myTagletClasses_directory;."
-				  be.peopleware.taglet.standalone
-		</code></li>
+	    <pre>
+		javadoc -taglet be.peopleware.taglet.standalone.FooTaglet
+			-tagletpath myTagletClasses_directory
+			-d javadoc_directory
+			-classpath "$JAVA_HOME$\lib\tools.jar;myTagletClasses_directory;."
+			be.peopleware.taglet.standalone
+		</pre>
+		</code>
+		</li>
 	</ol>
 </body>
 </html>

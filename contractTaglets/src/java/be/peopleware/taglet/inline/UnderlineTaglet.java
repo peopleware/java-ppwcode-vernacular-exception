@@ -15,15 +15,12 @@ import be.peopleware.taglet.AbstractInlineTaglet;
  * @author    Peopleware n.v.
  */
 public class UnderlineTaglet extends AbstractInlineTaglet {
-  /**
-   * @see       AbstractTaglet#getName()
-   */
+
   public String getName() {
     return "underline"; //$NON-NLS-1$
   }
 
   /**
-   * @see       AbstractTaglet#AbstractTaglet()
    * 
    * @mudo cleanup
    */

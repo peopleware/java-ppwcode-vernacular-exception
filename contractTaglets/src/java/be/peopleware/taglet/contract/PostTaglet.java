@@ -1,9 +1,6 @@
 package be.peopleware.taglet.contract;
 
 
-import be.peopleware.taglet.AbstractStandaloneTaglet;
-
-
 /**
  * Taglet-class for custom taglet <code>@post</code>
  *
@@ -14,23 +11,15 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
  * @author    Peopleware n.v.
  */
 public class PostTaglet extends AbstractContractTaglet {
-  /**
-   * @see       AbstractTaglet#getName()
-   */
+
   public String getName() {
-    return "post"; //$NON-NLS-1$
+    return AbstractContractTaglet.TAGLET_POST;
   }
 
-  /**
-   * @see       AbstractStandaloneTaglet#getHeader()
-   */
   public String getHeader() {
     return "Post Conditions:"; //$NON-NLS-1$
   }
 
-  /**
-   * @see       AbstractTaglet#AbstractTaglet()
-   */
   public PostTaglet() {
     $inField       = false;
     $inConstructor = true;

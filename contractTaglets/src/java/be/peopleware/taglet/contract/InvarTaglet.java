@@ -1,9 +1,6 @@
 package be.peopleware.taglet.contract;
 
 
-import be.peopleware.taglet.AbstractStandaloneTaglet;
-
-
 /**
  * Taglet-class for custom taglet <code>@invar</code>
  *
@@ -14,23 +11,17 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
  * @author    Peopleware n.v.
  */
 public class InvarTaglet extends AbstractContractTaglet {
-  /**
-   * @see       AbstractTaglet#getName()
-   */
+
   public String getName() {
-    return "invar"; //$NON-NLS-1$
+    return AbstractContractTaglet.TAGLET_INVAR;
   }
 
-  /**
-   * @see       AbstractStandaloneTaglet#getHeader()
-   */
+
   public String getHeader() {
     return "Type Invariants:"; //$NON-NLS-1$
   }
 
-  /**
-   * @see       AbstractTaglet#AbstractTaglet()
-   */
+
   public InvarTaglet() {
     $inField       = false;
     $inConstructor = false;

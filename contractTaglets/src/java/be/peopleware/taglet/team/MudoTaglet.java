@@ -1,9 +1,6 @@
 package be.peopleware.taglet.team;
 
 
-import be.peopleware.taglet.AbstractStandaloneTaglet;
-
-
 /**
  * Taglet-class for custom taglet <code>@mudo</code>
  *
@@ -14,23 +11,17 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
  * @author    Peopleware n.v.
  */
 public class MudoTaglet extends AbstractTeamTaglet {
-  /**
-   * @see       AbstractTaglet#getName()
-   */
+
   public String getName() {
     return "mudo"; //$NON-NLS-1$
   }
 
-  /**
-   * @see       AbstractStandaloneTaglet#getHeader()
-   */
+
   public String getHeader() {
     return "Must do:"; //$NON-NLS-1$
   }
 
-  /**
-   * @see       AbstractTaglet#AbstractTaglet()
-   */
+
   public MudoTaglet() {
     $inField       = true;
     $inConstructor = true;

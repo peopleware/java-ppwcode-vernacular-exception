@@ -1,9 +1,6 @@
 package be.peopleware.taglet.contract;
 
 
-import be.peopleware.taglet.AbstractStandaloneTaglet;
-
-
 /**
  * Taglet-class for custom taglet <code>@pre</code>
  *
@@ -14,23 +11,15 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
  * @author    Peopleware n.v.
  */
 public class PreTaglet extends AbstractContractTaglet {
-  /**
-   * @see       AbstractTaglet#getName()
-   */
+
   public String getName() {
-    return "pre"; //$NON-NLS-1$
+    return AbstractContractTaglet.TAGLET_PRE;
   }
 
-  /**
-   * @see       AbstractStandaloneTaglet#getHeader()
-   */
   public String getHeader() {
     return "Pre Conditions:"; //$NON-NLS-1$
   }
 
-  /**
-   * @see       AbstractTaglet#AbstractTaglet()
-   */
   public PreTaglet() {
     $inField       = false;
     $inConstructor = true;

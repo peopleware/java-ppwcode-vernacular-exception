@@ -1,9 +1,6 @@
 package be.peopleware.taglet.team;
 
 
-import be.peopleware.taglet.AbstractStandaloneTaglet;
-
-
 /**
  * Taglet-class for custom taglet <code>@question</code>
  *
@@ -14,23 +11,17 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
  * @author    Peopleware n.v.
  */
 public class QuestionTaglet extends AbstractTeamTaglet {
-  /**
-   * @see       AbstractTaglet#getName()
-   */
+
   public String getName() {
     return "question"; //$NON-NLS-1$
   }
 
-  /**
-   * @see       AbstractStandaloneTaglet#getHeader()
-   */
+
   public String getHeader() {
     return "Question:"; //$NON-NLS-1$
   }
 
-  /**
-   * @see       AbstractTaglet#AbstractTaglet()
-   */
+
   public QuestionTaglet() {
     $inField       = true;
     $inConstructor = true;
