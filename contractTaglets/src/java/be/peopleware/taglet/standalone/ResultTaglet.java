@@ -2,7 +2,7 @@ package be.peopleware.taglet.standalone;
 
 
 import java.util.Map;
-import be.peopleware.taglet.StandaloneTagletRegistrar;
+import be.peopleware.taglet.AbstractStandaloneTaglet;
 import be.peopleware.taglet.TagletRegistrar;
 
 
@@ -12,23 +12,23 @@ import be.peopleware.taglet.TagletRegistrar;
  * @author    Abdul Shoudouev
  * @author    Peopleware n.v.
  */
-public class ResultTaglet extends StandaloneTagletRegistrar {
+public class ResultTaglet extends AbstractStandaloneTaglet {
   /**
-   * name of the taglet.
+   * @see       TagletRegistrar#getName()
    */
   public String getName() {
     return "result"; //$NON-NLS-1$
   }
 
   /**
-   * header of the taglet - used in generated documentation.
+   * @see       AbstractStandaloneTaglet#getHeader()
    */
   public String getHeader() {
     return "Result:"; //$NON-NLS-1$
   }
 
   /**
-   * Register this taglet
+   * Register this taglet.
    *
    * @param     tagletMap
    * 						the map to register this taglet to.
@@ -37,13 +37,16 @@ public class ResultTaglet extends StandaloneTagletRegistrar {
     TagletRegistrar.registerTaglet(tagletMap, new ResultTaglet());
   }
 
+  /**
+   * @see       TagletRegistrar#setTagletScopes()
+   */
   protected void setTagletScopes() {
-     bInField 			= false;
-     bInConstructor = false;
-     bInMethod 			= true;
-     bInOverview 		= false;
-     bInPackage 		= false;
-     bInType 				= false;
+    inField       = false;
+    inConstructor = false;
+    inMethod      = true;
+    inOverview    = false;
+    inPackage     = false;
+    inType        = false;
   }
 
 }

@@ -40,49 +40,49 @@ public abstract class TagletRegistrar implements Taglet {
    * </strong>. <br />
    * Default value is false.
    */
-  protected boolean bInField = false;
+  protected boolean inField = false;
 
   /**
    * Used to determine if this taglet can be used in <strong>constructor
    * documentation </strong>. <br />
    * Default value is false.
    */
-  protected boolean bInConstructor = false;
+  protected boolean inConstructor = false;
 
   /**
    * Used to determine if this taglet can be used in <strong>method
    * documentation </strong>. <br />
    * Default value is false.
    */
-  protected boolean bInMethod = false;
+  protected boolean inMethod = false;
 
   /**
    * Used to determine if this taglet can be used in <strong>overview
    * documentation </strong>. <br />
    * Default value is false.
    */
-  protected boolean bInOverview = false;
+  protected boolean inOverview = false;
 
   /**
    * Used to determine if this taglet can be used in <strong>package
    * documentation </strong>. <br />
    * Default value is false.
    */
-  protected boolean bInPackage = false;
+  protected boolean inPackage = false;
 
   /**
    * Used to determine if this taglet can be used in <strong>type documentation
    * </strong>. <br />
    * Default value is false.
    */
-  protected boolean bInType = false;
+  protected boolean inType = false;
 
   /**
    * Used to determine if this taglet is an <strong>inline taglet </strong>.
    * <br />
    * Default value is false.
    */
-  protected boolean bInLine = false;
+  protected boolean inLine = false;
 
   /**
    * Calls astract method <code>setTagScopes()</code> so that we are sure that
@@ -97,16 +97,15 @@ public abstract class TagletRegistrar implements Taglet {
    * variable to true enables usage in corresponding documentation scope. For
    * example, taglet <code>todo</code> would have following settings: <br />
    * <code>
-   * <br />bInField 			= true;
-   * <br />bInConstructor = true;
-   * <br />bInMethod 			= true;
-   * <br />bInOverview 		= true;
-   * <br />bInPackage 		= true;
-   * <br />bInType 				= true;
-   * </code><br />
-   * <br />
-   * By default, all variables are set to false.
+   * <br />inField 			= true;
+   * <br />inConstructor = true;
+   * <br />inMethod 			= true;
+   * <br />inOverview 		= true;
+   * <br />inPackage 		= true;
+   * <br />inType 				= true;
+   * </code><br /><br />
    *
+   * By default, all variables are set to false.
    */
   protected abstract void setTagletScopes();
 
@@ -124,80 +123,80 @@ public abstract class TagletRegistrar implements Taglet {
   /**
    * Return the name of this custom taglet.
    *
-   * @result    != null && result.getLength() > 0
+   * @result    getName() != null && getName().getLength() > 0
    */
   public abstract String getName();
 
   /**
    * Used to determine if this taglet can be used in <strong>field documentation
    * </strong>. If you wish to override default behavior, which always returns
-   * false, set the value of variable {@link #bInField}to true in method
+   * false, set the value of variable {@link #inField}to true in method
    * {@link #setTagletScopes()}
    *
-   * @return    value of {@link #bInField}
+   * @return    value of {@link #inField}
    */
   public boolean inField() {
-    return bInField;
+    return inField;
   }
 
   /**
    * Used to determine if this taglet can be used in <strong>constructor
    * documentation </strong>. If you wish to override default behavior, which
-   * always returns false, set the value of variable {@link #bInConstructor}to
+   * always returns false, set the value of variable {@link #inConstructor}to
    * true in method {@link #setTagletScopes()}
    *
-   * @return    value of {@link #bInConstructor}
+   * @return    value of {@link #inConstructor}
    */
   public boolean inConstructor() {
-    return bInConstructor;
+    return inConstructor;
   }
 
   /**
    * Used to determine if this taglet can be used in <strong>method
    * documentation </strong>. If you wish to override default behavior, which
-   * always returns false, set the value of variable {@link #bInMethod}to true
+   * always returns false, set the value of variable {@link #inMethod}to true
    * in method {@link #setTagletScopes()}
    *
-   * @return    value of {@link #bInMethod}
+   * @return    value of {@link #inMethod}
    */
   public boolean inMethod() {
-    return bInMethod;
+    return inMethod;
   }
 
   /**
    * Used to determine if this taglet can be used in <strong>overview
    * documentation </strong>. If you wish to override default behavior, which
-   * always returns false, set the value of variable {@link #bInOverview}to
+   * always returns false, set the value of variable {@link #inOverview}to
    * true in method {@link #setTagletScopes()}
    *
-   * @return    value of {@link #bInOverview}
+   * @return    value of {@link #inOverview}
    */
   public boolean inOverview() {
-    return bInOverview;
+    return inOverview;
   }
 
   /**
    * Used to determine if this taglet can be used in <strong>package
    * documentation </strong>. If you wish to override default behavior, which
-   * always returns false, set the value of variable {@link #bInPackage}to true
+   * always returns false, set the value of variable {@link #inPackage}to true
    * in method {@link #setTagletScopes()}
    *
-   * @return    value of {@link #bInPackage}
+   * @return    value of {@link #inPackage}
    */
   public boolean inPackage() {
-    return bInPackage;
+    return inPackage;
   }
 
   /**
    * Used to determine if this taglet can be used in <strong>type documentation
    * </strong>. If you wish to override default behavior, which always returns
-   * false, set the value of variable {@link #bInType}to true in method
+   * false, set the value of variable {@link #inType}to true in method
    * {@link #setTagletScopes()}
    *
-   * @return    value of {@link #bInType}
+   * @return    value of {@link #inType}
    */
   public boolean inType() {
-    return bInType;
+    return inType;
   }
 
   /**
@@ -230,7 +229,8 @@ public abstract class TagletRegistrar implements Taglet {
    *            the <code>com.sun.javadoc.Tag</code> representation of this
    *            custom taglet.
    *
-   * @result    null if taglet == null; valid html formatting code otherwise
+   * @result    (taglet != null) ? valid html formatting code
+   *                             : null
    */
   public abstract String toString(Tag taglet);
 
@@ -241,7 +241,8 @@ public abstract class TagletRegistrar implements Taglet {
    * @param     taglets
    *            the array of <code>com.sun.javadoc.Tag</code> s representing of
    *            this custom taglet.
-   * @result    null if taglets == null; valid html formatting code otherwise
+   * @result    (taglets != null) ? valid html formatting code
+   *                              : null
    */
   public abstract String toString(Tag[] taglets);
 

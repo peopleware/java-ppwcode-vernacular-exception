@@ -5,8 +5,7 @@ import com.sun.javadoc.Tag;
 
 
 /**
- * This is a Test
- * @todo (dvankeer): Complete javadoc
+ * @todo (JAVADOC): Write class description
  *
  * @invar     getHeader() != null && getHeader().length() > 0
  *
@@ -15,11 +14,11 @@ import com.sun.javadoc.Tag;
  * @author    Jan Dockx
  * @author    Peopleware n.v.
  */
-public abstract class StandaloneTagletRegistrar extends TagletRegistrar {
+public abstract class AbstractStandaloneTaglet extends TagletRegistrar {
   /**
-   * @todo (dvankeer)
+   * Return the header of this custom taglet.
    * 
-   * @return
+   * @return    getHeader() != null && getHeader().length() > 0 
    */
   public abstract String getHeader();
 
@@ -34,27 +33,14 @@ public abstract class StandaloneTagletRegistrar extends TagletRegistrar {
   }
 
   /**
-   * Given the <code>com.sun.javadoc.Tag</code> representation of this custom
-   * taglet, return its string representation.
-   *
-   * @param     taglet
-   *            the <code>com.sun.javadoc.Tag</code> representation of this
-   *            custom taglet.
-   *
-   * @result    null if taglet == null; valid html formatting code otherwise
+   * @see       TagletRegistrar#toString(Tag)
    */
   public String toString(Tag taglet) {
     return toString(new Tag[] {taglet});
   }
 
   /**
-   * Given an array of <code>com.sun.javadoc.Tag</code> s representing this
-   * custom taglet, return its string representation.
-   *
-   * @param     taglets
-   *            the array of <code>com.sun.javadoc.Tag</code> s representing of
-   *            this custom taglet.
-   * @result    null if taglets == null; valid html formatting code otherwise
+   * @see       TagletRegistrar#toString(Tag[])
    */
   public String toString(Tag[] taglets) {
     if (taglets.length == 0) {

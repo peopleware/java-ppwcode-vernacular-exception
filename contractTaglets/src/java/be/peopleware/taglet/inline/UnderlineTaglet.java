@@ -3,7 +3,7 @@ package be.peopleware.taglet.inline;
 
 import java.util.Map;
 import com.sun.javadoc.Tag;
-import be.peopleware.taglet.InlineTagletRegistrar;
+import be.peopleware.taglet.AbstractInlineTaglet;
 import be.peopleware.taglet.TagletRegistrar;
 
 
@@ -13,16 +13,16 @@ import be.peopleware.taglet.TagletRegistrar;
  * @author    Abdul Shoudouev
  * @author    Peopleware n.v.
  */
-public class UnderlineTaglet extends InlineTagletRegistrar {
+public class UnderlineTaglet extends AbstractInlineTaglet {
   /**
-   * name of the taglet.
+   * @see       TagletRegistrar#getName()
    */
   public String getName() {
     return "underline"; //$NON-NLS-1$
   }
 
   /**
-   * Register this taglet
+   * Register this taglet.
    *
    * @param     tagletMap
    *            the map to register this taglet to.
@@ -31,20 +31,21 @@ public class UnderlineTaglet extends InlineTagletRegistrar {
     TagletRegistrar.registerTaglet(tagletMap, new UnderlineTaglet());
   }
 
+  /**
+   * @see       TagletRegistrar#setTagletScopes()
+   */
   protected void setTagletScopes() {
-     bInField       = true;
-     bInConstructor = true;
-     bInMethod      = true;
-     bInOverview    = true;
-     bInPackage     = true;
-     bInType        = true;
-     bInLine        = true;
+     inField       = true;
+     inConstructor = true;
+     inMethod      = true;
+     inOverview    = true;
+     inPackage     = true;
+     inType        = true;
+     inLine        = true;
   }
 
   /**
-   * Given the <code>Tag</code> representation of this custom
-   * tag, return its string representation.
-   * @param tag he <code>Tag</code> representation of this custom tag.
+   * @todo (dvankeer0: This needs to be generalized.
    */
   public String toString(Tag tag) {
       return "<u>" + tag.text() + "</u>";  //$NON-NLS-1$//$NON-NLS-2$
