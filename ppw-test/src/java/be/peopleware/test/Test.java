@@ -206,7 +206,7 @@ public abstract class Test extends CaseProvider {
           printThrowable(next, out);
         }
         else {
-          assert false : "representation invariant of $failures";
+          assert false : "representation invariant of $failures"; //$NON-NLS-1$
         }
         out.println("----"); //$NON-NLS-1$
       }
