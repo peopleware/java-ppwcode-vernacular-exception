@@ -109,9 +109,7 @@ public class CommitMailNotification
           addMailContent(message, (UpdatedEvent)pbEvent);
         }
         else if (pbEvent instanceof DeletedEvent) {
-          // Deletion mail deactivated because only administrators can delete.
-          // Notification is not needed here.
-          //addMailContent(message, (DeletedEvent)pbEvent);
+          addMailContent(message, (DeletedEvent)pbEvent);
         }
         else {
           LOG.error("Incorrect CommittedEvent recieved."); //$NON-NLS-1$
@@ -153,7 +151,8 @@ public class CommitMailNotification
   private void addMailContent(final MimeMessage message,
                               final CreatedEvent pbEvent)
       throws MessagingException {
-    message.setSubject(getSubjectPrefix() + $properties.getProperty("mail.subject.new")); //$NON-NLS-1$
+    message.setSubject(getSubjectPrefix()
+                       + $properties.getProperty("mail.subject.new")); //$NON-NLS-1$
     message.setText($properties.getProperty("mail.content.new.intro")//$NON-NLS-1$
                     + pbEvent.getBean().toString()); //$NON-NLS-1$
   }
@@ -161,12 +160,22 @@ public class CommitMailNotification
   private void addMailContent(final MimeMessage message,
                               final UpdatedEvent pbEvent)
       throws MessagingException {
-    message.setSubject($properties.getProperty("mail.subject.update")); //$NON-NLS-1$
+    message.setSubject(getSubjectPrefix()
+                       + $properties.getProperty("mail.subject.update")); //$NON-NLS-1$
     message.setText($properties.getProperty("mail.content.update.intro") //$NON-NLS-1$
                     + $properties.getProperty("mail.content.update.oldPrefix") //$NON-NLS-1$
                     + pbEvent.getOldBeanString()
                     + $properties.getProperty("mail.content.update.newPrefix") //$NON-NLS-1$
                     + pbEvent.getNewBean().toString());
+  }
+  
+  private void addMailContent(final MimeMessage message,
+                              final DeletedEvent pbEvent)
+      throws MessagingException {
+    message.setSubject(getSubjectPrefix()
+                       + $properties.getProperty("mail.subject.delete")); //$NON-NLS-1$
+    message.setText($properties.getProperty("mail.content.delete.intro") //$NON-NLS-1$
+                    + pbEvent.getBean().toString());
   }
 
   private void addRecepients(final MimeMessage message,

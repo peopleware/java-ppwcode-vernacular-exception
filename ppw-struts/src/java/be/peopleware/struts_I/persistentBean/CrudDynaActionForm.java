@@ -504,7 +504,7 @@ public abstract class CrudDynaActionForm extends DynaActionForm {
    */
   static final String ID_PROPERTY_NAME = "id"; //$NON-NLS-1$
 
-  private static final String EMPTY = ""; //$NON-NLS-1$
+  protected static final String EMPTY = ""; //$NON-NLS-1$
 
   /**
    * Set the {@link PersistentBean#getId()} of the

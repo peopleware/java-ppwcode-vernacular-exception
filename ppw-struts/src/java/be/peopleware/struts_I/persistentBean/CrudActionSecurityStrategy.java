@@ -50,32 +50,32 @@ public class CrudActionSecurityStrategy {
   }
   
   public boolean hasEditRights(final HttpServletRequest request,
-                              final ActionMapping actionMapping,
-                              final ActionForm actionForm) {
+                               final ActionMapping actionMapping,
+                               final ActionForm actionForm) {
     return true;
   }
   
   public boolean hasUpdateRights(final HttpServletRequest request,
-                                final ActionMapping actionMapping,
-                                final ActionForm actionForm) {
+                                 final ActionMapping actionMapping,
+                                 final ActionForm actionForm) {
     return true;
   }
   
   public boolean hasNewRights(final HttpServletRequest request,
-                             final ActionMapping actionMapping,
-                             final ActionForm actionForm) {
+                              final ActionMapping actionMapping,
+                              final ActionForm actionForm) {
     return true;
    }
   
   public boolean hasCreateRights(final HttpServletRequest request,
-                                final ActionMapping actionMapping,
-                                final ActionForm actionForm) {
+                                 final ActionMapping actionMapping,
+                                 final ActionForm actionForm) {
     return true;
   }
   
   public boolean hasDeleteRights(final HttpServletRequest request,
-                                final ActionMapping actionMapping,
-                                final ActionForm actionForm) {
+                                 final ActionMapping actionMapping,
+                                 final ActionForm actionForm) {
     return true;
   }
 
