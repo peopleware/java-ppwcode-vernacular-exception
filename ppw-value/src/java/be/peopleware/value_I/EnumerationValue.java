@@ -84,13 +84,14 @@ import java.util.Map;
  *    * The instance representing <var>default value</var>.
  *    &#x2A;/
  *   public static final <var>EnumerationValueName</var> <var>VALUE_DEFAULT</var>
- *       = new <var>EnumerationValueName</var>(<var>VALUE_1</var>_STRING);
+ *       = new <var>EnumerationValueName</var>(<var>VALUE_DEFAULT</var>_STRING);
  *
  *   public static final java.util.Map VALUES = generateValues();
  *
  *   private static java.util.Map generateValues() {
  *     java.util.Map result = new java.util.HashMap();
  *     result.put(<var>VALUE_1</var>.toString(), <var>VALUE_1</var>);
+ *     result.put(<var>VALUE_DEFAULT</var>.toString(), <var>VALUE_DEFAULT</var>);
  *     return java.util.Collections.unmodifiableMap(result);
  *   }
  *
