@@ -17,6 +17,7 @@
     <report>maven-license-plugin</report>
     <report>maven-tasklist-plugin</report>
     <report>maven-changelog-plugin</report>
+    <report>maven-javadoc-plugin</report>
   </reports>
   <inceptionYear>2004</inceptionYear>
   <shortDescription>Support for unit testing.</shortDescription>
