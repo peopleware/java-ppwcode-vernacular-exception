@@ -1,7 +1,7 @@
 package be.peopleware.value_I;
 
 
-import be.peopleware.bean_III.Delegate;
+import be.peopleware.bean_IV.Delegate;
 
 
 /**
