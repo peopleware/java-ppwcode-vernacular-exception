@@ -45,10 +45,8 @@
     <dependency>
       <groupId>toryt</groupId>
       <artifactId>toryt</artifactId>
-      <version>SNAPSHOT</version>
-      <properties>
-        <eclipse.dependency>true</eclipse.dependency>
-      </properties>
+      <version>1.0.0-1.0</version>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>hibernate</groupId>
