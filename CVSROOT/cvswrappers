@@ -21,3 +21,67 @@
 #  and value is a single-quote delimited value.
 # For example:
 #*.gif -k 'b'
+
+
+# Java
+*.jar -k 'b'
+*.class -k 'b'
+
+# Standard compression formats
+*.zip -k 'b'
+*.ZIP -k 'b'
+*.tar -k 'b'
+*.gz -k 'b'
+*.Z -k 'b'
+*.bz2 -k 'b'
+*.sit -k 'b'
+*.SIT -k 'b'
+
+# StarOffice files
+*.sda -k 'b'
+*.SDA -k 'b'
+
+# Standard image formats
+*.gif -k 'b'
+*.GIF -k 'b'
+*.jpeg -k 'b'
+*.JPEG -k 'b'
+*.jpg -k 'b'
+*.JPG -k 'b'
+*.png -k 'b'
+*.PNG -k 'b'
+
+#Document formats
+*.pdf -k 'b'
+*.PDF -k 'b'
+
+# Standard movie formats
+*.mov -k 'b'
+*.MOV -k 'b'
+*.mpeg -k 'b'
+*.MPEG -k 'b'
+*.mpg -k 'b'
+*.MPG -k 'b'
+*.mp3 -k 'b'
+*.MP3 -k 'b'
+*.mpeg4 -k 'b'
+
+# for Together project files
+*.wmf -k 'b'
+
+# dia files are compressed
+*.dia -k 'b'
+
+# Metrowerks Codewarrior
+*.mcp -k 'b'
+
+# Deneba Canvas
+*.CNV -k 'b'
+*.cnv -k 'b'
+
+# Microsoft Office
+*.doc -k 'b'
+*.dot -k 'b'
+*.ppt -k 'b'
+*.pot -k 'b'
+*.xls -k 'b'
