@@ -576,16 +576,15 @@ public abstract class DetailAction extends CrudAction {
     CompoundPropertyException cpExcStore = null;
     try {
       // @todo (dvankeer): Why re-use the data?
-      //      try {
-      //        form.formToBean(asyncCRUD);
-      //           get the data that is already in this request,
-      //           * overwriting programmatic defaults
-      //
-      //      }
-      //      catch (CompoundPropertyException cpExc) {
-      //        cpExcStore = cpExc;
-      //        // remember this exception
-      //      }
+      try {
+        form.formToBean(asyncCRUD);
+           /* get the data that is already in this request,
+              overwriting programmatic defaults */
+      }
+      catch (CompoundPropertyException cpExc) {
+        cpExcStore = cpExc;
+        // remember this exception
+      }
       // we are not doing this in a transaction, deliberately
       // @todo (jand): is this a good idea?
       form.beanToForm(asyncCRUD);
