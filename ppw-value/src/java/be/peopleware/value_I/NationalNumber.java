@@ -156,35 +156,35 @@ public final class NationalNumber extends ImmutableValue {
   private void initialize(String leftNumber, String middleNumber, String rightNumber)
      throws PropertyException {
     CompoundPropertyException cpe =
-      new CompoundPropertyException(null, null, null, null);
+      new CompoundPropertyException(this, null, null, null);
     if (leftNumber == null) {
       cpe.addElementException(
-          new PropertyException(null, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
+          new PropertyException(this, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
       );
     }
     if (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber)) {
       cpe.addElementException(
-          new PropertyException(null, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(this, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (middleNumber == null) {
       cpe.addElementException(
-          new PropertyException(null, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
+          new PropertyException(this, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
       );
     }
     if (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber)) {
       cpe.addElementException(
-          new PropertyException(null, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(this, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (rightNumber == null) {
       cpe.addElementException(
-          new PropertyException(null, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
+          new PropertyException(this, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
       );
     }
     if (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber)) {
       cpe.addElementException(
-          new PropertyException(null, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(this, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (leftNumber != null &&
@@ -193,7 +193,7 @@ public final class NationalNumber extends ImmutableValue {
         !checkNationalNumber(leftNumber, middleNumber, rightNumber)
     ) {
       cpe.addElementException(
-          new PropertyException(null, null, "INVALID_CHECK", null)
+          new PropertyException(this, null, "INVALID_CHECK", null)
       );
     }
     cpe.throwIfNotEmpty();
