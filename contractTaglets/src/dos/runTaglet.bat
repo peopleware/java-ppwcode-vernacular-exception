@@ -1,3 +1,32 @@
-rem javadoc -taglet be.peopleware.taglet.standalone.TodoTaglet -taglet be.peopleware.taglet.standalone.MudoTaglet -taglet be.peopleware.taglet.standalone.QuestionTaglet -taglet be.peopleware.taglet.standalone.IdeaTaglet -taglet be.peopleware.taglet.standalone.ResultTaglet -taglet be.peopleware.taglet.standalone.PreTaglet -taglet be.peopleware.taglet.standalone.PostTaglet -taglet be.peopleware.taglet.standalone.InvarTaglet -taglet be.peopleware.taglet.inline.UnderlineTaglet -tagletpath ..\..\target\classes -d ..\..\docs -classpath "c:\j2sdk1.4.2_03\lib\tools.jar;..\..\target\classes;." be.peopleware.taglet be.peopleware.taglet.standalone be.peopleware.taglet.inline
+@echo off
 
-javadoc -source 1.4 -tagletpath ..\..\target\classes -taglet be.peopleware.taglet.contract.Registrar -taglet be.peopleware.taglet.team.Registrar -d ..\..\docs -classpath ".;..\..\target\classes;..\..\lib\tools.jar;;..\..\lib\commons-logging.jar;..\..\lib\commons-jexl-1.0.jar" -sourcepath ..\java -subpackages be.peopleware.taglet
+rem ---------------------
+rem | Setting all paths |
+rem ---------------------
+
+set SourcePath=..\java
+
+set JavadocPath=..\..\docs
+
+set TagletPath=..\..\target\classes
+set ToolsPath=..\..\lib\tools.jar
+set JexlPath=..\..\lib\commons-jexl-1.0.jar
+set LoggingPath=..\..\lib\commons-logging.jar
+
+set ClassPath=".;%TagletPath%;%ToolsPath%;%JexlPath%;%LoggingPath%"
+
+
+
+rem ---------------
+rem | Debug stuff |
+rem ---------------
+
+rem echo ClassPath: %ClassPath%
+
+
+
+rem -------------------
+rem | Generate javadoc |
+rem --------------------
+
+javadoc -source 1.4 -tagletpath %TagletPath% -taglet be.peopleware.taglet.contract.Registrar -taglet be.peopleware.taglet.team.Registrar -d %JavadocPath% -classpath %ClassPath% -sourcepath %SourcePath% -subpackages be.peopleware.taglet
