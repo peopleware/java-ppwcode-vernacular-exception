@@ -73,6 +73,7 @@
       <property name="severity" value="warning"/>
     </module>
     <module name="RedundantModifier">
+      <property name="tokens" value="METHOD_DEF"/>
       <property name="severity" value="warning"/>
     </module>
     <!-- Unused -->
