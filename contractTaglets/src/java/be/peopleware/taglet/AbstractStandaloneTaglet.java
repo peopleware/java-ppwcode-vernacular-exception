@@ -54,7 +54,7 @@ public abstract class AbstractStandaloneTaglet extends AbstractTaglet {
  * @protected
  * <p>This is a hook method that writes a header, returned by
  *   {@link #getHeader()}, and then the contents of the tags,
- *   processed by {@link #parse(String)}.</p>
+ *   processed by /@link #parse(String)/.</p>
  */
   public String toString(Tag[] taglets) {
     if (taglets.length == 0) {

@@ -4,14 +4,12 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.jexl.Expression;
-import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.parser.Parser;
 import org.apache.commons.jexl.parser.SimpleNode;
 
-import com.sun.javadoc.Tag;
-
 import be.peopleware.taglet.AbstractStandaloneTaglet;
+
+import com.sun.javadoc.Tag;
 
 /**
  * Abstract superclass for common code in contract taglets. Fill in the list of
@@ -168,90 +166,90 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
 //        return result;
     }
 
-    /**
-     * Prints error messages to error console.
-     * 
-     * @param message
-     *            error message
-     */
-    private void signalParseError(Tag tag, String message) {
-        System.err.println(tag.position());
-        System.err.println(message);
-    }
+//    /**
+//     * Prints error messages to error console.
+//     * 
+//     * @param message
+//     *            error message
+//     */
+//    private void signalParseError(Tag tag, String message) {
+//        System.err.println(tag.position());
+//        System.err.println(message);
+//    }
+//
+//    /**
+//     * Makes inline html formatting of the keyword, namely makes it bold and
+//     * colours background.
+//     * 
+//     * @param keyword
+//     * @return formatted keyword
+//     */
+//    private String makeupKeyword(String keyword) {
+//        StringBuffer result = new StringBuffer();
+//        result.append("<span style='font: bold; background-color:"); //$NON-NLS-1$
+//        result.append(getKeywordColor(keyword)).append("'>"); //$NON-NLS-1$
+//        result.append(keyword);
+//        result.append("</span>"); //$NON-NLS-1$
+//        return result.toString();
+//    }
 
-    /**
-     * Makes inline html formatting of the keyword, namely makes it bold and
-     * colours background.
-     * 
-     * @param keyword
-     * @return formatted keyword
-     */
-    private String makeupKeyword(String keyword) {
-        StringBuffer result = new StringBuffer();
-        result.append("<span style='font: bold; background-color:"); //$NON-NLS-1$
-        result.append(getKeywordColor(keyword)).append("'>"); //$NON-NLS-1$
-        result.append(keyword);
-        result.append("</span>"); //$NON-NLS-1$
-        return result.toString();
-    }
+//    /**
+//     * Formats all occurrences of keyword in expr.
+//     */
+//    private String processKeyword(Tag tag, String origExpr, String keyword) {
+//
+//        if (origExpr == null) {
+//            return null;
+//        }
+//        if (keyword == null) {
+//            return origExpr;
+//        }
+//
+//          	//Add leading and trailing spaces. We can now safely
+//          	// retrieve chars from the left and from the right side 
+//        		// 			of the keyword.
+//          	String expr = " " + origExpr + " "; //$NON-NLS-1$ //$NON-NLS-2$
+//          	StringBuffer result = new StringBuffer();
+//          	int notParsedFrom = 0;
+//        		int keywordBegin = expr.indexOf(keyword);
+//        		int keywordEnd = keywordBegin + keyword.length();
+//        		while (keywordBegin >= 0) {
+//        			//if the chars at the left and at the right are not
+//        			// part of the identifier, then the keyword is found.
+//        			char charLeft = expr.charAt(keywordBegin - 1);
+//        			char charRight = expr.charAt(keywordEnd);
+//        			if (! Character.isLetterOrDigit(charLeft)
+//        							&& ! Character.isLetterOrDigit(charRight)) {
+//        				// the keyword is found
+//        				result.append(expr.substring(notParsedFrom, keywordBegin));
+//        
+//        				if (! canContainKeyword(keyword)) {
+//        					signalParseError(tag, getName()
+//        															+ " taglet can not contain " //$NON-NLS-1$
+//        															+ keyword + " keyword"); //$NON-NLS-1$
+//        				}
+//        				
+//        	  		result.append(makeupKeyword(keyword));
+//        	  		
+//        				notParsedFrom = keywordEnd;
+//        			}
+//        			keywordBegin = expr.indexOf(keyword, keywordEnd);
+//        			keywordEnd = keywordBegin + keyword.length();
+//        		}
+//        		result.append(expr.substring(notParsedFrom, expr.length()));
+//        		
+//        		//strip out leading and trailing spaces, 
+//        		//		added in the begin of this method.
+//        		result.deleteCharAt(0);
+//        		result.deleteCharAt(result.length() - 1);
+//        
+//          	return result.toString();
+//    }
 
-    /**
-     * Formats all occurrences of keyword in expr.
-     */
-    private String processKeyword(Tag tag, String origExpr, String keyword) {
-
-        if (origExpr == null) {
-            return null;
-        }
-        if (keyword == null) {
-            return origExpr;
-        }
-
-          	//Add leading and trailing spaces. We can now safely
-          	// retrieve chars from the left and from the right side 
-        		// 			of the keyword.
-          	String expr = " " + origExpr + " "; //$NON-NLS-1$ //$NON-NLS-2$
-          	StringBuffer result = new StringBuffer();
-          	int notParsedFrom = 0;
-        		int keywordBegin = expr.indexOf(keyword);
-        		int keywordEnd = keywordBegin + keyword.length();
-        		while (keywordBegin >= 0) {
-        			//if the chars at the left and at the right are not
-        			// part of the identifier, then the keyword is found.
-        			char charLeft = expr.charAt(keywordBegin - 1);
-        			char charRight = expr.charAt(keywordEnd);
-        			if (! Character.isLetterOrDigit(charLeft)
-        							&& ! Character.isLetterOrDigit(charRight)) {
-        				// the keyword is found
-        				result.append(expr.substring(notParsedFrom, keywordBegin));
-        
-        				if (! canContainKeyword(keyword)) {
-        					signalParseError(tag, getName()
-        															+ " taglet can not contain " //$NON-NLS-1$
-        															+ keyword + " keyword"); //$NON-NLS-1$
-        				}
-        				
-        	  		result.append(makeupKeyword(keyword));
-        	  		
-        				notParsedFrom = keywordEnd;
-        			}
-        			keywordBegin = expr.indexOf(keyword, keywordEnd);
-        			keywordEnd = keywordBegin + keyword.length();
-        		}
-        		result.append(expr.substring(notParsedFrom, expr.length()));
-        		
-        		//strip out leading and trailing spaces, 
-        		//		added in the begin of this method.
-        		result.deleteCharAt(0);
-        		result.deleteCharAt(result.length() - 1);
-        
-          	return result.toString();
-    }
-
-    private String getKeywordColor(String keyword) {
-        //make them all yellow for the time being
-        return "yellow"; //$NON-NLS-1$
-    }
+//    private String getKeywordColor(String keyword) {
+//        //make them all yellow for the time being
+//        return "yellow"; //$NON-NLS-1$
+//    }
 
     /**
      * Checks if the text of this taglet can contanain given keyword.

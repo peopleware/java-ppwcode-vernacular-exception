@@ -37,7 +37,7 @@ public class BasicTaglet extends AbstractStandaloneTaglet {
    * @return EMPTY;
    * 
    * @mudo this is a small problem: here we do not have a contents of the tag;
-   *       but the {@link toString(Tag[])} method calling this has already
+   *       but the {@link #toString(Tag[])} method calling this has already
    *       started a table and a row and a cell, which will remain empty,
    *       but will create a lot of whitespace in the resulting HTML page;
    *       further, there can only be 1 @basic tag in a documentation block 

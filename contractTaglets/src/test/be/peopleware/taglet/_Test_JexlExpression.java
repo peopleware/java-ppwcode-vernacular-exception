@@ -306,7 +306,7 @@ public class _Test_JexlExpression {
       String expr = "";
       try {
         expr = (String)iter.next();
-        sn = (SimpleNode)parser.parse(new StringReader(expr));
+        sn = parser.parse(new StringReader(expr));
         StringBuffer htmlResult = new StringBuffer("");
         
         HtmlGenerator htmlGenerator = new HtmlGenerator();

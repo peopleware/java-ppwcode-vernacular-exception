@@ -6,13 +6,7 @@ package be.peopleware.taglet;
 
 import java.io.StringReader;
 
-import org.apache.commons.jexl.Expression;
-import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.parser.Parser;
-import org.apache.commons.jexl.parser.SimpleNode;
-import org.apache.commons.jexl.parser.Token;
-
-import be.peopleware.taglet.contract.HtmlGenerator;
 
 /**
  * @author ashoudou

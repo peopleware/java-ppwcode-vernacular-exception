@@ -9,5 +9,8 @@ package be.peopleware.taglet;
  * @author    Peopleware n.v.
  */
 public class _Test_TagletRegistrar {
+  
+  // MUDO
+  
 }
 
