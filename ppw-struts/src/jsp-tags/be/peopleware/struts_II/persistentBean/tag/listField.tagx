@@ -11,6 +11,9 @@
   <jsp:directive.attribute name="detailDisplayAction"
                            type="java.lang.String"
                            required="false" />
+  <jsp:directive.attribute name="dynamicLinking"
+                           type="java.lang.Boolean"
+                           required="false" />
   <jsp:directive.attribute name="property"
                            type="java.lang.String"
                            required="true" />
@@ -76,6 +79,14 @@
             <c:when test="${not empty detailDisplayAction}">
               <span class="display">
                 <a href="${detailDisplayAction}?id=${element.id}">${element[displaySelector]}</a>
+              </span>
+            </c:when>
+            <c:when test="${dynamicLinking}">
+              <c:set var="className" value="${fn:split(element.class, '.')}" />
+              <c:set var="index" value="${fn:length(className)}" />
+              <c:url var="url" value="/${className[index-1]}Detail.do?id=${element.id}" />
+              <span class="display">
+                <a href="${url}">${element[displaySelector]}</a>
               </span>
             </c:when>
             <c:otherwise>

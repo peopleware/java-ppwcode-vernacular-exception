@@ -11,6 +11,7 @@
       	- Tag files still contained old class dependencies, replaced with new ones.
       	- Cancel new now send a redirect instead of internal redirect.
       	- Forms now contain a new functionallity isSubmitable() for blocking submit of forms when invars cannot be obtained.
+      	- Dynamic link functionallity for ppw-struts:listField
       </action>              
     </release>
 
