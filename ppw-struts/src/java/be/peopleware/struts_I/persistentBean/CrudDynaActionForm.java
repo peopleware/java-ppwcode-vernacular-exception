@@ -233,35 +233,92 @@ public abstract class CrudDynaActionForm extends DynaActionForm {
 
   /*</property>*/
 
-  /*<property name="viewModeEditable">*/
+
+
+  /*<property name="editable">*/
   //------------------------------------------------------------------
 
   /**
-   * Mark the form as editable.
+   * Can we edit the object represented by this form?
    *
    * @basic
    * @init      false;
    */
-  public final boolean isViewModeEditable() {
-    return $viewModeEditable;
+  public final boolean isEditable() {
+    return $editable;
   }
 
   /**
-   * @param     viewModeEditable
-   *            Marks the persistent bean as a object that can be set in
-   *            edit mode.
-   * @post      new.isViewModeEditable() == viewModeEditable;
+   * @param     editable
+   *            Marks the persistent bean as a object that can be edited.
+   * @post      new.isEditable() == editable;
    */
-  final void setViewModeEditable(final boolean viewModeEditable) {
-    $viewModeEditable = viewModeEditable;
+  final void setEditable(final boolean editable) {
+    $editable = editable;
   }
 
-  private boolean $viewModeEditable;
+  private boolean $editable;
 
   /*</property>*/
 
 
+  
+  /*<property name="deleteable">*/
+  //------------------------------------------------------------------
 
+  /**
+   * Can we delete the object represented by this form?.
+   *
+   * @basic
+   * @init      false;
+   */
+  public final boolean isDeleteable() {
+    return $deleteable;
+  }
+
+  /**
+   * @param     editable
+   *            Marks the persistent bean as a object that can be deleted.
+   * @post      new.isDeleteable() == deleteable;
+   */
+  final void setDeleteable(final boolean deleteable) {
+    $deleteable = deleteable;
+  }
+
+  private boolean $deleteable;
+
+  /*</property>*/
+  
+  
+  
+  /*<property name="createable">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Can we create a new object of the object represented by this form?
+   *
+   * @basic
+   * @init      false;
+   */
+  public final boolean isCreateable() {
+    return $createable;
+  }
+
+  /**
+   * @param     editable
+   *            Marks the persistent bean as a object that can be created.
+   * @post      new.isCreateable() == createable;
+   */
+  final void setCreateable(final boolean createable) {
+    $createable = createable;
+  }
+
+  private boolean $createable;
+
+  /*</property>*/
+  
+  
+  
   /*<property name="locale">*/
   //------------------------------------------------------------------
 

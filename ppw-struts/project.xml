@@ -5,23 +5,6 @@
   <pomVersion>4</pomVersion>
   <name>Struts Library</name>
   <groupId>ppw-libraries</groupId>
-  <repository />
-  <build />
-  <reports>
-    <report>maven-license-plugin</report>
-    <report>maven-javadoc-plugin</report>
-    <report>maven-faq-plugin</report>
-    <report>maven-jdepend-plugin</report>
-    <report>maven-changelog-plugin</report>
-    <report>maven-changes-plugin</report>
-    <report>maven-checkstyle-plugin</report>
-    <report>maven-linkcheck-plugin</report>
-    <report>maven-pmd-plugin</report>
-    <report>maven-developer-activity-plugin</report>
-    <report>maven-file-activity-plugin</report>
-    <report>maven-tasklist-plugin</report>
-    <report>taglib</report>
-  </reports>
   <artifactId>ppw-struts-I</artifactId>
   <shortDescription>Extensions that support the PeopleWare way of working with Struts.</shortDescription>
   <description>This library contains extension that support the PeopleWare way
@@ -139,7 +122,7 @@
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-jsp-I</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.1-1.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -152,4 +135,3 @@
   </dependencies>
   <properties />
 </project>
-

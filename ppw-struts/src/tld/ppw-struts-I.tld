@@ -6,7 +6,7 @@
 
   <description>Peopleware custom tag library for Struts extensions</description>
   <display-name>Peopleware Struts Extensions</display-name>
-  <tlib-version>1.1</tlib-version>
+  <tlib-version>1.0</tlib-version>
   <short-name>ppw-struts</short-name>
   <uri>http://www.peopleware.be/tags/struts-I</uri>
 
@@ -23,8 +23,8 @@
     <body-content>empty</body-content>
     <attribute>
       <description>The Struts Action Form that contains the
-      	{@link be.peopleware.beans.propertyEditors.EnumerationTypeEditor}
-      	this field will use.</description>
+        {@link be.peopleware.beans.propertyEditors.EnumerationTypeEditor}
+        this field will use.</description>
       <name>actionForm</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
@@ -32,7 +32,7 @@
     </attribute>
     <attribute>
       <description>The name of the property we in the action form to be
-	      displayed.</description>
+        displayed.</description>
       <name>property</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
@@ -62,7 +62,7 @@
         &lt;code&gt;size == 0&lt;/code&gt;, a menu is shown in HTML. With
         &lt;code&gt;size &gt; 0&lt;/code&gt;, a combo box or list is shown. With
         &lt;code&gt;size &lt; 0&lt;/code&gt;, radion buttons are shown, separated by a
-        double &quot;nbsp;. The default is &lt;code&gt;0&lt;/code&gt;.  
+        double &quot;nbsp;. The default is &lt;code&gt;0&lt;/code&gt;.
       </description>
       <name>size</name>
       <required>false</required>
@@ -75,47 +75,47 @@
     <name>crudButtons</name>
     <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/crudButtons.tagx</path>
   </tag-file>
-  
+
   <tag-file>
     <name>fileField</name>
     <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/fileField.tagx</path>
   </tag-file>
-  
+
   <tag-file>
     <name>listField</name>
     <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/listField.tagx</path>
   </tag-file>
-  
+
   <tag-file>
     <name>navigationButton</name>
     <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/navigationButton.tagx</path>
   </tag-file>
-  
+
   <tag-file>
     <name>passwordField</name>
     <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/passwordField.tagx</path>
   </tag-file>
-  
+
   <tag-file>
     <name>radioField</name>
     <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/radioField.tagx</path>
   </tag-file>
-  
+
   <tag-file>
     <name>textField</name>
     <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/textField.tagx</path>
   </tag-file>
-  
+
   <tag-file>
     <name>textareaField</name>
     <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/textareaField.tagx</path>
   </tag-file>
-  
+
 </taglib>
 
 <!--
   <document-info>
-	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
     <authors>
       <author>Jan Dockx</author>
       <author>David Van Keer</author>
@@ -131,8 +131,8 @@
     <copyright xml:lang="en-US">
       <creationdate>2004</creationdate>
       <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
-			<p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
-			<p xml:lang="en-US">This document is copyrighted by the people and
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
                           entities mentioned above in the <author> tag.</p>
     </copyright>
   </document-info>

@@ -9,6 +9,8 @@ import org.apache.struts.action.ActionMapping;
 import be.peopleware.struts_I.IllegalAccessException;
 
 /**
+ * @MUDO AANPASSEn
+ * 
  * Security strategy API for {@link CrudAction}s.
  * {@link DetailAction} enables the user to
  * get a page for a new object, to get a page to create an object,
@@ -41,53 +43,46 @@ public class CrudActionSecurityStrategy {
   /*</section>*/
 
   
-  public void checkDisplayRigths(final HttpServletRequest request,
-                          final ActionMapping actionMapping,
-                          final ActionForm actionForm)
-      throws IllegalAccessException {
-    // NOP
+  public boolean hasDisplayRigths(final HttpServletRequest request,
+                                  final ActionMapping actionMapping,
+                                  final ActionForm actionForm) {
+    return true;
   }
   
-  public void checkEditRights(final HttpServletRequest request,
+  public boolean hasEditRights(final HttpServletRequest request,
                               final ActionMapping actionMapping,
-                              final ActionForm actionForm)
-      throws IllegalAccessException {
-    // NOP
+                              final ActionForm actionForm) {
+    return true;
   }
   
-  public void checkUpdateRights(final HttpServletRequest request,
+  public boolean hasUpdateRights(final HttpServletRequest request,
                                 final ActionMapping actionMapping,
-                                final ActionForm actionForm)
-      throws IllegalAccessException {
-    // NOP
+                                final ActionForm actionForm) {
+    return true;
   }
   
-  public void checkNewRights(final HttpServletRequest request,
+  public boolean hasNewRights(final HttpServletRequest request,
                              final ActionMapping actionMapping,
-                             final ActionForm actionForm)
-       throws IllegalAccessException {
-     // NOP
+                             final ActionForm actionForm) {
+    return true;
    }
   
-  public void checkCreateRights(final HttpServletRequest request,
+  public boolean hasCreateRights(final HttpServletRequest request,
                                 final ActionMapping actionMapping,
-                                final ActionForm actionForm)
-      throws IllegalAccessException {
-    // NOP
+                                final ActionForm actionForm) {
+    return true;
   }
   
-  public void checkDeleteRights(final HttpServletRequest request,
+  public boolean hasDeleteRights(final HttpServletRequest request,
                                 final ActionMapping actionMapping,
-                                final ActionForm actionForm)
-      throws IllegalAccessException {
-    // NOP
+                                final ActionForm actionForm) {
+    return true;
   }
 
-  public void checkDisplayAllRights(final HttpServletRequest request,
+  public boolean hasDisplayAllRights(final HttpServletRequest request,
                                     final ActionMapping actionMapping,
-                                    final ActionForm actionForm)
-      throws IllegalAccessException {
-    // NOP
+                                    final ActionForm actionForm) {
+    return true;
   }
 
 }

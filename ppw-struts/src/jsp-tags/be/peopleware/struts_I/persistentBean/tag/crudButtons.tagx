@@ -44,42 +44,45 @@
 	</span>
 	
 	<c:choose>
-	  <c:when test="${!(actionForm.viewModeEditable)}">
-	  </c:when>
 	  <c:when test="${(actionForm.viewModeNew)}">
 	    <input type="hidden" name="referer" value="${header.referer}" />
 	  	<input type="submit"
-	  				 name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_CREATE')}"
+	  				 name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_CREATE')}"
 	           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
 	    <![CDATA[&nbsp;]]>
 	    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
 	    <![CDATA[&nbsp;]]>
 	    <input type="submit"
-	    			 name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_CANCEL_NEW')}"
+	    			 name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_CANCEL_NEW')}"
 	           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
 	  </c:when>
 	  <c:when test="${actionForm.viewModeEdit}">
 	  	<input type="submit"
-	  				 name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_UPDATE')}"
+	  				 name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_UPDATE')}"
 	           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
 	    <![CDATA[&nbsp;]]> 
 	    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
 	    <![CDATA[&nbsp;]]> 
 	    <input type="submit"
-	    			 name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_DISPLAY')}"
+	    			 name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_DISPLAY')}"
 	           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
 	  </c:when>
 	  <c:when test="${actionForm.viewModeDeleted}">
 	     <!-- NOP -->
 	  </c:when>
 	  <c:otherwise>
-	  	<input type="submit"
-	  	       name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_EDIT')}"
-		 				 value="${ppw:i18nlabel(buttonsBundle, 'edit')}" />
-	    <input type="submit"
-	           name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_DELETE')}"
-	           value="${ppw:i18nlabel(buttonsBundle, 'delete')}"
-	           onclick="return deleteButton();" />
+	  	<c:if test="${actionForm.editable}">
+		  	<input type="submit"
+		  	       name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_EDIT')}"
+			 				 value="${ppw:i18nlabel(buttonsBundle, 'edit')}" />
+			  <![CDATA[&nbsp;]]> 
+		 	</c:if>
+	  	<c:if test="${actionForm.deleteable}">
+		    <input type="submit"
+		           name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_DELETE')}"
+		           value="${ppw:i18nlabel(buttonsBundle, 'delete')}"
+		           onclick="return deleteButton();" />
+ 		 	</c:if>
 	  </c:otherwise>
 	</c:choose>
 
