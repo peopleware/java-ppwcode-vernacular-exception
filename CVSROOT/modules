@@ -28,4 +28,5 @@
 simpleAliasModule -a ppw-i18n
 aliasModule -a simpleAliasModule ppw-libraries/ppw-test
 
-
+simpleRegularModule ppw-i18n/src
+regularModule ppw-test project.xml project.properties
