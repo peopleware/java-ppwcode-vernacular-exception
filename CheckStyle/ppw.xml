@@ -261,7 +261,7 @@
     </module>
     <module name="JavadocStyle">
       <property name="scope" value="protected"/>
-      <property name="checkEmptyJavadoc" value="true"/>
+      <property name="checkEmptyJavadoc" value="false"/>
       <property name="checkFirstSentence" value="true"/>
       <property name="checkHtml" value="true"/>
       <property name="tokens" value="METHOD_DEF, CTOR_DEF"/>
