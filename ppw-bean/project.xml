@@ -5,9 +5,6 @@
   <pomVersion>1</pomVersion>
   <name>JavaBeans Library</name>
   <groupId>ppw-libraries</groupId>
-  <organization />
-  <repository />
-  <build />
   <artifactId>ppw-bean-II</artifactId>
   <shortDescription>Support for JavaBeans, including persistency.</shortDescription>
   <description>Support for JavaBeans. General superclasses and utility
