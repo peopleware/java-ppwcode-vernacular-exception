@@ -1,4 +1,4 @@
-package be.peopleware.i18n;
+package be.peopleware.i18n_I;
 
 
 import java.util.Locale;

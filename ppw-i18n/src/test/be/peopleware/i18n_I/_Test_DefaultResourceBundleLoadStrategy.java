@@ -1,4 +1,4 @@
-package be.peopleware.i18n;
+package be.peopleware.i18n_I;
 
 
 import java.util.HashSet;
@@ -37,7 +37,7 @@ public class _Test_DefaultResourceBundleLoadStrategy extends _Test_Object {
 
   public static void main(final String[] args) {
     Test.main(new String[]
-        {"be.peopleware.i18n._Test_DefaultResourceBundleLoadStrategy"}); //$NON-NLS-1$
+        {"be.peopleware.i18n_I._Test_DefaultResourceBundleLoadStrategy"}); //$NON-NLS-1$
   }
 
   protected void testClassMethods() {
