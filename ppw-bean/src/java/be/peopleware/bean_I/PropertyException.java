@@ -1,0 +1,291 @@
+package be.peopleware.bean_I;
+
+
+import be.peopleware.exception_I.LocalizedMessageException;
+
+
+/**
+ * <p>PropertyExceptions are exceptions that carry with them information
+ *   about the property for which they occured. They are usually thrown
+ *   by a property setter during validation. If the property name is
+ *   <code>null</code>, it means that the exception could not be
+ *   attributed to a specific property of {@link #getOrigin()}.</p>
+ * <p>Localized messages are sougth
+ *   in a <kbd>*.properties</kbd> file for the class of the origin. The
+ *   properties files should be in the directory next to the bean class, with
+ *   name <kbd><var>{@link #getOrigin()}<code>.getClass().getName()</code></var>
+ *   <var>_locale_identification</var>.properties</kbd>. Alternatively,
+ *   messages can be added to a properties file that comes with the
+ *   exception.</p>
+ * <p>The keys for the localized messages have to have the form
+ *   <code><var>this.getClass().getName()</var>.
+ *         <var>{@link #getPropertyName()}</var>.
+ *         <var>{@link #getMessage()}</var></code>.
+ *   See {@link #getLocalizedMessageKeys()}.</p>
+ *
+ * @invar     getOrigin() != null;
+ * @invar     (getPropertyName() == null) || ! getPropertyName().equals("");
+ * @invar     (getMessage() == null) || ! getMessage().equals("");
+ *
+ * @author    Jan Dockx
+ * @author    PeopleWare n.v.
+ *
+ * @idea (jand): Check that property name is truly a property of the origin
+ */
+public class PropertyException extends LocalizedMessageException {
+
+  /*<section name="Meta Information">*/
+  //------------------------------------------------------------------
+
+  /** {@value} */
+  public static final String CVS_REVISION = "$Revision$"; //$NON-NLS-1$
+  /** {@value} */
+  public static final String CVS_DATE = "$Date$"; //$NON-NLS-1$
+  /** {@value} */
+  public static final String CVS_STATE = "$State$"; //$NON-NLS-1$
+  /** {@value} */
+  public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
+
+  /*</section>*/
+
+
+
+
+  /*<construction>*/
+  //------------------------------------------------------------------
+
+  /**
+   * @param     origin
+   *            The bean that has thrown this exception.
+   * @param     propertyName
+   *            The name of the property of which the setter has thrown
+   *            this exception because parameter validation failed.
+   * @param     message
+   *            The message that describes the exceptional circumstance.
+   * @param     cause
+   *            The exception that occured, causing this exception to be
+   *            thrown, if that is the case.
+   *
+   * @pre       origin != null;
+   * @pre       (propertyName != null) ==> ! propertyName.equals("");
+   * @pre       (message != null) ==> ! message.equals("");
+   *
+   * @post      new.getOrigin() == origin;
+   * @post      (propertyName != null)
+   *                ==> new.getpropertyName().equals(propertyName);
+   * @post      (propertyName == null) ==> new.getpropertyName() == null;
+   * @post      (message != null) ==> new.getMessage().equals(message);
+   * @post      (message == null) ==> new.getMessage() == null;
+   * @post      new.getCause() == cause;
+   * @post      new.getLocalizedMessageResourceBundleLoadStrategy().getClass()
+   *                == DefaultResourceBundleLoadStrategy.class;
+   *
+   * @idea (jand): check effectively that <code>propertyName</code> is
+   *               a property of <code>origin</code>
+   */
+  public PropertyException(final Object origin,
+                           final String propertyName,
+                           final String message,
+                           final Throwable cause) {
+    super(message, cause);
+    assert origin != null : "@pre origin != null;"; //$NON-NLS-1$
+    assert (propertyName == null) || (!propertyName.equals("")) //$NON-NLS-1$
+        : "property name cannot be the empty string"; //$NON-NLS-1$
+    assert (message == null) || (!message.equals("")) //$NON-NLS-1$
+        : "message name cannot be the empty string"; //$NON-NLS-1$
+    $origin = origin;
+    $propertyName = propertyName;
+  }
+
+  /*</construction;>*/
+
+
+
+  /*<property name="origin">*/
+  //------------------------------------------------------------------
+
+  /**
+   * The bean that has thrown this exception.
+   *
+   * @basic
+   */
+  public final Object getOrigin() {
+    return $origin;
+  }
+
+  private Object $origin;
+
+  /*</property>*/
+
+
+
+  /*<property name="propertyName">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  public final String getPropertyName() {
+    return $propertyName;
+  }
+
+  private String $propertyName;
+
+  /*</property>*/
+
+
+
+  /*<property name="localizedMessageResourceBundleBasename">*/
+  //------------------------------------------------------------------
+
+  /**
+   * This implementation returns the fully qualified class name of the
+   * {@link #getOrigin() origin}, which cannot be <code>null</code>.
+   *
+   * @return    getOrigin().getClass().getName();
+   */
+  public final String getLocalizedMessageResourceBundleBasename() {
+    return getOrigin().getClass().getName();
+  }
+
+  /*</property>*/
+
+
+
+  /**
+   * @param     other
+   *            The object to compare the values of this with.
+   * @return    boolean
+   *            (other != null)
+   *                 && hasProperties(other.getOrigin(),
+   *                                  other.getPropertyName(),
+   *                                  other.getMessage(),
+   *                                  other.getCause());
+   */
+  public boolean hasSameValues(final PropertyException other) {
+    return (other != null)
+             && hasProperties(other.getOrigin(),
+                              other.getPropertyName(),
+                              other.getMessage(),
+                              other.getCause());
+  }
+
+
+
+  /**
+   * @param     origin
+   *            The origin to compare the one of this Exception with.
+   * @param     propertyName
+   *            The  propertyName to compare the one of this Exception with.
+   * @param     message
+   *            The message to compare the one of this Exception with..
+   * @param     cause
+   *            The cause to compare the one of this Exception with.
+   * @return    boolean
+   *            (getOrigin() == origin)
+   *                && ((getPropertyName() == null)
+   *                      ? propertyName == null
+   *                      : getPropertyName().equals(propertyName))
+   *                && ((getCause() == null)
+   *                      ? cause == null
+   *                      : getCause().equals(cause))
+   *                && ((getMessage() == null)
+   *                      ? message == null
+   *                      : getMessage().equals(message));
+   */
+  public boolean hasProperties(final Object origin,
+                               final String propertyName,
+                               final String message,
+                               final Throwable cause) {
+    return (getOrigin() == origin)
+              && ((getPropertyName() == null)
+                    ? propertyName == null
+                    : getPropertyName().equals(propertyName))
+              && ((getCause() == null)
+                    ? cause == null
+                    : getCause().equals(cause))
+              && ((getMessage() == null)
+                    ? message == null
+                    : getMessage().equals(message));
+  }
+
+
+
+  /*<property name="localizedMessageKeys">*/
+  //------------------------------------------------------------------
+
+  private static final String EMPTY = ""; //$NON-NLS-1$
+  private static final String DOT = "."; //$NON-NLS-1$
+  private static final String PREFIX = "message."; //$NON-NLS-1$
+
+  /**
+   * The keys that are tried consecutively are intended for use in
+   * a properties file that comes with the class of the
+   * {@link #getOrigin() origin} of the exception, with a fall-back
+   * to a properties file that comes with the class of the exception.
+   * The message that is given in the constructor (the
+   * {@link #getMessage()} non-localized message) is intended as the
+   * final discriminating key in a resource bundle.
+   *
+   * <p>The first key, for use in the properties file that comes with
+   *   the {@link #getOrigin() origin} of the exception, has the form
+   *   <code>getClass().getName() + "." + getPropertyName()
+   *         + "." + getMessage()</code>.
+   *   If the property name is <code>null</code>, the form is
+   *   <code>getClass().getName() + "." + getMessage()</code>. This is
+   *   intended for exceptions that are not bound to a particular
+   *   property. If the message is <code>null</code>, the form of the key
+   *   is <code>getClass().getName() + "." + getPropertyName()</code>
+   *   or <code>getClass().getName()</code>. These forms are intended for
+   *   exceptions of which the type itself is discriminating enough
+   *   for a good exception message. </p>
+   * <p>The second key is intended for use in a properties file that
+   *   comes with the exception class. It is intended for error messages
+   *   that can be written independent of the actual origin or property
+   *   for which they occured. Such messages should often be considered
+   *   a fall-back.
+   *   The key that should be used in these files is of the form
+   *   <code>"message." + getMessage()</code>. If the message is
+   *   <code>null</code>, no such key is added to the array.</p>
+   * <p>When the {@link #getMessage() message} is used as a key,
+   *   it should be in all caps.</p>
+   *
+   * @result    result != null;
+   * @result    result.length == ((getMessage() != null) ? 2 : 1);
+   * @result    result[0] != null;
+   * @result    (getPropertyName() != null) && (getMessage() != null)
+   *                ==> result[0].equals(getClass().getName()
+   *                                     + "." + getPropertyName()
+   *                                     + "." + getMessage());
+   * @result    (getPropertyName() == null) && (getMessage() != null)
+   *                ==> result[0].equals(getClass().getName()
+   *                                     + "." + getMessage());
+   * @result    (getPropertyName() != null) && (getMessage() == null)
+   *                ==> result[0].equals(getClass().getName()
+   *                                     + "." + getPropertyName());
+   * @result    (getPropertyName() == null) && (getMessage() == null)
+   *                ==> result[0].equals(getClass().getName());
+   * @result    (getMessage() != null)
+   *                ==> (result[1] != null)
+   *                    && result[1].equals("message." + getMessage());
+   */
+  public final String[] getLocalizedMessageKeys() {
+    String[] result = null;
+    String firstKey = getClass().getName()
+                      + (getPropertyName() != null
+                            ? DOT + getPropertyName()
+                            : EMPTY)
+                      + (getMessage() != null ? DOT + getMessage() : EMPTY);
+    String secondKey = getMessage() != null ? PREFIX + getMessage() : null;
+    if (secondKey != null) {
+      result = new String[] {firstKey, secondKey};
+    }
+    else {
+      result = new String[] {firstKey};
+    }
+    return result;
+  }
+
+  /*</property>*/
+
+}
