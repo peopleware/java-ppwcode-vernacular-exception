@@ -33,6 +33,8 @@ digraph PeopleWare_Libraries_Dependencies {
     ppw_servlet_I       [label="ppw-servlet I\nv1.0.0/1.0"];
     ppw_jsp_I           [label="ppw-jsp I\nv1.0.0/1.0"];
     ppw_struts_I        [label="ppw-struts I\nv1.0.1/1.0"];
+    ppw_persistence_I   [label="ppw-persistence I\nv1.0.1/1.0"];
+    ppw_jsf_I           [label="ppw-jsf I\nv1.0.1/1.0"];
   
     ppw_i18n_I        -> ppw_test_I [color=chocolate];
     
@@ -53,6 +55,8 @@ digraph PeopleWare_Libraries_Dependencies {
     ppw_struts_I      -> {ppw_i18n_I; ppw_exc_I; ppw_bean_I; ppw_value_I;
                           ppw_servlet_I; ppw_jsp_I};
 
+    ppw_persistence_I -> {ppw_bean_I};
+    ppw_jsf_I         -> {ppw_bean_I, ppw_persistence_I};
   }
   
   subgraph cluster_web_apis {
