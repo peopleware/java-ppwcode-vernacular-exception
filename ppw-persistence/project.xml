@@ -60,12 +60,6 @@
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>taglibs</groupId>
-      <artifactId>standard</artifactId>
-      <version>1.1.2</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-exception-I</artifactId>
       <version>1.0.0-1.0</version>
