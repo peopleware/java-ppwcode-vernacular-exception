@@ -36,3 +36,4 @@ ppw-jsp											ppw-jsp     									&ppw-libraries-settings
 ppw-struts										ppw-struts					     			&ppw-libraries-settings
 toryt												toryt							     			&ppw-libraries-settings
 ppw-persistence							ppw-persistence							&ppw-libraries-settings
+ppw-jsf											ppw-jsf											&ppw-libraries-settings
