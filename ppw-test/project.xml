@@ -4,7 +4,7 @@
   <extend>ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
   <name>Unit Test Library</name>
-  <groupId>ppw-test-I</groupId>
+  <groupId>ppw-libraries</groupId>
   <artifactId>ppw-test-I</artifactId>
   <shortDescription>Support for unit testing.</shortDescription>
   <description>Support for unit testing. This is not very much. There is

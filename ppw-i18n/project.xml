@@ -4,7 +4,7 @@
   <extend>ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
   <name>Internationalization Library</name>
-  <groupId>ppw-i18n-I</groupId>
+  <groupId>ppw-libraries</groupId>
   <artifactId>ppw-i18n-I</artifactId>
   <shortDescription>Support for i18n.</shortDescription>
   <description>Support for i18n, in general, and for a strategy for binding i18n labels
