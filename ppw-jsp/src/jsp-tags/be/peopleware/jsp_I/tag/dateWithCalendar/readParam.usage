@@ -1,5 +1,5 @@
 <tag>
-  <display-name>ppw_form:crudButtons</display-name>
+  <display-name>ppw-struts:crudButtons</display-name>
   <name>crudButtons</name>
   <description>
     Read a date in format dd/MM/yy from a request parameter into a
@@ -8,7 +8,7 @@
     parameter, or it is empty, noting happens.
   </description>
   <example>
-    &lt;ppw_date:readParam property=&quot;from&quot; 
+    &lt;ppw-struts:readParam property=&quot;from&quot; 
         bean=&quot;${filter}&quot;
         exception=&quot;exception&quot;/&gt;
   </example>
@@ -40,6 +40,7 @@
     <required>true</required>
     <rtexprvalue>false</rtexprvalue>
   </attribute>
+</tag>
 
 <!--
   <document-info>
@@ -65,5 +66,3 @@
     </copyright>
   </document-info>
 -->
-
-</tag>

@@ -1,100 +1,91 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-					version="2.0"
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
 					xmlns:c="http://java.sun.com/jsp/jstl/core"
 					xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-					xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-				  xmlns:req="http://jakarta.apache.org/taglibs/request-1.0"
-					xmlns:ppw="http://www.peopleware.be/tags"
-					xmlns:html="http://jakarta.apache.org/struts/tags-html">
+					xmlns:ppw="http://www.peopleware.be/tags/jsp-I">
 					
-<jsp:directive.attribute name="actionForm"
-												 type="be.peopleware.struts.persistentBean.CrudDynaActionForm"
-												 required="true" />
+	<jsp:directive.attribute name="actionForm"
+													 type="be.peopleware.struts_I.persistentBean.CrudDynaActionForm"
+													 required="true" />
+	
+	<fmt:setBundle basename="be.peopleware.struts_I.persistentBean.tag.ButtonLabels"
+	               var="buttonsBundle" scope="session" /> 
+	
+	<fmt:message bundle="${buttonsBundle}" key="message.sureToDelete" var="deleteMessage" />  
+	
+	<script type="text/javascript" language="javascript">
+	  function deleteButton() {
+	    if (confirm('${deleteMessage}')) {
+	      return true;
+	    }
+	    else {
+	      return false;
+	    }
+	  }
+	
+	<![CDATA[<!--
+	  function bePatient(form) {
+	    var theInputs = form.getElementsByTagName('input');
+	    for (var i = 0; i < theInputs.length; i++) {
+	      if ((theInputs[i].type == 'submit') || (theInputs[i].type == 'reset')) {
+	        theInputs[i].style.visibility = 'hidden';
+	      }
+	    }
+	    document.getElementById('busyMessage').style.visibility = 'visible';
+	    return true;
+	  }
+	// -->]]>
+	</script>
+	
+	<span id="busyMessage" style="visibility: hidden;"> <!-- style here is needed for IE 5 on Mac -->
+	  <fmt:message key="message.patience" bundle="${buttonsBundle}" />
+	  <![CDATA[&nbsp;]]>
+	  <img src="img/be/peopleware/jsp/tag/form/gears.gif" alt="[request submitted ...]" width="33" height="30" />
+	</span>
+	
+	<c:choose>
+	  <c:when test="${!(actionForm.viewModeEditable)}">
+	  </c:when>
+	  <c:when test="${(actionForm.viewModeNew)}">
+	    <input type="hidden" name="referer" value="${header.referer}" />
+	  	<input type="submit"
+	  				 name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_CREATE')}"
+	           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
+	    <![CDATA[&nbsp;]]>
+	    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
+	    <![CDATA[&nbsp;]]>
+	    <input type="submit"
+	    			 name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_CANCEL_NEW')}"
+	           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
+	  </c:when>
+	  <c:when test="${actionForm.viewModeEdit}">
+	  	<input type="submit"
+	  				 name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_UPDATE')}"
+	           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
+	    <![CDATA[&nbsp;]]> 
+	    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
+	    <![CDATA[&nbsp;]]> 
+	    <input type="submit"
+	    			 name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_DISPLAY')}"
+	           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
+	  </c:when>
+	  <c:when test="${actionForm.viewModeDeleted}">
+	     <!-- NOP -->
+	  </c:when>
+	  <c:otherwise>
+	  	<input type="submit"
+	  	       name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_EDIT')}"
+		 				 value="${ppw:i18nlabel(buttonsBundle, 'edit')}" />
+	    <input type="submit"
+	           name="${ppw:constant('be.peopleware.struts_I.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_DELETE')}"
+	           value="${ppw:i18nlabel(buttonsBundle, 'delete')}"
+	           onclick="return deleteButton();" />
+	  </c:otherwise>
+	</c:choose>
 
-<fmt:setBundle basename="be.peopleware.struts.persistentBean.tag.ButtonLabels"
-               var="buttonsBundle" scope="session" /> 
+</jsp:root>
 
-<fmt:message bundle="${buttonsBundle}" key="message.sureToDelete" var="deleteMessage" />  
-
-<script type="text/javascript" language="javascript">
-  function deleteButton() {
-    if (confirm('${deleteMessage}')) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
-<![CDATA[<!--
-  function bePatient(form) {
-    var theInputs = form.getElementsByTagName('input');
-    for (var i = 0; i < theInputs.length; i++) {
-      if ((theInputs[i].type == 'submit') || (theInputs[i].type == 'reset')) {
-        theInputs[i].style.visibility = 'hidden';
-      }
-    }
-    document.getElementById('busyMessage').style.visibility = 'visible';
-    return true;
-  }
-// -->]]>
-</script>
-
-<span id="busyMessage" style="visibility: hidden;"> <!-- style here is needed for IE 5 on Mac -->
-  <fmt:message key="message.patience" bundle="${buttonsBundle}" />
-  <![CDATA[&nbsp;]]>
-  <img src="img/be/peopleware/jsp/tag/form/gears.gif" alt="[request submitted ...]" width="33" height="30" />
-</span>
-
-<c:choose>
-  <c:when test="${!(actionForm.viewModeEditable)}">
-  </c:when>
-  <c:when test="${(actionForm.viewModeNew)}">
-    <input type="hidden"
-           name="referer" 
-           value="${header.referer}" />
-  	<input type="submit"
-  				 name="${ppw:constant('be.peopleware.struts.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_CREATE')}"
-           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
-    <![CDATA[&nbsp;]]>
-    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
-    <![CDATA[&nbsp;]]>
-    <input type="submit"
-    			 name="${ppw:constant('be.peopleware.struts.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_CANCEL_NEW')}"
-           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
-  </c:when>
-  <c:when test="${actionForm.viewModeEdit}">
-  	<input type="submit"
-  				 name="${ppw:constant('be.peopleware.struts.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_UPDATE')}"
-           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
-    <![CDATA[&nbsp;]]> 
-    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
-    <![CDATA[&nbsp;]]> 
-    <input type="submit"
-    			 name="${ppw:constant('be.peopleware.struts.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_DISPLAY')}"
-           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
-  </c:when>
-  <c:when test="${actionForm.viewModeDeleted}">
-    <!-- NOP -->
-  </c:when>
-  <c:otherwise>
-  	<input type="submit"
-  	       name="${ppw:constant('be.peopleware.struts.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_EDIT')}"
-	 				 value="${ppw:i18nlabel(buttonsBundle, 'edit')}" />
-    <req:isUserInRole role="ADM">
-      <![CDATA[&nbsp;]]>
-      <input type="submit"
-             name="${ppw:constant('be.peopleware.struts.persistentBean.CrudDynaActionForm', 'REQUEST_MODE_DELETE')}"
-             value="${ppw:i18nlabel(buttonsBundle, 'delete')}"
-             onclick="return deleteButton();" />
-    </req:isUserInRole>
-  </c:otherwise>
-</c:choose>
-
-
-
-  <!--
+<!--
   <document-info>
 	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
     <authors>
@@ -117,6 +108,4 @@
                           entities mentioned above in the <author> tag.</p>
     </copyright>
   </document-info>
-  -->
-
-</jsp:root>
+-->

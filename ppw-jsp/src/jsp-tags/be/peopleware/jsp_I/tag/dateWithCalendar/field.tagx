@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-					version="2.0"
-					xmlns:c="http://java.sun.com/jsp/jstl/core"
-					xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-					xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 
   <jsp:directive.attribute name="property"
                            type="java.lang.String"
@@ -24,63 +22,65 @@
                            type="java.lang.String"
                            required="false" />
 
-<c:if test="${empty show}">
-  <c:set var="show" value="field" />
-</c:if>
-<c:if test="${empty dateStyle}">
-  <c:set var="dateStyle" value="default" />
-</c:if>
+  <c:if test="${empty show}">
+    <c:set var="show" value="field" />
+  </c:if>
+  <c:if test="${empty dateStyle}">
+    <c:set var="dateStyle" value="default" />
+  </c:if>
 
-<c:choose>
-  <c:when test="${show == 'field'}">
-    <span id="${idPrefix}_${property}_jscalendar_Display">
+  <c:choose>
+    <c:when test="${show == 'field'}">
+      <span id="${idPrefix}_${property}_jscalendar_Display">
+        <fmt:formatDate value="${bean[property]}" type="date" dateStyle="${dateStyle}" />
+      </span><br />
+
+      <fmt:formatDate value="${bean[property]}" pattern="dd/MM/yy" var="dateShort" />
+      <input type="text" name="${property}" id="${idPrefix}_${property}"
+              value="${dateShort}" class="${fieldClass}" maxlength="8" /><![CDATA[&nbsp;]]>
+
+      <c:url value="/js/jscalendar-0.9.6/img.gif" var="calendardButtonImageSrc" />
+      <fmt:setBundle basename="be.peopleware.petrobel.web.jsp.jscalendar" var="jscalendarBundle" scope="session" />
+      <fmt:message key="button.toolTip" var="jscalenderButtonTooltip" bundle="${jscalendarBundle}" />
+      <img src="${calendardButtonImageSrc}"
+            id="${idPrefix}_${property}_jscalendar_Button"
+            style="cursor: pointer; border: 0px;"
+            title="${jscalenderButtonTooltip}"
+            onmouseover="this.style.background='red';"
+            onmouseout="this.style.background=''"
+            alt="${jscalenderButtonTooltip}" />
+
+      <fmt:message key="daFormat" bundle="${jscalendarBundle}" var="jscalendarDaFormat" />
+      <fmt:message key="firstDay" bundle="${jscalendarBundle}" var="jscalendarFirstDay" />
+      <script language="JavaScript" type="text/JavaScript">
+        Calendar.setup(
+          {
+           inputField: '${idPrefix}_${property}',
+           ifFormat: '%d/%m/%y',
+           displayArea: '${idPrefix}_${property}_jscalendar_Display',
+           daFormat: '${jscalendarDaFormat}',
+           button: '${idPrefix}_${property}_jscalendar_Button',
+           firstDay: ${jscalendarFirstDay}
+           <c:if test="${bean[property] != null}">,
+             date: ${bean[property].time}
+           </c:if>
+          });
+      </script>
+    </c:when>
+    <c:when test="${show == 'label'}">
       <fmt:formatDate value="${bean[property]}" type="date" dateStyle="${dateStyle}" />
-    </span><br />
-    
-    <fmt:formatDate value="${bean[property]}" pattern="dd/MM/yy" var="dateShort" />
-    <input type="text" name="${property}" id="${idPrefix}_${property}"
-            value="${dateShort}" class="${fieldClass}" maxlength="8" /><![CDATA[&nbsp;]]>
-    
-    <c:url value="/js/jscalendar-0.9.6/img.gif" var="calendardButtonImageSrc" />
-    <fmt:setBundle basename="be.peopleware.petrobel.web.jsp.jscalendar" var="jscalendarBundle" scope="session" />
-    <fmt:message key="button.toolTip" var="jscalenderButtonTooltip" bundle="${jscalendarBundle}" />
-    <img src="${calendardButtonImageSrc}"
-          id="${idPrefix}_${property}_jscalendar_Button"
-          style="cursor: pointer; border: 0px;"
-          title="${jscalenderButtonTooltip}"
-          onmouseover="this.style.background='red';"
-          onmouseout="this.style.background=''"
-          alt="${jscalenderButtonTooltip}" />
-    
-    <fmt:message key="daFormat" bundle="${jscalendarBundle}" var="jscalendarDaFormat" />
-    <fmt:message key="firstDay" bundle="${jscalendarBundle}" var="jscalendarFirstDay" />
-    <script language="JavaScript" type="text/JavaScript">
-      Calendar.setup(
-        {
-         inputField: '${idPrefix}_${property}',
-         ifFormat: '%d/%m/%y',
-         displayArea: '${idPrefix}_${property}_jscalendar_Display',
-         daFormat: '${jscalendarDaFormat}',
-         button: '${idPrefix}_${property}_jscalendar_Button',
-         firstDay: ${jscalendarFirstDay}
-         <c:if test="${bean[property] != null}">,
-           date: ${bean[property].time}
-         </c:if>
-        });
-    </script>
-  </c:when>
-  <c:when test="${show == 'label'}">
-    <fmt:formatDate value="${bean[property]}" type="date" dateStyle="${dateStyle}" />
-  </c:when>
+    </c:when>
 <!-- @todo (dvankeer): Currently this tag seems to work with a fixed data patern, this needs to be i18n -->
-  <c:when test="${show == 'hidden'}">
-    <fmt:formatDate value="${bean[property]}" pattern="dd/MM/yy" var="dateShort" />
-    <input type="hidden" name="${property}" id="${idPrefix}_${property}" value="${dateShort}" />
-  </c:when>
-  <c:otherwise>
-    ILLEGAL SHOW VALUE: ${show}
-  </c:otherwise>
-</c:choose>
+    <c:when test="${show == 'hidden'}">
+      <fmt:formatDate value="${bean[property]}" pattern="dd/MM/yy" var="dateShort" />
+      <input type="hidden" name="${property}" id="${idPrefix}_${property}" value="${dateShort}" />
+    </c:when>
+    <c:otherwise>
+      ILLEGAL SHOW VALUE: ${show}
+    </c:otherwise>
+  </c:choose>
+
+</jsp:root>
 
 <!--
   <document-info>
@@ -106,5 +106,3 @@
     </copyright>
   </document-info>
 -->
-
-</jsp:root>

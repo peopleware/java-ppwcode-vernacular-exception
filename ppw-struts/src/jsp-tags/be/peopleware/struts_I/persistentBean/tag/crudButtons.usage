@@ -1,11 +1,11 @@
 <tag>
-  <display-name>ppw_form:crudButtons</display-name>
+  <display-name>ppw-struts:crudButtons</display-name>
   <name>crudButtons</name>
   <description>
     Shows the CRUD buttons for a form.
   </description>
   <example>
-    &lt;ppw_form:crudButtons &quot;${actionForm}&quot;/&gt;
+    &lt;ppw-struts:crudButtons &quot;${actionForm}&quot;/&gt;
   </example>
   <body-content>empty</body-content>
   <attribute>
@@ -13,10 +13,11 @@
     <description>
       The struts action form containing all object properties that can be used.
     </description>
-    <type>be.peopleware.web.struts.PersistentBeanDynaActionForm</type>
+    <type>be.peopleware.struts_I.persistentBean.CrudDynaActionForm</type>
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
   </attribute>
+</tag>
 
 <!--
   <document-info>
@@ -42,5 +43,3 @@
     </copyright>
   </document-info>
 -->
-
-</tag>

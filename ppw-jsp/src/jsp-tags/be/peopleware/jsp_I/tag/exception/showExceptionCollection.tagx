@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-					version="2.0"
-					xmlns:c="http://java.sun.com/jsp/jstl/core"
-					xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-					xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-					xmlns:ppw="http://www.peopleware.be/tags">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+					xmlns:c="http://java.sun.com/jsp/jstl/core">
 		 
   <jsp:directive.attribute name="collection"
   												 type="java.util.Collection"
@@ -16,42 +12,43 @@
   												 type="java.lang.String"
   												 required="false" /> 
 
-<c:if test="${!empty collection}">
-  <c:set var="body" value="" />
-  <c:forEach items="${collection}" var="exc" varStatus="loopStatus">
-    <jsp:useBean id="jstlRbls"
-                 class="be.peopleware.jsp.JSTLResourceBundleLoadStrategy" />
-    <jsp:setProperty name="jstlRbls"
-                     property="pageContext"
-                     value="${pageContext}"/>
-    <c:set target="${exc}"
-           property="localizedMessageResourceBundleLoadStrategy"
-           value="${jstlRbls}" />
-    <c:set var="body" value="${body}${exc.localizedMessage}" />
-    <c:if test="${!loopStatus.last}">
-      <c:set var="body">
-        ${body}<br />
-      </c:set>
-    </c:if>  
-  </c:forEach>
-  
-  <c:choose>
-    <c:when test="${!empty tag}">
-      <jsp:element name="${tag}">
-        <jsp:attribute name="class">${cssClass}</jsp:attribute>
-        <jsp:body>
-          ${body}
-        </jsp:body>
-      </jsp:element>
-    </c:when>
-    <c:otherwise>
-      ${body}
-    </c:otherwise>
-  </c:choose>
-</c:if>
+	<c:if test="${!empty collection}">
+	  <c:set var="body" value="" />
+	  <c:forEach items="${collection}" var="exc" varStatus="loopStatus">
+	    <jsp:useBean id="jstlRbls"
+	                 class="be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy" />
+	    <jsp:setProperty name="jstlRbls"
+	                     property="pageContext"
+	                     value="${pageContext}"/>
+	    <c:set target="${exc}"
+	           property="localizedMessageResourceBundleLoadStrategy"
+	           value="${jstlRbls}" />
+	    <c:set var="body" value="${body}${exc.localizedMessage}" />
+	    <c:if test="${!loopStatus.last}">
+	      <c:set var="body">
+	        ${body}<br />
+	      </c:set>
+	    </c:if>  
+	  </c:forEach>
+	  
+	  <c:choose>
+	    <c:when test="${!empty tag}">
+	      <jsp:element name="${tag}">
+	        <jsp:attribute name="class">${cssClass}</jsp:attribute>
+	        <jsp:body>
+	          ${body}
+	        </jsp:body>
+	      </jsp:element>
+	    </c:when>
+	    <c:otherwise>
+	      ${body}
+	    </c:otherwise>
+	  </c:choose>
+	</c:if>
 
+</jsp:root>
 
-  <!--
+<!--
   <document-info>
 	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
     <authors>
@@ -74,6 +71,4 @@
                           entities mentioned above in the <author> tag.</p>
     </copyright>
   </document-info>
-  -->
-
-</jsp:root>
+-->

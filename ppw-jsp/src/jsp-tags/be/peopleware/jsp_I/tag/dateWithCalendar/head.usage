@@ -9,6 +9,7 @@
     &lt;ppw_date:head /&gt;
   </example>
   <body-content>empty</body-content>
+</tag>
 
 <!--
   <document-info>
@@ -34,5 +35,3 @@
     </copyright>
   </document-info>
 -->
-
-</tag>

@@ -1,5 +1,5 @@
 <tag>
-  <display-name>ppw_form:radioField</display-name>
+  <display-name>ppw-struts:radioField</display-name>
   <name>radioField</name>
   <description>
     Generates a list of radio field buttons with the elements of the given
@@ -7,7 +7,7 @@
     displays the selected value of the given property.
   </description>
   <example>
-    &lt;ppw_form:passwordField actionForm=&quot;${detailActionForm}&quot;
+    &lt;ppw-struts:passwordField actionForm=&quot;${detailActionForm}&quot;
         property=&quot;gender&quot;
         collection=&quot;${genderOptions}&quot; /&gt;
   </example>
@@ -17,7 +17,7 @@
     <description>
       The struts action form containing all object properties that can be used.
     </description>
-    <type>be.peopleware.web.struts.PersistentBeanDynaActionForm</type>
+    <type>be.peopleware.struts_I.persistentBean.CrudDynaActionForm</type>
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
   </attribute>
@@ -40,10 +40,11 @@
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
   </attribute>
+</tag>
 
 <!--
   <document-info>
-	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
     <authors>
       <author>Jan Dockx</author>
       <author>David Van Keer</author>
@@ -59,11 +60,9 @@
     <copyright xml:lang="en-US">
       <creationdate>2004</creationdate>
       <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
-			<p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
-			<p xml:lang="en-US">This document is copyrighted by the people and
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
                           entities mentioned above in the <author> tag.</p>
     </copyright>
   </document-info>
 -->
-
-</tag>

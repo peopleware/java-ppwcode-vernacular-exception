@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-					version="2.0"
-					xmlns:c="http://java.sun.com/jsp/jstl/core"
-					xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 
-<fmt:setBundle basename="be.peopleware.petrobel.web.jsp.jscalendar"
-               var="jscalendarBundle"
-               scope="session" />
-<fmt:message key="localeDependentFile"
-             bundle="${jscalendarBundle}"
-             var="jscalendarLocaleDependentFile" />
-<c:set var="baseURL"
-       value="/js/jscalendar-0.9.6" />
-<c:url value="${baseURL}/calendar-win2k-1.css"
-       var="calendarCssSrc" />
-<c:url value="${baseURL}/calendar.js"
-       var="calendarJsSrc" />
-<c:url value="${baseURL}/calendar-setup.js"
-       var="calendarSetupJsSrc" />
-<c:url value="${baseURL}/${jscalendarLocaleDependentFile}"
-       var="calendarLocaleJsSrc" />
+  <fmt:setBundle basename="be.peopleware.petrobel.web.jsp.jscalendar"
+                 var="jscalendarBundle"
+                 scope="session" />
+  <fmt:message key="localeDependentFile"
+               bundle="${jscalendarBundle}"
+               var="jscalendarLocaleDependentFile" />
+  <c:set var="baseURL"
+         value="/js/jscalendar-0.9.6" />
+  <c:url value="${baseURL}/calendar-win2k-1.css"
+         var="calendarCssSrc" />
+  <c:url value="${baseURL}/calendar.js"
+         var="calendarJsSrc" />
+  <c:url value="${baseURL}/calendar-setup.js"
+         var="calendarSetupJsSrc" />
+  <c:url value="${baseURL}/${jscalendarLocaleDependentFile}"
+         var="calendarLocaleJsSrc" />
 
-<link rel="stylesheet" href="${calendarCssSrc}" type="text/css" />
-<script language="JavaScript" type="text/javascript" src="${calendarJsSrc}" />
-<script language="JavaScript" type="text/javascript" src="${calendarSetupJsSrc}" />
-<script language="JavaScript" type="text/javascript" src="${calendarLocaleJsSrc}" />
+  <link rel="stylesheet" href="${calendarCssSrc}" type="text/css" />
+  <script language="JavaScript" type="text/javascript" src="${calendarJsSrc}" />
+  <script language="JavaScript" type="text/javascript" src="${calendarSetupJsSrc}" />
+  <script language="JavaScript" type="text/javascript" src="${calendarLocaleJsSrc}" />
+
+</jsp:root>
 
 <!--
   <document-info>
-	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
     <authors>
       <author>Jan Dockx</author>
       <author>David Van Keer</author>
@@ -44,11 +45,9 @@
     <copyright xml:lang="en-US">
       <creationdate>2004</creationdate>
       <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
-			<p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
-			<p xml:lang="en-US">This document is copyrighted by the people and
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
                           entities mentioned above in the <author> tag.</p>
     </copyright>
   </document-info>
 -->
-
-</tag>

@@ -1,12 +1,12 @@
 <tag>
-  <display-name>ppw_form:fileField</display-name>
+  <display-name>ppw-struts:fileField</display-name>
   <name>fileField</name>
   <description>
     Generates a input field and removal checkbox when in edit mode, when in view
     mode the tag generates a link to the file.
   </description>
   <example>
-    &lt;ppw_form:fileField actionForm=&quot;${detailActionForm}&quot;
+    &lt;ppw-struts:fileField actionForm=&quot;${detailActionForm}&quot;
         property="photo"
         fqClassName=&quot;${tiles_fqClassName}&quot;
         pageContext=&quot;${pageContext}&quot; /&gt;
@@ -17,7 +17,7 @@
     <description>
       The struts action form containing all object properties that can be used.
     </description>
-    <type>be.peopleware.web.struts.PersistentBeanDynaActionForm</type>
+    <type>be.peopleware.struts_I.persistentBean.CrudDynaActionForm</type>
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
   </attribute>
@@ -48,6 +48,7 @@
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
   </attribute>
+</tag>
 
 <!--
   <document-info>
@@ -73,5 +74,3 @@
     </copyright>
   </document-info>
 -->
-
-</tag>

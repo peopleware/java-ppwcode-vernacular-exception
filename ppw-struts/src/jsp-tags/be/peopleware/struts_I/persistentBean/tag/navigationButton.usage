@@ -1,11 +1,11 @@
 <tag>
-  <display-name>ppw_form:navigationButton</display-name>
+  <display-name>ppw-struts:navigationButton</display-name>
   <name>navigationButton</name>
   <description>
     @todo   
   </description>
   <example>
-    &lt;ppw_form:navigationButton action=&quot;${listActionLink}&quot;
+    &lt;ppw-struts:navigationButton action=&quot;${listActionLink}&quot;
         type=&quot;list&quot; name=&quot;LIST&quot; /&gt;
   </example>
   <body-content>JSP</body-content>
@@ -36,6 +36,7 @@
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
   </attribute>
+</tag>
 
 <!--
   <document-info>
@@ -61,5 +62,3 @@
     </copyright>
   </document-info>
 -->
-
-</tag>

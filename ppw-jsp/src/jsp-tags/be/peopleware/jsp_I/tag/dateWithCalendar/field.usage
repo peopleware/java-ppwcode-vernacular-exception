@@ -64,6 +64,7 @@
     <required>false</required>
     <rtexprvalue>true</rtexprvalue>
   </attribute>
+</tag>
 
 <!--
   <document-info>
@@ -89,5 +90,3 @@
     </copyright>
   </document-info>
 -->
-
-</tag>

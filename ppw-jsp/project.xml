@@ -6,7 +6,7 @@
   <name>Java Server Pages Library</name>
   <groupId>ppw-libraries</groupId>
   <reports>
-    <report>maven-license-plugin</report>       
+    <report>maven-license-plugin</report>
     <report>maven-javadoc-plugin</report>
     <report>maven-faq-plugin</report>
     <report>maven-jdepend-plugin</report>
@@ -17,14 +17,14 @@
     <report>maven-pmd-plugin</report>
     <report>maven-developer-activity-plugin</report>
     <report>maven-file-activity-plugin</report>
-    <report>maven-tasklist-plugin</report>  
+    <report>maven-tasklist-plugin</report>
     <report>taglib</report>
   </reports>
   <artifactId>ppw-jsp-I</artifactId>
   <shortDescription>Support for Java Server Pages.</shortDescription>
   <description>Support for Java Server Pages.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.0-1.0</currentVersion>
+  <currentVersion>1.0.1-1.0</currentVersion>
   <package>be.peopleware.jsp_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>

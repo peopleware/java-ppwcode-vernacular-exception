@@ -5,8 +5,10 @@
   <pomVersion>4</pomVersion>
   <name>Struts Library</name>
   <groupId>ppw-libraries</groupId>
+  <repository />
+  <build />
   <reports>
-    <report>maven-license-plugin</report>       
+    <report>maven-license-plugin</report>
     <report>maven-javadoc-plugin</report>
     <report>maven-faq-plugin</report>
     <report>maven-jdepend-plugin</report>
@@ -17,7 +19,7 @@
     <report>maven-pmd-plugin</report>
     <report>maven-developer-activity-plugin</report>
     <report>maven-file-activity-plugin</report>
-    <report>maven-tasklist-plugin</report>  
+    <report>maven-tasklist-plugin</report>
     <report>taglib</report>
   </reports>
   <artifactId>ppw-struts-I</artifactId>
@@ -26,7 +28,7 @@
     of working with Struts. This code is mainly aimed at CRUD (Create, Retrieve,
     Update, Delete) databse applications.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.0-1.0</currentVersion>
+  <currentVersion>1.0.1-1.0</currentVersion>
   <package>be.peopleware.struts_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
@@ -131,6 +133,12 @@
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-servlet-I</artifactId>
+      <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-jsp-I</artifactId>
       <version>1.0.0-1.0</version>
       <type>jar</type>
     </dependency>
