@@ -11,11 +11,9 @@
   	classes that etch a number of idioms and design patterns in code. Also,
   	there is agnostic support here for JavaBeans that are to be persistent.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.1.0-1.0</currentVersion>
+  <currentVersion>1.1.0-2.0</currentVersion>
   <package>be.peopleware.bean_II</package>
-  <!--
-  <logo>http://maven.apache.org/images/maven.jpg</logo>
-  -->
+  <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
     <developer>
       <name>Jan Dockx</name>
@@ -32,7 +30,7 @@
       <organization>PeopleWare n.v.</organization>
     </developer>
     <developer>
-      <name>Ren&amp;eacute; Clerckx</name>
+      <name>Rene Clerckx</name>
       <id>rclerckx</id>
       <email>Rene.Clerckx@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
