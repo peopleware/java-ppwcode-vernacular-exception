@@ -19,7 +19,8 @@ import be.peopleware.taglet.contract.HtmlGenerator;
 public class _Test_JexlExpression {
 
     public static void main(String[] args) {
-        String expr = "result;";
+        String expr = "getHeader() != null;";
+
         Parser parser = new Parser(new StringReader(";"));
         SimpleNode sn = null;
         try {

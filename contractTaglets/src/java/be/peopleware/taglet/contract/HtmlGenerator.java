@@ -10,30 +10,71 @@ import org.apache.commons.jexl.parser.*;
  */
 public class HtmlGenerator implements ParserVisitor {
 
+    /**
+     * <p>The empty String.</p>
+     * <p><strong>value = {@value}</strong></p>
+     */
+    public final static String EMPTY = ""; //$NON-NLS-1$
+    
+
     JexlContext jc = JexlHelper.createContext();
 
-    public Object visitChildren(SimpleNode node, Object data) {
-        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            SimpleNode childNode = (SimpleNode) node.jjtGetChild(i);
-            System.out.println("........visiting "
-                    + childNode.getClass().getName());
-            if (node != null) {
-                visit(childNode, data);
-            }
+//    public Object visitChildren(SimpleNode node, Object data) {
+//        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+//            SimpleNode childNode = (SimpleNode) node.jjtGetChild(i);
+//            System.out.println("........visiting "
+//                    + childNode.getClass().getName());
+//            if (node != null) {
+//                visit(childNode, data);
+//            }
+//        }
+//        return data;
+//    }
+
+    private Object visitBinary(SimpleNode node, Object data, String operator) {
+        assert (node.jjtGetNumChildren() == 2) : 
+            node.getClass().getName() + " must have two children";
+        StringBuffer lhs = new StringBuffer();
+        visit((SimpleNode) node.jjtGetChild(0), lhs);
+        StringBuffer rhs = new StringBuffer();
+        visit((SimpleNode) node.jjtGetChild(1), rhs);
+        StringBuffer acc = (StringBuffer) data;
+        return acc.append(lhs).append(operator).append(rhs);
+    }
+
+    private Object visitUnary(SimpleNode node, Object data, String operator) {
+  	  	assert(node.jjtGetNumChildren() == 1):
+						node.getClass().getName() + " must have one child";
+        visit((SimpleNode)node.jjtGetChild(0), data);
+  	  	StringBuffer acc = (StringBuffer)data;
+        acc.insert(0, operator);
+        return acc;
+    }
+
+    private Object getLiteralValue(SimpleNode node, Object data) {
+  	  	assert(node.jjtGetNumChildren() == 0):
+						node.getClass().getName() + " must not have any children";
+        String value = EMPTY;
+  	  	try {
+            value = node.value(jc).toString();
+        } catch (Exception e) {
+            System.err.println("Can't evaluate the value of the node " 
+                    + node.getClass().getName());
         }
-        return data;
+
+  	  	StringBuffer acc = (StringBuffer)data;
+        acc.append(value);
+        return acc;
     }
 
     public Object visit(SimpleNode node, Object data) {
 
-        StringBuffer acc = (StringBuffer) data;
+        // Base functionality can be implemented here
+
         if (node == null) {
             System.out.println("Node Is Null!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return data;
         }
-        System.out.println("...........SimpleNode..." + acc.toString());
-        // TODO determine correct class of the node and redirect this call  
-        // 	to visit method with this particular class as an argument.
         
         node.jjtAccept(this, data);
         
@@ -41,28 +82,31 @@ public class HtmlGenerator implements ParserVisitor {
     }
 
     public Object visit(ASTJexlScript node, Object data) {
+        // TODO
         StringBuffer acc = (StringBuffer) data;
-        System.out.println("...........JexlScript..." + acc.toString());
         visit((SimpleNode)node.jjtGetChild(0), acc);
         return acc;
     }
 
     public Object visit(ASTBlock node, Object data) {
+        // TODO
         StringBuffer acc = (StringBuffer) data;
         System.out.println("...........Block..." + acc.toString());
         acc.append("<br />{<br />");
-        visitChildren(node, data);
+//        visitChildren(node, data);
         acc.append("<br />}<br />");
         return data;
     }
 
     public Object visit(ASTEmptyFunction node, Object data) {
+        // TODO
         // comment from source:
         // 		function to see if reference doesn't exist in context
         return data;
     }
 
     public Object visit(ASTSizeFunction node, Object data) {
+        // TODO
         // comment from source:
         //		generalized size() function for all classes we can think of
         StringBuffer acc = (StringBuffer) data;
@@ -72,10 +116,10 @@ public class HtmlGenerator implements ParserVisitor {
     }
 
     public Object visit(ASTIdentifier node, Object data) {
+
         StringBuffer acc = (StringBuffer) data;
 
-        System.out.println("Identifier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
+        // TODO take keyword names from somewhere else
         String text = node.getIdentifierString();
         if (text.equals("result") || text.equals("forall")
                 || text.equals("new")) {
@@ -87,276 +131,139 @@ public class HtmlGenerator implements ParserVisitor {
     }
 
     public Object visit(ASTExpression node, Object data) {
-        return data;
+        // TODO how many children may it have? Any formatting?
+        return visitUnary(node, data, EMPTY);
     }
 
     public Object visit(ASTAssignment node, Object data) {
-        return data;
+        return visitBinary(node, data, " = ");
     }
 
     public Object visit(ASTOrNode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTOrNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" || ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " || ");
     }
 
     public Object visit(ASTAndNode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTAndNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" && ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " && ");
     }
 
     public Object visit(ASTBitwiseOrNode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTBitwiseOrNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" | ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " | ");
     }
 
     public Object visit(ASTBitwiseXorNode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTBitwiseXorNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" ^ ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " ^ ");
     }
 
     public Object visit(ASTBitwiseAndNode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTBitwiseAndNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" & ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " & ");
     }
 
     public Object visit(ASTEQNode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTEQNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" == ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " == ");
     }
 
     public Object visit(ASTNENode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTNENNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" != ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " != ");
     }
 
     public Object visit(ASTLTNode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTLTNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" < ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " < ");
     }
 
     public Object visit(ASTGTNode node, Object data) {
-        StringBuffer acc = (StringBuffer) data;
-        assert (node.jjtGetNumChildren() == 2) : "ASTGTNode must have two children";
-        visit((SimpleNode) node.jjtGetChild(0), acc);
-        acc.append(" > ");
-        visit((SimpleNode) node.jjtGetChild(1), acc);
-        return acc;
+        return visitBinary(node, data, " > ");
     }
 
     public Object visit(ASTLENode node, Object data) {
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	assert(node.jjtGetNumChildren() == 2):
-  	  								"ASTLENode must have two children";
-  	  	visit((SimpleNode)node.jjtGetChild(0), acc);
-  	  	acc.append(" <= ");
-  	  	visit((SimpleNode)node.jjtGetChild(1), acc);
-  	  	return acc;
+        return visitBinary(node, data, " <= ");
     }
 
     public Object visit(ASTGENode node, Object data) {
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	assert(node.jjtGetNumChildren() == 2):
-  	  								"ASTGENode must have two children";
-  	  	visit((SimpleNode)node.jjtGetChild(0), acc);
-  	  	acc.append(" >= ");
-  	  	visit((SimpleNode)node.jjtGetChild(1), acc);
-  	  	return acc;
+        return visitBinary(node, data, " >= ");
     }
 
     public Object visit(ASTAddNode node, Object data) {
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	assert(node.jjtGetNumChildren() == 2):
-  	  								"ASTAddNode must have two children";
-  	  	visit((SimpleNode)node.jjtGetChild(0), acc);
-  	  	acc.append(" + ");
-  	  	visit((SimpleNode)node.jjtGetChild(1), acc);
-  	  	return acc;
+        return visitBinary(node, data, " + ");
     }
 
     public Object visit(ASTSubtractNode node, Object data) {
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	assert(node.jjtGetNumChildren() == 2):
-  	  								"ASTSubtractNode must have two children";
-  	  	visit((SimpleNode)node.jjtGetChild(0), acc);
-  	  	acc.append(" - ");
-  	  	visit((SimpleNode)node.jjtGetChild(1), acc);
-  	  	return acc;
+        return visitBinary(node, data, " - ");
     }
 
     public Object visit(ASTMulNode node, Object data) {
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	assert(node.jjtGetNumChildren() == 2):
-  	  								"ASTMulNode must have two children";
-  	  	visit((SimpleNode)node.jjtGetChild(0), acc);
-  	  	acc.append(" * ");
-  	  	visit((SimpleNode)node.jjtGetChild(1), acc);
-  	  	return acc;
+        return visitBinary(node, data, " * ");
     }
 
     public Object visit(ASTDivNode node, Object data) {
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	assert(node.jjtGetNumChildren() == 2):
-  	  								"ASTDivNode must have two children";
-  	  	visit((SimpleNode)node.jjtGetChild(0), acc);
-  	  	acc.append(" / ");
-  	  	visit((SimpleNode)node.jjtGetChild(1), acc);
-  	  	return acc;
+        return visitBinary(node, data, " / ");
     }
 
     public Object visit(ASTModNode node, Object data) {
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	assert(node.jjtGetNumChildren() == 2):
-  	  								"ASTModNode must have two children";
-  	  	visit((SimpleNode)node.jjtGetChild(0), acc);
-  	  	acc.append(" % ");
-  	  	visit((SimpleNode)node.jjtGetChild(1), acc);
-  	  	return acc;
+        return visitBinary(node, data, " % ");
     }
 
     public Object visit(ASTUnaryMinusNode node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 1):
-						"ASTUnaryMinusNode must have one child";
-  	  	StringBuffer acc = (StringBuffer)data;
-        visit((SimpleNode)node.jjtGetChild(0), acc);
-        acc.insert(0, "-");
-        return acc;
+        return visitUnary(node, data, "-");
     }
 
     public Object visit(ASTBitwiseComplNode node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 1):
-						"ASTBitwiseComplNode must have one child";
-  	  	StringBuffer acc = (StringBuffer)data;
-        visit((SimpleNode)node.jjtGetChild(0), acc);
-        acc.insert(0, "~");
-        return acc;
+        return visitUnary(node, data, "~");
     }
 
     public Object visit(ASTNotNode node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 1):
-						"ASTNotNode must have one child";
-  	  	StringBuffer acc = (StringBuffer)data;
-        visit((SimpleNode)node.jjtGetChild(0), acc);
-        acc.insert(0, "!");
-        return acc;
+        return visitUnary(node, data, "!");
     }
 
     public Object visit(ASTNullLiteral node, Object data) {
+        // TODO return acc.append("null")?
         return data;
     }
 
     public Object visit(ASTTrueNode node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 0):
-						"ASTTrueNode must not have any children";
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	acc.append("true");
-  	  	return acc;
+        return getLiteralValue(node, data);
     }
 
     public Object visit(ASTFalseNode node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 0):
-						"ASTFalseNode must not have any children";
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	acc.append("false");
-  	  	return acc;
+        return getLiteralValue(node, data);
     }
 
     public Object visit(ASTIntegerLiteral node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 0):
-						"ASTIntegerLiteralNode must not have any children";
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	try {
-            acc.append(node.value(jc));
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-  	  	return acc;
+        return getLiteralValue(node, data);
     }
 
     public Object visit(ASTFloatLiteral node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 0):
-						"ASTFloatLiteralNode must not have any children";
-  	  	StringBuffer acc = (StringBuffer)data;
-  	  	try {
-            acc.append(node.value(jc));
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-  	  	return acc;
+        return getLiteralValue(node, data);
     }
 
     public Object visit(ASTStringLiteral node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 0):
-						"ASTStringLiteralNode must not have any children";
+        getLiteralValue(node, data);
   	  	StringBuffer acc = (StringBuffer)data;
-  	  	acc.append("\"");
-  	  	try {
-            acc.append(node.value(jc));
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-  	  	acc.append("\"");
+  	  	// TODO check if it is necessary to add quotes
+  	  	acc.insert(0, "\"");
+        acc.append("\"");
         return acc;
     }
 
     public Object visit(ASTExpressionExpression node, Object data) {
   	  	
+        // TODO format .equals() for strings 
         //comment in class ASTExpressionExpression:
         //		represents equality between integers - use .equals() for strings
-        StringBuffer acc = (StringBuffer)data;
-  	  	assert(node.jjtGetNumChildren() == 2):
-  	  								"ASTExpressionExpressionNode must have two children";
-  	  	visit((SimpleNode)node.jjtGetChild(0), acc);
-  	  	acc.append(" == ");
-  	  	visit((SimpleNode)node.jjtGetChild(1), acc);
-  	  	return acc;
+        return visitBinary(node, data, " == ");
     }
 
     public Object visit(ASTStatementExpression node, Object data) {
-        // TODO visit StatementExpression
-        return visitChildren(node, data);
+        // TODO how many children may StatementExpression have?
+        visitUnary(node, data, EMPTY);
+        StringBuffer acc = (StringBuffer)data;
+        acc.append(";");
+        return acc;
     }
 
     public Object visit(ASTReferenceExpression node, Object data) {
-        // TODO visit ReferenceExpression
-        StringBuffer acc = (StringBuffer)data;
-        System.out.println("...........ASTReferenceExpression..." + acc.toString());
-        visit((SimpleNode)node.jjtGetChild(0), acc);
-        return acc;
+        // TODO ReferenceExpression - what does it do?
+        return visitUnary(node, data, EMPTY);
     }
 
     public Object visit(ASTIfStatement node, Object data) {
@@ -390,12 +297,8 @@ public class HtmlGenerator implements ParserVisitor {
     }
 
     public Object visit(ASTReference node, Object data) {
-  	  	assert(node.jjtGetNumChildren() == 0):
-						"ASTReferenceNode must not have any children";
-        StringBuffer acc = (StringBuffer)data;
-        System.out.println("...........ASTReference..." + acc.toString());
-        visit((SimpleNode)node.jjtGetChild(0), acc);
-        return acc;
+        // TODO Reference - what does it do?
+        return visitUnary(node, data, EMPTY);
     }
 
 }
