@@ -3,17 +3,17 @@ package be.peopleware.taglet;
 import java.util.Map;
 
 /**
- * Taglet for custom tag <code>@invar</code>
+ * Taglet-class for custom taglet <code>@invar</code>
  * @author Peopleware n.v.
  */
-public class InvarTag extends TagletRegistrar {
+public class InvarTaglet extends TagletRegistrar {
 
 	/**
-	 * name of the tag.
+	 * name of the taglet.
 	 */
   private static final String name = "invar"; //$NON-NLS-1$
 	/**
-	 * header of the tag - used in generated documentation.
+	 * header of the taglet - used in generated documentation.
 	 */
   private static final String header = "Type Invariants:"; //$NON-NLS-1$
 
@@ -21,15 +21,14 @@ public class InvarTag extends TagletRegistrar {
    * Register this taglet
    * 
    * @param tagletMap
-   * 										the map to register this tag to.
+   * 										the map to register this taglet to.
    */
   public static void register(Map tagletMap) {
-    InvarTag tag = new InvarTag();
-    TagletRegistrar.registerTaglet(tagletMap, tag);
+    TagletRegistrar.registerTaglet(tagletMap, new InvarTaglet());
   }
 
 
-	protected void setTagScopes() {
+	protected void setTagletScopes() {
 	   bInField 			= false;
 	   bInConstructor = false;
 	   bInMethod 			= false;

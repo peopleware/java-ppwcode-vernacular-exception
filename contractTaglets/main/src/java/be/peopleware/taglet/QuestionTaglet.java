@@ -3,17 +3,17 @@ package be.peopleware.taglet;
 import java.util.Map;
 
 /**
- * Taglet for custom tag <code>@question</code>
+ * Taglet-class for custom taglet <code>@question</code>
  * @author Peopleware n.v.
  */
-public class QuestionTag extends TagletRegistrar {
+public class QuestionTaglet extends TagletRegistrar {
 
 	/**
-	 * name of the tag.
+	 * name of the taglet.
 	 */
   private static final String name = "question"; //$NON-NLS-1$
 	/**
-	 * header of the tag - used in generated documentation.
+	 * header of the taglet - used in generated documentation.
 	 */
   private static final String header = "Question:"; //$NON-NLS-1$
 
@@ -21,14 +21,13 @@ public class QuestionTag extends TagletRegistrar {
    * Register this taglet
    * 
    * @param tagletMap
-   * 										the map to register this tag to.
+   * 										the map to register this taglet to.
    */
   public static void register(Map tagletMap) {
-    QuestionTag tag = new QuestionTag();
-    TagletRegistrar.registerTaglet(tagletMap, tag);
+    TagletRegistrar.registerTaglet(tagletMap, new QuestionTaglet());
   }
 
-	protected void setTagScopes() {
+	protected void setTagletScopes() {
 	   bInField 			= true;
 	   bInConstructor = true;
 	   bInMethod 			= true;

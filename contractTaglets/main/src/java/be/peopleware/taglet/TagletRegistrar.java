@@ -8,9 +8,9 @@ import com.sun.tools.doclets.Taglet;
 
 /**
  * Generic Taglet that implements methods from interface Taglet.
- * <br />Other custom taglets can extend this class and override method 
- * {@link #setTagScopes()} to define scopes where this tag is valid.
- * <br />In addition to abstract methods defined in this class, 
+ * <br />Custom taglet can extend this class and override method 
+ * {@link #setTagletScopes()} to define scopes where this taglet is valid.
+ * <br />In addition to implementing abstract methods defined here, 
  * each subclass should also supply method 
  * <code>static void register(Map tagletMap)</code>.
  * For example, the following implementation 
@@ -21,14 +21,13 @@ import com.sun.tools.doclets.Taglet;
  * <dd>   TagletRegistrar.registerTaglet(tagletMap, new Foo());</dd>
  * <dt>}</dt>
  * <dl>
- * </code>.
- * @todo. This tag can be used in any kind of {@link com.sun.javadoc.Doc}. It
- *        is not an inline tag. The text reminds the
- *        developer to perform a task. 
- * 				<br />For example, "@todo Fix this!" would be
- *        shown as:
+ * </code>
+ * @todo  This taglet can be used in any kind of {@link com.sun.javadoc.Doc}. 
+ * 				It is not an inline tag. 
+ * 				The text reminds the developer to perform a task. 
+ * 				<br />For example, <code>@todo Fix this!</code> would be shown as:
  *        <dl>
- * 					<dt><b>To Do: </b></dt>
+ * 					<dt><strong>To Do: </strong></dt>
  * 					<dd>
  *        		<table cellpadding=2 cellspacing=0>
  *        			<tr><td><code>Fix this!</code></td></tr>
@@ -36,47 +35,62 @@ import com.sun.tools.doclets.Taglet;
  * 					</dd>
  * 				</dl>
  * 
+ * @invar    getName()   != null && getName().length()   > 0 
+ * 		    && getHeader() != null && getHeader().length() > 0
+ * 
+ * @mudo test taglet <code>@mudo</code>
+ * 
+ * @idea use code generation tools to generate code for subclasses.
+ * 
+ * @question (to david) maven properties for taglets
+ * 
  * @author      Jan Dockx
  */
 public abstract class TagletRegistrar implements Taglet {
 
   /**
-   * Used to determine if this tag can be used in <strong>field</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>field documentation</strong>.
    * <br />Default value is false.
    */
   protected boolean bInField = false;
   /**
-   * Used to determine if this tag can be used in <strong>constructor</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>constructor documentation</strong>.
    * <br />Default value is false.
    */
   protected boolean bInConstructor = false;
 
   /**
-   * Used to determine if this tag can be used in <strong>method</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>method documentation</strong>.
    * <br />Default value is false.
    */
   protected boolean bInMethod = false;
 
   /**
-   * Used to determine if this tag can be used in <strong>overview</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>overview documentation</strong>.
    * <br />Default value is false.
    */
   protected boolean bInOverview = false;
 
   /**
-   * Used to determine if this tag can be used in <strong>package</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>package documentation</strong>.
    * <br />Default value is false.
    */
   protected boolean bInPackage = false;
 
   /**
-   * Used to determine if this tag can be used in <strong>type</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>type documentation</strong>.
    * <br />Default value is false.
    */
   protected boolean bInType = false;
 
   /**
-   * Used to determine if this tag is an <strong>inline</strong> tag
+   * Used to determine if this taglet is an <strong>inline taglet</strong>.
    * <br />Default value is false.
    */
   protected boolean bInLine = false;
@@ -86,12 +100,14 @@ public abstract class TagletRegistrar implements Taglet {
    * so that we are sure that in superclass this method is called at least once. 
    */
   protected TagletRegistrar() {
-  	setTagScopes();
+  	setTagletScopes();
   }
   
   /**
-   * Defines scopes where this tag can be used by setting boolean variables.
-   * For example, tag <code>todo</code> would have following settings:
+   * Defines scopes where this taglet can be used.
+   * Setting certain boolean variable to true enables usage 
+   * in corresponding documentation scope.
+   * For example, taglet <code>todo</code> would have following settings:
    * <br />
    * <code>
    * <br />bInField 			= true;
@@ -106,12 +122,12 @@ public abstract class TagletRegistrar implements Taglet {
    * <br />By default, all variables are set to false.
    *
    */
-  protected abstract void setTagScopes();
+  protected abstract void setTagletScopes();
   
   /** 
-   * Makes some additional formatting of the content of the tag.
+   * Makes some additional formatting of the content of the taglet.
    * 
-   * @param text content of the tag
+   * @param text content of the taglet
    * @return text - formatted content
    */
   public String parse(String text) {
@@ -119,20 +135,23 @@ public abstract class TagletRegistrar implements Taglet {
   }
   
   /**
-   * Return the name of this custom tag.
+   * Return the name of this custom taglet.
+   * @result != null && result.getLength() > 0
    */
   public abstract String getName();
 
   /**
-   * Return the header of this custom tag - used in generated documentation.
+   * Return the header of this custom taglet - used in generated documentation.
+   * @result != null && result.getLength() > 0
    */
   public abstract String getHeader();
 
   /**
-   * Used to determine if this tag can be used in <strong>field</strong> documentation.
+   * Used to determine if this taglet can be used in 
+   * <strong>field documentation</strong>.
    * If you wish to override default behavior, which always returns false,
    * set the value of variable {@link #bInField} to true
-   * in method {@link #setTagScopes()}
+   * in method {@link #setTagletScopes()}
    * @return value of {@link #bInField}
    */
   public boolean inField() {
@@ -140,10 +159,11 @@ public abstract class TagletRegistrar implements Taglet {
   }
 
   /**
-   * Used to determine if this tag can be used in <strong>constructor</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>constructor documentation</strong>.
    * If you wish to override default behavior, which always returns false,
    * set the value of variable {@link #bInConstructor} to true
-   * in method {@link #setTagScopes()}
+   * in method {@link #setTagletScopes()}
    * @return value of {@link #bInConstructor}
    */
   public boolean inConstructor() {
@@ -151,10 +171,11 @@ public abstract class TagletRegistrar implements Taglet {
   }
 
   /**
-   * Used to determine if this tag can be used in <strong>method</strong> documentation.
+   * Used to determine if this taglet can be used in 
+   * <strong>method documentation</strong>.
    * If you wish to override default behavior, which always returns false,
    * set the value of variable {@link #bInMethod} to true
-   * in method {@link #setTagScopes()}
+   * in method {@link #setTagletScopes()}
    * @return value of {@link #bInMethod}
    */
   public boolean inMethod() {
@@ -162,10 +183,11 @@ public abstract class TagletRegistrar implements Taglet {
   }
 
   /**
-   * Used to determine if this tag can be used in <strong>overview</strong> documentation.
+   * Used to determine if this taglet can be used in 
+   * <strong>overview documentation</strong>.
    * If you wish to override default behavior, which always returns false,
    * set the value of variable {@link #bInOverview} to true
-   * in method {@link #setTagScopes()}
+   * in method {@link #setTagletScopes()}
    * @return value of {@link #bInOverview}
    */
   public boolean inOverview() {
@@ -173,10 +195,11 @@ public abstract class TagletRegistrar implements Taglet {
   }
 
   /**
-   * Used to determine if this tag can be used in <strong>package</strong> documentation.
+   * Used to determine if this taglet can be used in 
+   * <strong>package documentation</strong>.
    * If you wish to override default behavior, which always returns false,
    * set the value of variable {@link #bInPackage} to true
-   * in method {@link #setTagScopes()}
+   * in method {@link #setTagletScopes()}
    * @return value of {@link #bInPackage}
    */
   public boolean inPackage() {
@@ -184,10 +207,11 @@ public abstract class TagletRegistrar implements Taglet {
   }
 
   /**
-   * Used to determine if this tag can be used in <strong>type</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>type documentation</strong>.
    * If you wish to override default behavior, which always returns false,
    * set the value of variable {@link #bInType} to true
-   * in method {@link #setTagScopes()}
+   * in method {@link #setTagletScopes()}
    * @return value of {@link #bInType}
    */
   public boolean inType() {
@@ -195,10 +219,11 @@ public abstract class TagletRegistrar implements Taglet {
   }
 
   /**
-   * Used to determine if this tag can be used in <strong>inline</strong> documentation.
+   * Used to determine if this taglet can be used 
+   * in <strong>inline documentation</strong>.
    * If you wish to override default behavior, which always returns false,
    * set the value of variable {@link #bInLine} to true
-   * in method {@link #setTagScopes()}
+   * in method {@link #setTagletScopes()}
    * @return value of {@link #bInLine}
    */
   public boolean isInlineTag() {
@@ -209,10 +234,11 @@ public abstract class TagletRegistrar implements Taglet {
    * Register this Taglet.
    * 
    * @param tagletMap
-   *          the map to register this tag to.
+   *          the map to register this taglet to.
+   * @pre  tag != null
+   * @post tagletMap.get(tag.getName()) == tag
    */
   public static void registerTaglet(Map tagletMap, Taglet tag) {
-//    TagletRegistrar tag = new TagletRegistrar();
     Taglet t = (Taglet)tagletMap.get(tag.getName());
     if (t != null) {
       tagletMap.remove(tag.getName());
@@ -221,34 +247,43 @@ public abstract class TagletRegistrar implements Taglet {
   }
 
   /**
-   * Given the <code>Tag</code> representation of this custom tag, return its
-   * string representation.
+   * Given the <code>com.sun.javadoc.Tag</code> representation 
+   * of this custom taglet, return its string representation.
    * 
-   * @param tag
-   *          the <code>Tag</code> representation of this custom tag.
+   * @param taglet
+   *          the <code>com.sun.javadoc.Tag</code> representation 
+   * 						of this custom taglet.
+   * 
+   * @result null if taglet == null; valid html formatting code otherwise
    */
-  public String toString(Tag tag) {
-    return toString(new Tag[] {tag}); 
+  public String toString(Tag taglet) {
+    return toString(new Tag[] {taglet}); 
   }
 
   /**
-   * Given an array of <code>Tag</code> s representing this custom tag, return
-   * its string representation.
+   * Given an array of <code>com.sun.javadoc.Tag</code> s representing 
+   * this custom taglet, return its string representation.
    * 
-   * @param tags
-   *          the array of <code>Tag</code> s representing of this custom tag.
+   * @param taglets
+   *     			the array of <code>com.sun.javadoc.Tag</code> s representing 
+   * 					of this custom taglet.
+   * @result null if taglets == null; valid html formatting code otherwise
    */
-  public String toString(Tag[] tags) {
-    if (tags.length == 0) {
+  public String toString(Tag[] taglets) {
+    if (taglets.length == 0) {
       return null;
     }
-    String result = "\n<dl><dt><b>" + getHeader() + "</b></dt><dd>"; //$NON-NLS-1$ //$NON-NLS-2$
-    result += "<table cellpadding=2 cellspacing=0>"; //$NON-NLS-1$
-    for (int i = 0; i < tags.length; i++) {
-      result += "<tr><td><code>"; //$NON-NLS-1$
-      result += tags[i].text();
-      result += "</code></td></tr>"; //$NON-NLS-1$
+    StringBuffer result = new StringBuffer();
+    result.append("\n<dl><dt><b>");//$NON-NLS-1$
+    result.append(getHeader());
+    result.append("</b></dt><dd>");//$NON-NLS-1$
+    result.append("<table cellpadding=2 cellspacing=0>"); //$NON-NLS-1$
+    for (int i = 0; i < taglets.length; i++) {
+      result.append("<tr><td><code>"); //$NON-NLS-1$
+      result.append(taglets[i].text());
+      result.append("</code></td></tr>"); //$NON-NLS-1$
     }
-    return result + "</table></dd></dl>\n"; //$NON-NLS-1$
+    result.append("</table></dd></dl>\n"); //$NON-NLS-1$
+    return result.toString();
   }
 }
