@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project >
+<project xmlns:j="jelly:core" xmlns:u="jelly:util">
+
+  <!-- Generic goal to deploy site, jar and distribution at once -->
+  <goal name="release" prereqs="clean,site:deploy,jar:deploy,dist:deploy" />
+
+  <!-- Set up the jar command so it includes tld, jsp tagfiles, properties
+       and betwixt files -->
+  <preGoal name="jar:jar">
+    <!-- add tlds to taglib jar -->
+    <u:available file="${maven.src.dir}/tld">
+      <echo message="Copying tld files ${maven.src.dir}/tld to ${maven.build.dest}/META-INF" />
+      <copy todir="${maven.build.dest}/META-INF">
+        <fileset dir="${maven.src.dir}/tld">
+          <include name="*.tld" />
+        </fileset>
+      </copy>
+    </u:available>
+    
+    <!-- add jsp-tags to taglib jar -->
+    <u:available file="${maven.src.dir}/jsp-tags">
+      <mkdir dir="${maven.build.dest}/META-INF/tags"/>
+      <echo message="Copying tag files ${maven.src.dir}/jsp-tags to ${maven.build.dest}/META-INF/tags" />
+      <copy todir="${maven.build.dest}/META-INF/tags">
+        <fileset dir="${maven.src.dir}/jsp-tags">
+          <include name="**/*.tagx" />
+          <include name="**/*.tag" />
+          <include name="**/*.usage" />
+        </fileset>
+      </copy>  
+    </u:available>   
+    
+    <!-- copy all properties files for inclusion in jar -->
+    <echo message="Copying properties files ${maven.src.dir}/java to ${maven.build.dest}" />
+    <copy todir="${maven.build.dest}">
+      <fileset dir="${maven.src.dir}/java">
+        <include name="**/*.properties" />
+      </fileset>
+    </copy>
+    
+    <!-- copy all betwixt files for inclusion in jar -->
+    <echo message="Copying betwixt files ${maven.src.dir}/java to ${maven.build.dest}" />
+    <copy todir="${maven.build.dest}">
+      <fileset dir="${maven.src.dir}/java">
+        <include name="**/*.betwixt" />
+      </fileset>
+    </copy> 
+  </preGoal>
+  
+  <!-- Deactive the generation of the tag library documentation if there is no
+       tag library present -->
+  <postGoal name="xdoc:register-reports">
+    <!-- Check if the tld and jsp-tags directories exist -->
+    <u:available file="${maven.src.dir}/tld">
+      <j:set var="taglibDirectoryPresent" value="true"/>
+    </u:available>
+    <u:available file="${maven.src.dir}/jsp-tags">
+      <j:set var="tagsDirectoryPresent" value="true"/>
+    </u:available>
+    
+    <!-- Deregister the generation of tag library documentation if needed -->
+    <j:if test="${taglibDirectoryPresent != 'true' and tagsDirectoryPresent != 'true'}">
+      <attainGoal name="taglib:deregister"/>  
+    </j:if>
+  </postGoal>
+
+</project>
