@@ -4,15 +4,12 @@ package be.peopleware.test_I.java.util;
 import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
-
 import be.peopleware.test_I.CaseProvider;
 
 
 /**
  * @author    David Van Keer
  * @author    PeopleWare n.v.
- * 
- * @todo (dvankeer): add license
  */
 public class _Test_Date extends CaseProvider {
 

@@ -2,16 +2,13 @@ package be.peopleware.test_I.java.lang;
 
 
 import be.peopleware.test_I.CaseProvider;
-
 import java.util.Set;
 import java.util.HashSet;
 
 
 /**
- * @author    Jan Dockx
- * @author    PeopleWare n.v.
- * 
- * @todo (dvankeer): add license
+ * @author Jan Dockx
+ * @author PeopleWare n.v.
  */
 public class _Test_Long extends CaseProvider {
 

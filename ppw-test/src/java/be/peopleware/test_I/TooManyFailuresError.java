@@ -1,17 +1,10 @@
-/*<license>
-  Copyright 2004, PeopleWare n.v.
-  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
-  TO SELECTED PARTIES.
-</license>*/
-
-
 package be.peopleware.test_I;
 
 
+
+
+
 /**
- * Thrown when there are so much errors that it is silly to continue
- * the test. Fix these errors first.
- *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
@@ -31,13 +24,14 @@ public class TooManyFailuresError extends Error {
 
   /*</section>*/
 
-
   /**
-   * The message to show when there are too many errors.
+   * If there are too many errors, we give up.
    */
+  public static final int LIMIT = 20;
+
   public String toString() {
     return "There are more then " //$NON-NLS-1$
-            + Test.UPPER_FAILURE_LIMIT
+            + LIMIT
             + " failures. Aborting."; //$NON-NLS-1$
   }
 

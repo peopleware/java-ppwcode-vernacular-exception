@@ -2,7 +2,6 @@ package be.peopleware.test_I.java.util;
 
 
 import be.peopleware.test_I.CaseProvider;
-
 import java.util.Locale;
 import java.util.Set;
 import java.util.HashSet;
@@ -11,8 +10,6 @@ import java.util.HashSet;
 /**
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
- * 
- * @todo (dvankeer): add license
  */
 public class _Test_Locale extends CaseProvider {
 

@@ -2,7 +2,6 @@ package be.peopleware.test_I.java.lang;
 
 
 import be.peopleware.test_I.CaseProvider;
-
 import java.util.Set;
 import java.util.HashSet;
 
@@ -10,8 +9,6 @@ import java.util.HashSet;
 /**
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
- * 
- * @todo (dvankeer): add license
  */
 public class _Test_Integer extends CaseProvider {
 
@@ -28,6 +25,7 @@ public class _Test_Integer extends CaseProvider {
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
 
   /*</section>*/
+
 
   public Set getCases() {
     Set result = new HashSet();
