@@ -1,4 +1,4 @@
-package be.peopleware.bean_III;
+package be.peopleware.bean_IV;
 
 
 import java.util.HashSet;
@@ -48,6 +48,7 @@ public class _Test_PropertyException extends _Test_LocalizedMessageException {
     test_getLocalizedMessageResourceBundleBasename__();
     test_getLocalizedMessageKeys__();
     test_hasProperties_Object_String_String_Throwable_();
+    test_hasProperties_Class_String_String_Throwable_();
     test_hasSameValues_PropertyException_();
   }
 
@@ -116,7 +117,9 @@ public class _Test_PropertyException extends _Test_LocalizedMessageException {
   protected void validateTypeInvariants(final LocalizedMessageException subject) {
     super.validateTypeInvariants(subject);
     PropertyException pe = (PropertyException)subject;
-    validate(pe.getOrigin() != null);
+    validate(pe.getOriginType() != null);
+    validate((pe.getOrigin() != null) ? (pe.getOriginType() == pe.getOrigin().getClass())
+                                      : true);
     validate(pe.getPropertyName() == null
              || !pe.getPropertyName().equals("")); //$NON-NLS-1$
     validate(pe.getMessage() == null
@@ -211,7 +214,7 @@ public class _Test_PropertyException extends _Test_LocalizedMessageException {
       final PropertyException subject) {
     try {
       String result = subject.getLocalizedMessageResourceBundleBasename();
-      validate(result.equals(subject.getOrigin().getClass().getName()));
+      validate(result.equals(subject.getOriginType().getName()));
       validateTypeInvariants(subject);
     }
     catch (Throwable t) {
@@ -367,6 +370,72 @@ public class _Test_PropertyException extends _Test_LocalizedMessageException {
     }
   }
 
+  protected final void test_hasProperties_Class_String_String_Throwable_() {
+    Iterator iterSubject = getCases().iterator();
+    while (iterSubject.hasNext()) {
+      PropertyException subject =  (PropertyException)iterSubject.next();
+      HashSet types = new HashSet();
+      types.add(Object.class);
+      types.add(PropertyException.class);
+      types.add(null);
+      Iterator iterOriginType = types.iterator();
+      while (iterOriginType.hasNext()) {
+        Class originType = (Class)iterOriginType.next();
+        Iterator iterPropertyName
+            = new _Test_String().getCasesWithNull().iterator();
+        while (iterPropertyName.hasNext()) {
+          String propertyName = (String)iterPropertyName.next();
+          Iterator iterMessage
+              = new _Test_String().getCasesWithNull().iterator();
+          while (iterMessage.hasNext()) {
+            String message = (String)iterMessage.next();
+            HashSet causes = new HashSet();
+            causes.add(null);
+            causes.add(new Throwable());
+            causes.add(subject.getCause());
+            Iterator iterCause = causes.iterator();
+            while (iterCause.hasNext()) {
+              Throwable cause = (Throwable)iterCause.next();
+              test_hasProperties_Object_String_String_Throwable_(subject,
+                                                                 originType,
+                                                                 propertyName,
+                                                                 message,
+                                                                 cause);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  protected void test_hasProperties_Class_String_String_Throwable_(
+      final PropertyException subject,
+      final Class originType,
+      final String propertyName,
+      final String message,
+      final Throwable cause) {
+    try {
+      boolean result = subject.hasProperties(originType,
+                                             propertyName,
+                                             message,
+                                             cause);
+      validate(result
+               == ((subject.getOriginType() == originType)
+                     && ((subject.getPropertyName() == null)
+                          ? propertyName == null
+                          : subject.getPropertyName().equals(propertyName))
+                     && ((subject.getCause() == null)
+                          ? cause == null
+                          : subject.getCause().equals(cause))
+                     && ((subject.getMessage() == null)
+                          ? message == null
+                          : subject.getMessage().equals(message))));
+      validateTypeInvariants(subject);
+    }
+    catch (Throwable t) {
+      unexpectedThrowable(t);
+    }
+  }
   /* </section> */
 
 }

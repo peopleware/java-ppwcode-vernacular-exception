@@ -1,4 +1,4 @@
-package be.peopleware.bean_III;
+package be.peopleware.bean_IV;
 
 
 import be.peopleware.exception_I.TechnicalException;
@@ -7,6 +7,9 @@ import be.peopleware.exception_I.TechnicalException;
 /**
  * <p>This exception is thrown when you try to instantiate a Bean, and it
  *   failed.</p>
+ * 
+ * <p>Not really deprecated yet, but consider using a {@link PropertyException}
+ *   with {@link PropertyException#getOrigin()} <code>= null</code>.
  *
  * @invar     getBeanType() != null;
  * @invar     (getMessage() == null) || !getMessage().equals("");

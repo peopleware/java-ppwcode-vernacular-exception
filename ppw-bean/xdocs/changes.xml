@@ -1,4 +1,9 @@
 <document>
+
+  <!-- see http://maven.apache.org/reference/plugins/changes/ for documentation -->
+  <!-- There are four valid values for action type:  add, fix, remove,  update. -->
+
+
   <properties>
     <title>Changes</title>
     <author email="dvankeer@peopleware.be">David Van Keer</author>
@@ -6,6 +11,16 @@
   </properties>
   <body>
  
+    <release version="IV v1.0.0/1.0" date="2005-03-08"
+    			description="PropertyException.getOrigin() can be null">
+      <action dev="jand" type="update">
+      	PropertyExceptions no longer have a mandatory origin. This is needed to be able
+      	to throw PropertyExceptions during bean initialization. This change is
+      	incompatible, because an existing type invariant is removed.
+      	The BeanInstantiationException is not really deprecated, but maybe it should be.
+      </action>              
+    </release>
+
     <release version="III v1.0.0/1.0" date="2005-03-06"
     			description="Moved out ...persistent.">
       <action dev="jand" type="remove">
@@ -19,13 +34,13 @@
       	Deprecated be.peopleware.bean_II.Associations. This functionality is
       	now in Toryt.
       </action>              
-      <action dev="jand" type="addition">
+      <action dev="jand" type="add">
       	Added AsynchronousCrudFactory and abstract subtype.
       </action>              
     </release>
 
     <release version="II v1.1.0/2.0" date="2005-01-04" description="Extension">
-      <action dev="jand" type="addition">
+      <action dev="jand" type="add">
       	Added method reportsOn to PropertyException and CompoundPropertyException.
       </action>              
     </release>

@@ -1,4 +1,4 @@
-package be.peopleware.bean_III;
+package be.peopleware.bean_IV;
 
 
 import be.peopleware.exception_I.LocalizedMessageException;
@@ -9,7 +9,11 @@ import be.peopleware.exception_I.LocalizedMessageException;
  *   about the property for which they occured. They are usually thrown
  *   by a property setter during validation. If the property name is
  *   <code>null</code>, it means that the exception could not be
- *   attributed to a specific property of {@link #getOrigin()}.</p>
+ *   attributed to a specific property of {@link #getOrigin()}.
+ *   <em>The <code>origin</code> should not be <code>null</code></em>,
+ *   except when the exception is thrown during construction of an
+ *   object, that could not be completed. In that case, the type
+ *   should be filled out.</p>
  * <p>Localized messages are sougth
  *   in a <kbd>*.properties</kbd> file for the class of the origin. The
  *   properties files should be in the directory next to the bean class, with
@@ -23,7 +27,8 @@ import be.peopleware.exception_I.LocalizedMessageException;
  *         <var>{@link #getMessage()}</var></code>.
  *   See {@link #getLocalizedMessageKeys()}.</p>
  *
- * @invar     getOrigin() != null;
+ * @invar     getOriginType() != null;
+ * @invar     (getOrigin() != null)  ==> getOriginType() == getOrigin().getClass();
  * @invar     (getPropertyName() == null) || ! getPropertyName().equals("");
  * @invar     (getMessage() == null) || ! getMessage().equals("");
  *
@@ -71,6 +76,7 @@ public class PropertyException extends LocalizedMessageException {
    * @pre       (message != null) ==> ! message.equals("");
    *
    * @post      new.getOrigin() == origin;
+   * @post      new.getOriginType() == origin.getClass();
    * @post      (propertyName != null)
    *                ==> new.getpropertyName().equals(propertyName);
    * @post      (propertyName == null) ==> new.getpropertyName() == null;
@@ -94,10 +100,58 @@ public class PropertyException extends LocalizedMessageException {
     assert (message == null) || (!message.equals("")) //$NON-NLS-1$
         : "message name cannot be the empty string"; //$NON-NLS-1$
     $origin = origin;
+    $originType = origin.getClass();
     $propertyName = propertyName;
   }
 
-  /*</construction;>*/
+
+  /**
+   * @param     originType
+   *            The bean that has thrown this exception.
+   * @param     propertyName
+   *            The name of the property of which the setter has thrown
+   *            this exception because parameter validation failed.
+   * @param     message
+   *            The message that describes the exceptional circumstance.
+   * @param     cause
+   *            The exception that occured, causing this exception to be
+   *            thrown, if that is the case.
+   *
+   * @pre       originType != null;
+   * @pre       (propertyName != null) ==> ! propertyName.equals("");
+   * @pre       (message != null) ==> ! message.equals("");
+   *
+   * @post      new.getOriginType() == origin;
+   * @post      new.getOrigin() == null;
+   * @post      (propertyName != null)
+   *                ==> new.getpropertyName().equals(propertyName);
+   * @post      (propertyName == null) ==> new.getpropertyName() == null;
+   * @post      (message != null) ==> new.getMessage().equals(message);
+   * @post      (message == null) ==> new.getMessage() == null;
+   * @post      new.getCause() == cause;
+   * @post      new.getLocalizedMessageResourceBundleLoadStrategy().getClass()
+   *                == DefaultResourceBundleLoadStrategy.class;
+   *
+   * @idea (jand): check effectively that <code>propertyName</code> is
+   *               a property of <code>origin</code>
+   * 
+   * @since IV
+   */
+  public PropertyException(final Class originType,
+                           final String propertyName,
+                           final String message,
+                           final Throwable cause) {
+    super(message, cause);
+    assert originType != null : "@pre originType != null;"; //$NON-NLS-1$
+    assert (propertyName == null) || (!propertyName.equals("")) //$NON-NLS-1$
+        : "property name cannot be the empty string"; //$NON-NLS-1$
+    assert (message == null) || (!message.equals("")) //$NON-NLS-1$
+        : "message name cannot be the empty string"; //$NON-NLS-1$
+    $originType = originType;
+    $propertyName = propertyName;
+  }
+
+  /*</construction>*/
 
 
 
@@ -114,6 +168,24 @@ public class PropertyException extends LocalizedMessageException {
   }
 
   private Object $origin;
+
+  /*</property>*/
+
+
+
+  /*<property name="originType">*/
+  //------------------------------------------------------------------
+
+  /**
+   * The type of the bean that has thrown this exception.
+   *
+   * @basic
+   */
+  public final Class getOriginType() {
+    return $originType;
+  }
+
+  private Class $originType;
 
   /*</property>*/
 
@@ -142,10 +214,10 @@ public class PropertyException extends LocalizedMessageException {
    * This implementation returns the fully qualified class name of the
    * {@link #getOrigin() origin}, which cannot be <code>null</code>.
    *
-   * @return    getOrigin().getClass().getName();
+   * @return    getOriginType().getName();
    */
   public final String getLocalizedMessageResourceBundleBasename() {
-    return getOrigin().getClass().getName();
+    return getOriginType().getName();
   }
 
   /*</property>*/
@@ -157,17 +229,19 @@ public class PropertyException extends LocalizedMessageException {
    *            The object to compare the values of this with.
    * @return    boolean
    *            (other != null)
-   *                 && hasProperties(other.getOrigin(),
+   *                 && hasProperties(other.getOriginType(),
    *                                  other.getPropertyName(),
    *                                  other.getMessage(),
-   *                                  other.getCause());
+   *                                  other.getCause())
+   *                 && getOrigin() == other.getOrigin();
    */
   public boolean hasSameValues(final PropertyException other) {
     return (other != null)
-             && hasProperties(other.getOrigin(),
+             && hasProperties(other.getOriginType(),
                               other.getPropertyName(),
                               other.getMessage(),
-                              other.getCause());
+                              other.getCause())
+             && getOrigin() == other.getOrigin();
   }
 
 
@@ -210,10 +284,50 @@ public class PropertyException extends LocalizedMessageException {
   }
   
   /**
+   * @param     originType
+   *            The type of origin to compare the one of this Exception with.
+   * @param     propertyName
+   *            The  propertyName to compare the one of this Exception with.
+   * @param     message
+   *            The message to compare the one of this Exception with..
+   * @param     cause
+   *            The cause to compare the one of this Exception with.
+   * @return    boolean
+   *            (getOriginType() == originType)
+   *                && ((getPropertyName() == null)
+   *                      ? propertyName == null
+   *                      : getPropertyName().equals(propertyName))
+   *                && ((getCause() == null)
+   *                      ? cause == null
+   *                      : getCause().equals(cause))
+   *                && ((getMessage() == null)
+   *                      ? message == null
+   *                      : getMessage().equals(message));
+   * 
+   * @since IV
+   */
+  public boolean hasProperties(final Class originType,
+                               final String propertyName,
+                               final String message,
+                               final Throwable cause) {
+    return (getOriginType() == originType)
+              && ((getPropertyName() == null)
+                    ? propertyName == null
+                    : getPropertyName().equals(propertyName))
+              && ((getCause() == null)
+                    ? cause == null
+                    : getCause().equals(cause))
+              && ((getMessage() == null)
+                    ? message == null
+                    : getMessage().equals(message));
+  }
+  
+  /**
    * Does this exception, in some way, report about
    * an exceptional condition concerning <code>origin</code>,
    * <code>propertyName</code>, with <code>message</code>
-   * and <code>cases</code>.
+   * and <code>cause</code>.
+   * 
    * This is the non-deterministic version of
    * {@link #hasProperties(Object, String, String, Throwable)}, which
    * can be overwritten by subclasses.
@@ -231,7 +345,33 @@ public class PropertyException extends LocalizedMessageException {
                             final Throwable cause) {
     return hasProperties(origin, propertyName, message, cause);
   }
-  
+
+  /**
+   * Does this exception, in some way, report about
+   * an exceptional condition concerning <code>originType</code>,
+   * <code>propertyName</code>, with <code>message</code>
+   * and <code>cases</code>.
+   * 
+   * This is the non-deterministic version of
+   * {@link #hasProperties(Class, String, String, Throwable)}, which
+   * can be overwritten by subclasses.
+   * The default implementation calls
+   * {@link #hasProperties(Class, String, String, Throwable)}.
+   * 
+   * @protected.result hasProperties(originType,
+   *                                 propertyName,
+   *                                 message,
+   *                                 cause);
+   * 
+   * @since IV
+   */
+  public boolean reportsOn(final Class originType,
+                            final String propertyName,
+                            final String message,
+                            final Throwable cause) {
+    return hasProperties(originType, propertyName, message, cause);
+  }
+
 
 
 
@@ -244,15 +384,15 @@ public class PropertyException extends LocalizedMessageException {
 
   /**
    * The keys that are tried consecutively are intended for use in
-   * a properties file that comes with the class of the
-   * {@link #getOrigin() origin} of the exception, with a fall-back
+   * a properties file that comes with the
+   * {@link #getOriginType() origin type} of the exception, with a fall-back
    * to a properties file that comes with the class of the exception.
    * The message that is given in the constructor (the
    * {@link #getMessage()} non-localized message) is intended as the
    * final discriminating key in a resource bundle.
    *
    * <p>The first key, for use in the properties file that comes with
-   *   the {@link #getOrigin() origin} of the exception, has the form
+   *   the {@link #getOriginType() origin type} of the exception, has the form
    *   <code>getClass().getName() + "." + getPropertyName()
    *         + "." + getMessage()</code>.
    *   If the property name is <code>null</code>, the form is

@@ -1,4 +1,4 @@
-package be.peopleware.bean_III;
+package be.peopleware.bean_IV;
 
 
 import java.util.Collections;
@@ -110,6 +110,41 @@ public final class CompoundPropertyException extends PropertyException {
     super(origin, propertyName, message, cause);
   }
 
+  /**
+   * @param     originType
+   *            The type of bean that has thrown this exception during initialization.
+   * @param     propertyName
+   *            The name of the property of which the setter has thrown
+   *            this exception because parameter validation failed.
+   * @param     message
+   *            The message that describes the exceptional circumstance.
+   * @param     cause
+   *            The exception that occured, causing this exception to be
+   *            thrown, if that is the case.
+   *
+   * @pre       origin != null;
+   * @pre       (propertyName != null) ==> ! propertyName.equals("");
+   * @pre       (message != null) ==> ! message.equals("");
+   * @post      new.getOriginType() == originType;
+   * @post      new.getOrigin() == null;
+   * @post      (propertyName != null) ==>
+   *                new.getpropertyName().equals(propertyName);
+   * @post      (propertyName == null) ==> new.getpropertyName() == null;
+   * @post      (message != null) ==> new.getMessage().equals(message);
+   * @post      (message == null) ==> new.getMessage() == null;
+   * @post      new.getCause() == cause ;
+   * @post      new.getElementExceptions().isEmpty();
+   * @post      !new.isClosed();
+   * 
+   * @since IV
+   */
+  public CompoundPropertyException(final Class originType,
+                                   final String propertyName,
+                                   final String message,
+                                   final Throwable cause) {
+    super(originType, propertyName, message, cause);
+  }
+
   /*</construction;>*/
 
 
@@ -197,6 +232,9 @@ public final class CompoundPropertyException extends PropertyException {
    * @throws    IllegalArgumentException
    *            (getPropertyName() != null)
    *            && (! getPropertyName().equals(pExc.getPropertyName()));
+   * @throws    IllegalArgumentException
+   *            Same origin or origin type!
+   * @mudo (jand) implement and document this last exception!
    */
   public final void addElementException(final PropertyException pExc)
       throws IllegalStateException, IllegalArgumentException {
@@ -356,6 +394,38 @@ public final class CompoundPropertyException extends PropertyException {
     return result;
   }
 
+
+  /**
+   * Checks whether there is a property exception with these parameters
+   * in this compounds element exceptions.
+   *
+   * @result    getElementExceptions().get(propertyName) != null;
+   * @result    !getElementExceptions().get(propertyName).isEmpty();
+   * @result    (exists PropertyException pe;
+   *                getElementExceptions().get(propertyName).contains(pe);
+   *                (pe.hasProperties(originType, propertyName, message, cause)));
+   * 
+   * @since IV
+   */
+  public boolean contains(final Class originType,
+                          final String propertyName,
+                          final String message,
+                          final Throwable cause) {
+    boolean result = false;
+    Set propertySet = (Set)$elementExceptions.get(propertyName);
+    if (propertySet != null) {
+      assert (propertySet != null) && (!propertySet.isEmpty());
+      Iterator pexcs = propertySet.iterator();
+      while (pexcs.hasNext()) {
+        PropertyException candidate = (PropertyException)pexcs.next();
+        if (candidate.hasProperties(originType, propertyName, message, cause)) {
+          result = true;
+        }
+      }
+    }
+    return result;
+  }
+
   /**
    * This method throws this exception if it is not empty.
    * If this is not empty, this is closed. If the number of element
@@ -420,4 +490,19 @@ public final class CompoundPropertyException extends PropertyException {
     return contains(origin, propertyName, message, cause);
   }
   
+  /**
+   * @result contains(final Object origin,
+   *                  final String propertyName,
+   *                  final String message,
+   *                  final Throwable cause);
+   * 
+   * @since IV
+   */
+  public final boolean reportsOn(final Class originType,
+                            final String propertyName,
+                            final String message,
+                            final Throwable cause) {
+    return contains(originType, propertyName, message, cause);
+  }
+ 
 }

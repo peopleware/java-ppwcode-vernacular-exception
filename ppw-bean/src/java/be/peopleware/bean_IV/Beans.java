@@ -1,4 +1,4 @@
-package be.peopleware.bean_III;
+package be.peopleware.bean_IV;
 
 
 import java.beans.BeanInfo;
