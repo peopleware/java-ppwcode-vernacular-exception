@@ -33,6 +33,6 @@ Common              Common
 Library             Library
 Services            Services
 VisualisationClient VisualisationClient
-All                 CVSROOT Documents PocketPCClient Test WebClient Common Library Services VisualisationClient
+All -a              CVSROOT Documents PocketPCClient Test WebClient Common Library Services VisualisationClient
 
 
