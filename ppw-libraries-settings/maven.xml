@@ -32,6 +32,14 @@
       <fileset dir="${maven.src.dir}/java">
         <include name="**/*.properties" />
       </fileset>
+    </copy>
+    
+    <!-- copy all betwixt files for inclusion in jar -->
+    <echo message="copying betwixt files ${maven.src.dir}/java to ${maven.build.dest}" />
+    <copy todir="${maven.build.dest}">
+      <fileset dir="${maven.src.dir}/java">
+        <include name="**/*.betwixt" />
+      </fileset>
     </copy> 
   </preGoal>
 
