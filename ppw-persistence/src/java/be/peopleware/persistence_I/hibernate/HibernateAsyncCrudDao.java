@@ -453,7 +453,8 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     if (sqlExc != null) {
       if (sqlExc.getMessage()
                 .indexOf("Duplicate key or integrity constraint violation,  "
-                         + "message from server: \"Duplicate entry") >= 0) {
+                         + "message from server: \"Duplicate entry") >= 0 
+          || sqlExc.getMessage().indexOf("Duplicate entry") >= 0 ) {
         // WATCH OUT: SQL Error message contains 'dual space' after ','.
         assert pb != null;
         CompoundPropertyException cpExc = new CompoundPropertyException(pb,
