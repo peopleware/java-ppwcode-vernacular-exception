@@ -20,7 +20,7 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
  *
  * @author    Jan Dockx
  * @author    David Van Keer
- * @author    René Clerckx
+ * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
@@ -70,6 +70,8 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
   /**
    * Makes some additional formatting of the content of the taglet.
    * 
+   * @mudo clean up documentation below
+   * 
    * Error messages are printed when we detect problems.
    * The text of this tag is a boolean Java expression, that ends in a semi-column (;),
    * optionally followed by explanatory text. The semi-column is mandatory.
@@ -86,45 +88,46 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    *            content of the taglet
    * @return    text - formatted content
    * 
-   * @pre				text.indexOf('\u003B') > 0; semi-column is mandatory
+   * @post  (text.indexOf('\u003B') < 0) ==> error message on System.err;
    * 
    * @todo 	make separate class for keywords 
    * 						to incorporate parsing and formatting functionality.
    */
   public String parse(String text) {
-  	String expr = null;
-  	String description = null;
-  	int posSemiColumn = text.indexOf(';');
-  	if (posSemiColumn >= 0) {
-  		expr = text.substring(0, posSemiColumn);
-  		description = text.substring(posSemiColumn);
-  	}
-  	else {
-  		signalParseError("The semi-column is mandatory."); //$NON-NLS-1$
-			expr = text;
-			description = "";
-  	}
-
-  	String result = expr;
-  	for (int i = 0; i < $allKeywords.length; i++) {
-  		result = processKeyword(result, $allKeywords[i]);
-  	}
-  	
-  	result += description;
-    
-  	return result;
+    	String expr = null;
+    	String description = null;
+    	int posSemiColumn = text.indexOf(';');
+    	if (posSemiColumn >= 0) {
+    		expr = "<code>" //$NON-NLS-1$
+             + text.substring(0, posSemiColumn)
+    		       + "</code>"; //$NON-NLS-1$
+    		description = text.substring(posSemiColumn);
+    	}
+    	else {
+    		signalParseError(text + " -- The semi-column is mandatory in a contract text."); //$NON-NLS-1$
+        // MUDO give line number in error message
+  			expr = ""; //$NON-NLS-1$
+  			description = text;
+    	}
+  
+    	String result = expr;
+    	for (int i = 0; i < $allKeywords.length; i++) {
+    		result = processKeyword(result, $allKeywords[i]);
+    	}
+    	
+    	result += description;
+      
+    	return result;
   }
 
   /**
-   * Prints error messages to error console
+   * Prints error messages to error console.
    * 
    * @param message
    * 						error message
-   * 
-   * @question should we do i18n of error messages? 
    */
   private void signalParseError(String message) {
-  	System.err.println(message);
+    System.err.println(message);
   }
   
   /**
@@ -136,12 +139,12 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    * @return formatted token
    */
   private String makeupKeyword(String keyword) {
-  	StringBuffer result = new StringBuffer();
-  	result.append("<span style='font: bold; background-color:"); //$NON-NLS-1$
-  	result.append(getKeywordColor(keyword)).append("'>"); //$NON-NLS-1$
-  	result.append(keyword);
-  	result.append("</span>"); //$NON-NLS-1$
-  	return result.toString();
+    	StringBuffer result = new StringBuffer();
+    	result.append("<span style='font: bold; background-color:"); //$NON-NLS-1$
+    	result.append(getKeywordColor(keyword)).append("'>"); //$NON-NLS-1$
+    	result.append(keyword);
+    	result.append("</span>"); //$NON-NLS-1$
+    	return result.toString();
   }
   
   /**
@@ -158,7 +161,7 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
 
   	//Add leading and trailing spaces. We can now safely 
   	// 	retrieve chars from the left and from the right side of the keyword.
-  	String expr = " " + origExpr + " ";
+  	String expr = " " + origExpr + " "; //$NON-NLS-1$ //$NON-NLS-2$
   	StringBuffer result = new StringBuffer();
   	int notParsedFrom = 0;
 		int keywordBegin = expr.indexOf(keyword);
@@ -196,8 +199,8 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
   }
   
   private String getKeywordColor(String keyword) {
-  	//make them all yellow for the time being
-  	return "yellow"; //$NON-NLS-1$
+    	//make them all yellow for the time being
+    	return "yellow"; //$NON-NLS-1$
   }
   
   /**
@@ -214,6 +217,7 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    * @question should we color keyword if it's not allowed in the taglet?
    */
   public boolean canContainKeyword(String keyword) {
-  	return $allowedKeywords.contains(keyword);
+  	  return $allowedKeywords.contains(keyword);
   }
+
 }

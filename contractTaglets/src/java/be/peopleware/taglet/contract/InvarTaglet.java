@@ -6,29 +6,23 @@ package be.peopleware.taglet.contract;
  *
  * @author    Jan Dockx
  * @author    David Van Keer
- * @author    René Clerckx
+ * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
 public class InvarTaglet extends AbstractContractTaglet {
 
   public String getName() {
-    return AbstractContractTaglet.TAGLET_INVAR;
+    return "invar"; //$NON-NLS-1$
   }
 
   public String getHeader() {
     return "Type Invariants:"; //$NON-NLS-1$
   }
 
-
   public InvarTaglet() {
-    $inField       = false;
-    $inConstructor = false;
-    $inMethod      = false;
-    $inOverview    = false;
     $inPackage     = true;
     $inType        = true;
-    
     $allowedKeywords.add(AbstractContractTaglet.KEYWORD_NEW);
     $allowedKeywords.add(AbstractContractTaglet.KEYWORD_FORALL);
   }
