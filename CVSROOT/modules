@@ -25,4 +25,7 @@
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
 
+simpleAliasModule -a ppw-i18n
+aliasModule -a simpleAliasModule ppw-libraries/ppw-test
+
 
