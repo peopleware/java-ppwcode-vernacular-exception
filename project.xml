@@ -4,7 +4,7 @@
   <extend>ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
   <name>Exceptions Library</name>
-  <groupId>ppw-exception-I</groupId>
+  <groupId>ppw-libraries</groupId>
   <artifactId>ppw-exception-I</artifactId>
   <shortDescription>Support for Exceptions, including i18n.</shortDescription>
   <description>Support for exceptions. Since Java 1.4, exceptions offer a 
