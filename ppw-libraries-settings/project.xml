@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-project-settings/pom.css"?>
+<project>
+  <extend>../ppw-project-settings/project.xml</extend>
+  <artifactId>ppw-libraries</artifactId>
+  <groupId>ppw-libraries</groupId>
+  <url>http://www.peopleware.be/projects/JavaLibraries/${pom.artifactId}/</url>
+  <siteDirectory>/ppw/projects/JavaLibraries/public_html/${pom.artifactId}/</siteDirectory>
+  <distributionDirectory>/ppw/projects/JavaLibraries/public_html/maven-repository/${pom.groupId}/jars</distributionDirectory>
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:${pom.artifactId}</developerConnection>
+  </repository>
+</project>
+
