@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.1.0/1.0" date="2005-01-04" description="Hibernate">
+      <action dev="jand" type="add">
+      	Persistency support for Hibernate.
+      </action>              
+    </release>
+
     <release version="I v1.0.0/1.0" date="2004-12-20" description="First release">
       <action dev="jand" type="add">
       	First release with this version number scheme.
