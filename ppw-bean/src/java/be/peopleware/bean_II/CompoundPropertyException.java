@@ -407,4 +407,17 @@ public final class CompoundPropertyException extends PropertyException {
     }
   }
   
+  /**
+   * @result contains(final Object origin,
+   *                  final String propertyName,
+   *                  final String message,
+   *                  final Throwable cause);
+   */
+  public final boolean reportsOn(final Object origin,
+                            final String propertyName,
+                            final String message,
+                            final Throwable cause) {
+    return contains(origin, propertyName, message, cause);
+  }
+  
 }

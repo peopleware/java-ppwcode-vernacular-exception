@@ -208,6 +208,30 @@ public class PropertyException extends LocalizedMessageException {
                     ? message == null
                     : getMessage().equals(message));
   }
+  
+  /**
+   * Does this exception, in some way, report about
+   * an exceptional condition concerning <code>origin</code>,
+   * <code>propertyName</code>, with <code>message</code>
+   * and <code>cases</code>.
+   * This is the non-deterministic version of
+   * {@link #hasProperties(Object, String, String, Throwable)}, which
+   * can be overwritten by subclasses.
+   * The default implementation calls
+   * {@link #hasProperties(Object, String, String, Throwable)}.
+   * 
+   * @protected.result hasProperties(origin,
+   *                                 propertyName,
+   *                                 message,
+   *                                 cause);
+   */
+  public boolean reportsOn(final Object origin,
+                            final String propertyName,
+                            final String message,
+                            final Throwable cause) {
+    return hasProperties(origin, propertyName, message, cause);
+  }
+  
 
 
 

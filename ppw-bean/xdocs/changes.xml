@@ -6,6 +6,12 @@
   </properties>
   <body>
  
+    <release version="II v1.1.0/2.0" date="2005-01-04" description="Extension">
+      <action dev="jand" type="addition">
+      	Added method reportsOn to PropertyException and CompoundPropertyException.
+      </action>              
+    </release>
+    
     <release version="I v1.1.1/1.0" date="2005-01-04" description="Bugfix release">
       <action dev="dvankeer" type="fix">
       	Worked around the hibernate caching issue. Check if returned type does
