@@ -13,7 +13,7 @@ import javax.servlet.jsp.jstl.fmt.LocalizationContext;
 
 import org.apache.taglibs.standard.tag.common.fmt.SetLocaleSupport;
 
-import be.peopleware.bean_I.Beans;
+import be.peopleware.bean_IV.Beans;
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
 

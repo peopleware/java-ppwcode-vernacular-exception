@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
-  <extend>ppw-libraries-settings/project.xml</extend>
+  <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
   <name>Java Server Pages Library</name>
   <groupId>ppw-libraries</groupId>
@@ -9,7 +9,7 @@
   <shortDescription>Support for Java Server Pages.</shortDescription>
   <description>Support for Java Server Pages.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.1-1.0</currentVersion>
+  <currentVersion>1.0.2-1.0</currentVersion>
   <package>be.peopleware.jsp_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
@@ -71,8 +71,8 @@
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
-      <artifactId>ppw-bean-I</artifactId>
-      <version>1.1.0-1.0</version>
+      <artifactId>ppw-bean-IV</artifactId>
+      <version>1.0.1-1.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -85,6 +85,12 @@
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-i18n-I</artifactId>
       <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-persistence-I</artifactId>
+      <version>SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <dependency>

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Locale;
 import org.displaytag.decorator.TableDecorator;
 
-import be.peopleware.bean_I.persistent.PersistentBean;
+import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.jsp_I.tag.Functions;
 
 

@@ -7,7 +7,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import be.peopleware.bean_I.PropertyException;
+import be.peopleware.bean_IV.PropertyException;
 import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
 
 import java.io.IOException;
