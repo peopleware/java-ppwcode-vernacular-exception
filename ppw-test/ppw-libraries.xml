@@ -28,7 +28,7 @@
   <distributionDirectory>/ppw/projects/JavaLibraries/public_html/download/${pom.groupId}/jars/</distributionDirectory>
   <!-- where is the source -->
   <repository>
-    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:${pom.artifactId}</developerConnection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:${pom.artifactId}</developerConnection>
 <!--
     <url>http://cvs.peopleware.be/viewcvs/projects/JavaLibraries/${pom.artifactId}/</url>
 -->
