@@ -2,14 +2,57 @@
   <head>
     <title>About PeopleWare Contract Taglets</title>
   </head>
-  <body> The <dfn>PeopleWare Contract Taglets</dfn> consist of the
-    contract taglets. At this moment, the following taglets are used: <ul>
-      <li>invar</li>
-      <li>basic</li>
-      <li>pre</li>
-      <li>post</li>
-      <li>result</li>
+  <body>
+    <p>The <dfn>PeopleWare ContractTaglets Module</dfn>
+	    is a module that allows the user to create his own handlers for
+	    custom contract taglets in java source code.
+	</p>
+	<p>
+	    At this moment, the following contract taglets are used: 
+	    <ul>
+			<li>invar</li>
+			<li>basic</li>
+			<li>pre</li>
+			<li>post</li>
+			<li>result</li>
+    	</ul>
+    </p>
+    <p>The module contains one abstract generic class:</p>
+    <ul>
+      <li>{@link be.peopleware.taglet.contract.AbstractContractTaglet}</li>
     </ul>
+    <p>Abstract class for run-time registration of taglets in this package:</p>
+    <ul>
+      <li>{@link be.peopleware.taglet.contract.Registrar}</li>
+    </ul>
+    <p>And five concrete classes - one for each taglet:</p>
+    <ul>
+      <li>{@link be.peopleware.taglet.contract.BasicTaglet}</li>
+      <li>{@link be.peopleware.taglet.contract.InvarTaglet}</li>
+      <li>{@link be.peopleware.taglet.contract.PostTaglet}</li>
+      <li>{@link be.peopleware.taglet.contract.PreTaglet}</li>
+      <li>{@link be.peopleware.taglet.contract.ResultTaglet}</li>
+    </ul>
+    <p>
+    To create new contract taglet you should, on top of other things you do 
+    when you create custom taglet, add few lines to (default) constructor.
+    </p>
+    For example, constructor in the class 
+	{@link be.peopleware.taglet.contract.ResultTaglet} have the following 
+	additional lines of code:
+<pre>
+	$allowedKeywords.add(AbstractContractTaglet.KEYWORD_RESULT);
+    $allowedKeywords.add(AbstractContractTaglet.KEYWORD_NEW);
+    $allowedKeywords.add(AbstractContractTaglet.KEYWORD_FORALL);
+</pre>
+	By doing this we allow using following in our taglet
+	<var>result</var>,
+	<var>new</var> and
+	<var>forall</var>.
+	
+		 
+    <br />{@link be.peopleware.taglet.contract.AbstractContractTaglet}
+      
     MUDO : MORE EXPLANATION NEEDED
     
   </body>
