@@ -6,6 +6,18 @@
   </properties>
   <body>
 
+    <release version="I v1.4.0/2.3" date="2005-04-01" description="Extension">
+      <action dev="nsmeets" type="add">
+      	Added Period.
+      </action>              
+    </release>
+
+    <release version="I v1.3.0/2.3" date="2005-03-31" description="Extension">
+      <action dev="nsmeets" type="add">
+      	Added NationalNumber.
+      </action>              
+    </release>
+
     <release version="I v1.2.1/2.3" date="2005-03-08" description="ppw-bean-III">
       <action dev="jand" type="update">
       	Version that supports ppw-bean-IV.
