@@ -1,0 +1,116 @@
+digraph PeopleWare_Libraries_Dependencies {
+
+  graph [	fontname = "Helvetica-Oblique",
+		fontsize = 36,
+		label = "PeopleWare Libraries Dependencies, 2005-01-06",
+		size = "10,50"];
+
+  nslimit=10.0;
+  mclimit=10.0;
+
+  node [shape = rectangle, fillcolor=aquamarine2,
+        fontname = "Helvetica", fontsize = 11];
+  
+  edge [];
+  /* optional = blue
+     only needed for the tests = chocolate */
+
+
+  subgraph cluster_PPW_Libraries {
+  
+    color = aquamarine4;
+    fontcolor = aquamarine4;
+    label = "Peopleware Java Libraries";
+                          
+    node [style=filled, fillcolor=aquamarine2];
+    edge [style=bold];
+  
+    ppw_test_I          [label="ppw-test I\nv1.0.1/1.0"];
+    ppw_i18n_I          [label="ppw-i18n I\nv1.0.0/1.0"];
+    ppw_exc_I           [label="ppw-exception I\nv1.0.0/1.0"];
+    ppw_bean_I          [label="ppw-bean I\nv1.0.0/1.0"];
+    ppw_value_I         [label="ppw-value I\nv1.1.0/2.0"];
+    ppw_servlet_I       [label="ppw-servlet I\nv1.0.0/1.0"];
+    ppw_jsp_I           [label="ppw-jsp I\nv1.0.0/1.0"];
+    ppw_struts_I        [label="ppw-struts I\nv1.0.1/1.0"];
+  
+    ppw_i18n_I        -> ppw_test_I [color=chocolate];
+    
+    ppw_exc_I         -> {ppw_i18n_I};
+    ppw_exc_I         -> ppw_test_I [color=chocolate];
+    
+    ppw_bean_I        -> ppw_exc_I;
+    ppw_bean_I        -> {ppw_test_I; ppw_i18n_I} [color=chocolate];
+    
+    ppw_value_I       -> {ppw_exc_I};
+    ppw_value_I       -> ppw_bean_I [color=blue];
+    ppw_value_I       -> {ppw_test_I; ppw_i18n_I} [color=chocolate];
+    
+    ppw_servlet_I     -> {ppw_exc_I};
+    
+    ppw_jsp_I         -> {ppw_i18n_I; ppw_exc_I; ppw_bean_I};
+    
+    ppw_struts_I      -> {ppw_i18n_I; ppw_exc_I; ppw_bean_I; ppw_value_I;
+                          ppw_servlet_I; ppw_jsp_I};
+
+  }
+  
+  subgraph cluster_web_apis {
+  
+    label = "Standard Web API's";
+
+    servlet_api       [label="servletapi\nv2.4"];
+    jsp_api           [label="jsp-api\nv2.0"];
+    jstl_api          [label="jstl\nv1.1.2"];
+    mail_api          [label="mailapi\nv1.3.2"];
+
+  }
+
+  subgraph cluster_Apache_jakarta {
+  
+    label = "Apache Jakarta";
+
+    jstl_apache       [label="standard\n(Apache JSTL Impl.)\nv1.1.2"];
+    struts            [label="struts\nv1.2.4"];
+
+    subgraph cluster_commons {
+    
+      label = "Apache Jakarta Commons";
+  
+      commons_logging   [label="commons-logging\nv1.0.4"];
+      commons_beanutils [label="commons-beanutils\nv1.7.0"];
+  
+    }
+
+  }
+  
+  
+  subgraph cluster_JBoss {
+  
+    label = "JBoss";
+    
+    hibernate2        [label="hibernate\nv2.1.6"];
+    
+  }
+
+  displaytag        [label="displaytag\nv1.0rc1"];
+
+  ppw_exc_I         -> {servlet_api; jsp_api};
+  
+  ppw_bean_I        -> {commons_logging};
+  ppw_bean_I        -> {hibernate2; jstl_apache} [color=blue];
+  
+  ppw_value_I       -> hibernate2 [color=blue];
+  
+  ppw_servlet_I     -> {commons_logging; servlet_api};
+  ppw_servlet_I     -> hibernate2 [color=blue];
+  
+  ppw_jsp_I         -> {servlet_api; jsp_api; jstl_api; jstl_apache};
+  ppw_jsp_I         -> displaytag [color=blue];
+  
+  ppw_struts_I      -> {commons_logging; commons_beanutils;
+                        servlet_api; jsp_api; jstl_api; mail_api;
+                        struts};
+  ppw_struts_I      -> hibernate2 [color=blue];
+
+}
