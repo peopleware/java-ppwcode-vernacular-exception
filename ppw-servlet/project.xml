@@ -3,11 +3,12 @@
 <project>
   <extend>ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
-  <name>Struts Library</name>
+  <name>Servlet Library</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-servlet-I</artifactId>
-  <shortDescription></shortDescription>
-  <description></description>
+  <shortDescription>Support for servlets, including hibernate.</shortDescription>
+  <description>Support for servlets. Main support is currenlty the construction
+    of a Hibernate session factory at the beginning of a servlet his lifecycle.</description>
   <inceptionYear>2004</inceptionYear>
   <currentVersion>1.0.0-1.0</currentVersion>
   <package>be.peopleware.servlet_I</package>
@@ -55,6 +56,12 @@
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-exception-I</artifactId>
       <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>2.1.6</version>
       <type>jar</type>
     </dependency>
   </dependencies>
