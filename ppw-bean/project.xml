@@ -43,6 +43,12 @@
   </contributors>
   <dependencies>
     <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-test-I</artifactId>
       <version>1.0.1-1.0</version>
@@ -64,12 +70,6 @@
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-exception-I</artifactId>
       <version>1.0.0-1.0</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
       <type>jar</type>
     </dependency>
   </dependencies>
