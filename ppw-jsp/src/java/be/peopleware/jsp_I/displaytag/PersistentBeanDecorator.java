@@ -36,13 +36,13 @@ public abstract class PersistentBeanDecorator extends TableDecorator {
   protected final PersistentBean getPersistentBean() {
     return (PersistentBean)getCurrentRowObject();
   }
-  
+
   public final String getDetailBaseHref() {
     String clazz = getCurrentRowObject().getClass().toString();
     int index = clazz.lastIndexOf("."); //$NON-NLS-1$
     return clazz.substring(index + 1) + "Detail.do";  //$NON-NLS-1$
   }
-  
+
   public final String getListBaseHref() {
     String clazz = getCurrentRowObject().getClass().toString();
     int index = clazz.lastIndexOf("."); //$NON-NLS-1$
@@ -89,13 +89,6 @@ public abstract class PersistentBeanDecorator extends TableDecorator {
     return getNumberFormat().format(getListIndex() + 1);
   }
 
-  private static final String CHECKBOX_TAG_START
-      = "<input type=\"checkbox\" disabled=\"disabled\" "; //$NON-NLS-1$
-
-  private static final String CHECKBOX_TAG_CHECKED
-      = "checked"; //$NON-NLS-1$
-
-  private static final String TAG_FINISH = "/>"; //$NON-NLS-1$
 
   protected static final String EMPTY = ""; //$NON-NLS-1$
   protected static final String SEPERATOR = "; "; //$NON-NLS-1$
@@ -104,9 +97,9 @@ public abstract class PersistentBeanDecorator extends TableDecorator {
    * A disabled check box to represent boolean values.
    */
   protected final String getCheckBox(final boolean value) {
-    return CHECKBOX_TAG_START
-            + (value ? CHECKBOX_TAG_CHECKED : EMPTY)
-            + TAG_FINISH;
+    return "<input type=\"checkbox\" disabled=\"disabled\" " //$NON-NLS-1$
+            + (value ? "checked" : EMPTY) //$NON-NLS-1$
+            + "/>"; //$NON-NLS-1$
   }
 
 }

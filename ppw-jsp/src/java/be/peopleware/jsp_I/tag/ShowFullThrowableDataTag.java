@@ -59,8 +59,8 @@ import java.io.IOException;
   }
 
   private static final JSTLResourceBundleLoadStrategy
-      JSTL_RESOURCE_BUNDLE_LOAD_STRATEGY
-          = new JSTLResourceBundleLoadStrategy();
+      JSTL_RESOURCE_BUNDLE_LOAD_STRATEGY = 
+          new JSTLResourceBundleLoadStrategy();
 
   private void printThrowableAndNextCause(final Throwable t)
       throws IOException {

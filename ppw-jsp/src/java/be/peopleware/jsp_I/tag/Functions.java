@@ -152,6 +152,10 @@ import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
     return loc;
   }
 
+
+  private static final String CLASS = "Class "; //$NON-NLS-1$
+  private static final String NOT_FOUND = " not found"; //$NON-NLS-1$
+
   /**
    * <p>Return a label for a property with name <code>property</code>
    *   of a type <code>type</code>. The
@@ -182,9 +186,7 @@ import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
       typeClass = Class.forName(type);
     }
     catch (ClassNotFoundException e) {
-      throw new IllegalArgumentException("Class " //$NON-NLS-1$
-                                         + type
-                                         + " not found"); //$NON-NLS-1$
+      throw new IllegalArgumentException(CLASS + type + NOT_FOUND);
     }
     return Properties.i18nPropertyLabel(property, typeClass, false, strategy);
   }
@@ -220,9 +222,7 @@ import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
       typeClass = Class.forName(type);
     }
     catch (ClassNotFoundException e) {
-      throw new IllegalArgumentException("Class " //$NON-NLS-1$
-                                         + type
-                                         + " not found"); //$NON-NLS-1$
+      throw new IllegalArgumentException(CLASS + type + NOT_FOUND);
     }
     return Properties.i18nPropertyLabel(property, typeClass, true, strategy);
   }
@@ -251,9 +251,7 @@ import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
       typeClass = Class.forName(type);
     }
     catch (ClassNotFoundException e) {
-      throw new IllegalArgumentException("Class " //$NON-NLS-1$
-                                         + type
-                                         + " not found"); //$NON-NLS-1$
+      throw new IllegalArgumentException(CLASS + type + NOT_FOUND);
     }
     return Properties.i18nTypeLabel(typeClass, false, strategy);
   }
@@ -283,9 +281,7 @@ import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
       typeClass = Class.forName(type);
     }
     catch (ClassNotFoundException e) {
-      throw new IllegalArgumentException("Class " //$NON-NLS-1$
-                                         + type
-                                         + " not found"); //$NON-NLS-1$
+      throw new IllegalArgumentException(CLASS + type + NOT_FOUND);
     }
     return Properties.i18nTypeLabel(typeClass, true, strategy);
   }

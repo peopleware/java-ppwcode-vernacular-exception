@@ -34,14 +34,7 @@ public class JSTLResourceBundleLoadStrategy
 
 
 
-  /* <construction> */
-  //------------------------------------------------------------------
-
-  public JSTLResourceBundleLoadStrategy() {
-    // NOP
-  }
-
-  /* </construction> */
+  // Default constructor
 
 
 
@@ -69,17 +62,16 @@ public class JSTLResourceBundleLoadStrategy
   /* </property> */
 
 
-  private static final String EMPTY = ""; //$NON-NLS-1$
 
   /**
    * @see   ResourceBundleLoadStrategy#loadResourceBundle(String)
    */
   public ResourceBundle loadResourceBundle(final String basename) {
     ResourceBundle result = null;
-    if ((basename != null) && !(basename.equals(EMPTY))) { //$NON-NLS-1$
+    if ((basename != null) && !(basename.equals(""))) { //$NON-NLS-1$
       // Copied from SetBundleSupport tag (JSTL 1.x)
-      LocalizationContext locCtxt
-          = BundleSupport.getLocalizationContext(getPageContext(), basename);
+      LocalizationContext locCtxt =
+          BundleSupport.getLocalizationContext(getPageContext(), basename);
       result = locCtxt.getResourceBundle();
     }
     return result;
