@@ -1,4 +1,4 @@
-package be.peopleware.bean_II;
+package be.peopleware.bean_III;
 
 
 /**
@@ -11,7 +11,7 @@ package be.peopleware.bean_II;
  *   (see <a href="http://www.beedra.org/">Beedra</a>).</p>
  * <p>Delegates know which bean and which property they work for.
  *   This knowledge can, e.g., be used to throw
- *   {@link be.peopleware.bean_II.PropertyException}s.
+ *   {@link be.peopleware.bean_III.PropertyException}s.
  *   Delegates are not beans themselves (there is no default
  *   constructor). The properties introduced in this class
  *   are immutable.</p>

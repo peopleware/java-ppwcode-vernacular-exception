@@ -1,12 +1,12 @@
-package be.peopleware.bean_II;
+package be.peopleware.bean_III;
 
 
 /**
- * <p>DuplicateKeyException are exceptions that carry with them information
+ * <p>ConstraintException are exceptions that carry with them information
  *   about the property for which they occured. They are usually thrown
- *   by the underlying database checking the unique and other constrains.
- *   If the property name is <code>null</code>, it means that the exception
- *   could not be attributed to a specific property of {@link #getOrigin()}.</p>
+ *   by the underlying database checking the constraints. If the property name
+ *   is <code>null</code>, it means that the exception could not be attributed
+ *   to a specific property of {@link #getOrigin()}.</p>
  * <p>Localized messages are sougth
  *   in a <kbd>*.properties</kbd> file for the class of the origin. The
  *   properties files should be in the directory next to the bean class, with
@@ -30,7 +30,7 @@ package be.peopleware.bean_II;
  *
  * @todo (dvankeer): We propably need to move this Exception to a better package
  */
-public class DuplicateKeyException extends PropertyException {
+public class ConstraintException extends PropertyException {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -46,10 +46,10 @@ public class DuplicateKeyException extends PropertyException {
 
   /*</section>*/
 
-  public DuplicateKeyException(final Object origin,
-                               final String propertyName,
-                               final String message,
-                               final Throwable cause) {
+  public ConstraintException(final Object origin,
+                             final String propertyName,
+                             final String message,
+                             final Throwable cause) {
     super(origin, propertyName, message, cause);
   }
 }

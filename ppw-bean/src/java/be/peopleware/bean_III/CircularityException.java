@@ -1,4 +1,4 @@
-package be.peopleware.bean_II;
+package be.peopleware.bean_III;
 
 
 /**

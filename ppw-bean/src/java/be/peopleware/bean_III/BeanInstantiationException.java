@@ -1,15 +1,20 @@
-package be.peopleware.bean_II.persistent;
+package be.peopleware.bean_III;
+
+
+import be.peopleware.exception_I.TechnicalException;
 
 
 /**
- * <p>This exception signals failure to transform the given String into
- *   an id.</p>
+ * <p>This exception is thrown when you try to instantiate a Bean, and it
+ *   failed.</p>
+ *
+ * @invar     getBeanType() != null;
+ * @invar     (getMessage() == null) || !getMessage().equals("");
  *
  * @author    Jan Dockx
- * @author    David Van Keer
  * @author    PeopleWare n.v.
  */
-public class IdFormatException extends IdException {
+public class BeanInstantiationException extends TechnicalException {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -32,50 +37,48 @@ public class IdFormatException extends IdException {
   //------------------------------------------------------------------
 
   /**
-   * @param     id
-   *            The String we could not transform into an id.
+   * @param     beanType
+   *            The type of bean which failed to instantiate.
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
    *            The exception that occured, causing this exception to be
    *            thrown, if that is the case.
-   * @param     beanClass
-   *            The bean class which is involved in this Exception.
    *
+   * @pre       beanType != null;
    * @pre       (message != null) ==> ! message.equals("");
-   * @pre       beanClass != null;
+   * @post      new.getBeanType() == beanType;
    * @post      (message != null) ==> new.getMessage().equals(message);
    * @post      (message == null) ==> new.getMessage() == null;
    * @post      new.getCause() == cause;
    * @post      new.getLocalizedMessageResourceBundleLoadStrategy().getClass()
    *                == DefaultResourceBundleLoadStrategy.class;
-   * @post      new.getBeanClassName() == beanClassName;
-   * @post      (id != null) ==> new.getId().equals(id);
-   * @post      (id == null) ==> new.getId() == null;
    */
-  public IdFormatException(final String id,
-                           final String message,
-                           final Throwable cause,
-                           final Class beanClass) {
-    super(message, cause, beanClass);
-    $id = id;
+  public BeanInstantiationException(final String message,
+                                    final Throwable cause,
+                                    final Class beanType) {
+    super(message, cause);
+    assert beanType != null : "@pre beanType != null;"; //$NON-NLS-1$
+    assert (message == null) || (!message.equals("")) //$NON-NLS-1$
+        : "message name cannot be the empty string"; //$NON-NLS-1$
+    $beanType = beanType;
   }
 
   /*</construction;>*/
 
 
 
-  /*<property name="id">*/
+  /*<property name="beanType">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final String getId() {
-    return $id;
+  public final Class getBeanType() {
+    return $beanType;
   }
 
-  private String $id;
+  private Class $beanType;
 
   /*</property>*/
 

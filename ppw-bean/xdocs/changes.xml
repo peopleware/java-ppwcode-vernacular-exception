@@ -6,6 +6,13 @@
   </properties>
   <body>
  
+    <release version="III v1.0.0/1.0" date="2005-03-06"
+    			description="Moved out ...persistent.">
+      <action dev="jand" type="remove">
+      	Moved bean_II.persistent to separate lib ppw-persistence.
+      </action>              
+    </release>
+
     <release version="II v2.0.0/2.0" date="2005-03-03"
     			description="Move of contract functions to Toryt, add AsynchronousCrudFactory">
       <action dev="jand" type="remove">
