@@ -7,7 +7,6 @@ import java.util.Locale;
 import org.displaytag.decorator.TableDecorator;
 
 import be.peopleware.bean_I.persistent.PersistentBean;
-import be.peopleware.ismar.opinionleaders.PublicationControlled;
 import be.peopleware.jsp_I.tag.Functions;
 
 
