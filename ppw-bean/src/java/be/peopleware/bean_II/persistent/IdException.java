@@ -1,16 +1,20 @@
-package be.peopleware.bean_I.persistent;
+package be.peopleware.bean_II.persistent;
+
+
+import be.peopleware.exception_I.LocalizedMessageException;
 
 
 /**
  * <p>This exception signals failure to locate a object with the given ID.</p>
  *
- * @invar     getId() != null;
+ * @invar     (getMessage() == null) || !getMessage().equals("");
+ * @invar     getBeanClass() != null;
  *
  * @author    Jan Dockx
  * @author    David Van Keer
  * @author    PeopleWare n.v.
  */
-public class IdNotFoundException extends IdException {
+public class IdException extends LocalizedMessageException {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -33,8 +37,6 @@ public class IdNotFoundException extends IdException {
   //------------------------------------------------------------------
 
   /**
-   * @param     id
-   *            The id for which we did not find a Object.
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
@@ -44,7 +46,6 @@ public class IdNotFoundException extends IdException {
    *            The bean class which is involved in this Exception.
    *
    * @pre       (message != null) ==> ! message.equals("");
-   * @pre       id != null;
    * @pre       beanClass != null;
    * @post      (message != null) ==> new.getMessage().equals(message);
    * @post      (message == null) ==> new.getMessage() == null;
@@ -52,35 +53,50 @@ public class IdNotFoundException extends IdException {
    * @post      new.getLocalizedMessageResourceBundleLoadStrategy().getClass()
    *                == DefaultResourceBundleLoadStrategy.class;
    * @post      new.getBeanClassName() == beanClassName;
-   * @post      new.getId().equals(id);
    */
-  public IdNotFoundException(final Long id,
-                             final String message,
-                             final Throwable cause,
-                             final Class beanClass) {
-    super(message, cause, beanClass);
-    assert id != null;
-    $id = id;
+  public IdException(final String message,
+                     final Throwable cause,
+                     final Class beanClass) {
+    super(message, cause);
+    assert (message == null) || (!message.equals("")) //$NON-NLS-1$
+        : "message name cannot be the empty string"; //$NON-NLS-1$
+    assert beanClass != null;
+    $beanClass = beanClass;
   }
 
   /*</construction;>*/
 
 
 
-  /*<property name="id">*/
+  /*<property name="beanClass">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Long getId() {
-    return $id;
+  public Class getBeanClass() {
+    return $beanClass;
   }
 
   /**
-   * @invar     $id != null;
+   * @invar     $beanClass != null;
    */
-  private Long $id;
+  private Class $beanClass;
+
+  /*</property>*/
+
+
+  /**
+   * <strong>= {@value}</strong>
+   */
+  public static final String KEY = "DEFAULT"; //$NON-NLS-1$
+
+  /**
+   * @return    getMessage() != null ? getMessage() : KEY;
+   */
+  public final String[] getLocalizedMessageKeys() {
+    return new String[] {getMessage() != null ? getMessage() : KEY};
+  }
 
   /*</property>*/
 

@@ -1,4 +1,4 @@
-package be.peopleware.bean_I.persistent;
+package be.peopleware.bean_II.persistent;
 
 
 /**

@@ -1,4 +1,4 @@
-package be.peopleware.bean_I;
+package be.peopleware.bean_II;
 
 
 import java.util.HashSet;
@@ -42,7 +42,7 @@ public class _Test_RousseauBean extends _Test_Object {
 
   public static void main(final String[] args) {
     Test.main(new String[]
-        {"be.peopleware.bean_I._Test_RousseauBean"}); //$NON-NLS-1$
+        {"be.peopleware.bean_II._Test_RousseauBean"}); //$NON-NLS-1$
   }
 
   protected void testClassMethods() {

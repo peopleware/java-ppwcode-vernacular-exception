@@ -1,12 +1,12 @@
-package be.peopleware.bean_I.persistent;
+package be.peopleware.bean_II.persistent;
 
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import be.peopleware.bean_I.RousseauBean;
-import be.peopleware.bean_I._Test_RousseauBean;
+import be.peopleware.bean_II.RousseauBean;
+import be.peopleware.bean_II._Test_RousseauBean;
 import be.peopleware.test_I.Test;
 import be.peopleware.test_I.java.lang._Test_Long;
 
@@ -35,7 +35,7 @@ public class _Test_PersistentBean extends _Test_RousseauBean {
 
   public static void main(final String[] args) {
     Test.main(new String[]
-        {"be.peopleware.bean_I.persistent._Test_PersistentBean"}); //$NON-NLS-1$
+        {"be.peopleware.bean_II.persistent._Test_PersistentBean"}); //$NON-NLS-1$
   }
 
   protected void testClassMethods() {

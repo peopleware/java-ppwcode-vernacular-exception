@@ -1,20 +1,20 @@
-package be.peopleware.bean_I.persistent;
+package be.peopleware.bean_II;
 
 
-import be.peopleware.exception_I.LocalizedMessageException;
+import be.peopleware.exception_I.TechnicalException;
 
 
 /**
- * <p>This exception signals failure to locate a object with the given ID.</p>
+ * <p>This exception is thrown when you try to instantiate a Bean, and it
+ *   failed.</p>
  *
+ * @invar     getBeanType() != null;
  * @invar     (getMessage() == null) || !getMessage().equals("");
- * @invar     getBeanClass() != null;
  *
  * @author    Jan Dockx
- * @author    David Van Keer
  * @author    PeopleWare n.v.
  */
-public class IdException extends LocalizedMessageException {
+public class BeanInstantiationException extends TechnicalException {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -37,66 +37,48 @@ public class IdException extends LocalizedMessageException {
   //------------------------------------------------------------------
 
   /**
+   * @param     beanType
+   *            The type of bean which failed to instantiate.
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
    *            The exception that occured, causing this exception to be
    *            thrown, if that is the case.
-   * @param     beanClass
-   *            The bean class which is involved in this Exception.
    *
+   * @pre       beanType != null;
    * @pre       (message != null) ==> ! message.equals("");
-   * @pre       beanClass != null;
+   * @post      new.getBeanType() == beanType;
    * @post      (message != null) ==> new.getMessage().equals(message);
    * @post      (message == null) ==> new.getMessage() == null;
    * @post      new.getCause() == cause;
    * @post      new.getLocalizedMessageResourceBundleLoadStrategy().getClass()
    *                == DefaultResourceBundleLoadStrategy.class;
-   * @post      new.getBeanClassName() == beanClassName;
    */
-  public IdException(final String message,
-                     final Throwable cause,
-                     final Class beanClass) {
+  public BeanInstantiationException(final String message,
+                                    final Throwable cause,
+                                    final Class beanType) {
     super(message, cause);
+    assert beanType != null : "@pre beanType != null;"; //$NON-NLS-1$
     assert (message == null) || (!message.equals("")) //$NON-NLS-1$
         : "message name cannot be the empty string"; //$NON-NLS-1$
-    assert beanClass != null;
-    $beanClass = beanClass;
+    $beanType = beanType;
   }
 
   /*</construction;>*/
 
 
 
-  /*<property name="beanClass">*/
+  /*<property name="beanType">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public Class getBeanClass() {
-    return $beanClass;
+  public final Class getBeanType() {
+    return $beanType;
   }
 
-  /**
-   * @invar     $beanClass != null;
-   */
-  private Class $beanClass;
-
-  /*</property>*/
-
-
-  /**
-   * <strong>= {@value}</strong>
-   */
-  public static final String KEY = "DEFAULT"; //$NON-NLS-1$
-
-  /**
-   * @return    getMessage() != null ? getMessage() : KEY;
-   */
-  public final String[] getLocalizedMessageKeys() {
-    return new String[] {getMessage() != null ? getMessage() : KEY};
-  }
+  private Class $beanType;
 
   /*</property>*/
 

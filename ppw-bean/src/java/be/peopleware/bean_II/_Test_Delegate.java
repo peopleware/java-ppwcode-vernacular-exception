@@ -1,4 +1,4 @@
-package be.peopleware.bean_I;
+package be.peopleware.bean_II;
 
 
 import java.io.Serializable;
@@ -33,7 +33,7 @@ public class _Test_Delegate extends _Test_Object {
 
 
   public static void main(final String[] args) {
-    Test.main(new String[] {"be.peopleware.bean_I._Test_Delegate"}); //$NON-NLS-1$
+    Test.main(new String[] {"be.peopleware.bean_II._Test_Delegate"}); //$NON-NLS-1$
   }
 
   protected void testClassMethods() {

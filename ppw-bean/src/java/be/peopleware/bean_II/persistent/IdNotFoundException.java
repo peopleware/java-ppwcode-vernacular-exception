@@ -1,20 +1,16 @@
-package be.peopleware.bean_I;
-
-
-import be.peopleware.exception_I.TechnicalException;
+package be.peopleware.bean_II.persistent;
 
 
 /**
- * <p>This exception is thrown when you try to instantiate a Bean, and it
- *   failed.</p>
+ * <p>This exception signals failure to locate a object with the given ID.</p>
  *
- * @invar     getBeanType() != null;
- * @invar     (getMessage() == null) || !getMessage().equals("");
+ * @invar     getId() != null;
  *
  * @author    Jan Dockx
+ * @author    David Van Keer
  * @author    PeopleWare n.v.
  */
-public class BeanInstantiationException extends TechnicalException {
+public class IdNotFoundException extends IdException {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -37,48 +33,54 @@ public class BeanInstantiationException extends TechnicalException {
   //------------------------------------------------------------------
 
   /**
-   * @param     beanType
-   *            The type of bean which failed to instantiate.
+   * @param     id
+   *            The id for which we did not find a Object.
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
    *            The exception that occured, causing this exception to be
    *            thrown, if that is the case.
+   * @param     beanClass
+   *            The bean class which is involved in this Exception.
    *
-   * @pre       beanType != null;
    * @pre       (message != null) ==> ! message.equals("");
-   * @post      new.getBeanType() == beanType;
+   * @pre       id != null;
+   * @pre       beanClass != null;
    * @post      (message != null) ==> new.getMessage().equals(message);
    * @post      (message == null) ==> new.getMessage() == null;
    * @post      new.getCause() == cause;
    * @post      new.getLocalizedMessageResourceBundleLoadStrategy().getClass()
    *                == DefaultResourceBundleLoadStrategy.class;
+   * @post      new.getBeanClassName() == beanClassName;
+   * @post      new.getId().equals(id);
    */
-  public BeanInstantiationException(final String message,
-                                    final Throwable cause,
-                                    final Class beanType) {
-    super(message, cause);
-    assert beanType != null : "@pre beanType != null;"; //$NON-NLS-1$
-    assert (message == null) || (!message.equals("")) //$NON-NLS-1$
-        : "message name cannot be the empty string"; //$NON-NLS-1$
-    $beanType = beanType;
+  public IdNotFoundException(final Long id,
+                             final String message,
+                             final Throwable cause,
+                             final Class beanClass) {
+    super(message, cause, beanClass);
+    assert id != null;
+    $id = id;
   }
 
   /*</construction;>*/
 
 
 
-  /*<property name="beanType">*/
+  /*<property name="id">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Class getBeanType() {
-    return $beanType;
+  public final Long getId() {
+    return $id;
   }
 
-  private Class $beanType;
+  /**
+   * @invar     $id != null;
+   */
+  private Long $id;
 
   /*</property>*/
 

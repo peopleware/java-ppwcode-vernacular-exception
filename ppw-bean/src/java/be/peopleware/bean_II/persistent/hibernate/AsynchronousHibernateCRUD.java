@@ -1,4 +1,4 @@
-package be.peopleware.bean_I.persistent.hibernate;
+package be.peopleware.bean_II.persistent.hibernate;
 
 
 import java.sql.SQLException;
@@ -14,12 +14,12 @@ import net.sf.hibernate.Transaction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import be.peopleware.bean_I.CompoundPropertyException;
-import be.peopleware.bean_I.ConstraintException;
-import be.peopleware.bean_I.DuplicateKeyException;
-import be.peopleware.bean_I.persistent.AbstractAsynchronousCRUD;
-import be.peopleware.bean_I.persistent.IdNotFoundException;
-import be.peopleware.bean_I.persistent.PersistentBean;
+import be.peopleware.bean_II.CompoundPropertyException;
+import be.peopleware.bean_II.ConstraintException;
+import be.peopleware.bean_II.DuplicateKeyException;
+import be.peopleware.bean_II.persistent.AbstractAsynchronousCRUD;
+import be.peopleware.bean_II.persistent.IdNotFoundException;
+import be.peopleware.bean_II.persistent.PersistentBean;
 import be.peopleware.exception_I.Exceptions;
 import be.peopleware.exception_I.TechnicalException;
 

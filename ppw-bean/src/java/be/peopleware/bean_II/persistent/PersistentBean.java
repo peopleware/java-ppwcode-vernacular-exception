@@ -1,9 +1,9 @@
-package be.peopleware.bean_I.persistent;
+package be.peopleware.bean_II.persistent;
 
 
 import java.io.Serializable;
 
-import be.peopleware.bean_I.RousseauBean;
+import be.peopleware.bean_II.RousseauBean;
 
 
 /**

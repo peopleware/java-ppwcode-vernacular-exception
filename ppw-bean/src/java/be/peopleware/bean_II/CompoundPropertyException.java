@@ -1,4 +1,4 @@
-package be.peopleware.bean_I;
+package be.peopleware.bean_II;
 
 
 import java.util.Collections;

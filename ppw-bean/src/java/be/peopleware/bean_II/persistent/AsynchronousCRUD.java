@@ -1,10 +1,10 @@
-package be.peopleware.bean_I.persistent;
+package be.peopleware.bean_II.persistent;
 
 
 import java.util.Set;
 
-import be.peopleware.bean_I.CompoundPropertyException;
-import be.peopleware.bean_I.RousseauBean;
+import be.peopleware.bean_II.CompoundPropertyException;
+import be.peopleware.bean_II.RousseauBean;
 import be.peopleware.exception_I.TechnicalException;
 
 
