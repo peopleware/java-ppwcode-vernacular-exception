@@ -116,11 +116,11 @@ public abstract class AbstractTaglet implements Taglet {
   /**
    * Makes some additional formatting of the content of the taglet.
    *
-   * @param     text
-   *            content of the taglet
-   * @pre       text != null;
+   * @param     tag
+   *            taglet to be parsed.
+   * @pre       tag.text() != null;
    */
-  public abstract String parse(String text);
+  public abstract String parse(Tag tag);
 
   /**
    * Return the name of this custom taglet.
@@ -253,7 +253,7 @@ public abstract class AbstractTaglet implements Taglet {
    * @param     taglets
    *            the array of <code>com.sun.javadoc.Tag</code> s representing of
    *            this custom taglet.
-   * @pre taglets != null
+   * @pre taglets != null;
    * @pre (forall int i; (i >= 0) && (i < taglets.length);
    *            taglets[i] != null);
    */

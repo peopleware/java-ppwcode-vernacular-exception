@@ -4,6 +4,8 @@ package be.peopleware.taglet.contract;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.sun.javadoc.Tag;
+
 import be.peopleware.taglet.AbstractStandaloneTaglet;
 
 
@@ -23,6 +25,16 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
  * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
+ * 
+ * @invar 
+ * for (int i = 0; i < $allKeywords.length; i++) {
+ * 	for (int j = 0; j < $allKeywords[i].length(); j++) {
+ * 		Character.isLetterOfDigit($allKeywords[i].charAt(j)) == true;
+ * 	}
+ * } 
+ * ; all characters in all keywords are letters or digits.
+ * (forall int i; (i >= 0) && (i < $allKeywords.length);
+ *            $allKeywords[i].indexOf( != null);
  */
 public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
 
@@ -47,13 +59,6 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    */
   public final static String KEYWORD_FORALL = "forall"; //$NON-NLS-1$
 
-  /**
-   * The name of <code>result</code> taglet.
-   * 
-   * <strong>value = {@value}</strong>
-   */
-  public final static String TAGLET_INVAR = "invar"; //$NON-NLS-1$
-
 	/**
 	 * Array of all contract keywords.
 	 */
@@ -70,7 +75,7 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
   /**
    * Makes some additional formatting of the content of the taglet.
    * 
-   * @mudo clean up documentation below
+   * @mudo clean up documentation below.
    * 
    * Error messages are printed when we detect problems.
    * The text of this tag is a boolean Java expression, that ends in a semi-column (;),
@@ -80,12 +85,17 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    * <code><b>new</b></code>
    * and <code><b>forall</b></code>. 
    * These keywords are printed bold and in a color.
-   * - "result" can only be used in the result tag.;
-   * - "new" can only be used in post, result, and invar, not in pre
-   * - forall can be in all contract tags 
+   * <ul>
+   * <li><code><b>result</b></code> can only be used in the result tag.;</li>
+   * <li><code><b>new</b></code> can only be used in post, result, and invar, 
+   * not in pre;</li>
+   * <li><code><b>forall</b></code> can be in all contract tags.</li>
+   * </ul>
    *
-   * @param     text
-   *            content of the taglet
+   * @param     tag
+   *            taglet to be parsed.
+   * @pre       tag.text() != null;
+   * 
    * @return    text - formatted content
    * 
    * @post  (text.indexOf('\u003B') < 0) ==> error message on System.err;
@@ -93,8 +103,9 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    * @todo 	make separate class for keywords 
    * 						to incorporate parsing and formatting functionality.
    */
-  public String parse(String text) {
-    	String expr = null;
+  public String parse(Tag tag) {
+    String text = tag.text();	
+  	String expr = null;
     	String description = null;
     	int posSemiColumn = text.indexOf(';');
     	if (posSemiColumn >= 0) {
@@ -104,15 +115,15 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
     		description = text.substring(posSemiColumn);
     	}
     	else {
-    		signalParseError(text + " -- The semi-column is mandatory in a contract text."); //$NON-NLS-1$
+    		signalParseError(tag, text + " -- The semi-column is mandatory in a contract text."); //$NON-NLS-1$
         // MUDO give line number in error message
-  			expr = ""; //$NON-NLS-1$
+  			expr = EMPTY;
   			description = text;
     	}
   
     	String result = expr;
     	for (int i = 0; i < $allKeywords.length; i++) {
-    		result = processKeyword(result, $allKeywords[i]);
+    		result = processKeyword(tag, result, $allKeywords[i]);
     	}
     	
     	result += description;
@@ -126,17 +137,17 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    * @param message
    * 						error message
    */
-  private void signalParseError(String message) {
+  private void signalParseError(Tag tag, String message) {
+  	System.err.println(tag.position());
     System.err.println(message);
   }
   
   /**
-   * Makes inline html formatting of the token, 
+   * Makes inline html formatting of the keyword, 
    * namely makes it bold and colours background.
    * 
-   * @param token
-   * @param color
-   * @return formatted token
+   * @param keyword
+   * @return formatted keyword
    */
   private String makeupKeyword(String keyword) {
     	StringBuffer result = new StringBuffer();
@@ -150,7 +161,7 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
   /**
    * Formats all occurrences of keyword in expr. 
    */
-  private String processKeyword(String origExpr, String keyword) {
+  private String processKeyword(Tag tag, String origExpr, String keyword) {
   	
   	if (origExpr == null) {
   		return null;
@@ -177,7 +188,7 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
 				result.append(expr.substring(notParsedFrom, keywordBegin));
 
 				if (! canContainKeyword(keyword)) {
-					signalParseError(getName() 
+					signalParseError(tag, getName() 
 															+ " taglet can not contain "  //$NON-NLS-1$
 															+ keyword + " keyword");  //$NON-NLS-1$
 				}
@@ -208,12 +219,11 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    * @param keyword
    * 						keyword to be checked.
    * @return
-   * 						true, if list of allowed keywords contains <code>keyword</code>,
-   * 						<br>false otherwise.
+   * 						<code>true</code>, if list of allowed keywords contains <code>keyword</code>,
+   * 						<br><code>false</code> otherwise.
    * 
-   * @result result == listOfKeywords.contains(keyword);
+   * @result result == $allowedKeywords.contains(keyword);
 
-   * @todo throw an exception
    * @question should we color keyword if it's not allowed in the taglet?
    */
   public boolean canContainKeyword(String keyword) {

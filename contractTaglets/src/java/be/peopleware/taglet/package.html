@@ -32,8 +32,14 @@
     <h1>Writing a Custom Taglet</h1>
 
     <ol>
-      <li>Extend class {@link be.peopleware.taglet.AbstractStandaloneTaglet} or {@link
-	      be.peopleware.taglet.AbstractInlineTaglet}</li>
+      <li>Extend on of the following classes:
+      	<ul>
+      		<li>{@link be.peopleware.taglet.AbstractStandaloneTaglet}</li>
+      		<li>{@link be.peopleware.taglet.AbstractInlineTaglet}</li>
+      		<li>{@link be.peopleware.taglet.team.AbstractTeamTaglet}</li>
+      		<li>{@link be.peopleware.taglet.contract.AbstractContractTaglet}</li>
+      	</ul>
+      </li>
       <li>Implement abstract methods from the base class.</li>
       <li>Implement a static method 
       		<code>static void register(Map tagletMap)</code>.<br />

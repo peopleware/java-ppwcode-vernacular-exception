@@ -1,6 +1,8 @@
 package be.peopleware.taglet.team;
 
 
+import com.sun.javadoc.Tag;
+
 import be.peopleware.taglet.AbstractStandaloneTaglet;
 
 
@@ -17,17 +19,8 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
  */
 public abstract class AbstractTeamTaglet extends AbstractStandaloneTaglet {
 
-  /**
-   * Makes some additional formatting of the content of the taglet.
-   * 
-   * Does nothing at this moment.
-   *
-   * @param     text
-   *            content of the taglet
-   * @return    text - formatted content
-   */
-  public String parse(String text) {
-    return text;
+  public String parse(Tag tag) {
+    return tag.text();
   }
 
   

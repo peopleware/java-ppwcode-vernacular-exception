@@ -5,8 +5,9 @@ import com.sun.javadoc.Tag;
 
 
 /**
- * @todo (JAVADOC): Write class description.
- * @mudo take a look at the contract of this class like {@link AbstractStandaloneTaglet}.
+ * Abstract superclass for common code in inline taglets.
+ * @mudo take a look at the contract of this class 
+ * like {@link AbstractStandaloneTaglet}.
  * 
  * @mudo (UnitTest): test taglet <code>@mudo</code>
  *
@@ -29,6 +30,8 @@ public abstract class AbstractInlineTaglet extends AbstractTaglet {
   }
 
   /**
+   * Returns unformatted content of the taglet.
+   * 
    * @see       AbstractTaglet#toString(Tag)
    */
   public String toString(Tag taglet) {   
@@ -39,8 +42,9 @@ public abstract class AbstractInlineTaglet extends AbstractTaglet {
   }
 
   /**
+   * Returns unformatted content of the taglets.
+   * 
    * @see       AbstractTaglet#toString(Tag[])
-   * @result    null
    */
   public final String toString(Tag[] taglets) {
     if (taglets.length == 0) {
@@ -53,18 +57,16 @@ public abstract class AbstractInlineTaglet extends AbstractTaglet {
 
     return result.toString();
   }
-  
   /**
-   * Makes some additional formatting of the content of the taglet.
+   * Simply returns text of the taglet since 
+   * we do not parse content of the inline tags.
    * 
-   * Does nothing at this moment.
-   *
-   * @param     text
-   *            content of the taglet
-   * @return    text - formatted content
+   * @param     tag
+   *            taglet to be parsed.
+   * @return    tag.text()
    */
-  public String parse(String text) {
-    return text;
+  public String parse(Tag tag) {
+    return tag.text();
   }
 
 }

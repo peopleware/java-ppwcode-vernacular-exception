@@ -5,7 +5,9 @@ import com.sun.javadoc.Tag;
 
 
 /**
- * @todo (JAVADOC): Write class description
+ * Abstract superclass for common code in contract taglets.
+ * @mudo take a look at the contract of this class 
+ * like {@link AbstractStandaloneTaglet}.
  *
  * @mudo (UnitTest): test taglet <code>@mudo</code>
  *
@@ -65,7 +67,7 @@ public abstract class AbstractStandaloneTaglet extends AbstractTaglet {
     result.append("<table cellpadding=2 cellspacing=0>"); //$NON-NLS-1$
     for (int i = 0; i < taglets.length; i++) {
       result.append("<tr><td>"); //$NON-NLS-1$
-      result.append(parse(taglets[i].text()));
+      result.append(parse(taglets[i]));
       result.append("</td></tr>"); //$NON-NLS-1$
     }
     result.append("</table></dd>\n"); //$NON-NLS-1$
