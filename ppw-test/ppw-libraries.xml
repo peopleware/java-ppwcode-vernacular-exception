@@ -14,7 +14,7 @@
     <siteAddress>cvs.peopleware.be</siteAddress>
     <siteDirectory>/ppw/projects/JavaLibraries/public_html/${pom.artifactId}/</siteDirectory>
     <distributionSite>cvs.peopleware.be</distributionSite>
-    <distributionDirectory>/ppw/projects/JavaLibraries/public_html/maven-repository/${pom.groupId}/jars/</distributionDirectory>
+    <distributionDirectory>/ppw/projects/JavaLibraries/public_html/maven-repository/${pom.groupId}/jars</distributionDirectory>
 
     <repository>
         <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:${pom.artifactId}</developerConnection>
