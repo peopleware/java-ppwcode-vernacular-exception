@@ -14,7 +14,7 @@
     resource bundle load strategies, which are different in different deployment environments
     (application, webapp, ...).</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.0-1.0</currentVersion>
+  <currentVersion>1.0.1-1.0</currentVersion>
   <package>be.peopleware.i18n_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>

@@ -16,8 +16,22 @@ import java.util.ResourceBundle;
  *   the same fully qualified name as the bean class whose labels we are
  *   interested in. If a match is not found, we search for the labels
  *   through the supertypes of the bean class.</p>
+ * <p>{@link #i18nPropertyLabel(String, Class, boolean, ResourceBundleLoadStrategy)}
+ *   returns the full or the short label of a JavaBean property, using a
+ *   specific resource bundle load strategy, based on the <code>Class</code>
+ *   of the JavaBean.
+ *   {@link #i18nInstancePropertyLabel(String, Object, boolean, ResourceBundleLoadStrategy)}
+ *   does the same, based on an instance of a JavaBean.<br/>
+ *   {@link #i18nTypeLabel(Class, boolean, ResourceBundleLoadStrategy)} returns
+ *   the full or short type label of a JavaBean, using a specific resource bundle
+ *   load strategy, based on the <code>Class</code>
+ *   of the JavaBean.</p>
+ * <p>The other public methods are support methods to retrieve properties
+ *   file entries.</p>
  *
  * @todo (jand): test code
+ * @idea split the support and bean label properties in different classes;
+ *       move the bean property label stuff to ppw-bean
  */
 public abstract class Properties {
 

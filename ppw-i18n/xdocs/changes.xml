@@ -12,5 +12,12 @@
       </action>              
     </release>
 
+    <release version="I v1.0.1/1.0" date="2004-12-31" description="User documentation">
+      <action dev="jand" type="add">
+      	Added package.html overview documentation and class documentation
+      	for Properties class.
+      </action>              
+    </release>
+
   </body>
 </document>
