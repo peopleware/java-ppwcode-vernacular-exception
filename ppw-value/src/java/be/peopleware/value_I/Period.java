@@ -252,4 +252,28 @@ public class Period extends MutableValue {
     return start + " - " + end;
   }
 
+  /**
+   * @return  ( getStartDate() != null &&
+   *            getEndDate() != null
+   *          )
+   *             ? (  (  getEndDate().getTime()
+   *                     -
+   *                     getStartDate().getTime()
+   *                  )
+   *                  /
+   *                  (24*60*60*1000)
+   *               )
+   *             : -1;
+   */
+  public long getNbDaysInPeriod() {
+    Date startDate = getStartDate();
+    Date endDate = getEndDate();
+    if (startDate != null && endDate != null) {
+        long differenceInMillis =
+          endDate.getTime() - startDate.getTime();
+        return differenceInMillis /(24*60*60*1000);
+    }
+    return -1;
+  }
+
 }
