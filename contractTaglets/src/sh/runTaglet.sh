@@ -1,6 +1,6 @@
 # /bin/sh
 
-javadoc \
+javadoc -source 1.4 \
 				-tagletpath ../../target/classes \
 				-taglet be.peopleware.taglet.contract.Registrar \
 				-taglet be.peopleware.taglet.team.Registrar \
