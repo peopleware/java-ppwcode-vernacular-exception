@@ -85,3 +85,8 @@
 *.ppt -k 'b'
 *.pot -k 'b'
 *.xls -k 'b'
+
+# Visio
+*.vs  -k 'b'
+*.Vs  -k 'b'
+*.VS  -k 'b'
