@@ -1,19 +1,19 @@
-package be.peopleware.values_I.hibernate_I;
+package be.peopleware.value_I.hibernate_I;
 
 
-import be.peopleware.value_I.Role;
-import be.peopleware.value_I.RoleEditor;
+import be.peopleware.value_I.Country;
+import be.peopleware.value_I.CountryEditor;
 
 
 /**
- * Hibernate mapping for {@link Role}. A single letter code is stored in
- * a VARCHAR.
+ * Hibernate mapping for {@link Country}. Country ISO codes
+ * are stored in a VARCHAR.
  *
  * @author    Jan Dockx
- * @author    David Van Keer
  * @author    Peopleware n.v.
  */
-public final class RoleUserType extends AbstractEnumerationUserType {
+
+public final class CountryUserType extends AbstractEnumerationUserType {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -29,8 +29,9 @@ public final class RoleUserType extends AbstractEnumerationUserType {
 
   /*</section>*/
 
-  public RoleUserType() {
-    super(new RoleEditor());
+
+  public CountryUserType() {
+    super(new CountryEditor());
   }
 
 }

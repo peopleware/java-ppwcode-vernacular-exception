@@ -1,19 +1,18 @@
-package be.peopleware.values_I.hibernate_I;
+package be.peopleware.value_I.hibernate_I;
 
 
-import be.peopleware.value_I.Country;
-import be.peopleware.value_I.CountryEditor;
+import be.peopleware.value_I.Gender;
+import be.peopleware.value_I.GenderEditor;
 
 
 /**
- * Hibernate mapping for {@link Country}. Country ISO codes
- * are stored in a VARCHAR.
+ * Hibernate mapping for {@link Gender}. A single letter
+ * code is stored in a VARCHAR.
  *
  * @author    Jan Dockx
  * @author    Peopleware n.v.
  */
-
-public final class CountryUserType extends AbstractEnumerationUserType {
+public final class GenderUserType extends AbstractEnumerationUserType {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -29,9 +28,8 @@ public final class CountryUserType extends AbstractEnumerationUserType {
 
   /*</section>*/
 
-
-  public CountryUserType() {
-    super(new CountryEditor());
+  public GenderUserType() {
+    super(new GenderEditor());
   }
 
 }

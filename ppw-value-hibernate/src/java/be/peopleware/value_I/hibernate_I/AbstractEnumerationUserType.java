@@ -1,4 +1,4 @@
-package be.peopleware.values_I.hibernate_I;
+package be.peopleware.value_I.hibernate_I;
 
 
 import java.sql.PreparedStatement;

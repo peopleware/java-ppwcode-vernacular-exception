@@ -1,18 +1,19 @@
-package be.peopleware.values_I.hibernate_I;
+package be.peopleware.value_I.hibernate_I;
 
 
-import be.peopleware.value_I.Gender;
-import be.peopleware.value_I.GenderEditor;
+import be.peopleware.value_I.Role;
+import be.peopleware.value_I.RoleEditor;
 
 
 /**
- * Hibernate mapping for {@link Gender}. A single letter
- * code is stored in a VARCHAR.
+ * Hibernate mapping for {@link Role}. A single letter code is stored in
+ * a VARCHAR.
  *
  * @author    Jan Dockx
+ * @author    David Van Keer
  * @author    Peopleware n.v.
  */
-public final class GenderUserType extends AbstractEnumerationUserType {
+public final class RoleUserType extends AbstractEnumerationUserType {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -28,8 +29,8 @@ public final class GenderUserType extends AbstractEnumerationUserType {
 
   /*</section>*/
 
-  public GenderUserType() {
-    super(new GenderEditor());
+  public RoleUserType() {
+    super(new RoleEditor());
   }
 
 }

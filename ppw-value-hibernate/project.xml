@@ -5,8 +5,6 @@
   <pomVersion>4</pomVersion>
   <name>Value Type Library Hibernate Persistency</name>
   <groupId>ppw-libraries</groupId>
-  <organization />
-  <repository />
   <artifactId>ppw-value-hibernate-I</artifactId>
   <shortDescription>Hibernate User Types for the PeopleWare Value Type Library</shortDescription>
   <description>Here you find Hibernate User Types for some value types defined in ppw-value.
