@@ -44,8 +44,8 @@ public class BasicTaglet extends AbstractStandaloneTaglet {
    */
   public String parse(Tag tag) {
     if (tag.text().length() > 0) {
+    	System.err.println(tag.position());
       System.err.println("There should be no text with a @basic tag."); //$NON-NLS-1$
-      // MUDO add source location to err message
     }
     return EMPTY;
   }
