@@ -42,8 +42,8 @@ public class SessionFactoryController
 
   /* </section> */
 
-  private static final Log LOG
-      = LogFactory.getLog(SessionFactoryController.class);
+  private static final Log LOG =
+      LogFactory.getLog(SessionFactoryController.class);
 
   private static SessionFactory _sessionFactory;
 
@@ -57,9 +57,9 @@ public class SessionFactoryController
             + ".SESSION_FACTORY"</code></strong>
    * </p>
    */
-  public static final String SESSION_FACTORY_ATTRIBUTE_NAME
-      = SessionFactoryController.class.getName()
-            + ".SESSION_FACTORY"; //$NON-NLS-1$
+  public static final String SESSION_FACTORY_ATTRIBUTE_NAME =
+      SessionFactoryController.class.getName()
+          + ".SESSION_FACTORY"; //$NON-NLS-1$
 
   /**
    * Create a Hibernate {@link SessionFactory}from a configuration file, and
@@ -126,10 +126,11 @@ public class SessionFactoryController
   public static SessionFactory getSessionFactory(final ServletContext servletContext)
       throws TechnicalException {
     assert servletContext != null;
-    SessionFactory factory
-        = (SessionFactory)servletContext.getAttribute(SESSION_FACTORY_ATTRIBUTE_NAME);
+    SessionFactory factory = (SessionFactory)servletContext
+        .getAttribute(SESSION_FACTORY_ATTRIBUTE_NAME);
     if (factory == null) {
-      throw new TechnicalException("Hibernate session factory not found in servlet context", //$NON-NLS-1$
+      throw new TechnicalException("Hibernate session factory not "
+                                   + "found in servlet context", //$NON-NLS-1$
                                    null);
     }
     return factory;

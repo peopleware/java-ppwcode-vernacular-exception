@@ -57,9 +57,9 @@ public class SessionInView implements ServletRequestListener {
    * <strong>= SessionInView.class.getName() + ".SESSION";</strong>
    * </p>
    */
-  public static final String SESSION_ATTRIBUTE_NAME
-      = SessionInView.class.getName()
-            + ".SESSION"; //$NON-NLS-1$
+  public static final String SESSION_ATTRIBUTE_NAME =
+      SessionInView.class.getName()
+         + ".SESSION"; //$NON-NLS-1$
 
   /**
    * Create a Hibernate session, and store in the request scope
