@@ -10,8 +10,6 @@ import com.sun.tools.doclets.Taglet;
  * <br /> Custom taglets can extend this class and define scopes 
  * where they are valid.</p>
  *
- * @invar     getName() != null && getName().length() > 0;
- * 
  * @idea tags below are not real, but are here to demonstrate the
  *       taglets in this package themselves.
  *
@@ -227,8 +225,7 @@ public abstract class AbstractTaglet implements Taglet {
    * Given the {@link Tag} representation of this custom
    * taglet, return its string representation.
    * This method is called by the standard doclet if this is the
-   * last tag of this type in the documentation block, or if
-   * the next tag is of a different type.
+   * only tag of this type in the documentation block.
    * 
    * @see #toString(Tag[])
    *
@@ -243,7 +240,7 @@ public abstract class AbstractTaglet implements Taglet {
    * Given an array of {@link Tag}s representing this
    * custom taglet, return its string representation.
    * This method is called by the standard doclet if there
-   * are more then 1 consecutive tags of the same type.
+   * is more then 1 tag of the same type in a documentation block.
    * 
    * @see #toString(Tag)
    *

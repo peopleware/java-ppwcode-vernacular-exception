@@ -7,59 +7,68 @@ import com.sun.javadoc.Tag;
 /**
  * @todo (JAVADOC): Write class description
  *
- * @invar     getHeader() != null && getHeader().length() > 0
- *
  * @mudo (UnitTest): test taglet <code>@mudo</code>
  *
  * @author    Jan Dockx
  * @author    David Van Keer
- * @author    René Clerckx
+ * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
+ * 
+ * @invar getHeader() != null;
+ * @invar getHeader().length() > 0; 
  */
 public abstract class AbstractStandaloneTaglet extends AbstractTaglet {
  
   /**
    * Return the header of this custom taglet.
    * 
+   * @basic
+   * 
    * @return    getHeader() != null && getHeader().length() > 0 
    */
   public abstract String getHeader();
 
   /**
-   * Used to determine if this taglet can be used in 
-   * <strong>inline documentation </strong>. 
-   *
-   * @return    false because we are not a inline tag but a standalone tag.
+   * @return    false;
    */
   public final boolean isInlineTag() {
     return false;
   }
 
-  public String toString(Tag taglet) {
+  /**
+   * @result toString(new Tag[] {taglet});
+   */
+  public final String toString(Tag taglet) {
     return toString(new Tag[] {taglet});
   }
 
 /**
- * Formats the output of the taglet.
+ * <p>Formats the output of the taglet. Tag's are rendered by the
+ *   standard doclet inside a <code>&lt;dl&gt;</code> block.
+ *   This is outside our control. The parsed contents
+ *   of each individual tag is placed in a table cell.</p>
  * 
- * @todo do not format if this is not our custom taglet.
+ * @protected
+ * <p>This is a hook method that writes a header, returned by
+ *   {@link #getHeader()}, and then the contents of the tags,
+ *   processed by {@link #parse(String)}.</p>
  */
   public String toString(Tag[] taglets) {
     if (taglets.length == 0) {
       return null;
     }
     StringBuffer result = new StringBuffer();
-    result.append("\n<dl><dt><b>");//$NON-NLS-1$
+    result.append("\n<dt><b>");//$NON-NLS-1$
     result.append(getHeader());
     result.append("</b></dt><dd>");//$NON-NLS-1$
     result.append("<table cellpadding=2 cellspacing=0>"); //$NON-NLS-1$
     for (int i = 0; i < taglets.length; i++) {
-      result.append("<tr><td><code>"); //$NON-NLS-1$
+      result.append("<tr><td>"); //$NON-NLS-1$
       result.append(parse(taglets[i].text()));
-      result.append("</code></td></tr>"); //$NON-NLS-1$
+      result.append("</td></tr>"); //$NON-NLS-1$
     }
-    result.append("</table></dd></dl>\n"); //$NON-NLS-1$
+    result.append("</table></dd>\n"); //$NON-NLS-1$
     return result.toString();
   }
 

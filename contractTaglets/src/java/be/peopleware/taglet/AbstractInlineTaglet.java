@@ -6,12 +6,13 @@ import com.sun.javadoc.Tag;
 
 /**
  * @todo (JAVADOC): Write class description.
- *
+ * @mudo take a look at the contract of this class like {@link AbstractStandaloneTaglet}.
+ * 
  * @mudo (UnitTest): test taglet <code>@mudo</code>
  *
  * @author    Jan Dockx
  * @author    David Van Keer
- * @author    René Clerckx
+ * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */

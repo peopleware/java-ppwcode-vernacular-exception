@@ -11,7 +11,7 @@ import com.sun.tools.doclets.Taglet;
  *
  * @author    Jan Dockx
  * @author    David Van Keer
- * @author    René Clerckx
+ * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
@@ -22,8 +22,8 @@ public abstract class TagletRegistration implements Taglet {
    *
    * @param     tagletMap
    *            the map to register this taglet to.
-   * @pre       tag != null
-   * @post      tagletMap.get(tag.getName()) == tag
+   * @pre       tag != null;
+   * @post      tagletMap.get(tag.getName()) == tag;
    */
   public static final void registerTaglet(Map tagletMap, Taglet taglet) {
     Taglet t = (Taglet)tagletMap.get(taglet.getName());
