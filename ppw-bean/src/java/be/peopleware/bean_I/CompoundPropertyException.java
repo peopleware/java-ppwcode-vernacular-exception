@@ -57,7 +57,7 @@ import java.util.Map.Entry;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-public class CompoundPropertyException extends PropertyException {
+public final class CompoundPropertyException extends PropertyException {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -356,4 +356,55 @@ public class CompoundPropertyException extends PropertyException {
     return result;
   }
 
+  /**
+   * This method throws this exception if it is not empty.
+   * If this is not empty, this is closed. If the number of element
+   * exceptions is larger than 1, this is thrown. If there is exactly
+   * 1 element exception, that is thrown instead.
+   *
+   * @mudo contract
+   */
+  public final void throwIfNotEmpty() throws PropertyException {
+    if (!isEmpty()) {
+      close();
+      if (getSize() > 1) {
+        throw this;
+      }
+      else {
+        throw getAnElement();
+      }
+    }
+  }
+  
+  /**
+   * @return sum(foreach Set s; getElementExceptions().values().contains(s);
+   *              s.size());
+   */
+  public final int getSize() {
+    int acc = 0;
+    Iterator iter = getElementExceptions().values().iterator();
+    while (iter.hasNext()) {
+      Set s = (Set)iter.next();
+      acc += s.size();
+    }
+    return acc;
+  }
+  
+  /**
+   * Returns an element exception of this instance. Especially
+   * intresting if <code>getSize() == 1</code>, of course.
+   * Returns <code>null</code> if <code>getSize() == 0</code>.
+   */
+  public final PropertyException getAnElement() {
+    if (isEmpty()) {
+      return null;
+    }
+    else {
+      Iterator iter = getElementExceptions().values().iterator();
+      Set s = (Set)iter.next();
+      iter = s.iterator();
+      return (PropertyException)iter.next();
+    }
+  }
+  
 }
