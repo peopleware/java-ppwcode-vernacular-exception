@@ -1,5 +1,3 @@
-// @todo (dvankeer): Add license 
-
 package be.peopleware.test.java.util;
 
 
@@ -12,6 +10,8 @@ import be.peopleware.test.CaseProvider;
 /**
  * @author    David Van Keer
  * @author    PeopleWare n.v.
+ * 
+ * @todo (dvankeer): add license
  */
 public class _Test_Date extends CaseProvider {
 

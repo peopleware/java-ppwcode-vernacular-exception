@@ -1,5 +1,3 @@
-// @todo (dvankeer): Add license 
-
 package be.peopleware.test.java.lang;
 
 
@@ -11,6 +9,8 @@ import java.util.HashSet;
 /**
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
+ * 
+ * @todo (dvankeer): add license
  */
 public class _Test_String extends CaseProvider {
 
