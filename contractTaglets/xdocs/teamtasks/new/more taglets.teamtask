@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TeamTask id="VJDZT4">
+	<TeamTaskMeta>
+		<CreationDate format="yyyy-MM-dd :: HH:mm:ss z">2004-12-01 :: 11:18:43 CET</CreationDate>
+		<LastModificationDate format="yyyy-MM-dd :: HH:mm:ss z">2004-12-01 :: 11:19:05 CET</LastModificationDate>
+	</TeamTaskMeta>
+	<Summary>more taglets</Summary>
+	<User>jand</User>
+	<Module>contractTaglets</Module>
+	<AssignedTo />
+	<State description="New" index="0" />
+	<Severity description="Enhancement" index="0" />
+	<Description>@protected, @package
+@basic</Description>
+	<Notification />
+	<LinkList />
+	<NoteHistory />
+</TeamTask>
+
