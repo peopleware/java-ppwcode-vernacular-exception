@@ -25,7 +25,7 @@
   </module>
 
   <module name="StrictDuplicateCode">
-    <property name="min" value="12" />
+    <property name="min" value="16" />
     <property name="severity" value="info"/>
   </module>
 
