@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.2.1/2.2" date="2005-03-06" description="ppw-bean-III">
+      <action dev="jand" type="update">
+      	Version that supports ppw-bean-III.
+      </action>              
+    </release>
+
     <release version="I v1.2.1/2.0" date="2004-12-20" description="betwixt bugfix">
       <action dev="dvankeer" type="add">
       	Betwixt files were not update to new structure, fixed in this release.
