@@ -7,6 +7,7 @@
     <organization>
         <name>PeopleWare n.v.</name>
         <url>http://www.peopleware.be/</url>
+        <logo>http://cvs.peopleware.be/projects/Java/img/ppwlogo.jpg</logo>
     </organization>
 
     <groupId>ppw-libraries</groupId>
