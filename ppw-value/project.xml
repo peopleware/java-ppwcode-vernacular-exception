@@ -45,7 +45,7 @@
     <dependency>
       <groupId>toryt</groupId>
       <artifactId>toryt</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>I-1.0.0-1.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
