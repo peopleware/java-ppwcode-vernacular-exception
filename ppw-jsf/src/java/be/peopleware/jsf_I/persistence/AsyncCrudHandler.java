@@ -1,11 +1,16 @@
 package be.peopleware.jsf_I.persistence;
 
 
+import javax.faces.FacesException;
+import javax.faces.event.ValueChangeEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.persistence_I.IdException;
+import be.peopleware.persistence_I.IdNotFoundException;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
 
@@ -74,6 +79,37 @@ public class AsyncCrudHandler extends AbstractHandler {
    */
   public final void setType(Class type) {
     $type = type;
+    LOG.debug("type of " + this + " set to Class " + type.getName()); 
+  }
+  
+  /**
+   * Set the type of the {@link PersistentBean} that will be handled
+   * by the requests, as text.
+   * 
+   * @todo This method is here for the faces-config managed bean stuff. Apparently,
+   *       Converters are not used during creation and property setting of managed
+   *       beans. So, with the {@link #setType(Class)} method, we would be trying
+   *       to push a String into a Class type parameter (actually, it seems, but
+   *       we are not sure, that JSF attempts to <em>instantiate</em> the class
+   *       for which the name is given, which is pretty weird). When this get
+   *       solved, or when we no longer need this method there, this method should
+   *       be removed.
+   * 
+   * @post getType() == Class.forName(type);
+   */
+  public final void setTypeAsString(String typeName) throws FacesException {
+    Class type;
+    try {
+      type = Class.forName(typeName);
+    }
+    catch (LinkageError e) {
+      throw new FacesException("cannot convert String to Class", e);
+    }
+    catch (ClassNotFoundException e) {
+      throw new FacesException("cannot convert String to Class", e);
+    }
+    $type = type;
+    LOG.debug("type of " + this + " set to Class " + type.getName()); 
   }
   
   /**
@@ -84,14 +120,7 @@ public class AsyncCrudHandler extends AbstractHandler {
   
   /*</property>*/
 
-  public final void setTypeName(String typename) {
-  	try {
-  		setType (Class.forName(typename));
-  	} catch (ClassNotFoundException e) {
-  		// TODO Auto-generated catch block
-  		e.printStackTrace();
-  	}
-  }
+  
   
   /*<property name="id">*/
   //------------------------------------------------------------------
@@ -115,8 +144,114 @@ public class AsyncCrudHandler extends AbstractHandler {
    */
   public final void setId(Long id) {
     $id = id;
+    LOG.debug("id of " + this + " set to " + id);
   }
   
+  /**
+   * Retrieve the {@link PersistentBean} instance with
+   * {@link PersistentBean#getId() id} {@link #getId()} of type
+   * {@link #getType()}.
+   * 
+   * @post   (new.getPersistentBean() != null) ?
+   *              getType().isInstance(new.getPersistentBean());
+   * @post   (new.getPersistentBean() != null) ?
+   *              new.getPersistentBean().getId().equals(getId());
+   * @throws TechnicalException
+   *         ; Could not create an AsyncCrudDao
+   * @throws    IdException
+   *            id == null;
+   * @throws    IdException
+   *            type == null;
+   * @throws    TechnicalException tExc
+   *            ; something technical went wrong, but surely
+   *            ! (tExc instanceof IdNotFoundException)
+   */
+  public void idChanged(ValueChangeEvent vcEv) throws IdException, TechnicalException {
+    // MUDO (jand) security
+    LOG.debug("AsyncCrudHandler received ValueChangeEvent"
+              + " (Id: " + getId() + "; Type: " + getType() + "): "
+              + vcEv
+              + "event.oldValue = " + vcEv.getOldValue()
+              + "; event.newValue = " + vcEv.getNewValue());
+    AsyncCrudDao asyncCRUD = null;
+    asyncCRUD = getAsyncCrudDao(); // throws TechnicalExceptions
+    retrieveWithId(asyncCRUD, (Long)vcEv.getNewValue(), getType()); // IdException
+    LOG.debug("retrieve action finished; $persistentBean = " + $persistentBean);
+    /*
+     * We are not doing this in a transaction, deliberately. This means data
+     * that is shown could be out of sync; but chances are this will hardly
+     * occur, and if it does, errors will be caught when something is really
+     * done.
+     * TODO (jand): think more about this IT MIGHT BE NECESSARY TO RECONSIDER THIS FOR JSF
+     */
+    assert (getPersistentBean() != null)
+              ? getType().isInstance(getPersistentBean()) : true;
+//    assert (getPersistentBean() != null)
+//              ? getPersistentBean().getId().equals(getId()) : true;
+  }
+  
+  /**
+   * Retrieve the persistent bean of type {@link #getType()} with id {@link #getId()}
+   * from the persistent storage, and set it in {@link #getPersistentBean()}.
+   * 
+   * If the necessary arguments and utilities are not set, exceptions are thrown.
+   * 
+   * If no bean of type {@link #getType()} with id {@link #getId()} is found in
+   * persistent storage, {@link #getPersistentBean()} is forced to <code>null</code>.
+   * 
+   * This method does not deal with transactions. A transaction needs to be started
+   * and closed around a call to this method.
+   *
+   * @pre       asyncCRUD != null;
+   * @post      (new.getPersistentBean() != null)
+   *                ? getId().equals(new.getPersistentBean().getId())
+   *                    && getType().isInstance(new.getPersistentBean());
+   * @throws    IdException
+   *            id == null;
+   * @throws    IdException
+   *            type == null;
+   * @throws    TechnicalException tExc
+   *            ; something technical went wrong, but surely
+   *            ! (tExc instanceof IdNotFoundException)
+   */
+  private void retrieveWithId(final AsyncCrudDao asyncCRUD, Long id, Class type)
+      throws IdException, TechnicalException {
+    try {
+      assert asyncCRUD != null;
+      //id or type are not known so passing the id to the exception is useless
+      if (id == null) {
+        LOG.error("id == null");
+        throw new IdException("ID_NULL", null, type);
+      }
+      if (type == null) {
+        LOG.error("type == null");
+        throw new IdException("TYPE_NULL", null, type);
+      }
+      LOG.debug("retrieving persistent bean with id "
+                  + id.toString() + " and type "
+                  + type.getName() + "...");
+      $persistentBean = asyncCRUD.retrievePersistentBean(id, type);
+            // pre id != null; IdNotFoundException
+      if (LOG.isDebugEnabled()) {
+        // if makes that there really is lazy loading if not in debug
+        LOG.debug("retrieved persistent bean is " + getPersistentBean());
+      }
+      assert getPersistentBean() != null;
+//      assert getPersistentBean().getId().equals(getId());
+    }
+    catch (IdNotFoundException e) {
+      // this will force $persistentBean null
+      LOG.info("could not find instance of type "
+               + getType().getName()
+               + " with id " + getId(), e);
+      $persistentBean = null;
+    }
+    catch (TechnicalException e) {
+      LOG.error("exception during retrieveWithId", e);
+      throw e;
+    }
+  }
+
   /**
    * The id of the {@link PersistentBean} that will be handled
    * by the requests.
@@ -327,32 +462,79 @@ public class AsyncCrudHandler extends AbstractHandler {
   public final static String FORWARD_NOT_FOUND = "id not found"; 
   
   /**
-   * Retrieve the {@link PersistentBean} instance with
-   * {@link PersistentBean#getId() id} {@link #getId()} of type
-   * {@link #getType()}. If retrieval is successful, forward to
-   * {@link #FORWARD_SUCCESS}. If no instance of type {@link #getType()}
-   * with id {@link #getId()} was found, forward to {@link #FORWARD_NOT_FOUND}.
+   * Set boolean parameters for view mode DISPLAY.
+   * We presume that {@link #idChanged(ValueChangeEvent)} was called before
+   * this method is called (i.e., that an id-field on a JSF form was bound
+   * to that method with <code>immediate</code> set).
+   * 
+   * If {@link #getPersistentBean()} <code>!= null</code>, forward to
+   * {@link #FORWARD_SUCCESS}. If {@link #getPersistentBean()} <code>== null</code>,
+   * forward to {@link #FORWARD_NOT_FOUND}.
    * 
    * @return FORWARD_SUCCESS.equals(result) || FORWARD_NOT_FOUND.equals(result);
-   * @throws TechnicalException
-   *         ; Could not create an AsyncCrudDao
    * 
    * @mudo (jand) security
    */
-  public final String display() throws TechnicalException {
-    return retrieve(false);
+  public final String display() {
+    LOG.debug("display called; showing bean");
+    LOG.debug("persistentBean: " + getPersistentBean());
+    if (getPersistentBean() == null) {
+        // persistent bean not set by idChanged
+      return FORWARD_NOT_FOUND;
+    }
+    else {
+      setViewModeEdit(false);
+      setViewModeDeleted(false);
+      setViewModeNew(false);
+      return FORWARD_SUCCESS;
+    }
   }
   
   /** 
    * @mudo (jand) security
    */
   public final String edit() throws TechnicalException {
-    return retrieve(true);
+    LOG.debug("display called; showing bean for edit");
+    if (getPersistentBean() == null) {
+      // persistent bean not set by idChanged
+      return FORWARD_NOT_FOUND;
+    }
+    else {
+      setViewModeEdit(true);
+      setViewModeDeleted(false);
+      setViewModeNew(false);
+      return FORWARD_SUCCESS;
+    }
   }
   
-  public final String update() {
-    // MUDO (jand) stub
-    return FORWARD_SUCCESS;
+  public final String update() throws TechnicalException {
+    LOG.debug("update called; new versions of values should have been written to the bean");
+    LOG.debug("persistentBean: " + getPersistentBean());
+    if (getPersistentBean() == null) {
+      // persistent bean not set by idChanged
+      return FORWARD_NOT_FOUND;
+    }
+    else {
+      // store in DB
+
+      AsyncCrudDao asyncCRUD = null;
+      try {
+        asyncCRUD = getAsyncCrudDao(); // throws TechnicalExceptions
+        asyncCRUD.startTransaction();
+        asyncCRUD.updatePersistentBean(getPersistentBean()); // PropertyException
+        asyncCRUD.commitTransaction(getPersistentBean());
+        return display();
+      }
+      catch (CompoundPropertyException cpExc) {
+        if (LOG.isDebugEnabled()) {
+          LOG.debug("update action failed; cancelling ...", cpExc); //$NON-NLS-1$
+        }
+        asyncCRUD.cancelTransaction();
+        LOG.debug("update action cancelled; using exception as faces message"); //$NON-NLS-1$
+        // MUDO use cpExc for faces message
+        return edit();
+      }
+    }
   }
   
   public final String editNew() {
@@ -370,87 +552,44 @@ public class AsyncCrudHandler extends AbstractHandler {
     return FORWARD_SUCCESS;
   }
 
-  /**
-   * Retrieve the {@link PersistentBean} instance with
-   * {@link PersistentBean#getId() id} {@link #getId()} of type
-   * {@link #getType()}. If retrieval is successful, forward to
-   * {@link #FORWARD_SUCCESS}. If no instance of type {@link #getType()}
-   * with id {@link #getId()} was found, forward to {@link #FORWARD_NOT_FOUND}.
-   * 
-   * @return FORWARD_SUCCESS.equals(result) || FORWARD_NOT_FOUND.equals(result);
-   * @throws TechnicalException
-   *         ; Could not create an AsyncCrudDao
-   */
-  private String retrieve(final boolean viewModeEdit) throws TechnicalException {
-    // MUDO (jand) security
-    AsyncCrudDao asyncCRUD = null;
-    try {
-      asyncCRUD = getAsyncCrudDao();
-          // throws TechnicalExceptions
-      retrieveWithId(asyncCRUD); // IdException
-      LOG.debug("retrieve action succeeded");
-      /*
-       * We are not doing this in a transaction, deliberately. This means data
-       * that is shown could be out of sync; but chances are this will hardly
-       * occur, and if it does, errors will be caught when something is really
-       * done.
-       * TODO (jand): think more about this
-       */
-      setViewModeEdit(viewModeEdit);
-      setViewModeDeleted(false);
-      setViewModeNew(false);
-      return FORWARD_SUCCESS;
-    }
-    catch (IdException idExc) {
-      /*
-       * on IdException, we go to a different page that shows a not found
-       * message. For this page we do not need to set any information
-       */
-      return FORWARD_NOT_FOUND;
-    }
-  }
-
-  /**
-   * Retrieve the persistent bean with id <code>form.getIdFromForm()</code>
-   * from the persistent storage, and set it in the form. This method does not
-   * deal with transactions. A transaction needs to be started and closed around
-   * a call to this method.
-   *
-   * @pre       asyncCRUD != null;
-   */
-  private void retrieveWithId(final AsyncCrudDao asyncCRUD)
-      throws IdException, TechnicalException {
-    try {
-      assert asyncCRUD != null;
-      Long id = getId();
-      Class type = getType();
-      //id or type are not known so passing the id to the exception is useless
-      if (id == null) {
-        throw new IdException("ID_NULL", null, type);
-      }
-      if (type == null) {
-        throw new IdException("TYPE_NULL", null, type);
-      }
-      LOG.debug("retrieving persistent bean with id "
-                  + id.toString() + " and type "
-                  + type.getName() + "...");
-      $persistentBean = asyncCRUD.retrievePersistentBean(id, type);
-            // pre id != null; IdNotFoundException
-      if (LOG.isDebugEnabled()) {
-        // if makes that there really is lazy loading if not in debug
-        LOG.debug("retrieved persistent bean is " + getPersistentBean());
-      }
-      assert getPersistentBean() != null;
-      assert getPersistentBean().getId().equals(getId());
-    }
-    catch (IdException e) {
-      LOG.info("exception during retrieveWithId", e);
-      throw e;
-    }
-    catch (TechnicalException e) {
-      LOG.info("exception during retrieveWithId", e);
-      throw e;
-    }
-  }
+//  /**
+//   * Retrieve the {@link PersistentBean} instance with
+//   * {@link PersistentBean#getId() id} {@link #getId()} of type
+//   * {@link #getType()}. If retrieval is successful, forward to
+//   * {@link #FORWARD_SUCCESS}. If no instance of type {@link #getType()}
+//   * with id {@link #getId()} was found, forward to {@link #FORWARD_NOT_FOUND}.
+//   * 
+//   * @return FORWARD_SUCCESS.equals(result) || FORWARD_NOT_FOUND.equals(result);
+//   * @throws TechnicalException
+//   *         ; Could not create an AsyncCrudDao
+//   */
+//  private String retrieve(final boolean viewModeEdit) throws TechnicalException {
+//    // MUDO (jand) security
+//    AsyncCrudDao asyncCRUD = null;
+//    try {
+//      asyncCRUD = getAsyncCrudDao();
+//          // throws TechnicalExceptions
+//      retrieveWithId(asyncCRUD); // IdException
+//      LOG.debug("retrieve action succeeded");
+//      /*
+//       * We are not doing this in a transaction, deliberately. This means data
+//       * that is shown could be out of sync; but chances are this will hardly
+//       * occur, and if it does, errors will be caught when something is really
+//       * done.
+//       * TODO (jand): think more about this
+//       */
+//      setViewModeEdit(viewModeEdit);
+//      setViewModeDeleted(false);
+//      setViewModeNew(false);
+//      return FORWARD_SUCCESS;
+//    }
+//    catch (IdException idExc) {
+//      /*
+//       * on IdException, we go to a different page that shows a not found
+//       * message. For this page we do not need to set any information
+//       */
+//      return FORWARD_NOT_FOUND;
+//    }
+//  }
 
 }
