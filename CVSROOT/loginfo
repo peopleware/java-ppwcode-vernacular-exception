@@ -25,6 +25,6 @@
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
-ALL /ppw/sysadmin/cvstools/activitymail.pl -cf %{sVv} -t Jan.Dockx@peopleware.be,bart_farasyn@peopleware.be -m "CVS | FVB: "
+ALL /ppw/sysadmin/cvstools/activitymail.pl -cf %{sVv} -m "CVS | FVB: " -t `/ppw/sysadmin/cvstools/projectEmailAddresses.sh fvb`
 
 
