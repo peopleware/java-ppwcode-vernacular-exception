@@ -6,8 +6,8 @@
   </properties>
   <body>
 
-    <release version="I v1.0.0/1.0" date="2004-12-20" description="First release">
-      <action dev="jand" type="add">
+    <release version="I v1.0.0/1.0" date="2005-01-04" description="First release">
+      <action dev="dvankeer" type="add">
       	First release with this version number scheme.
       </action>              
     </release>
