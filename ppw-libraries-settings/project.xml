@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="pom.css"?>
 <project>
-    <pomVersion>3</pomVersion>
+    <pomVersion>4</pomVersion>
+    <artifactId>ppw-libraries</artifactId>
 
     <organization>
         <name>PeopleWare n.v.</name>
@@ -18,6 +19,7 @@
     <distributionDirectory>/ppw/projects/JavaLibraries/public_html/maven-repository/${pom.groupId}/jars</distributionDirectory>
 
     <repository>
+        <connection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:${pom.artifactId}</connection>
         <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:${pom.artifactId}</developerConnection>
     </repository>
 
