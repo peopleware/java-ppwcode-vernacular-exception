@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="main/src/java"/>
-	<classpathentry kind="src" path="main/test/java"/>
-	<classpathentry kind="src" path="main/src/resources"/>
-	<classpathentry kind="src" path="main/test/resources"/>
+	<classpathentry kind="src" path="src/conf"/>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry sourcepath="D:/Downloads/TEMP/j2se/src/share/classes" kind="lib" path="C:/j2sdk1.4.2_03/lib/tools.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
