@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="ppw-project-settings/pom.css"?>
 <project>
-  <extend>../ppw-project-settings/project.xml</extend>
+  <extend>../../ppw-project-settings/project.xml</extend>
   <artifactId>ppw-libraries</artifactId>
   <groupId>ppw-libraries</groupId>
   <url>http://www.peopleware.be/projects/JavaLibraries/${pom.artifactId}/</url>
