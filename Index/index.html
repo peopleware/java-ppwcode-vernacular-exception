@@ -195,7 +195,33 @@
       </tr>
     </table>
     <h1>Dependecies</h1>
+    <p>Dependencies are mandatory for development, but not necessarily for use
+      of a library.</p>
+    <p>To keep the number of libraries manageable, we have choosen
+        to add specific implementations of an API in subpackages that are distributed
+        together with the API. E.g., there is a API in <code>ppw-bean</code> that
+        covers persistency in a persistency-technology agnostic way. Implementations
+        are made, or can be made, of this API, for Hibernate, JDO, EJB 2, EJB
+        3, pure JDBC, etcetara. All these implementations are, or will be, gathered
+        in specific subpackages of the API, and included in the library that
+        carries
+        the API.<br>
+      This means that, for compilation of those subpackages, the external libraries
+      this code depends on (in casu, <kbd>hibernate.jar</kbd>, the jars for JDO
+      and J2EE, etcetera), are needed in the classpath. The project maven settings
+      take care of this.<br>
+      It would be bad however if a developer would need to provide the J2EE jars
+      in finished application that uses the Hibernate persistence technology,
+      and doesn't use J2EE at all. But luckily, through the magic of dynamic
+      loading, this is not necessary in Java. The class loaders will only try
+      to load the J2EE classes, and thus will look for the jar in the <kbd>CLASSPATH</kbd>,
+      if a class is loaded that refers to this external library. If these classes
+      that depend on a particular external library are never used in you application,
+      the external library will never be needed.</p>
+    <p>In the graph below, such optional dependencies are colored XXX. The mandatory
+      dependencies are colored XXX. Dependencies that are only needed for the
+      unit testing, are colored gray.</p>
     <p>Click for the full-size version.</p>
     <a href="docs/Dependencies.gif"><img src="docs/Dependencies.gif" width="584" height="433" border="0" /></a>
-            </body>
+</body>
 </html>
