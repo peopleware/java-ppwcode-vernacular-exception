@@ -2,6 +2,9 @@ package be.peopleware.jsf_I.persistence;
 
 
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;
@@ -176,6 +179,53 @@ public class AsyncCrudHandler extends AbstractHandler {
     AsyncCrudDao asyncCRUD = null;
     asyncCRUD = getAsyncCrudDao(); // throws TechnicalExceptions
     retrieveWithId(asyncCRUD, (Long)vcEv.getNewValue(), getType()); // IdException
+    LOG.debug("retrieve action finished; $persistentBean = " + $persistentBean);
+    /*
+     * We are not doing this in a transaction, deliberately. This means data
+     * that is shown could be out of sync; but chances are this will hardly
+     * occur, and if it does, errors will be caught when something is really
+     * done.
+     * TODO (jand): think more about this IT MIGHT BE NECESSARY TO RECONSIDER THIS FOR JSF
+     */
+    assert (getPersistentBean() != null)
+              ? getType().isInstance(getPersistentBean()) : true;
+//    assert (getPersistentBean() != null)
+//              ? getPersistentBean().getId().equals(getId()) : true;
+  }
+  
+  /**
+   * Retrieve the {@link PersistentBean} instance with
+   * {@link PersistentBean#getId() id} {@link #getId()} of type
+   * {@link #getType()}.
+   * 
+   * @post   (new.getPersistentBean() != null) ?
+   *              getType().isInstance(new.getPersistentBean());
+   * @post   (new.getPersistentBean() != null) ?
+   *              new.getPersistentBean().getId().equals(getId());
+   * @throws TechnicalException
+   *         ; Could not create an AsyncCrudDao
+   * @throws    IdException
+   *            id == null;
+   * @throws    IdException
+   *            type == null;
+   * @throws    TechnicalException tExc
+   *            ; something technical went wrong, but surely
+   *            ! (tExc instanceof IdNotFoundException)
+   */
+  public void idClicked(ActionEvent aEv) throws IdException, TechnicalException {
+    // MUDO (jand) security
+    
+    UIComponent component = aEv.getComponent();
+    FacesContext context = FacesContext.getCurrentInstance();
+    String idString = (String)component.getValueBinding("value").getValue(context);
+    
+    LOG.debug("AsyncCrudHandler received ActionEvent"
+              + " (Id: " + getId() + "; Type: " + getType() + "): "
+              + aEv
+              + "event.value = " + idString);
+    AsyncCrudDao asyncCRUD = null;
+    asyncCRUD = getAsyncCrudDao(); // throws TechnicalExceptions
+    retrieveWithId(asyncCRUD, new Long(idString), getType()); // IdException
     LOG.debug("retrieve action finished; $persistentBean = " + $persistentBean);
     /*
      * We are not doing this in a transaction, deliberately. This means data
