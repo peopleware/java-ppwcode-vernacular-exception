@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
+<project>
+  <extend>ppw-libraries-settings/project.xml</extend>
+  <pomVersion>4</pomVersion>
+  <name>Servlet Library</name>
+  <groupId>ppw-libraries</groupId>
+  <artifactId>ppw-servlet-I</artifactId>
+  <shortDescription>Support for servlets, including hibernate.</shortDescription>
+  <description>Support for servlets. Main support is currenlty the construction
+    of a Hibernate session factory at the beginning of a servlet his lifecycle.</description>
+  <inceptionYear>2004</inceptionYear>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.servlet_I</package>
+  <!--
+  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jand</id>
+      <email>Jan.Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+    <developer>
+      <name>David Van Keer</name>
+      <id>dvankeer</id>
+      <email>David_Van_Keer@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Dirk Couck</name>
+      <email>Dirk_Couck@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </contributor>
+  </contributors>
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.4-20040521</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-exception-I</artifactId>
+      <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>2.1.6</version>
+      <type>jar</type>
+    </dependency>
+  </dependencies>
+  <properties />
+</project>
+

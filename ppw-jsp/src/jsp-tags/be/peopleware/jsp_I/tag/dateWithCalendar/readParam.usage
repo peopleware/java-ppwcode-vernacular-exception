@@ -1,0 +1,69 @@
+<tag>
+  <display-name>ppw_form:crudButtons</display-name>
+  <name>crudButtons</name>
+  <description>
+    Read a date in format dd/MM/yy from a request parameter into a
+    java.util.Date bean property. If an exception occurs, it is stored in a
+    variable with name given by the attribute. If there is no such request
+    parameter, or it is empty, noting happens.
+  </description>
+  <example>
+    &lt;ppw_date:readParam property=&quot;from&quot; 
+        bean=&quot;${filter}&quot;
+        exception=&quot;exception&quot;/&gt;
+  </example>
+  <body-content>empty</body-content>
+  <attribute>
+    <name>property</name>
+    <description>
+      @todo 
+    </description>
+    <type>java.lang.String</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>bean</name>
+    <description>
+      @todo 
+    </description>
+    <type>java.lang.Object</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>exception</name>
+    <description>
+      @todo 
+    </description>
+    <type>java.lang.String</type>
+    <required>true</required>
+    <rtexprvalue>false</rtexprvalue>
+  </attribute>
+
+<!--
+  <document-info>
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>David Van Keer</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source$</path>
+      <revision>$Revision$</revision>
+      <date>$Date$ (UTC)</date>
+      <state>$State$</state>
+      <release>$Name$</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+-->
+
+</tag>

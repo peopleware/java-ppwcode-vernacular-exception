@@ -1,0 +1,70 @@
+<tag>
+  <display-name>ppw_exc:showExceptionCollection</display-name>
+  <name>showExceptionCollection</name>
+  <description>
+    Shows the localized message of exceptions in a collection, separted by
+    a &lt;br /&gt;.     
+  </description>
+  <example>
+    &lt;ppw_exc:showExceptionCollection 
+      collection=&quot;${exceptions[`GENERAL`]}&quot;
+      tag=&quot;p&quot;
+      cssClass=&quot;error&quot; /&gt;
+  </example>
+  <body-content>empty</body-content>
+  <attribute>
+    <name>collection</name>
+    <description>
+      The collection containing all exceptions that will/can be shown.
+    </description>
+    <type>java.util.collection</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>tag</name>
+    <description>
+      The tag to place around the exception message.
+    </description>
+    <type>java.lang.String</type>
+    <required>false</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>cssClass</name>
+    <description>
+      The css class to use for the tag attribute.
+    </description>
+    <type>java.lang.String</type>
+    <required>false</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+
+
+  <!--
+  <document-info>
+	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>David Van Keer</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source$</path>
+      <revision>$Revision$</revision>
+      <date>$Date$ (UTC)</date>
+      <state>$State$</state>
+      <release>$Name$</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
+			<p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+			<p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+  -->
+
+
+</tag>
