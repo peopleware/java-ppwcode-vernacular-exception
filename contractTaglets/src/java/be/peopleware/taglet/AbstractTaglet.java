@@ -97,9 +97,13 @@ public abstract class AbstractTaglet implements Taglet {
    * </pre>
    * <p>By default, all variables are set to <code>false</code>.</p>
    * 
-   * @post new.inField() == false;
+   * @post new.inField() 			 == false;
+   * @post new.inConstructor() == false;
+   * @post new.inMethod()      == false;
+   * @post new.inOverview()    == false;
+   * @post new.inPackage()     == false;
+   * @post new.inType()        == false;
    * 
-   * @mudo (Jan -> Abdul) ALLEMAAL NAAR VOORBEELD INFIELD
    */
   protected AbstractTaglet() {
     // NOP
@@ -123,7 +127,7 @@ public abstract class AbstractTaglet implements Taglet {
 
   /**
    * <p>Used to determine if this taglet can be used in 
-   * <strong>field documentation </strong>.</p> 
+   * <strong>field documentation</strong>.</p> 
    * 
    * @protected
    * <p>If you wish to override default behavior, which always
@@ -139,11 +143,13 @@ public abstract class AbstractTaglet implements Taglet {
   /**
    * Used to determine if this taglet can be used in 
    * <strong>constructor documentation </strong>. 
-   * If you wish to override default behavior, which always returns <code>false</code>, 
-   * set the value of variable {@link #$inConstructor} to true 
-   * in the constructor of your class.
-   *
-   * @return    value of {@link #$inConstructor}
+   * 
+   * @protected
+   * <p>If you wish to override default behavior, which always
+   *  returns <code>false</code>, set the value of variable
+   *  {@link #$inConstructor} to true in the constructor of your class.</p>
+   * 
+   * @basic
    */
   public final boolean inConstructor() {
     return $inConstructor;
@@ -151,12 +157,14 @@ public abstract class AbstractTaglet implements Taglet {
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>method documentation </strong>. 
-   * If you wish to override default behavior, which always returns <code>false</code>, 
-   * set the value of variable {@link #$inMethod} to true
-   * in the constructor of your class.
-   *
-   * @return    value of {@link #$inMethod}
+   * <strong>method documentation</strong>. 
+   * 
+   * @protected
+   * <p>If you wish to override default behavior, which always
+   *  returns <code>false</code>, set the value of variable
+   *  {@link #$inMethod} to true in the constructor of your class.</p>
+   * 
+   * @basic
    */
   public final boolean inMethod() {
     return $inMethod;
@@ -164,12 +172,14 @@ public abstract class AbstractTaglet implements Taglet {
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>overview documentation </strong>. 
-   * If you wish to override default behavior, which always returns <code>false</code>, 
-   * set the value of variable {@link #$inOverview} to true 
-   * in the constructor of your class.
-   *
-   * @return    value of {@link #$inOverview}
+   * <strong>overview documentation</strong>. 
+   * 
+   * @protected
+   * <p>If you wish to override default behavior, which always
+   *  returns <code>false</code>, set the value of variable
+   *  {@link #$inOverview} to true in the constructor of your class.</p>
+   * 
+   * @basic
    */
   public final boolean inOverview() {
     return $inOverview;
@@ -177,12 +187,14 @@ public abstract class AbstractTaglet implements Taglet {
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>package documentation </strong>. 
-   * If you wish to override default behavior, which always returns <code>false</code>, 
-   * set the value of variable {@link #$inPackage} to true
-   * in the constructor of your class.
-   *
-   * @return    value of {@link #$inPackage}
+   * <strong>package documentation</strong>. 
+   * 
+   * @protected
+   * <p>If you wish to override default behavior, which always
+   *  returns <code>false</code>, set the value of variable
+   *  {@link #$inPackage} to true in the constructor of your class.</p>
+   * 
+   * @basic
    */
   public final boolean inPackage() {
     return $inPackage;
@@ -190,12 +202,14 @@ public abstract class AbstractTaglet implements Taglet {
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>type documentation </strong>. 
-   * If you wish to override default behavior, which always returns <code>false</code>, 
-   * set the value of variable {@link #$inType} to true 
-   * in the constructor of your class.
-   *
-   * @return    value of {@link #$inType}
+   * <strong>type documentation</strong>. 
+   * 
+   * @protected
+   * <p>If you wish to override default behavior, which always
+   *  returns <code>false</code>, set the value of variable
+   *  {@link #$inType} to true in the constructor of your class.</p>
+   * 
+   * @basic
    */
   public final boolean inType() {
     return $inType;
@@ -203,7 +217,9 @@ public abstract class AbstractTaglet implements Taglet {
 
   /**
    * Used to determine if this taglet can be used in 
-   * <strong>inline documentation </strong>. 
+   * <strong>inline documentation </strong>.
+   * 
+   * @basic
    */
   public abstract boolean isInlineTag();
 
