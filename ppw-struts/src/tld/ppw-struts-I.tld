@@ -1,80 +1,79 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <taglib xmlns="http://java.sun.com/xml/ns/j2ee"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
         version="2.0">
 
   <description>Peopleware custom tag library for Struts extensions</description>
   <display-name>Peopleware Struts Extensions</display-name>
   <tlib-version>1.1</tlib-version>
-  <jsp-version>2.0</jsp-version>
   <short-name>ppw-struts</short-name>
   <uri>http://www.peopleware.be/tags/struts-I</uri>
 
   <tag>
-    <display-name>ppw-struts:enumerationField</display-name>
-    <name>enumerationField</name>
     <description>
-      Build a HTML <code>select</code> tag for a bean property
+      Build a HTML &lt;code&gt;select&lt;/code&gt; tag for a bean property
       that returns an enumeration type, for which a loaded
       {@link be.peopleware.beans.propertyEditors.EnumerationTypeEditor}
       is provided in the action form.
     </description>
+    <display-name>ppw-struts:enumerationField</display-name>
+    <name>enumerationField</name>
     <tag-class>be.peopleware.struts_I.persistentBean.tag.EnumerationFieldTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
-      <name>actionForm</name>
       <description>The Struts Action Form that contains the
       	{@link be.peopleware.beans.propertyEditors.EnumerationTypeEditor}
       	this field will use.</description>
-      <type>be.peopleware.struts_I.persistentBean.CrudDynaActionForm</type>
+      <name>actionForm</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
+       <type>be.peopleware.struts_I.persistentBean.CrudDynaActionForm</type>
     </attribute>
     <attribute>
-      <name>property</name>
       <description>The name of the property we in the action form to be
 	      displayed.</description>
-      <type>java.lang.String</type>
+      <name>property</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
     </attribute>
     <attribute>
-      <name>otherAttributes</name>
       <description>Other attributes, as a long String, for the select tag. This
-      tag writes the <code>name</code> and <code>id</code> attributes. The rest
-      should be done here.
+      tag writes the &lt;code&gt;name&lt;/code&gt; and
+      &lt;code&gt;id&lt;/code&gt; attributes. The rest should be done here.
       </description>
-      <type>java.lang.String</type>
+      <name>otherAttributes</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
     </attribute>
     <attribute>
-      <name>dontShowTags</name>
       <description>In input mode, do not show these tags. This is a comma-
         separated list of tags.
       </description>
-      <type>java.lang.String</type>
+      <name>dontShowTags</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
     </attribute>
     <attribute>
-      <name>size</name>
       <description>Controls how this select tag is shown. With
-        <code>size == 0</code>, a menu is shown in HTML. With
-        <code>size &gt; 0</code>, a combo box or list is shown. With
-        <code>size &lt; 0</code>, radion buttons are shown, separated by a
-        double &quot;nbsp;. The default is <code>0</code>.  
+        &lt;code&gt;size == 0&lt;/code&gt;, a menu is shown in HTML. With
+        &lt;code&gt;size &gt; 0&lt;/code&gt;, a combo box or list is shown. With
+        &lt;code&gt;size &lt; 0&lt;/code&gt;, radion buttons are shown, separated by a
+        double &quot;nbsp;. The default is &lt;code&gt;0&lt;/code&gt;.  
       </description>
-      <type>int</type>
+      <name>size</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>int</type>
     </attribute>
   </tag>
 
   <tag-file>
     <name>crudButtons</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/crubButtons.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/crudButtons.tagx</path>
   </tag-file>
   
   <tag-file>
