@@ -39,7 +39,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Ren&eacute; Clerckx</name>
+      <name><![CDATA[Ren&eacute; Clerckx]]></name>
       <id>rclerckx</id>
       <email>Rene.Clerckx@peopleware.be</email>
       <timezone>+1</timezone>
