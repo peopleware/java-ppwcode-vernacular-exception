@@ -39,7 +39,7 @@ package be.peopleware.value_I;
  * </pre>
  * <p>
  * Potentially with the addition of validation and type invariants.
- * Note that values are not cloned or copied when the are set
+ * Note that values are not cloned or copied when they are set
  * or returned.
  * </p>
  * <p>
