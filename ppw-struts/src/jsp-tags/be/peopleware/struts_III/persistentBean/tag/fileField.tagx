@@ -20,7 +20,11 @@
   <jsp:directive.attribute name="pageContext"
   												 type="java.lang.Object"
   												 required="true" />
-
+  												 
+  <jsp:directive.attribute 	name="target"
+  						   	type="java.lang.String"
+  						   	required="false" />	                       
+  												 
 	<fmt:setBundle basename="be.peopleware.struts_III.persistentBean.tag.Field"
 	               var="fieldBundle" scope="session" />
 	
@@ -36,6 +40,12 @@
 	    <c:url var="link"
 	           value="/servlet/blobRetrieve?type=${fqClassName}&amp;property=${property}&amp;id=${actionForm.map['id']}&amp;filename=${fn:replace(filename, ' ', '_')}" />
 	  </c:otherwise>
+	</c:choose>
+	
+	<c:choose>
+		<c:when test="${target eq ''}">
+			<c:set var="target" value="_self" />
+		</c:when>
 	</c:choose>
 	
 	
@@ -59,7 +69,7 @@
 	  <c:otherwise>
 	    <c:choose>
 	      <c:when test="${available}">
-	        <span class="display"><a href="${link}"><fmt:message bundle="${fieldBundle}" key="message.fileField.view" /> ${ppw:i18npl(property, fqClassName, pageContext)}</a></span>
+	        <span class="display"><a href="${link}" target="${target}"><fmt:message bundle="${fieldBundle}" key="message.fileField.view" /> ${ppw:i18npl(property, fqClassName, pageContext)}</a></span>
 	      </c:when>
 	      <c:otherwise>
 	        <span class="display">${ppw:i18npl(property, fqClassName, pageContext)} <fmt:message bundle="${fieldBundle}" key="message.fileField.notAvailable" /></span>

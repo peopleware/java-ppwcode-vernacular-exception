@@ -48,6 +48,15 @@
     <required>true</required>
     <rtexprvalue>true</rtexprvalue>
   </attribute>
+  <attribute>
+    <name>target</name>
+    <description>
+      The target window to open this link in.
+    </description>
+    <type>java.lang.String</type>
+    <required>false</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
 </tag>
 
 <!--

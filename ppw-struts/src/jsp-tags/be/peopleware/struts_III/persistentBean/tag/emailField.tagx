@@ -21,6 +21,12 @@
 	       value="${fn:escapeXml(actionForm.map[property])}" />
 
 	<c:choose>
+		<c:when test="${target eq ''}">
+			<c:set var="target" value="_self" />
+		</c:when>
+	</c:choose>
+
+	<c:choose>
 	  <c:when test="${actionForm.viewModeEdit}">
 	    <input name="${property}"
 	           type="text"
