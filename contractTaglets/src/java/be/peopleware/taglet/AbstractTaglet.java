@@ -7,58 +7,50 @@ import com.sun.tools.doclets.Taglet;
 
 
 /**
- * Generic Taglet that implements methods from interface Taglet.<br />
- * Custom taglet can extend this class and override method
- * {@link #setTagletScopes()}to define scopes where this taglet is valid.
- * <br />
- * In addition to implementing abstract methods defined here, each subclass
- * should also supply method <code>static void register(Map tagletMap)</code>.
- * For example, the following implementation for the class Foo should do the
- * trick: <code>
- * <dl>
- * <dt>public static void register(Map tagletMap) {</dt>
- * <dd>   TagletRegistrar.registerTaglet(tagletMap, new Foo());</dd>
- * <dt>}</dt>
- * <dl>
- * </code>
+ * <p>Generic Taglet that implements methods from interface
+ *  {@link Taglet}.<br />
+ * Custom taglets can extend this class and override method
+ * {@link #setTagletScopes()} to define scopes where this taglet is valid.</p>
  *
  * @invar     getName() != null && getName().length() > 0
  *
- * @mudo (UnitTest): test taglet <code>@mudo</code>
+ * @mudo (UnitTest): demo must do: test 
  *
- * @idea (jand): use code generation tools to generate code for subclasses.
+ * @idea (jand): demo idea: use code generation tools to generate code for subclasses.
  *
- * @question (to david): maven properties for taglets
+ * @question (to david): demo question maven properties for taglets
  *
  * @author    Jan Dockx
  * @author    David Van Keer
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
-public abstract class TagletRegistrar implements Taglet {
+public abstract class AbstractTaglet implements Taglet {
+  
   /**
-   * Used to determine if this taglet can be used in <strong>field documentation
-   * </strong>. <br />
+   * Used to determine if this taglet can be used in <strong>field
+   * documentation</strong>.<br />
    * Default value is false.
    */
-  protected boolean inField = false;
+  protected boolean $inField = false;
 
   /**
    * Used to determine if this taglet can be used in <strong>constructor
-   * documentation </strong>. <br />
+   * documentation </strong>.<br />
    * Default value is false.
    */
-  protected boolean inConstructor = false;
+  protected boolean $inConstructor = false;
 
   /**
    * Used to determine if this taglet can be used in <strong>method
-   * documentation </strong>. <br />
+   * documentation </strong>.<br />
    * Default value is false.
    */
   protected boolean inMethod = false;
 
   /**
    * Used to determine if this taglet can be used in <strong>overview
-   * documentation </strong>. <br />
+   * documentation </strong>.<br />
    * Default value is false.
    */
   protected boolean inOverview = false;
@@ -87,27 +79,30 @@ public abstract class TagletRegistrar implements Taglet {
   /**
    * Calls astract method <code>setTagScopes()</code> so that we are sure that
    * in superclass this method is called at least once.
-   */
-  protected TagletRegistrar() {
-    setTagletScopes();
-  }
-
-  /**
+   * 
+   * @mudo don't call a protected method in a constructor
+   * 
    * Defines scopes where this taglet can be used. Setting certain boolean
    * variable to true enables usage in corresponding documentation scope. For
    * example, taglet <code>todo</code> would have following settings: <br />
    * <code>
-   * <br />inField 			= true;
-   * <br />inConstructor = true;
-   * <br />inMethod 			= true;
-   * <br />inOverview 		= true;
-   * <br />inPackage 		= true;
-   * <br />inType 				= true;
+   * <br />$inField       = true;
+   * <br />$inConstructor = true;
+   * <br />inMethod       = true;
+   * <br />inOverview     = true;
+   * <br />inPackage    = true;
+   * <br />inType         = true;
    * </code><br /><br />
    *
    * By default, all variables are set to false.
    */
-  protected abstract void setTagletScopes();
+  protected AbstractTaglet() {
+    // NOP
+  }
+
+  final protected void setTagletScopes() {
+    // MUDO : DELETE THIS
+  }
 
   /**
    * Makes some additional formatting of the content of the taglet.
@@ -130,25 +125,25 @@ public abstract class TagletRegistrar implements Taglet {
   /**
    * Used to determine if this taglet can be used in <strong>field documentation
    * </strong>. If you wish to override default behavior, which always returns
-   * false, set the value of variable {@link #inField}to true in method
+   * false, set the value of variable {@link #$inField}to true in method
    * {@link #setTagletScopes()}
    *
-   * @return    value of {@link #inField}
+   * @return    value of {@link #$inField}
    */
-  public boolean inField() {
-    return inField;
+  public final boolean inField() {
+    return $inField;
   }
 
   /**
    * Used to determine if this taglet can be used in <strong>constructor
    * documentation </strong>. If you wish to override default behavior, which
-   * always returns false, set the value of variable {@link #inConstructor}to
+   * always returns false, set the value of variable {@link #$inConstructor}to
    * true in method {@link #setTagletScopes()}
    *
-   * @return    value of {@link #inConstructor}
+   * @return    value of {@link #$inConstructor}
    */
-  public boolean inConstructor() {
-    return inConstructor;
+  public final boolean inConstructor() {
+    return $inConstructor;
   }
 
   /**
@@ -159,7 +154,7 @@ public abstract class TagletRegistrar implements Taglet {
    *
    * @return    value of {@link #inMethod}
    */
-  public boolean inMethod() {
+  public final boolean inMethod() {
     return inMethod;
   }
 
@@ -171,7 +166,7 @@ public abstract class TagletRegistrar implements Taglet {
    *
    * @return    value of {@link #inOverview}
    */
-  public boolean inOverview() {
+  public final boolean inOverview() {
     return inOverview;
   }
 
@@ -183,7 +178,7 @@ public abstract class TagletRegistrar implements Taglet {
    *
    * @return    value of {@link #inPackage}
    */
-  public boolean inPackage() {
+  public final boolean inPackage() {
     return inPackage;
   }
 
@@ -195,7 +190,7 @@ public abstract class TagletRegistrar implements Taglet {
    *
    * @return    value of {@link #inType}
    */
-  public boolean inType() {
+  public final boolean inType() {
     return inType;
   }
 
@@ -204,22 +199,6 @@ public abstract class TagletRegistrar implements Taglet {
    * documentation </strong>. 
    */
   public abstract boolean isInlineTag();
-
-  /**
-   * Register this Taglet.
-   *
-   * @param     tagletMap
-   *            the map to register this taglet to.
-   * @pre       tag != null
-   * @post      tagletMap.get(tag.getName()) == tag
-   */
-  public static final void registerTaglet(Map tagletMap, Taglet tag) {
-    Taglet t = (Taglet)tagletMap.get(tag.getName());
-    if (t != null) {
-      tagletMap.remove(tag.getName());
-    }
-    tagletMap.put(tag.getName(), tag);
-  }
 
   /**
    * Given the <code>com.sun.javadoc.Tag</code> representation of this custom

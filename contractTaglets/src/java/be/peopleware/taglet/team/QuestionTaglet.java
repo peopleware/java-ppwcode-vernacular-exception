@@ -1,9 +1,8 @@
-package be.peopleware.taglet.standalone;
+package be.peopleware.taglet.team;
 
 
-import java.util.Map;
 import be.peopleware.taglet.AbstractStandaloneTaglet;
-import be.peopleware.taglet.TagletRegistrar;
+import be.peopleware.taglet.TagletRegistration;
 
 
 /**
@@ -14,7 +13,7 @@ import be.peopleware.taglet.TagletRegistrar;
  */
 public class QuestionTaglet extends AbstractStandaloneTaglet {
   /**
-   * @see       TagletRegistrar#getName()
+   * @see       Registrar#getName()
    */
   public String getName() {
     return "question"; //$NON-NLS-1$
@@ -28,21 +27,11 @@ public class QuestionTaglet extends AbstractStandaloneTaglet {
   }
 
   /**
-   * Register this taglet.
-   *
-   * @param     tagletMap
-   * 						the map to register this taglet to.
+   * @see       Registrar#setTagletScopes()
    */
-  public static void register(Map tagletMap) {
-    TagletRegistrar.registerTaglet(tagletMap, new QuestionTaglet());
-  }
-
-  /**
-   * @see       TagletRegistrar#setTagletScopes()
-   */
-  protected void setTagletScopes() {
-    inField       = true;
-    inConstructor = true;
+  public QuestionTaglet() {
+    $inField       = true;
+    $inConstructor = true;
     inMethod      = true;
     inOverview    = true;
     inPackage     = true;

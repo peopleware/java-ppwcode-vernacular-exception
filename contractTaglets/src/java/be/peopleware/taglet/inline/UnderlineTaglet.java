@@ -4,7 +4,7 @@ package be.peopleware.taglet.inline;
 import java.util.Map;
 import com.sun.javadoc.Tag;
 import be.peopleware.taglet.AbstractInlineTaglet;
-import be.peopleware.taglet.TagletRegistrar;
+import be.peopleware.taglet.TagletRegistration;
 
 
 /**
@@ -15,28 +15,20 @@ import be.peopleware.taglet.TagletRegistrar;
  */
 public class UnderlineTaglet extends AbstractInlineTaglet {
   /**
-   * @see       TagletRegistrar#getName()
+   * @see       Registrar#getName()
    */
   public String getName() {
     return "underline"; //$NON-NLS-1$
   }
 
   /**
-   * Register this taglet.
-   *
-   * @param     tagletMap
-   *            the map to register this taglet to.
+   * @see       Registrar#setTagletScopes()
+   * 
+   * @mudo cleanup
    */
-  public static void register(Map tagletMap) {
-    TagletRegistrar.registerTaglet(tagletMap, new UnderlineTaglet());
-  }
-
-  /**
-   * @see       TagletRegistrar#setTagletScopes()
-   */
-  protected void setTagletScopes() {
-     inField       = true;
-     inConstructor = true;
+  public UnderlineTaglet() {
+     $inField       = true;
+     $inConstructor = true;
      inMethod      = true;
      inOverview    = true;
      inPackage     = true;

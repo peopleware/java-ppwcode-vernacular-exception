@@ -1,9 +1,7 @@
-package be.peopleware.taglet.standalone;
+package be.peopleware.taglet.team;
 
 
-import java.util.Map;
 import be.peopleware.taglet.AbstractStandaloneTaglet;
-import be.peopleware.taglet.TagletRegistrar;
 
 
 /**
@@ -14,7 +12,7 @@ import be.peopleware.taglet.TagletRegistrar;
  */
 public class IdeaTaglet extends AbstractStandaloneTaglet {
   /**
-   * @see       TagletRegistrar#getName()
+   * @see       Registrar#getName()
    */
   public String getName() {
     return "idea"; //$NON-NLS-1$
@@ -28,21 +26,11 @@ public class IdeaTaglet extends AbstractStandaloneTaglet {
   }
 
   /**
-   * Register this taglet.
-   *
-   * @param     tagletMap
-   * 						The map to register this taglet to.
+   * @see       Registrar#setTagletScopes()
    */
-  public static void register(Map tagletMap) {
-    TagletRegistrar.registerTaglet(tagletMap, new IdeaTaglet());
-  }
-
-  /**
-   * @see       TagletRegistrar#setTagletScopes()
-   */
-  protected void setTagletScopes() {
-    inField       = true;
-    inConstructor = true;
+  public IdeaTaglet() {
+    $inField       = true;
+    $inConstructor = true;
     inMethod      = true;
     inOverview    = true;
     inPackage     = true;

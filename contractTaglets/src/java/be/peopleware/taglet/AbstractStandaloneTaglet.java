@@ -12,9 +12,11 @@ import com.sun.javadoc.Tag;
  * @mudo (UnitTest): test taglet <code>@mudo</code>
  *
  * @author    Jan Dockx
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
-public abstract class AbstractStandaloneTaglet extends TagletRegistrar {
+public abstract class AbstractStandaloneTaglet extends AbstractTaglet {
+ 
   /**
    * Return the header of this custom taglet.
    * 
@@ -33,14 +35,14 @@ public abstract class AbstractStandaloneTaglet extends TagletRegistrar {
   }
 
   /**
-   * @see       TagletRegistrar#toString(Tag)
+   * @see       Registrar#toString(Tag)
    */
-  public String toString(Tag taglet) {
+  public final String toString(Tag taglet) {
     return toString(new Tag[] {taglet});
   }
 
   /**
-   * @see       TagletRegistrar#toString(Tag[])
+   * @see       Registrar#toString(Tag[])
    */
   public String toString(Tag[] taglets) {
     if (taglets.length == 0) {

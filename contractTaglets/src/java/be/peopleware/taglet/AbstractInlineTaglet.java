@@ -10,9 +10,11 @@ import com.sun.javadoc.Tag;
  * @mudo (UnitTest): test taglet <code>@mudo</code>
  *
  * @author    Jan Dockx
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
-public abstract class AbstractInlineTaglet extends TagletRegistrar {
+public abstract class AbstractInlineTaglet extends AbstractTaglet {
+  
   /**
    * Used to determine if this taglet can be used in <strong>inline
    * documentation </strong>.
@@ -24,7 +26,7 @@ public abstract class AbstractInlineTaglet extends TagletRegistrar {
   }
 
   /**
-   * @see       TagletRegistrar#toString(Tag)
+   * @see       Registrar#toString(Tag)
    */
   public String toString(Tag taglet) {   
     return null;
@@ -32,7 +34,7 @@ public abstract class AbstractInlineTaglet extends TagletRegistrar {
   }
 
   /**
-   * @see       TagletRegistrar#toString(Tag[])
+   * @see       Registrar#toString(Tag[])
    * @result    null
    */
   public final String toString(Tag[] taglets) {
