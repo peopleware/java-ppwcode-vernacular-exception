@@ -28,3 +28,4 @@
 ppw-test						ppw-test						&ppw-libraries-settings
 ppw-i18n						ppw-i18n						&ppw-libraries-settings
 ppw-exception			ppw-exception			&ppw-libraries-settings
+ppw-bean						ppw-bean     			&ppw-libraries-settings

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="PeopleWare Unit Test Library">
+
+  <title>PeopleWare Unit Test Library</title>
+
+  <body>
+    <links>
+      <item name="Peopleware" href="http://www.peopleware.be"/>
+    </links>
+    
+    <menu name="Quick Links">
+      <item name="Download" href="http://cvs.peopleware.be/projects/JavaLibraries/download/ppw-test/distributions/"/>
+    </menu>
+
+   <menu name="Overview">
+      <item name="Test"             href="/"/>
+      <item name="Features"         href="/features.html"/>
+      <item name="Getting Started"  href="/start/index.html" collapse="true">
+        <item name="Download"       href="/start/download.html"/>
+        <item name="Install"        href="/start/install.html"/>
+      </item>
+   </menu>
+  </body>
+</project>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
+<project>
+  <extend>ppw-libraries-settings/project.xml</extend>
+  <name>Exceptions Library</name>
+  <artifactId>ppw-exception-I</artifactId>
+  <shortDescription>Support for Exceptions, including i18n.</shortDescription>
+  <description>Support for exceptions. Since Java 1.4, exceptions offer a 
+    localized message method. This library offers support for those messages
+    via properties files. Furthermore, a number of general exception types are
+    declared, that can be used in general circumstances, or as the root of a
+    custom hierarchy.</description>
+  <inceptionYear>2004</inceptionYear>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.exception_I</package>
+  <!--
+  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jand</id>
+      <email>Jan.Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+        <role>lead</role>
+        <role>management</role>
+        <role>planning</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>David Van Keer</name>
+      <id>dvankeer</id>
+      <email>David_Van_Keer@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Dirk Couck</name>
+      <email>Dirk_Couck@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>management</role>
+        <role>planning</role>
+      </roles>
+    </contributor>
+  </contributors>
+  <dependencies>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-test-I</artifactId>
+      <version>1.0.1-1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-i18n-I</artifactId>
+      <version>1.0.0-1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jspapi</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.0-20040521</version>
+    </dependency>
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4-20040521</version>
+    </dependency>
+  </dependencies>
+  <properties/>
+</project>
