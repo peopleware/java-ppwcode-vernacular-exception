@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <info primitiveTypes="element">
-  <element name="gender" class="be.peopleware.values.Gender" type="primitive">
+  <element name="gender" class="be.peopleware.value_I.Gender" type="primitive">
     <attribute name="value" property="value" />
   </element>
 </info>
