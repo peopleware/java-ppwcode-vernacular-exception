@@ -2,17 +2,18 @@
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
   <extend>ppw-libraries-settings/project.xml</extend>
-  <name>Exceptions Library</name>
-  <artifactId>ppw-exception-I</artifactId>
-  <shortDescription>Support for Exceptions, including i18n.</shortDescription>
-  <description>Support for exceptions. Since Java 1.4, exceptions offer a 
-    localized message method. This library offers support for those messages
-    via properties files. Furthermore, a number of general exception types are
-    declared, that can be used in general circumstances, or as the root of a
-    custom hierarchy.</description>
+  <pomVersion>4</pomVersion>
+  <name>JavaBeans Library</name>
+  <groupId>ppw-bean-I</groupId>
+  <organization />
+  <repository />
+  <build />
+  <artifactId>ppw-bean-I</artifactId>
+  <shortDescription>Support for JavaBeans, including persistency.</shortDescription>
+  <description>Support for JavaBeans. General superclasses and utility classes that etch a number of idioms and design patterns in code. Also, there is agnostic support here for JavaBeans that are to be persistent.</description>
   <inceptionYear>2004</inceptionYear>
   <currentVersion>1.0.0-1.0</currentVersion>
-  <package>be.peopleware.exception_I</package>
+  <package>be.peopleware.bean_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
   -->
@@ -23,13 +24,6 @@
       <email>Jan.Dockx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>architect</role>
-        <role>developer</role>
-        <role>lead</role>
-        <role>management</role>
-        <role>planning</role>
-      </roles>
     </developer>
     <developer>
       <name>David Van Keer</name>
@@ -37,9 +31,6 @@
       <email>David_Van_Keer@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>developer</role>
-      </roles>
     </developer>
   </developers>
   <contributors>
@@ -48,10 +39,6 @@
       <email>Dirk_Couck@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
-      <roles>
-        <role>management</role>
-        <role>planning</role>
-      </roles>
     </contributor>
   </contributors>
   <dependencies>
@@ -59,22 +46,15 @@
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-test-I</artifactId>
       <version>1.0.1-1.0</version>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-i18n-I</artifactId>
       <version>1.0.0-1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>jspapi</groupId>
-      <artifactId>jsp-api</artifactId>
-      <version>2.0-20040521</version>
-    </dependency>
-    <dependency>
-      <groupId>servletapi</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.4-20040521</version>
+      <type>jar</type>
     </dependency>
   </dependencies>
-  <properties/>
+  <properties />
 </project>
+
