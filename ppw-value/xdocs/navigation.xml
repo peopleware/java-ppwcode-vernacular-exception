@@ -4,6 +4,7 @@
   <body>
     <links>
       <item name="Repository" href="http://cvs.peopleware.be/projects/JavaLibraries/maven-repository/"/>
+      <item name="Java Libraries" href="http://cvs.peopleware.be/projects/JavaLibraries/index.html"/>
       <item name="Peopleware" href="http://www.peopleware.be"/>
     </links>
     <menu name="User Documentation">
