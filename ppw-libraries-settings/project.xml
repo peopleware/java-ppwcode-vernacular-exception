@@ -32,12 +32,13 @@
     <build>
         <nagEmailAddress>${pom.artifactId}-dev@peopleware.be</nagEmailAddress>
         <sourceDirectory>src/java</sourceDirectory>
-        <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+        <!--<unitTestSourceDirectory>src/test</unitTestSourceDirectory>
         <unitTest>
             <includes>
                 <include>**/_Test_*.java</include>
             </includes>
         </unitTest>
+        -->
         <resources>
             <resource>
                 <directory>src/conf</directory>
@@ -64,18 +65,12 @@
 -->
         <report>maven-checkstyle-plugin</report>
         <report>maven-linkcheck-plugin</report>
-<!---
-  Simian requires a license for commercial use. Developer 99$ / Project 499$ /
-  Enterprise 2999$ 
-        <report>maven-simian-plugin</report>
--->
         <report>maven-pmd-plugin</report>
         <report>maven-developer-activity-plugin</report>
         <report>maven-file-activity-plugin</report>
         <report>maven-tasklist-plugin</report>        
-<!--
-  <report>maven-doccheck-plugin</report>
-  -->
+        <!-- <report>maven-doccheck-plugin</report> -->
     </reports>
+    
     <properties/>
 </project>
