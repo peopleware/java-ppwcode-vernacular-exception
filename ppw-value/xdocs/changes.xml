@@ -6,9 +6,15 @@
   </properties>
   <body>
 
-    <release version="I v1.0.0/1.0" date="2004-12-20" description="First release">
+    <release version="I v1.2.1/2.0" date="2004-12-20" description="betwixt bugfix">
+      <action dev="dvankeer" type="add">
+      	Betwixt files were not update to new structure, fixed in this release.
+      </action>              
+    </release>
+
+    <release version="I v1.2.0/2.0" date="2004-12-20" description="@todo">
       <action dev="jand" type="add">
-      	First release with this version number scheme.
+      	@todo
       </action>              
     </release>
 
@@ -17,6 +23,12 @@
       	Fixed merge issues. Mainly, an isEmpty() method is added to some compound
       	value types, and 1 space is now also allowed as text representation for
       	some null values.
+      </action>              
+    </release>
+
+    <release version="I v1.0.0/1.0" date="2004-12-20" description="First release">
+      <action dev="jand" type="add">
+      	First release with this version number scheme.
       </action>              
     </release>
 
