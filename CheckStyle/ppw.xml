@@ -242,8 +242,9 @@
     </module>
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
-      <property name="allowUndeclaredRTE" value="false"/>
+      <property name="allowUndeclaredRTE" value="true"/>
       <property name="allowThrowsTagsForSubclasses" value="true"/>
+      <property name="allowMissingThrowsTags" value="false"/>
       <property name="allowMissingParamTags" value="true"/>
       <property name="allowMissingReturnTag" value="true"/>
     </module>
@@ -255,7 +256,14 @@
       <property name="checkEmptyJavadoc" value="true"/>
       <property name="checkFirstSentence" value="true"/>
       <property name="checkHtml" value="true"/>
-      <property name="tokens" value="INTERFACE_DEF, CLASS_DEF, METHOD_DEF, CTOR_DEF"/>
+      <property name="tokens" value="INTERFACE_DEF, CLASS_DEF"/>
+    </module>
+    <module name="JavadocStyle">
+      <property name="scope" value="protected"/>
+      <property name="checkEmptyJavadoc" value="true"/>
+      <property name="checkFirstSentence" value="true"/>
+      <property name="checkHtml" value="true"/>
+      <property name="tokens" value="METHOD_DEF, CTOR_DEF"/>
     </module>
     <module name="JavadocStyle">
       <property name="scope" value="protected"/>
