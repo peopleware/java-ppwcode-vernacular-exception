@@ -6,8 +6,8 @@
       <item name="Repository" href="http://cvs.peopleware.be/projects/JavaLibraries/maven-repository/"/>
       <item name="Peopleware" href="http://www.peopleware.be"/>
     </links>
-    <menu name="Quick Links">
-      <item name="Package Description" href="apidocs/be/peopleware/i18n_I/package-summary.html"/>
+    <menu name="User Documentation">
+      <item name="Overview" href="apidocs/index.html"/>
     </menu>
   </body>
 
