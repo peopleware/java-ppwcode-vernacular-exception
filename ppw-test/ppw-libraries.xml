@@ -1,0 +1,105 @@
+<project>
+    <pomVersion>3</pomVersion>
+
+    <groupId>ppw-libraries</groupId>
+    <organization>
+        <name>PeopleWare n.v.</name>
+        <url>http://www.peopleware.be/</url>
+    </organization>
+
+<!--
+    <artifactId>ppw-OVERWRITE</artifactId>
+    <name>PeopleWare OVERWRITE Library</name>
+    <currentVersion>1.0d</currentVersion>
+    <inceptionYear>2004</inceptionYear>
+    <package>be.peopleware.OVERWRITE</package>
+    <logo>http://maven.apache.org/images/maven.jpg</logo>
+    <description>Support for OVERWRITE LONG.</description>
+    <shortDescription>Support for OVERWRITE.</shortDescription>
+-->
+
+    <!-- where to read about the project -->
+    <url>http://www.peopleware.be/projects/JavaLibraries/${pom.artifactId}/</url>
+    <!-- where to put the project results -->
+    <siteAddress>cvs.peopleware.be</siteAddress>
+    <siteDirectory>/ppw/projects/JavaLibraries/public_html/${pom.artifactId}/</siteDirectory>
+    <distributionSite>cvs.peopleware.be</distributionSite>
+    <distributionDirectory>/ppw/projects/JavaLibraries/public_html/download/${pom.groupId}/jars/</distributionDirectory>
+    <!-- where is the source -->
+    <repository>
+      <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:${pom.artifactId}</developerConnection>
+<!--
+      <url>http://cvs.peopleware.be/viewcvs/projects/JavaLibraries/${pom.artifactId}/</url>
+-->
+    </repository>
+
+    <licenses>
+      <license>
+        <name>Copyright PeopleWare n.v.</name>
+        <url>http://www.peopleware.be/licenses/fullCopyright.html</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Jan Dockx</name>
+            <id>1</id>
+            <email>Jan.Dockx@peopleware.be</email>
+            <organization>PeopleWare n.v.</organization>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+                <role>lead</role>
+                <role>management</role>
+                <role>planning</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <name>David Van Keer</name>
+            <id>2</id>
+            <email>David_Van_Keer@peopleware.be</email>
+            <organization>PeopleWare n.v.</organization>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Dirk Couck</name>
+            <email>Dirk_Couck@peopleware.be</email>
+            <organization>PeopleWare n.v.</organization>
+            <roles>
+                <role>management</role>
+                <role>planning</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
+    </contributors>
+
+    <build>
+        <nagEmailAddress>${pom.artifactId}-dev@peopleware.be</nagEmailAddress>
+        <sourceDirectory>src/java</sourceDirectory>
+        <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+            <excludes>
+                <exclude>**/NaughtyTest.java</exclude>
+            </excludes>
+        </unitTest>
+        <resources>
+            <resource>
+                <directory>src/conf</directory>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

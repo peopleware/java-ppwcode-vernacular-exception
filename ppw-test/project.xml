@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <extend>ppw-libraries.xml</extend>
+
+  <artifactId>ppw-test</artifactId>
+  <name>PeopleWare Unit Test Library</name>
+  <package>be.peopleware.test</package>
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>Support for unit testing.</shortDescription>
+  <description>Support for unit testing. This is not very much. There
+    is also no link to JUnit yet. There are also no Unit Tests.</description>
+  <!--
+  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  -->
+  <currentVersion>0.1</currentVersion>
+
+</project>
