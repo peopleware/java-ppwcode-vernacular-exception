@@ -64,6 +64,7 @@
         <report>maven-developer-activity-plugin</report>
         <report>maven-file-activity-plugin</report>
         <report>maven-tasklist-plugin</report>
+<!-- http://maven-doccheck.sourceforge.net/ -->
     </reports>
     <properties/>
 </project>
