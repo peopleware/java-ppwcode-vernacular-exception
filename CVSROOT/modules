@@ -25,10 +25,5 @@
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
 
-simpleAliasModule -a ppw-i18n
-aliasModule -a simpleAliasModule ppw-libraries/ppw-test
-
-simpleRegularModule ppw-i18n/src
-regularModule ppw-test project.xml project.properties
-
-moduleWithAmpersand ppw-i18n &ppw-test
+ppw-test				ppw-test			&ppw-libraries-settings
+ppw-i18n				ppw-i18n			&ppw-libraries-settings
