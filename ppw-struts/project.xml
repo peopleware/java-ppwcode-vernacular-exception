@@ -113,6 +113,12 @@
       <version>1.3.2</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-servlet-I</artifactId>
+      <version>1.0.0-1.0</version>
+      <type>jar</type>
+    </dependency>
   </dependencies>
   <properties />
 </project>
