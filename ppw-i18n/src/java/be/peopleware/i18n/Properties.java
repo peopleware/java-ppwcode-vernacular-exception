@@ -16,8 +16,8 @@ import java.util.ResourceBundle;
  *   the same fully qualified name as the bean class whose labels we are
  *   interested in. If a match is not found, we search for the labels
  *   through the supertypes of the bean class.</p>
- * 
- * @todo test code
+ *
+ * @todo (jand): test code
  */
 public abstract class Properties {
 

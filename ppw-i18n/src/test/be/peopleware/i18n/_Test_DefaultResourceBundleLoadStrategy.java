@@ -2,21 +2,23 @@ package be.peopleware.i18n;
 
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.Iterator;
-import java.util.Locale;
-import be.peopleware.test.Test;
-import be.peopleware.test.java.lang._Test_String;
-import be.peopleware.test.java.util._Test_Locale;
+
+import be.peopleware.test_I.Test;
+import be.peopleware.test_I.java.lang._Test_Object;
+import be.peopleware.test_I.java.lang._Test_String;
+import be.peopleware.test_I.java.util._Test_Locale;
 
 
 /**
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public class _Test_DefaultResourceBundleLoadStrategy extends Test {
+public class _Test_DefaultResourceBundleLoadStrategy extends _Test_Object {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------
