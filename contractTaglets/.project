@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Taglet</name>
+	<name>contractTaglets</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -12,6 +12,11 @@
 		</buildCommand>
 		<buildCommand>
 			<name>org.mevenide.ui.mavenbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.wst.sse.core.structuredbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>

@@ -7,7 +7,10 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
 /**
  * Abstract superclass for common code in contract taglets.
  *
- * @author    Abdul Shoudouev
+ * @author    Jan Dockx
+ * @author    David Van Keer
+ * @author    René Clerckx
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
 public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {

@@ -10,14 +10,16 @@ import com.sun.javadoc.Tag;
  * @mudo (UnitTest): test taglet <code>@mudo</code>
  *
  * @author    Jan Dockx
+ * @author    David Van Keer
+ * @author    René Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
 public abstract class AbstractInlineTaglet extends AbstractTaglet {
   
   /**
-   * Used to determine if this taglet can be used in <strong>inline
-   * documentation </strong>.
+   * Used to determine if this taglet can be used in 
+   * <strong>inline documentation </strong>.
    *
    * @return    true because we are a inline tag, not a standalone tag
    */
@@ -26,19 +28,42 @@ public abstract class AbstractInlineTaglet extends AbstractTaglet {
   }
 
   /**
-   * @see       Registrar#toString(Tag)
+   * @see       AbstractTaglet#toString(Tag)
    */
   public String toString(Tag taglet) {   
-    return null;
-    // @todo (dvankeer): Generalize?
+    if (taglet == null) {
+      return null;
+    }
+    return taglet.text();
   }
 
   /**
-   * @see       Registrar#toString(Tag[])
+   * @see       AbstractTaglet#toString(Tag[])
    * @result    null
    */
   public final String toString(Tag[] taglets) {
-    return null;
+    if (taglets.length == 0) {
+      return null;
+    }
+    StringBuffer result = new StringBuffer();
+    for (int i = 0; i < taglets.length; i++) {
+      result.append(toString(taglets[i]));
+    }
+
+    return result.toString();
   }
   
+  /**
+   * Makes some additional formatting of the content of the taglet.
+   * 
+   * Does nothing at this moment.
+   *
+   * @param     text
+   *            content of the taglet
+   * @return    text - formatted content
+   */
+  public String parse(String text) {
+    return text;
+  }
+
 }

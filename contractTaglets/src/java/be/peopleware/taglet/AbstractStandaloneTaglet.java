@@ -12,6 +12,8 @@ import com.sun.javadoc.Tag;
  * @mudo (UnitTest): test taglet <code>@mudo</code>
  *
  * @author    Jan Dockx
+ * @author    David Van Keer
+ * @author    René Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
@@ -25,25 +27,20 @@ public abstract class AbstractStandaloneTaglet extends AbstractTaglet {
   public abstract String getHeader();
 
   /**
-   * Used to determine if this taglet can be used in <strong>inline
-   * documentation </strong>. 
+   * Used to determine if this taglet can be used in 
+   * <strong>inline documentation </strong>. 
    *
-   * @return    false because we are not a inline tag but a standalone tag
+   * @return    false because we are not a inline tag but a standalone tag.
    */
   public final boolean isInlineTag() {
     return false;
   }
 
-  /**
-   * @see       Registrar#toString(Tag)
-   */
-  public final String toString(Tag taglet) {
+  public String toString(Tag taglet) {
     return toString(new Tag[] {taglet});
   }
 
-  /**
-   * @see       Registrar#toString(Tag[])
-   */
+
   public String toString(Tag[] taglets) {
     if (taglets.length == 0) {
       return null;

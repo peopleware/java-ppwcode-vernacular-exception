@@ -1,39 +1,40 @@
 package be.peopleware.taglet.inline;
 
 
-import java.util.Map;
 import com.sun.javadoc.Tag;
 import be.peopleware.taglet.AbstractInlineTaglet;
-import be.peopleware.taglet.TagletRegistration;
 
 
 /**
  * Taglet-class for custom inline taglet <code>@underline</code>
  *
- * @author    Abdul Shoudouev
+ * @author    Jan Dockx
+ * @author    David Van Keer
+ * @author    René Clerckx
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
 public class UnderlineTaglet extends AbstractInlineTaglet {
   /**
-   * @see       Registrar#getName()
+   * @see       AbstractTaglet#getName()
    */
   public String getName() {
     return "underline"; //$NON-NLS-1$
   }
 
   /**
-   * @see       Registrar#setTagletScopes()
+   * @see       AbstractTaglet#AbstractTaglet()
    * 
    * @mudo cleanup
    */
   public UnderlineTaglet() {
      $inField       = true;
      $inConstructor = true;
-     inMethod      = true;
-     inOverview    = true;
-     inPackage     = true;
-     inType        = true;
-     inLine        = true;
+     $inMethod      = true;
+     $inOverview    = true;
+     $inPackage     = true;
+     $inType        = true;
+     $inLine        = true;
   }
 
   /**

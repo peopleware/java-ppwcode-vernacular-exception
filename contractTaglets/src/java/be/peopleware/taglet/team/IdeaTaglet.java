@@ -7,12 +7,15 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
 /**
  * Taglet-class for custom taglet <code>@idea</code>
  *
- * @author    Abdul Shoudouev
+ * @author    Jan Dockx
+ * @author    David Van Keer
+ * @author    René Clerckx
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
-public class IdeaTaglet extends AbstractStandaloneTaglet {
+public class IdeaTaglet extends AbstractTeamTaglet {
   /**
-   * @see       Registrar#getName()
+   * @see       AbstractTaglet#getName()
    */
   public String getName() {
     return "idea"; //$NON-NLS-1$
@@ -26,15 +29,15 @@ public class IdeaTaglet extends AbstractStandaloneTaglet {
   }
 
   /**
-   * @see       Registrar#setTagletScopes()
+   * @see       AbstractTaglet#AbstractTaglet()
    */
   public IdeaTaglet() {
     $inField       = true;
     $inConstructor = true;
-    inMethod      = true;
-    inOverview    = true;
-    inPackage     = true;
-    inType        = true;
+    $inMethod      = true;
+    $inOverview    = true;
+    $inPackage     = true;
+    $inType        = true;
   }
 
 }

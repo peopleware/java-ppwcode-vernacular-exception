@@ -7,12 +7,15 @@ import be.peopleware.taglet.AbstractStandaloneTaglet;
 /**
  * Taglet-class for custom taglet <code>@invar</code>
  *
- * @author    Abdul Shoudouev
+ * @author    Jan Dockx
+ * @author    David Van Keer
+ * @author    René Clerckx
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
 public class InvarTaglet extends AbstractContractTaglet {
   /**
-   * @see       Registrar#getName()
+   * @see       AbstractTaglet#getName()
    */
   public String getName() {
     return "invar"; //$NON-NLS-1$
@@ -26,15 +29,15 @@ public class InvarTaglet extends AbstractContractTaglet {
   }
 
   /**
-   * @see       Registrar#setTagletScopes()
+   * @see       AbstractTaglet#AbstractTaglet()
    */
   public InvarTaglet() {
     $inField       = false;
     $inConstructor = false;
-    inMethod      = false;
-    inOverview    = false;
-    inPackage     = true;
-    inType        = true;
+    $inMethod      = false;
+    $inOverview    = false;
+    $inPackage     = true;
+    $inType        = true;
   }
 
 }

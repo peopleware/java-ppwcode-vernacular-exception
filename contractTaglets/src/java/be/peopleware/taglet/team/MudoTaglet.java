@@ -2,18 +2,20 @@ package be.peopleware.taglet.team;
 
 
 import be.peopleware.taglet.AbstractStandaloneTaglet;
-import be.peopleware.taglet.TagletRegistration;
 
 
 /**
  * Taglet-class for custom taglet <code>@mudo</code>
  *
- * @author    Abdul Shoudouev
+ * @author    Jan Dockx
+ * @author    David Van Keer
+ * @author    René Clerckx
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
-public class MudoTaglet extends AbstractStandaloneTaglet {
+public class MudoTaglet extends AbstractTeamTaglet {
   /**
-   * @see       Registrar#getName()
+   * @see       AbstractTaglet#getName()
    */
   public String getName() {
     return "mudo"; //$NON-NLS-1$
@@ -27,15 +29,15 @@ public class MudoTaglet extends AbstractStandaloneTaglet {
   }
 
   /**
-   * @see       Registrar#setTagletScopes()
+   * @see       AbstractTaglet#AbstractTaglet()
    */
   public MudoTaglet() {
     $inField       = true;
     $inConstructor = true;
-    inMethod      = true;
-    inOverview    = true;
-    inPackage     = true;
-    inType        = true;
+    $inMethod      = true;
+    $inOverview    = true;
+    $inPackage     = true;
+    $inType        = true;
   }
 
 }

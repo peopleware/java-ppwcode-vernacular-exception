@@ -11,6 +11,8 @@ import com.sun.tools.doclets.Taglet;
  *
  * @author    Jan Dockx
  * @author    David Van Keer
+ * @author    René Clerckx
+ * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
  */
 public abstract class TagletRegistration implements Taglet {
