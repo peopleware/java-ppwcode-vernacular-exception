@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
-  <extend>ppw-libraries-settings/project.xml</extend>
+  <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>1</pomVersion>
   <name>Value Type Library</name>
   <groupId>ppw-libraries</groupId>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-bean-IV</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.1-1.0</version>
       <type>jar</type>
       <url>http://cvs.peopleware.be/projects/JavaLibraries/ppw-bean-II/</url>
     </dependency>
