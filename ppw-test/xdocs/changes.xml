@@ -2,6 +2,7 @@
   <properties>
     <title>Page title</title>
     <author email="dvankeer@peopleware.be">David Van Keer</author>
+    <author email="jand@peopleware.be">Jan Dockx</author>
   </properties>
   <body>
 
@@ -22,5 +23,18 @@
         Removed some nasty stuff.
       </action>              
     </release>
+
+    <release version="I v1.0.0/1.0" date="2004-12-20" description="First release">
+      <action dev="jand" type="add">
+      	First release with this version number scheme.
+      </action>              
+    </release>
+
+    <release version="I v1.0.1/1.0" date="2004-12-21" description="Checkstyle">
+      <action dev="jand" type="fix">
+        Added javadoc descriptions in response to Checkstyle report.
+      </action>              
+    </release>
+
   </body>
 </document>

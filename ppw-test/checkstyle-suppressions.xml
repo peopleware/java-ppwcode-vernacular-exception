@@ -3,6 +3,6 @@
 
 <suppressions>
   <suppress checks="IllegalCatch"
-              files="be/peopleware/test/Test.java"
-              lines="132"/>
+              files="be/peopleware/test_I/Test.java"
+              lines="140"/>
 </suppressions>

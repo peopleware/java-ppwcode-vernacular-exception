@@ -1,10 +1,16 @@
+/*<license>
+Copyright 2004, PeopleWare n.v.
+NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+TO SELECTED PARTIES.
+</license>*/
+
+
 package be.peopleware.test_I;
 
 
-
-
-
 /**
+ * There are too many failures in a test run. Aborting.
+ *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
@@ -29,6 +35,9 @@ public class TooManyFailuresError extends Error {
    */
   public static final int LIMIT = 20;
 
+  /**
+   * {@inheritDoc}
+   */
   public String toString() {
     return "There are more then " //$NON-NLS-1$
             + LIMIT
