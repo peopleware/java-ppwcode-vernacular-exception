@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
   <extend>ppw-libraries.xml</extend>
-  <pomVersion>3</pomVersion>
-  <artifactId>ppw-test</artifactId>
-  <name>PeopleWare Unit Test Library</name>
-  <groupId>ppw-test</groupId>
-  <organization />
-  <package>be.peopleware.test</package>
-  <repository />
-  <build />
-  <reports>
-    <report>maven-faq-plugin</report>
-    <report>maven-jdepend-plugin</report>
-    <report>maven-jxr-plugin</report>
-    <report>maven-checkstyle-plugin</report>
-    <report>maven-license-plugin</report>
-    <report>maven-tasklist-plugin</report>
-    <report>maven-changelog-plugin</report>
-    <report>maven-javadoc-plugin</report>
-  </reports>
-  <inceptionYear>2004</inceptionYear>
+  <name>Unit Test Library</name>
+  <artifactId>ppw-test-I</artifactId>
+  <description>Support for unit testing. This is not very much. There
+    is also no link to JUnit yet. There are also no Unit Tests.</description>
   <shortDescription>Support for unit testing.</shortDescription>
-  <description>Support for unit testing. This is not very much. There is also no link to JUnit yet. There are also no Unit Tests.</description>
+  <inceptionYear>2004</inceptionYear>
+
+  <currentVersion>1.0</currentVersion>
+
+  <package>be.peopleware.test</package>
+
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
   -->
-  <currentVersion>0.1</currentVersion>
+
   <developers>
     <developer>
       <name>Jan Dockx</name>
       <id>1</id>
       <email>Jan.Dockx@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+        <role>lead</role>
+        <role>management</role>
+        <role>planning</role>
+      </roles>
       <timezone>+1</timezone>
     </developer>
     <developer>
@@ -39,6 +36,9 @@
       <id>2</id>
       <email>David_Van_Keer@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>developer</role>
+      </roles>
       <timezone>+1</timezone>
     </developer>
   </developers>
@@ -47,8 +47,14 @@
       <name>Dirk Couck</name>
       <email>Dirk_Couck@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>management</role>
+        <role>planning</role>
+      </roles>
       <timezone>+1</timezone>
     </contributor>
   </contributors>
-</project>
 
+  <properties/>
+
+</project>
