@@ -81,6 +81,12 @@
       <version>1.0.0-1.0</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>displaytag</groupId>
+      <artifactId>displaytag</artifactId>
+      <version>1.0-rc1</version>
+      <type>jar</type>
+    </dependency>
   </dependencies>
   <properties />
 </project>
