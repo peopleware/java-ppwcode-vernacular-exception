@@ -1,4 +1,4 @@
-package be.peopleware.struts_I.persistentBean.event;
+package be.peopleware.struts_II.persistentBean.event;
 
 
 import be.peopleware.bean_I.persistent.PersistentBean;

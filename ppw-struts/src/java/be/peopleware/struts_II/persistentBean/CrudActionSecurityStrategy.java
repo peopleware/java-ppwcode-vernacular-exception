@@ -1,4 +1,4 @@
-package be.peopleware.struts_I.persistentBean;
+package be.peopleware.struts_II.persistentBean;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
-import be.peopleware.struts_I.IllegalAccessException;
+import be.peopleware.struts_II.IllegalAccessException;
 
 /**
  * @MUDO AANPASSEn

@@ -1,4 +1,4 @@
-package be.peopleware.struts_I;
+package be.peopleware.struts_II;
 
 
 import java.security.Principal;

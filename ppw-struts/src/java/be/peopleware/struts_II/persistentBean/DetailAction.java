@@ -1,4 +1,4 @@
-package be.peopleware.struts_I.persistentBean;
+package be.peopleware.struts_II.persistentBean;
 
 
 import java.util.Arrays;
@@ -17,11 +17,11 @@ import be.peopleware.bean_I.persistent.AsynchronousCRUD;
 import be.peopleware.bean_I.persistent.IdException;
 import be.peopleware.bean_I.persistent.PersistentBean;
 import be.peopleware.exception_I.TechnicalException;
-import be.peopleware.struts_I.persistentBean.event.CommittedEvent;
-import be.peopleware.struts_I.persistentBean.event.CommittedEventListener;
-import be.peopleware.struts_I.persistentBean.event.CreatedEvent;
-import be.peopleware.struts_I.persistentBean.event.DeletedEvent;
-import be.peopleware.struts_I.persistentBean.event.UpdatedEvent;
+import be.peopleware.struts_II.persistentBean.event.CommittedEvent;
+import be.peopleware.struts_II.persistentBean.event.CommittedEventListener;
+import be.peopleware.struts_II.persistentBean.event.CreatedEvent;
+import be.peopleware.struts_II.persistentBean.event.DeletedEvent;
+import be.peopleware.struts_II.persistentBean.event.UpdatedEvent;
 
 
 /**
@@ -63,7 +63,7 @@ public abstract class DetailAction extends CrudAction {
    * </p>
    */
   public static final String REQUEST_ATTRIBUTE_PREFIX
-      = "be.peopleware.struts_I.persistentBean.DetailAction."; //$NON-NLS-1$
+      = "be.peopleware.struts_II.persistentBean.DetailAction."; //$NON-NLS-1$
 
   /**
    * A prefix for request mode parameter names to make it unlikely that the name

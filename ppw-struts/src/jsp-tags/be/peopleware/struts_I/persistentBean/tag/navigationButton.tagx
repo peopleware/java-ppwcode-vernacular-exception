@@ -13,7 +13,7 @@
                            type="java.lang.String"
                            required="true" />
 
-  <fmt:setBundle basename="be.peopleware.struts_I.persistentBean.tag.ButtonLabels"
+  <fmt:setBundle basename="be.peopleware.struts_II.persistentBean.tag.ButtonLabels"
                  var="buttonsBundle" scope="session" />
 
   <form action="${action}" method="post">

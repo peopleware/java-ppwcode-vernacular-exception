@@ -1,4 +1,4 @@
-package be.peopleware.struts_I.persistentBean;
+package be.peopleware.struts_II.persistentBean;
 
 
 import java.util.Set;

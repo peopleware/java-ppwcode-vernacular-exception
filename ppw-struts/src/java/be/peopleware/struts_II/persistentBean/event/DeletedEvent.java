@@ -1,18 +1,16 @@
-package be.peopleware.struts_I.persistentBean.event;
+package be.peopleware.struts_II.persistentBean.event;
 
-
-import java.util.EventObject;
 
 import be.peopleware.bean_I.persistent.PersistentBean;
 
 
 /**
- * A event object carrying the state of the bean which has been newly created.
+ * A event object carrying the former state of a bean which has been deleted.
  *
  * @author    David Van Keer
  * @author    Peopleware n.v.
  */
-public abstract class CommittedEvent extends EventObject {
+public class DeletedEvent extends CommittedEvent {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -29,20 +27,13 @@ public abstract class CommittedEvent extends EventObject {
   /*</section>*/
 
   /**
-   * Create a new CreatedEvent signalling the creation of a bean.
+   * Create a new DeletedEvent signalling a deletion of a bean.
    *
    * @param     bean
-   *            The newly created PersistentBean.
+   *            The deleted PersistentBean.
    */
-  public CommittedEvent(final PersistentBean bean) {
+  public DeletedEvent(final PersistentBean bean) {
     super(bean);
-  }
-
-  /**
-   * @basic
-   */
-  public PersistentBean getBean() {
-    return (PersistentBean)getSource();
   }
 
 }

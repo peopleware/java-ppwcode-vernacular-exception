@@ -1,4 +1,4 @@
-package be.peopleware.struts_I.persistentBean.tag;
+package be.peopleware.struts_II.persistentBean.tag;
 
 
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.servlet.jsp.JspWriter;
 
-import be.peopleware.struts_I.persistentBean.CrudDynaActionForm;
+import be.peopleware.struts_II.persistentBean.CrudDynaActionForm;
 import be.peopleware.value_I.EnumerationValueEditor;
 
 

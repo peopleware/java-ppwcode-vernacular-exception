@@ -1,7 +1,7 @@
-package be.peopleware.struts_I.persistentBean.tag;
+package be.peopleware.struts_II.persistentBean.tag;
 
 
-import be.peopleware.struts_I.persistentBean.CrudDynaActionForm;
+import be.peopleware.struts_II.persistentBean.CrudDynaActionForm;
 
 
 /**

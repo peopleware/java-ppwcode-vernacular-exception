@@ -3,10 +3,10 @@
 					xmlns:c="http://java.sun.com/jsp/jstl/core"
 					xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 					xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-					xmlns:ppw="http://www.peopleware/tags/jsp-I">
+					xmlns:ppw="http://www.peopleware.be/tags/jsp-I">
 
   <jsp:directive.attribute name="actionForm"
-  												 type="be.peopleware.struts_I.persistentBean.CrudDynaActionForm"
+  												 type="be.peopleware.struts_II.persistentBean.CrudDynaActionForm"
   												 required="true" />
   <jsp:directive.attribute name="detailDisplayAction"
   												 type="java.lang.String"
@@ -27,7 +27,7 @@
   												 type="java.lang.Boolean"
   												 required="false" /> 
 
-	<fmt:setBundle basename="be.peopleware.struts_I.persistentBean.tag.Field"
+	<fmt:setBundle basename="be.peopleware.struts_II.persistentBean.tag.Field"
 	               var="fieldBundle" scope="session" />
 	
 	<c:choose>

@@ -1,4 +1,4 @@
-package be.peopleware.struts_I.persistentBean.hibernate;
+package be.peopleware.struts_II.persistentBean.hibernate;
 
 
 import javax.servlet.ServletRequest;
@@ -15,7 +15,7 @@ import be.peopleware.servlet_I.hibernate.SessionInView;
  * @author    PeopleWare n.v.
  */
 public class ListAction
-    extends be.peopleware.struts_I.persistentBean.ListAction {
+    extends be.peopleware.struts_II.persistentBean.ListAction {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

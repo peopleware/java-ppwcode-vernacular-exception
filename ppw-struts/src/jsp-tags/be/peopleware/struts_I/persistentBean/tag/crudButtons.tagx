@@ -5,10 +5,10 @@
 					xmlns:ppw="http://www.peopleware.be/tags/jsp-I">
 					
 	<jsp:directive.attribute name="actionForm"
-													 type="be.peopleware.struts_I.persistentBean.CrudDynaActionForm"
+													 type="be.peopleware.struts_II.persistentBean.CrudDynaActionForm"
 													 required="true" />
 	
-	<fmt:setBundle basename="be.peopleware.struts_I.persistentBean.tag.ButtonLabels"
+	<fmt:setBundle basename="be.peopleware.struts_II.persistentBean.tag.ButtonLabels"
 	               var="buttonsBundle" scope="session" /> 
 	
 	<fmt:message bundle="${buttonsBundle}" key="message.sureToDelete" var="deleteMessage" />  
@@ -47,24 +47,24 @@
 	  <c:when test="${(actionForm.viewModeNew)}">
 	    <input type="hidden" name="referer" value="${header.referer}" />
 	  	<input type="submit"
-	  				 name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_CREATE')}"
+	  				 name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_CREATE')}"
 	           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
 	    <![CDATA[&nbsp;]]>
 	    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
 	    <![CDATA[&nbsp;]]>
 	    <input type="submit"
-	    			 name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_CANCEL_NEW')}"
+	    			 name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_CANCEL_NEW')}"
 	           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
 	  </c:when>
 	  <c:when test="${actionForm.viewModeEdit}">
 	  	<input type="submit"
-	  				 name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_UPDATE')}"
+	  				 name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_UPDATE')}"
 	           value="${ppw:i18nlabel(buttonsBundle, 'store')}" />
 	    <![CDATA[&nbsp;]]> 
 	    <input type="reset" value="${ppw:i18nlabel(buttonsBundle, 'reset')}"/>
 	    <![CDATA[&nbsp;]]> 
 	    <input type="submit"
-	    			 name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_DISPLAY')}"
+	    			 name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_DISPLAY')}"
 	           value="${ppw:i18nlabel(buttonsBundle, 'cancel')}" />
 	  </c:when>
 	  <c:when test="${actionForm.viewModeDeleted}">
@@ -73,13 +73,13 @@
 	  <c:otherwise>
 	  	<c:if test="${actionForm.editable}">
 		  	<input type="submit"
-		  	       name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_EDIT')}"
+		  	       name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_EDIT')}"
 			 				 value="${ppw:i18nlabel(buttonsBundle, 'edit')}" />
 			  <![CDATA[&nbsp;]]> 
 		 	</c:if>
 	  	<c:if test="${actionForm.deleteable}">
 		    <input type="submit"
-		           name="${ppw:constant('be.peopleware.struts_I.persistentBean.DetailAction', 'REQUEST_MODE_DELETE')}"
+		           name="${ppw:constant('be.peopleware.struts_II.persistentBean.DetailAction', 'REQUEST_MODE_DELETE')}"
 		           value="${ppw:i18nlabel(buttonsBundle, 'delete')}"
 		           onclick="return deleteButton();" />
  		 	</c:if>

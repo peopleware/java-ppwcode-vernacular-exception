@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:ppw="http://www.peopleware/tags/jsp-I">
+          xmlns:ppw="http://www.peopleware.be/tags/jsp-I">
 
   <jsp:directive.attribute name="actionForm"
-                           type="be.peopleware.struts_I.persistentBean.CrudDynaActionForm"
+                           type="be.peopleware.struts_II.persistentBean.CrudDynaActionForm"
                            required="true" />
   <jsp:directive.attribute name="property"
                            type="java.lang.String"

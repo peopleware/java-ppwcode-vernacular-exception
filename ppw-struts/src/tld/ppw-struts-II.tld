@@ -8,7 +8,7 @@
   <display-name>Peopleware Struts Extensions</display-name>
   <tlib-version>1.0</tlib-version>
   <short-name>ppw-struts</short-name>
-  <uri>http://www.peopleware.be/tags/struts-I</uri>
+  <uri>http://www.peopleware.be/tags/struts-II</uri>
 
   <tag>
     <description>
@@ -19,7 +19,7 @@
     </description>
     <display-name>ppw-struts:enumerationField</display-name>
     <name>enumerationField</name>
-    <tag-class>be.peopleware.struts_I.persistentBean.tag.EnumerationFieldTag</tag-class>
+    <tag-class>be.peopleware.struts_II.persistentBean.tag.EnumerationFieldTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
       <description>The Struts Action Form that contains the
@@ -28,7 +28,7 @@
       <name>actionForm</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
-       <type>be.peopleware.struts_I.persistentBean.CrudDynaActionForm</type>
+       <type>be.peopleware.struts_II.persistentBean.CrudDynaActionForm</type>
     </attribute>
     <attribute>
       <description>The name of the property we in the action form to be
@@ -73,42 +73,42 @@
 
   <tag-file>
     <name>crudButtons</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/crudButtons.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/crudButtons.tagx</path>
   </tag-file>
 
   <tag-file>
     <name>fileField</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/fileField.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/fileField.tagx</path>
   </tag-file>
 
   <tag-file>
     <name>listField</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/listField.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/listField.tagx</path>
   </tag-file>
 
   <tag-file>
     <name>navigationButton</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/navigationButton.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/navigationButton.tagx</path>
   </tag-file>
 
   <tag-file>
     <name>passwordField</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/passwordField.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/passwordField.tagx</path>
   </tag-file>
 
   <tag-file>
     <name>radioField</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/radioField.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/radioField.tagx</path>
   </tag-file>
 
   <tag-file>
     <name>textField</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/textField.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/textField.tagx</path>
   </tag-file>
 
   <tag-file>
     <name>textareaField</name>
-    <path>/META-INF/tags/be/peopleware/struts_I/persistentBean/tag/textareaField.tagx</path>
+    <path>/META-INF/tags/be/peopleware/struts_II/persistentBean/tag/textareaField.tagx</path>
   </tag-file>
 
 </taglib>
