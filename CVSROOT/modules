@@ -24,15 +24,5 @@
 # character to interpose another module into the current module.  This
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
-CVSROOT             CVSROOT
-Documents           Documents
-PocketPCClient      PocketPCClient
-Test                Test
-WebClient           WebClient
-Common              Common
-Library             Library
-Services            Services
-VisualisationClient VisualisationClient
-All -a              CVSROOT Documents PocketPCClient Test WebClient Common Library Services VisualisationClient
-
+Tutorial		Tutorial
 
