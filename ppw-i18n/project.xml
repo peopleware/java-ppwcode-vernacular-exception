@@ -1,86 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
-    <pomVersion>3</pomVersion>
-    <artifactId>ppw-i18n</artifactId>
-    <name>PeopleWare I18n Library</name>
-    <groupId>ppw-i18n</groupId>
-    <currentVersion>1.0</currentVersion>
-    <organization>
-        <name>PeopleWare n.v.</name>
-        <url>http://www.peopleware.be/</url>
-    </organization>
-    <inceptionYear>2004</inceptionYear>
-    <package>be.peopleware.i18n</package>
-    <logo>http://maven.apache.org/images/maven.jpg</logo>
-    <description>Support for i18n, in general, and for a strategy for binding i18n labels to bean types, bean properties and other strings. Labels are looked up in a properties file with the same fully qualified name as the bean type, and if no match is found, in the properties files of the supertypes. Furthermore, this library offers an API for resource bundle load strategies, which are different in different deployment environments (application, webapp, ...).</description>
-    <shortDescription>Support for i18n.</shortDescription>
-    <url>http://www.peopleware.be/projects/JavaLibraries/i18n/</url>
-    <siteAddress>www.peopleware.be</siteAddress>
-    <siteDirectory>/projects/JavaLibraries/i18n/</siteDirectory>
-    <distributionDirectory>/projects/JavaLibraries/builds/</distributionDirectory>
-    <repository>
-        <connection>scm:cvs:ext:anoncvs@cvs.apache.org:/home/cvspublic:maven-plugins/examples</connection>
-        <url>http://cvs.apache.org/viewcvs/maven-plugins/examples/</url>
-    </repository>
-    <versions/>
-    <developers>
-        <developer>
-            <name>Jan Dockx</name>
-            <id>1</id>
-            <email>Jan.Dockx@peopleware.be</email>
-            <organization>PeopleWare n.v.</organization>
-            <roles>
-                <role>architect</role>
-                <role>developer</role>
-                <role>lead</role>
-                <role>management</role>
-                <role>planning</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <name>David Van Keer</name>
-            <id>2</id>
-            <email>David_Van_Keer@peopleware.be</email>
-            <organization>PeopleWare n.v.</organization>
-            <roles>
-                <role>developer</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-    </developers>
-    <contributors>
-        <contributor>
-            <name>Dirk Couck</name>
-            <email>Dirk_Couck@peopleware.be</email>
-            <organization>PeopleWare n.v.</organization>
-            <roles>
-                <role>management</role>
-                <role>planning</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-    </contributors>
-    <build>
-        <nagEmailAddress>ppw-i18n@peopleware.be</nagEmailAddress>
-        <sourceDirectory>src/java</sourceDirectory>
-        <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-        <unitTest>
-            <includes>
-                <include>**/*Test.java</include>
-            </includes>
-            <excludes>
-                <exclude>**/NaughtyTest.java</exclude>
-            </excludes>
-        </unitTest>
-        <resources>
-            <resource>
-                <directory>src/conf</directory>
-                <includes>
-                    <include>*.properties</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
-    </build>
-    <properties/>
+  <extend>ppw-libraries-settings/project.xml</extend>
+  <name>Internationalization Library</name>
+  <artifactId>ppw-i18n-I</artifactId>
+  <shortDescription>Support for i18n.</shortDescription>
+  <description>Support for i18n, in general, and for a strategy for binding i18n labels
+    to bean types, bean properties and other strings. Labels are looked up in a properties
+    file with the same fully qualified name as the bean type, and if no match is found,
+    in the properties files of the supertypes. Furthermore, this library offers an API for
+    resource bundle load strategies, which are different in different deployment environments
+    (application, webapp, ...).</description>
+  <inceptionYear>2004</inceptionYear>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.i18n_I</package>
+  <!--
+  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jand</id>
+      <email>Jan.Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+        <role>lead</role>
+        <role>management</role>
+        <role>planning</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>David Van Keer</name>
+      <id>dvankeer</id>
+      <email>David_Van_Keer@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Rene Clerckx</name>
+      <id>rclerckx</id>
+      <email>Rene.Clerckx@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Dirk Couck</name>
+      <email>Dirk_Couck@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <roles>
+        <role>management</role>
+        <role>planning</role>
+      </roles>
+    </contributor>
+  </contributors>
+  <dependencies>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-test_I</artifactId>
+    </dependency>
+  </dependencies>
+  <properties/>
 </project>
