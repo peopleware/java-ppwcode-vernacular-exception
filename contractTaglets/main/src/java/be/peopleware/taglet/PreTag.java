@@ -8,8 +8,14 @@ import java.util.Map;
  */
 public class PreTag extends TagletRegistrar {
 
-	private final String name = "pre"; //$NON-NLS-1$
-  private final String header = "Preconditions:"; //$NON-NLS-1$
+	/**
+	 * name of the tag.
+	 */
+  private static final String name = "pre"; //$NON-NLS-1$
+	/**
+	 * header of the tag - used in generated documentation.
+	 */
+  private static final String header = "Preconditions:"; //$NON-NLS-1$
 
   /**
    * Register this taglet
@@ -30,6 +36,15 @@ public class PreTag extends TagletRegistrar {
 	   bInPackage 		= false;
 	   bInType 				= false;
 	   bInLine 				= false;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+	public String getHeader() {
+		return header;
 	}
 
 }

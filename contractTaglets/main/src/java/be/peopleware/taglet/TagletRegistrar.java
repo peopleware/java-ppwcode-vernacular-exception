@@ -10,10 +10,18 @@ import com.sun.tools.doclets.Taglet;
  * Generic Taglet that implements methods from interface Taglet.
  * <br />Other custom taglets can extend this class and override method 
  * {@link #setTagScopes()} to define scopes where this tag is valid.
- * <br />Each subclass should also create there own 
- * <code>name</code> and <code>header</code> instance variables,
- * and supply method <code>static void register(Map tagletMap)</code>.
- * 
+ * <br />In addition to abstract methods defined in this class, 
+ * each subclass should also supply method 
+ * <code>static void register(Map tagletMap)</code>.
+ * For example, the following implementation 
+ * for the class Foo should do the trick:
+ * <code>
+ * <dl>
+ * <dt>public static void register(Map tagletMap) {</dt>
+ * <dd>   TagletRegistrar.registerTaglet(tagletMap, new Foo());</dd>
+ * <dt>}</dt>
+ * <dl>
+ * </code>.
  * @todo. This tag can be used in any kind of {@link com.sun.javadoc.Doc}. It
  *        is not an inline tag. The text reminds the
  *        developer to perform a task. 
@@ -32,15 +40,6 @@ import com.sun.tools.doclets.Taglet;
  */
 public abstract class TagletRegistrar implements Taglet {
 
-	/**
-	 * name of the tag.
-	 */
-  private final String name = "genericName"; //$NON-NLS-1$
-	/**
-	 * header of the tag - used in generated documentation.
-	 */
-  private final String header = "Generic Header:"; //$NON-NLS-1$
-  
   /**
    * Used to determine if this tag can be used in <strong>field</strong> documentation.
    * <br />Default value is false.
@@ -122,9 +121,12 @@ public abstract class TagletRegistrar implements Taglet {
   /**
    * Return the name of this custom tag.
    */
-  public String getName() {
-    return name;
-  }
+  public abstract String getName();
+
+  /**
+   * Return the header of this custom tag - used in generated documentation.
+   */
+  public abstract String getHeader();
 
   /**
    * Used to determine if this tag can be used in <strong>field</strong> documentation.
@@ -240,7 +242,7 @@ public abstract class TagletRegistrar implements Taglet {
     if (tags.length == 0) {
       return null;
     }
-    String result = "\n<dl><dt><b>" + header + "</b></dt><dd>"; //$NON-NLS-1$ //$NON-NLS-2$
+    String result = "\n<dl><dt><b>" + getHeader() + "</b></dt><dd>"; //$NON-NLS-1$ //$NON-NLS-2$
     result += "<table cellpadding=2 cellspacing=0>"; //$NON-NLS-1$
     for (int i = 0; i < tags.length; i++) {
       result += "<tr><td><code>"; //$NON-NLS-1$

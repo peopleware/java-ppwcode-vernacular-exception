@@ -8,8 +8,14 @@ import java.util.Map;
  */
 public class QuestionTag extends TagletRegistrar {
 
-	private final String name = "question"; //$NON-NLS-1$
-  private final String header = "Question:"; //$NON-NLS-1$
+	/**
+	 * name of the tag.
+	 */
+  private static final String name = "question"; //$NON-NLS-1$
+	/**
+	 * header of the tag - used in generated documentation.
+	 */
+  private static final String header = "Question:"; //$NON-NLS-1$
 
   /**
    * Register this taglet
@@ -30,6 +36,15 @@ public class QuestionTag extends TagletRegistrar {
 	   bInPackage 		= true;
 	   bInType 				= true;
 	   bInLine 				= false;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+	public String getHeader() {
+		return header;
 	}
 
 }

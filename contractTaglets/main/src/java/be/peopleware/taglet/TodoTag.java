@@ -8,8 +8,14 @@ import java.util.Map;
  */
 public class TodoTag extends TagletRegistrar {
 
-	private final String name = "todo"; //$NON-NLS-1$
-  private final String header = "To Do:"; //$NON-NLS-1$
+	/**
+	 * name of the tag.
+	 */
+  private static final String name = "todo"; //$NON-NLS-1$
+	/**
+	 * header of the tag - used in generated documentation.
+	 */
+  private static final String header = "To do:"; //$NON-NLS-1$
 
   /**
    * Register this taglet
@@ -30,6 +36,15 @@ public class TodoTag extends TagletRegistrar {
 	   bInPackage 		= true;
 	   bInType 				= true;
 	   bInLine 				= false;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+	public String getHeader() {
+		return header;
 	}
 
 }

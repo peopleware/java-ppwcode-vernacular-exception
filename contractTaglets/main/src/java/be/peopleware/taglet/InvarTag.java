@@ -8,8 +8,14 @@ import java.util.Map;
  */
 public class InvarTag extends TagletRegistrar {
 
-	private final String name = "invar"; //$NON-NLS-1$
-  private final String header = "Type Invariants:"; //$NON-NLS-1$
+	/**
+	 * name of the tag.
+	 */
+  private static final String name = "invar"; //$NON-NLS-1$
+	/**
+	 * header of the tag - used in generated documentation.
+	 */
+  private static final String header = "Type Invariants:"; //$NON-NLS-1$
 
   /**
    * Register this taglet
@@ -32,5 +38,14 @@ public class InvarTag extends TagletRegistrar {
 	   bInType 				= true;
 	   bInLine 				= false;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getHeader() {
+		return header;
+	}
+
 
 }
