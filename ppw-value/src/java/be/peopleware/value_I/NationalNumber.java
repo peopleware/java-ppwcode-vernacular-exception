@@ -77,7 +77,7 @@ public final class NationalNumber extends ImmutableValue {
    *                        "LEFT_NUMBER_IS_NULL", null
    *                 );
    * @throws  PropertyException pExc
-   *          (leftNumber != null && Pattern.matches(LEFT_PATTERN, leftNumber))
+   *          (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber))
    *              && pExc.reportsOn(
    *                        null, "leftNumber",
    *                        "LEFT_NUMBER_INVALID_PATTERN", null
@@ -89,7 +89,7 @@ public final class NationalNumber extends ImmutableValue {
    *                        "MIDDLE_NUMBER_IS_NULL", null
    *                 );
    * @throws  PropertyException pExc
-   *          (middleNumber != null && Pattern.matches(MIDDLE_PATTERN, middleNumber))
+   *          (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber))
    *              && pExc.reportsOn(
    *                        null, "middleNumber",
    *                        "MIDDLE_NUMBER_INVALID_PATTERN", null
@@ -101,7 +101,7 @@ public final class NationalNumber extends ImmutableValue {
    *                        "RIGHT_NUMBER_IS_NULL", null
    *                 );
    * @throws  PropertyException pExc
-   *          (rightNumber != null && Pattern.matches(RIGHT_PATTERN, rightNumber))
+   *          (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber))
    *              && pExc.reportsOn(
    *                        null, "rightNumber",
    *                        "RIGHT_NUMBER_INVALID_PATTERN", null
@@ -110,7 +110,7 @@ public final class NationalNumber extends ImmutableValue {
    *          (  leftNumber != null &&
    *             middleNumber != null &&
    *             rightNumber != null &&
-   *             checkNationalNumber(leftNumber, middleNumber, rightNumber)
+   *             !checkNationalNumber(leftNumber, middleNumber, rightNumber)
    *          )
    *              && pExc.reportsOn(
    *                        null, null,
@@ -162,12 +162,7 @@ public final class NationalNumber extends ImmutableValue {
           new PropertyException(null, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
       );
     }
-    if (leftNumber == null) {
-      cpe.addElementException(
-          new PropertyException(null, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
-      );
-    }
-    if (leftNumber != null && Pattern.matches(LEFT_PATTERN, leftNumber)) {
+    if (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber)) {
       cpe.addElementException(
           new PropertyException(null, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
       );
@@ -177,7 +172,7 @@ public final class NationalNumber extends ImmutableValue {
           new PropertyException(null, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
       );
     }
-    if (middleNumber != null && Pattern.matches(MIDDLE_PATTERN, middleNumber)) {
+    if (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber)) {
       cpe.addElementException(
           new PropertyException(null, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
       );
@@ -187,7 +182,7 @@ public final class NationalNumber extends ImmutableValue {
           new PropertyException(null, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
       );
     }
-    if (rightNumber != null && Pattern.matches(RIGHT_PATTERN, rightNumber)) {
+    if (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber)) {
       cpe.addElementException(
           new PropertyException(null, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
       );
@@ -195,7 +190,7 @@ public final class NationalNumber extends ImmutableValue {
     if (leftNumber != null &&
         middleNumber != null &&
         rightNumber != null &&
-        checkNationalNumber(leftNumber, middleNumber, rightNumber)
+        !checkNationalNumber(leftNumber, middleNumber, rightNumber)
     ) {
       cpe.addElementException(
           new PropertyException(null, null, "INVALID_CHECK", null)
@@ -206,6 +201,7 @@ public final class NationalNumber extends ImmutableValue {
     $middleNumber = middleNumber;
     $rightNumber  = rightNumber;
   }
+
   /*<property name="leftNumber">*/
   //------------------------------------------------------------------
 
@@ -314,4 +310,5 @@ public final class NationalNumber extends ImmutableValue {
   public String toString() {
     return getLeftNumber() + " " + getMiddleNumber() + " " + getRightNumber();
   }
+
 }
