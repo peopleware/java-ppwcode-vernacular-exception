@@ -25,15 +25,3 @@
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
 
-ppw-test											ppw-test											&ppw-libraries-settings
-ppw-i18n											ppw-i18n											&ppw-libraries-settings
-ppw-exception								ppw-exception								&ppw-libraries-settings
-ppw-bean											ppw-bean     								&ppw-libraries-settings
-ppw-value										ppw-value     								&ppw-libraries-settings
-ppw-value-hibernate					ppw-value-hibernate     			&ppw-libraries-settings
-ppw-servlet									ppw-servlet				     			&ppw-libraries-settings
-ppw-jsp											ppw-jsp     									&ppw-libraries-settings
-ppw-struts										ppw-struts					     			&ppw-libraries-settings
-toryt												toryt							     			&ppw-libraries-settings
-ppw-persistence							ppw-persistence							&ppw-libraries-settings
-ppw-jsf											ppw-jsf											&ppw-libraries-settings
