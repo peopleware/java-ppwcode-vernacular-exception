@@ -6,6 +6,16 @@
   </properties>
   <body>
  
+    <release version="XXX" date="2005-0X-XX" description="Move of contract functions to Toryt">
+    <!-- jand: just entered a change, this release was not made; if this release
+    				would be made now, it would be a compatible change, so the version
+    				would be II 1.2.0/2.0 -->
+      <action dev="jand" type="remove">
+      	Deprecated be.peopleware.bean_II.Associations. This functionality is
+      	now in Toryt.
+      </action>              
+    </release>
+
     <release version="II v1.1.0/2.0" date="2005-01-04" description="Extension">
       <action dev="jand" type="addition">
       	Added method reportsOn to PropertyException and CompoundPropertyException.

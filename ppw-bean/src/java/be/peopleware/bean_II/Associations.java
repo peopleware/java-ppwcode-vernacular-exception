@@ -13,6 +13,8 @@ import java.util.Set;
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
+ * 
+ * @deprecated moved to Toryt
  */
 public class Associations {
 
@@ -60,6 +62,9 @@ public class Associations {
    * @return    (mandatory ==> (reference != null))
    *            && ((reference != null) ==>
    *                    reference[toManySetPropertyName].contains(manyObject));
+   * 
+   * @deprecated moved to Toryt:
+   *      {@link org.toryt.contract.Associations#bidirNTo1(Object, String, Object, boolean)}
    */
   public static final boolean bidirectionalManyToOneReference(
       final Object reference,
@@ -130,6 +135,9 @@ public class Associations {
    *            && (forall Object o; manySet.contains(o); o instanceof manyType)
    *            && (forall Object o; manySet.contains(o);
    *                    o[toOneReferencePropertyName] == oneObject);
+   * 
+   * @deprecated moved to Toryt:
+   *      {@link org.toryt.contract.Associations#bidir1ToN(Set, Class, String, Object)}
    */
   public static final boolean bidirectionalOneToManySet(
       final Set manySet,
