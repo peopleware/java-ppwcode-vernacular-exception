@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:ppw="http://www.peopleware.be/tags/jsp-I">
+
+  <jsp:directive.attribute name="action"
+                           type="java.lang.String"
+                           required="true" />
+  <jsp:directive.attribute name="type"
+                           type="java.lang.String"
+                           required="true" />
+  <jsp:directive.attribute name="name"
+                           type="java.lang.String"
+                           required="true" />
+
+  <fmt:setBundle basename="be.peopleware.struts_III.persistentBean.tag.ButtonLabels"
+                 var="buttonsBundle" scope="session" />
+
+  <form action="${action}" method="post">
+    <jsp:doBody />
+    <input type="submit"
+           name="${name}"
+           value="${ppw:i18nlabel(buttonsBundle, type)}" />
+  </form>
+
+</jsp:root>
+
+<!--
+  <document-info>
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>David Van Keer</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source: /ppw/projects/JavaLibraries/repository/ppw-struts/src/jsp-tags/be/peopleware/struts_II/persistentBean/tag/navigationButton.tagx,v $</path>
+      <revision>$Revision: 1.1 $</revision>
+      <date>$Date: 2005/01/11 08:56:25 $ (UTC)</date>
+      <state>$State: Exp $</state>
+      <release>$Name:  $</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date: 2005/01/11 08:56:25 $ (UTC)</lastmodifieddate>
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+-->

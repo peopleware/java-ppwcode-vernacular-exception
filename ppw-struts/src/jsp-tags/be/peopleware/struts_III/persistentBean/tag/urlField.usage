@@ -1,0 +1,86 @@
+,<tag>
+  <display-name>ppw-struts:urlField</display-name>
+  <name>textField</name>
+  <description>
+    Generates a text input box for the given property when the actionForm
+    is edit mode, otherwise the value of the given property is shown.
+    It is specifically designed for url's: when the actionForm is in mode
+    <> viewModeEdit and <> viewModeDeleted the value is shown as a hyperlink
+  </description>
+  <example>
+    &lt;ppw-struts:urlField actionForm=&quot;${detailActionForm}&quot;
+        property=&quot;name&quot;
+        size=&quot;20&quot;
+        maxlength=&quot;255&quot; /&gt;
+  </example>
+  <body-content>empty</body-content>
+ <attribute>
+    <name>actionForm</name>
+    <description>
+      The struts action form containing all object properties that can be used.
+    </description>
+    <type>be.peopleware.struts_III.persistentBean.CrudDynaActionForm</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>property</name>
+    <description>
+      The property of the action form that is going to be used.
+    </description>
+    <type>java.lang.String</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>size</name>
+    <description>
+      The size of the input box.
+    </description>
+    <type>java.lang.Integer</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+    <name>maxLength</name>
+    <description>
+      The maximum length of the password the can be entered in the input box.
+    </description>
+    <type>java.lang.Integer</type>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+  </attribute>
+    <name>target</name>
+    <description>
+		The target window in which the link is to be opened (TARGET attribute of A HREF)
+    </description>
+    <type>java.lang.String</type>
+    <required>false</required>
+  </attribute>
+</tag>
+
+<!--
+  <document-info>
+    This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>David Van Keer</author>
+      <author>Wim Lambrechts</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source: /ppw/projects/JavaLibraries/repository/ppw-struts/src/jsp-tags/be/peopleware/struts_II/persistentBean/tag/urlField.usage,v $</path>
+      <revision>$Revision: 1.1 $</revision>
+      <date>$Date: 2005/01/11 08:56:24 $ (UTC)</date>
+      <state>$State: Exp $</state>
+      <release>$Name:  $</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date: 2005/01/11 08:56:24 $ (UTC)</lastmodifieddate>
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+-->

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"	version="2.0"
+					xmlns:c="http://java.sun.com/jsp/jstl/core"
+					xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+					xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+					xmlns:ppw="http://www.peopleware.be/tags/jsp-I">
+
+  <jsp:directive.attribute name="actionForm"
+  												 type="be.peopleware.struts_III.persistentBean.CrudDynaActionForm"
+  												 required="true" />
+  <jsp:directive.attribute name="property"
+  												 type="java.lang.String"
+  												 required="true" />
+  <jsp:directive.attribute name="fqClassName"
+  												 type="java.lang.String"
+  												 required="true" />
+  <jsp:directive.attribute name="filename"
+                           type="java.lang.String"
+                           required="false" />
+  <jsp:directive.attribute name="pageContext"
+  												 type="java.lang.Object"
+  												 required="true" />
+
+	<fmt:setBundle basename="be.peopleware.struts_III.persistentBean.tag.Field"
+	               var="fieldBundle" scope="session" />
+	
+	<c:set var="be_peopleware_web_jsp_tag_form_fileField_propertyValue"
+	       value="${fn:escapeXml(actionForm.map[property])}" />
+	
+	<c:choose>
+	  <c:when test="${be_peopleware_web_jsp_tag_form_fileField_propertyValue eq ''}">
+	    <c:set var="available" value="false" />
+	  </c:when>
+	  <c:otherwise>
+	    <c:set var="available" value="true" />
+	    <c:url var="link"
+	           value="/servlet/blobRetrieve?type=${fqClassName}&amp;property=${property}&amp;id=${actionForm.map['id']}&amp;filename=${fn:replace(filename, ' ', '_')}" />
+	  </c:otherwise>
+	</c:choose>
+	
+	
+	<c:choose>
+	  <c:when test="${actionForm.viewModeEdit}">
+	    <c:if test="${available}">
+	      <input type="checkbox" name="${property}Delete" value="1" /><fmt:message bundle="${fieldBundle}" key="message.fileField.remove" /> ${ppw:i18npl(property, fqClassName, pageContext)}<br/>
+	    </c:if>
+	    <input type="file" name="${property}" />
+		</c:when>
+		<c:when test="${actionForm.viewModeDeleted}">
+	    <c:choose>
+	      <c:when test="${available}">
+	        <span class="deleted"><fmt:message bundle="${fieldBundle}" key="message.fileField.view" /> ${ppw:i18npl(property, fqClassName, pageContext)}</span>
+	      </c:when>
+	      <c:otherwise>
+	        <span class="deleted">${ppw:i18npl(property, fqClassName, pageContext)} <fmt:message bundle="${fieldBundle}" key="message.fileField.notAvailable" /></span>
+	      </c:otherwise>
+	    </c:choose>
+	  </c:when>
+	  <c:otherwise>
+	    <c:choose>
+	      <c:when test="${available}">
+	        <span class="display"><a href="${link}"><fmt:message bundle="${fieldBundle}" key="message.fileField.view" /> ${ppw:i18npl(property, fqClassName, pageContext)}</a></span>
+	      </c:when>
+	      <c:otherwise>
+	        <span class="display">${ppw:i18npl(property, fqClassName, pageContext)} <fmt:message bundle="${fieldBundle}" key="message.fileField.notAvailable" /></span>
+	      </c:otherwise>
+	    </c:choose>
+	  </c:otherwise>
+	</c:choose>
+
+</jsp:root>
+
+<!--
+  <document-info>
+	  This file is part of the PeopleWare/Ismar/OpinionLeaders project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>David Van Keer</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source: /ppw/projects/JavaLibraries/repository/ppw-struts/src/jsp-tags/be/peopleware/struts_II/persistentBean/tag/fileField.tagx,v $</path>
+      <revision>$Revision: 1.1 $</revision>
+      <date>$Date: 2005/01/11 08:56:24 $ (UTC)</date>
+      <state>$State: Exp $</state>
+      <release>$Name:  $</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date: 2005/01/11 08:56:24 $ (UTC)</lastmodifieddate>
+			<p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+			<p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+-->
