@@ -130,7 +130,9 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
         StringBuffer htmlResult = new StringBuffer(EMPTY);
         
   	  	HtmlGenerator htmlGenerator = new HtmlGenerator();
-        htmlGenerator.visit(sn, htmlResult);
+  	  	sn.jjtAccept(htmlGenerator, htmlResult);
+        
+//  	  	htmlGenerator.visit(sn, htmlResult);
 
         System.out.println("++++++++++ " + htmlResult.toString());
         

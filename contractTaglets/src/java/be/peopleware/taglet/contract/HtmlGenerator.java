@@ -32,13 +32,18 @@ public class HtmlGenerator implements ParserVisitor {
             return data;
         }
         System.out.println("...........SimpleNode..." + acc.toString());
-        return visitChildren(node, data);
+        // TODO determine correct class of the node and redirect this call  
+        // 	to visit method with this particular class as an argument.
+        
+        node.jjtAccept(this, data);
+        
+        return data;
     }
 
     public Object visit(ASTJexlScript node, Object data) {
         StringBuffer acc = (StringBuffer) data;
         System.out.println("...........JexlScript..." + acc.toString());
-        visit((ASTReferenceExpression)node.jjtGetChild(0), acc);
+        visit((SimpleNode)node.jjtGetChild(0), acc);
         return acc;
     }
 
@@ -71,7 +76,7 @@ public class HtmlGenerator implements ParserVisitor {
 
         System.out.println("Identifier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-        String text = ((ASTIdentifier) node).getIdentifierString();
+        String text = node.getIdentifierString();
         if (text.equals("result") || text.equals("forall")
                 || text.equals("new")) {
             acc.append("<span style='font: bold; background-color: yellow'>"); //$NON-NLS-1$)
@@ -349,7 +354,8 @@ public class HtmlGenerator implements ParserVisitor {
     public Object visit(ASTReferenceExpression node, Object data) {
         // TODO visit ReferenceExpression
         StringBuffer acc = (StringBuffer)data;
-        visit((ASTReference)node.jjtGetChild(0), acc);
+        System.out.println("...........ASTReferenceExpression..." + acc.toString());
+        visit((SimpleNode)node.jjtGetChild(0), acc);
         return acc;
     }
 
@@ -387,7 +393,8 @@ public class HtmlGenerator implements ParserVisitor {
   	  	assert(node.jjtGetNumChildren() == 0):
 						"ASTReferenceNode must not have any children";
         StringBuffer acc = (StringBuffer)data;
-        visit((ASTIdentifier)node.jjtGetChild(0), acc);
+        System.out.println("...........ASTReference..." + acc.toString());
+        visit((SimpleNode)node.jjtGetChild(0), acc);
         return acc;
     }
 
