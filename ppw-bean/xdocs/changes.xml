@@ -11,6 +11,16 @@
   </properties>
   <body>
  
+    <release version="IV v1.0.1/1.0" date="2005-03-08"
+    			description="PropertyException extra constructor">
+      <action dev="jand" type="add">
+      	An extra constructor for PropertyExceptions, that take a boolean
+      	argument that says whether the exception occurs during initialization
+      	of the origin or not. If so, we should not carry a reference to
+      	the incomplete origin.
+      </action>              
+    </release>
+
     <release version="IV v1.0.0/1.0" date="2005-03-08"
     			description="PropertyException.getOrigin() can be null">
       <action dev="jand" type="update">

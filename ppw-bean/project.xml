@@ -10,7 +10,7 @@
   <description>Support for JavaBeans. General superclasses and utility
   	classes that etch a number of idioms and design patterns in code.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.0-1.0</currentVersion>
+  <currentVersion>1.0.0-1.1</currentVersion>
   <package>be.peopleware.bean_IV</package>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>

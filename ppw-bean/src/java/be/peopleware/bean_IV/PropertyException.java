@@ -106,6 +106,63 @@ public class PropertyException extends LocalizedMessageException {
 
 
   /**
+   * @param     origin
+   *            The bean that has thrown this exception.
+   * @param     inOriginInitialization
+   *            Set to <code>true</code> if this active
+   *            property is created during the origin initialization;
+   *            if so, an exception will not carry a reference
+   *            to the bean, but only to the bean type.
+   * @param     propertyName
+   *            The name of the property of which the setter has thrown
+   *            this exception because parameter validation failed.
+   * @param     message
+   *            The message that describes the exceptional circumstance.
+   * @param     cause
+   *            The exception that occured, causing this exception to be
+   *            thrown, if that is the case.
+   *
+   * @pre       origin != null;
+   * @pre       (propertyName != null) ==> ! propertyName.equals("");
+   * @pre       (message != null) ==> ! message.equals("");
+   *
+   * @post      inOriginInitialization ? new.getOrigin() == null
+   *                                   : new.getOrigin() == origin;
+   * @post      new.getOriginType() == origin.getClass();
+   * @post      (propertyName != null)
+   *                ==> new.getpropertyName().equals(propertyName);
+   * @post      (propertyName == null) ==> new.getpropertyName() == null;
+   * @post      (message != null) ==> new.getMessage().equals(message);
+   * @post      (message == null) ==> new.getMessage() == null;
+   * @post      new.getCause() == cause;
+   * @post      new.getLocalizedMessageResourceBundleLoadStrategy().getClass()
+   *                == DefaultResourceBundleLoadStrategy.class;
+   *
+   * @idea (jand): check effectively that <code>propertyName</code> is
+   *               a property of <code>origin</code>
+   * 
+   * @since IV 1.1.0/1.0
+   */
+  public PropertyException(final Object origin,
+                           final boolean inOriginInitialization,
+                           final String propertyName,
+                           final String message,
+                           final Throwable cause) {
+    super(message, cause);
+    assert origin != null : "@pre origin != null;"; //$NON-NLS-1$
+    assert (propertyName == null) || (!propertyName.equals("")) //$NON-NLS-1$
+        : "property name cannot be the empty string"; //$NON-NLS-1$
+    assert (message == null) || (!message.equals("")) //$NON-NLS-1$
+        : "message name cannot be the empty string"; //$NON-NLS-1$
+    if (! inOriginInitialization) {
+      $origin = origin;
+    }
+    $originType = origin.getClass();
+    $propertyName = propertyName;
+  }
+
+
+  /**
    * @param     originType
    *            The bean that has thrown this exception.
    * @param     propertyName
