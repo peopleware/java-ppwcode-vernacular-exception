@@ -6,13 +6,14 @@
   </properties>
   <body>
  
-    <release version="XXX" date="2005-0X-XX" description="Move of contract functions to Toryt">
-    <!-- jand: just entered a change, this release was not made; if this release
-    				would be made now, it would be a compatible change, so the version
-    				would be II 1.2.0/2.0 -->
+    <release version="II v2.0.0/2.0" date="2005-03-03"
+    			description="Move of contract functions to Toryt, add AsynchronousCrudFactory">
       <action dev="jand" type="remove">
       	Deprecated be.peopleware.bean_II.Associations. This functionality is
       	now in Toryt.
+      </action>              
+      <action dev="jand" type="addition">
+      	Added AsynchronousCrudFactory and abstract subtype.
       </action>              
     </release>
 
