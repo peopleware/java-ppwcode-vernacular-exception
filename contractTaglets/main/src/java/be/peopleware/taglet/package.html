@@ -1,0 +1,47 @@
+<html>
+<head>
+  <title>About PeopleWare Taglet Module</title>
+</head>
+<body>
+  <p>The <dfn>PeopleWare Taglet Module</dfn> is a module
+    that allows the user to create his own handlers for custom taglets in java source code.</p>
+  <p>The module contains one abstract generic class:</p>
+  <ul>
+    <li>TagletRegistrar</li>
+  </ul>
+  <p>The custom taglet is a javadoc-type taglet which can be used to customize Javadoc output. 
+  		<br />(see <a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/javadoc/taglet/overview.html">
+  		http://java.sun.com/j2se/1.4.2/docs/tooldocs/javadoc/taglet/overview.html
+  		</a>)
+  		<br />This module uses standard SUN's Javadoc doclet extension mechanism and 
+  		encapsulates some common predefined behaviour in base class.
+  		By subclassing this base class custom taglets 
+  		get most of the necessary behaviour.
+	</p>
+<h1>Writing a Custom Taglet</h1>
+	<ol>
+	<li>Extend class <code>be.peopleware.taglet.TagletRegistrar</code>
+	</li>
+	<li>Implement abstract methods from the base class.
+	</li>
+	<li>Implement the static method 
+		<code>static void register(Map tagletMap)</code>.
+		<br />For example, the following implementation 
+		for the class Foo should do the trick:
+		<code>
+		<dl>
+		<dt>public static void register(Map tagletMap) {</dt>
+		<dd>   TagletRegistrar.registerTaglet(tagletMap, new Foo());</dd>
+		<dt>}</dt>
+		<dl>
+		</code>
+	</li>
+	<li>Compile your doclet. 
+	<br />Use javac compiler version 1.4.0 (or later) in the Java 2 SDK. 
+	<br />The required class files are in the lib\tools.jar file in the SDK.
+	</li>
+	<li>Run the javadoc tool using the -taglet and -tagletpath options.
+	</li>
+	</ol>
+</body>
+</html>
