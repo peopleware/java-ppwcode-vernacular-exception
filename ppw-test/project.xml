@@ -15,7 +15,7 @@
   <developers>
     <developer>
       <name>Jan Dockx</name>
-      <id>1</id>
+      <id>jand</id>
       <email>Jan.Dockx@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
       <roles>
@@ -29,7 +29,7 @@
     </developer>
     <developer>
       <name>David Van Keer</name>
-      <id>2</id>
+      <id>dvankeer</id>
       <email>David_Van_Keer@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
       <roles>
