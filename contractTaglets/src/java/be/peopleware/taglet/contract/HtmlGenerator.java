@@ -72,9 +72,24 @@ public class HtmlGenerator implements ParserVisitor {
           + node.getClass().getName());
     }
 
-    StringBuffer acc = (StringBuffer) data;
+    StringBuffer acc = (StringBuffer)data;
     acc.append(value);
     return acc;
+  }
+
+  public static final Set JAVA_KEYWORDS = new HashSet();
+
+  static {
+    JAVA_KEYWORDS.add("new");
+    JAVA_KEYWORDS.add("final");
+    JAVA_KEYWORDS.add("class");
+  }
+
+  public static final Set CONTRACT_KEYWORDS = new HashSet();
+
+  static {
+    CONTRACT_KEYWORDS.add("result");
+    CONTRACT_KEYWORDS.add("forall");
   }
 
   public Object visit(SimpleNode node, Object data) {
@@ -86,8 +101,8 @@ public class HtmlGenerator implements ParserVisitor {
         return data;
     }
 
-//    assert (node != null) : "node is null";
-
+    Class clazz = node.getClass();
+    System.out.println(clazz.getName());
     node.jjtAccept(this, data);
 
     return data;
@@ -95,19 +110,25 @@ public class HtmlGenerator implements ParserVisitor {
 
   public Object visit(ASTJexlScript node, Object data) {
     // TODO
-    return visitChildren(node, data);
+    // A script in Jexl is made up of zero or more statements.
+    visitChildren(node, data);
+    StringBuffer acc = (StringBuffer)data;
+    acc.insert(0, "<code>");
+    acc.append("</code>");
+    return acc;
   }
 
   public Object visit(ASTBlock node, Object data) {
 
-    //  <block> ::= "#beging" {expression} "#end"
-
+    // A block is simply multiple statements inside curly braces ({, }).
+    
+    //TODO identation via CSS
     StringBuffer acc = (StringBuffer) data;
     acc.append("<br />{<br />");
     for (int i = 0; i < node.jjtGetNumChildren(); i++) {
       StringBuffer statement = new StringBuffer();
       SimpleNode childNode = (SimpleNode) node.jjtGetChild(i);
-      assert (childNode instanceof ASTExpression) : "all children of BLOCK must be EXPRESSIONs";
+//      assert (childNode instanceof ASTExpression) : "all children of BLOCK must be EXPRESSIONs";
       visit(childNode, statement);
       acc.append(statement);
     }
@@ -116,50 +137,46 @@ public class HtmlGenerator implements ParserVisitor {
   }
 
   public Object visit(ASTEmptyFunction node, Object data) {
-    // TODO
-    // comment from source:
-    // 		function to see if reference doesn't exist in context
-    return visitChildren(node, data);
-  }
-
-  public Object visit(ASTSizeFunction node, Object data) {
-    // comment from source:
-    //		generalized size() function for all classes we can think of
-    visitUnary(node, data, EMPTY);
-    StringBuffer acc = (StringBuffer) data;
-    acc.append(".size()");
+    // Returns true if the expression following is either:
+    //  1. null
+    //  2. An empty string
+    //  3. An array of length zero
+    //  4. An collection of size zero
+    //  5. An empty map
+    // empty(var)
+    visitChildren(node, data);
+    StringBuffer acc = (StringBuffer)data;
+    acc.insert(0, "empty(");
+    acc.append(")");
     return acc;
   }
 
-  public static final Set JAVA_KEYWORDS = new HashSet();
-
-  static {
-    JAVA_KEYWORDS.add("new");
-    JAVA_KEYWORDS.add("final");
-    JAVA_KEYWORDS.add("class");
-    JAVA_KEYWORDS.add("new");
-    JAVA_KEYWORDS.add("new");
-    JAVA_KEYWORDS.add("new");
-    JAVA_KEYWORDS.add("new");
-  }
-
-  public static final Set CONTRACT_KEYWORDS = new HashSet();
-
-  static {
-    CONTRACT_KEYWORDS.add("result");
-    CONTRACT_KEYWORDS.add("forall");
+  public Object visit(ASTSizeFunction node, Object data) {
+    // Returns the information about the expression:
+    //  1. Length of an array
+    //  2. Size of a List
+    //  3. Size of a Map
+    //  4. Size of a Set
+    //  5. Length of a string
+    // e.g., size("Hello") returns 5
+    visitChildren(node, data);
+    StringBuffer acc = (StringBuffer)data;
+    acc.insert(0, "size(");
+    acc.append(")");
+    return acc;
   }
 
   public Object visit(ASTIdentifier node, Object data) {
 
-    // <identifier> ::= <alpha-char> { <identifier-char> }
-    // <alpha-char> ::= "a..z, A..Z"
-    // <identifier-char> ::= "a..z, A..Z, 0..9, -, _"
-    StringBuffer acc = (StringBuffer) data;
-
-    // 	e.g. this.getHeader() is identifier
+    // Must start with a-z, A-Z, _ or $. 
+    //    Can then be followed by 0-9, a-z, A-Z, _ or $. 
+    // Jexl also supports ant-style variables, e.g. 
+    //    my.dotted.var is a valid variable name.
 
     // TODO ASTIdentifier can have multiple child nodes in Jexl
+
+    StringBuffer acc = (StringBuffer) data;
+    
     String text = node.getIdentifierString();
     String prefix  = EMPTY;
     String postfix = EMPTY;
@@ -192,7 +209,12 @@ public class HtmlGenerator implements ParserVisitor {
     //                            | <reference>
     //                            | "(" <expression> ")"
 
-    return visitUnary(node, data, EMPTY);
+    visitChildren(node, data);
+    StringBuffer acc = (StringBuffer)data;
+    // TODO output as many brackets as necessary
+    acc.insert(0,"(");
+    acc.append(")");
+    return acc;
   }
 
   public Object visit(ASTAssignment node, Object data) {
@@ -200,10 +222,12 @@ public class HtmlGenerator implements ParserVisitor {
   }
 
   public Object visit(ASTOrNode node, Object data) {
+    // The usual || operator can be used as well as the word 'or'
     return visitBinary(node, data, " || ");
   }
 
   public Object visit(ASTAndNode node, Object data) {
+    // The usual && operator can be used as well as the word 'and'
     return visitBinary(node, data, " && ");
   }
 
@@ -220,50 +244,65 @@ public class HtmlGenerator implements ParserVisitor {
   }
 
   public Object visit(ASTEQNode node, Object data) {
+    // The usual '==' operator can be used as well as the abbreviation eq.
     return visitBinary(node, data, " == ");
   }
 
   public Object visit(ASTNENode node, Object data) {
+    // The usual '!=' operator can be used as well as the abbreviation ne.
     return visitBinary(node, data, " != ");
   }
 
   public Object visit(ASTLTNode node, Object data) {
+    // The usual '<' operator can be used as well as the abbreviation lt.
     return visitBinary(node, data, " < ");
   }
 
   public Object visit(ASTGTNode node, Object data) {
+    // The usual '>' operator can be used as well as the abbreviation gt.
     return visitBinary(node, data, " > ");
   }
 
   public Object visit(ASTLENode node, Object data) {
+    // The usual '<=' operator can be used as well as the abbreviation le.
     return visitBinary(node, data, " <= ");
   }
 
   public Object visit(ASTGENode node, Object data) {
+    // The usual '>=' operator can be used as well as the abbreviation ge.
     return visitBinary(node, data, " >= ");
   }
 
   public Object visit(ASTAddNode node, Object data) {
+    // The usual + operator is used.
     return visitBinary(node, data, " + ");
   }
 
   public Object visit(ASTSubtractNode node, Object data) {
+    // The usual - operator is used.
     return visitBinary(node, data, " - ");
   }
 
   public Object visit(ASTMulNode node, Object data) {
+    // The usual * operator is used.
     return visitBinary(node, data, " * ");
   }
 
   public Object visit(ASTDivNode node, Object data) {
+    // Division - The usual / operator is used.
+    // Integer Division - The operator div is used. E.g., 4 div 3 gives 1
     return visitBinary(node, data, " / ");
   }
 
   public Object visit(ASTModNode node, Object data) {
+    // Modulus (or reminder)
+    // The % operator is used. An alternative is the mod operator.
     return visitBinary(node, data, " % ");
   }
 
   public Object visit(ASTUnaryMinusNode node, Object data) {
+    // Negation
+    // The unary - operator is used.
     return visitUnary(node, data, "-");
   }
 
@@ -272,33 +311,43 @@ public class HtmlGenerator implements ParserVisitor {
   }
 
   public Object visit(ASTNotNode node, Object data) {
+    // The usual ! operator can be used as well as the word 'not'
     return visitUnary(node, data, "!");
   }
 
   public Object visit(ASTNullLiteral node, Object data) {
+    // The null value is represented as in Java using the literal null.
     return ((StringBuffer) data).append("null");
   }
 
   public Object visit(ASTTrueNode node, Object data) {
-    return getLiteralValue(node, data);
+    // The literal true can be used.
+//    return getLiteralValue(node, data);
+    return ((StringBuffer) data).append("true");
   }
 
   public Object visit(ASTFalseNode node, Object data) {
-    return getLiteralValue(node, data);
+    //The literal false can be used.
+//    return getLiteralValue(node, data);
+    return ((StringBuffer) data).append("false");
   }
 
   public Object visit(ASTIntegerLiteral node, Object data) {
+    //1 or more digits from 0 to 9
     return getLiteralValue(node, data);
   }
 
   public Object visit(ASTFloatLiteral node, Object data) {
+    //1 or more digits from 0 to 9, followed by a decimal point and 
+    //    then one or more digits from 0 to 9. 
     return getLiteralValue(node, data);
   }
 
   public Object visit(ASTStringLiteral node, Object data) {
+    // Can start and end with either ' or ".
     getLiteralValue(node, data);
     StringBuffer acc = (StringBuffer) data;
-    // TODO which quotes - double or single?
+    // TODO which quotes should we output - double or single?
     acc.insert(0, "&laquo;");
     acc.append("&raquo;");
     return acc;
@@ -314,9 +363,12 @@ public class HtmlGenerator implements ParserVisitor {
 
   public Object visit(ASTStatementExpression node, Object data) {
     // TODO how many children may StatementExpression have?
+    // A statement can be the empty statement, the semicolon(;), block, 
+    //   assignment or an expression. 
+    //   Statements are optionally terminated with a semicolon.
     StringBuffer acc = (StringBuffer) data;
     visitUnary(node, acc, EMPTY);
-    acc.insert(0, "<br />");
+//    acc.insert(0, "<br />");
     acc.append(";");
     return acc;
   }
@@ -339,17 +391,17 @@ public class HtmlGenerator implements ParserVisitor {
     StringBuffer condition = new StringBuffer();
     visit((SimpleNode) node.jjtGetChild(0), condition);
     acc.append(condition);
-    acc.append(") {");
+    acc.append(") ");
     StringBuffer statement = new StringBuffer();
     visit((SimpleNode) node.jjtGetChild(1), statement);
     acc.append(statement);
-    acc.append("<br />}");
+//    acc.append("<br />}");
     if (node.jjtGetNumChildren() == 3) {
-      acc.append(" else {");
+      acc.append(" else ");
       StringBuffer elseStatement = new StringBuffer();
       visit((SimpleNode) node.jjtGetChild(1), elseStatement);
       acc.append(elseStatement);
-      acc.append("<br />}");
+//      acc.append("<br />}");
     }
     return acc;
   }
@@ -362,11 +414,11 @@ public class HtmlGenerator implements ParserVisitor {
     StringBuffer condition = new StringBuffer();
     visit((SimpleNode) node.jjtGetChild(0), condition);
     acc.append(condition);
-    acc.append(") {");
+    acc.append(") ");
     StringBuffer statement = new StringBuffer();
     visit((SimpleNode) node.jjtGetChild(1), statement);
     acc.append(statement);
-    acc.append("<br />}");
+//    acc.append("<br />}");
     return acc;
   }
 
@@ -385,11 +437,11 @@ public class HtmlGenerator implements ParserVisitor {
     StringBuffer collection = new StringBuffer();
     visit((SimpleNode) node.jjtGetChild(1), collection);
     acc.append(collection);
-    acc.append(") {");
+    acc.append(") ");
     StringBuffer statement = new StringBuffer();
     visit((SimpleNode) node.jjtGetChild(2), statement);
     acc.append(statement);
-    acc.append("<br />}");
+//    acc.append("<br />}");
     return acc;
   }
 
@@ -417,28 +469,30 @@ public class HtmlGenerator implements ParserVisitor {
   }
 
   public Object visit(ASTArrayAccess node, Object data) {
-    // TODO hope that ASTArrayAccess resembles ASTMethod 
+    // TODO looks like multidimensional arrays are not supported.
+    // TODO is empty index allowed?
+    // Array elements may be accessed using either square brackets 
+    //   or a dotted numeral 
+    //   e.g. arr1[0] and arr1.0 are equivalent 
     assert (node.jjtGetNumChildren() >= 1) : 
           "method statement must have at least one child.";
     StringBuffer acc = (StringBuffer) data;
 
+    // get array name
     visit((SimpleNode) node.jjtGetChild(0), acc);
     acc.append("[");
-    // from position 1 indexes begin (if they are present)
-    for (int i = 1; i < node.jjtGetNumChildren(); i++) {
-      StringBuffer index = new StringBuffer();
-      visit((SimpleNode)node.jjtGetChild(i), index);
-      acc.append(index);
-      //add comma only if there are more indexes to come
-      if (i != node.jjtGetNumChildren() - 1) {
-        acc.append(",");
-      }
-    }
+    // get index-expression from position 1
+    StringBuffer index = new StringBuffer(EMPTY);
+    visit((SimpleNode)node.jjtGetChild(1), index);
+    acc.append(index);
     acc.append("]");
     return acc;
   }
 
   public Object visit(ASTSizeMethod node, Object data) {
+    // comment from source:
+    //    generalized size() function for all classes we can think of
+    visitChildren(node, data);
     StringBuffer acc = (StringBuffer) data;
     acc.append("size()");
     return acc;

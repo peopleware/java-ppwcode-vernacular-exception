@@ -116,6 +116,7 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
             expr = text.substring(0, posSemiColumn + 1);
         }
         
+        StringBuffer htmlResult = new StringBuffer(EMPTY);
         // When parsing expressions, ExpressionFactory synchronizes on Parser.
         // 	Since we don not evaluate expressions using this Parser, 
         //  it looks like it doesn't matter how we instantiate it.
@@ -123,21 +124,24 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
         SimpleNode sn = null;
         try {
             sn = parser.parse(new StringReader(expr));
+            htmlResult = new StringBuffer(EMPTY);
+            
+            HtmlGenerator htmlGenerator = new HtmlGenerator();
+//            sn.jjtAccept(htmlGenerator, htmlResult);
+            
+            htmlGenerator.visit(sn, htmlResult);
+
+            System.out.println("++++++++++ " + htmlResult.toString());
+            
+            htmlResult.append(description);
         } catch (Exception exc) {
             // TODO why do we get an exception here?
             System.out.println("Exception!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println(expr);
+            System.out.println();
         }
-        StringBuffer htmlResult = new StringBuffer(EMPTY);
-        
-  	  	HtmlGenerator htmlGenerator = new HtmlGenerator();
-  	  	sn.jjtAccept(htmlGenerator, htmlResult);
-        
-//  	  	htmlGenerator.visit(sn, htmlResult);
-
-        System.out.println("++++++++++ " + htmlResult.toString());
-        
-        htmlResult.append(description);
         return htmlResult.toString();
+
 //---------------------------------------------------------------
         
 //        if (posSemiColumn >= 0) {
