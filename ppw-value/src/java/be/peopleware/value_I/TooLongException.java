@@ -12,7 +12,7 @@ import be.peopleware.bean_I.PropertyException;
  * that uses {@link ConstrainedString} for a property, and not the
  * {@link ConstrainedString} itself.
  *
- * @author    Dimitri Smites
+ * @author    Dimitri Smits
  * @author    Jan Dockx
  * @author    Peopleware n.v.
  *
