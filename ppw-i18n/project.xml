@@ -68,7 +68,8 @@
   <dependencies>
     <dependency>
       <groupId>ppw-libraries</groupId>
-      <artifactId>ppw-test_I</artifactId>
+      <artifactId>ppw-test-I</artifactId>
+      <version>1.0.1-1.0</version>
     </dependency>
   </dependencies>
   <properties/>
