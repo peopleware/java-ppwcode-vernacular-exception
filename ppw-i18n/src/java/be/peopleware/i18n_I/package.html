@@ -83,16 +83,29 @@ public class Person {
 
   private String $name;
 
+
+
+  public java.util.Date getDateOfBirth() {
+    return (java.util.Date)$dob.clone();
+  }
+
+  public void setDateOfBirth(java.util.Date dob) {
+    $dob = (java.util.Date)dob.clone();
+  }
+
+  private java.util.Date $dob;
+
 }</pre>
 <p>you should create properties files <kbd>$CLASSPATH/be/peopleware/example/Person<var>_locale</var>.properties.</kbd></p>
-<p>In these properties files, you can have any enties you want, but a couple
-  of keys are used by the methods in {@link be.peopleware.i18n.Properties} to
-  return i18n labels for the type of the JavaBean and the properties of the JavaBean.</p>
+<p>In these properties files, you can have any entries you want, but a couple
+  of keys are used by the methods in {@link be.peopleware.i18n_I.Properties}
+  to return i18n labels for the type of the JavaBean and the properties of the
+  JavaBean.</p>
 <h5>Type Labels</h5>
 <p>For the types of the JavaBean, there is a key for a label for the type ({@link
-  be.peopleware.i18n.Properties. I18N_TYPE_LABEL_KEY} = <code>type</code>) and
+  be.peopleware.i18n_I.Properties#I18N_TYPE_LABEL_KEY} = <code>type</code>) and
   a key for the plural form of the type ({@link
-  be.peopleware.i18n.Properties. I18N_PLURAL_TYPE_LABEL_KEY} = <code>type.plural</code>).</p>
+  be.peopleware.i18n_I.Properties#I18N_PLURAL_TYPE_LABEL_KEY} = <code>type.plural</code>).</p>
 <p> In the example, this would give for a file <kbd>$CLASSPATH/be/peopleware/example/Person_en_US.properties</kbd>:</p>
 <pre>type=Person
 type.plural=Persons</pre>
@@ -103,16 +116,54 @@ type.plural=Personen</pre>
 <p>For the property labels, we forsee a regular and a short label (e.g., to be
   used in the heading of a tabular representation of a collection of persons).
   The keys are the programmatic name of the JavaBean property (e.g., <code>name</code>)
-  with a prefix, resp., {@link be.peopleware.i18n.Properties. I18N_PROPERTY_LABEL_KEY_PREFIX
+  with a prefix, resp., {@link be.peopleware.i18n_I.Properties#I18N_PROPERTY_LABEL_KEY_PREFIX
   } = <code>propertyName.&hellip;</code> 
-  and <code>{@link be.peopleware.i18n.Properties. I18N_SHORT_PROPERTY_LABEL_KEY_PREFIX
+  and <code>{@link be.peopleware.i18n_I.Properties#I18N_SHORT_PROPERTY_LABEL_KEY_PREFIX
   } = <code></code>propertyName.short.&hellip;</code>..</p>
 <p>In the example, this would give for a file <kbd>$CLASSPATH/be/peopleware/example/Person_en_US.properties</kbd>:</p>
 <pre>propertyName.name=Name
-propertyName.short.name=N.</pre>
+propertyName.dateOfBirth=Date of Birth
+propertyName.short.name=N.
+propertyName.short.dateOfBirth=&deg;</pre>
 <p>and for dutch (<kbd>$CLASSPATH/be/peopleware/example/Person_nl_BE.properties</kbd>):</p>
-<pre>propertyName.name=Naam
-propertyName.short.name=N.</pre>
+<pre>propertyName.name=naam
+propertyName.dateOfBirth=geboortedatum
+propertyName.short.name=n.
+propertyName.short.dateOfBirth=&deg;</pre>
+<h4>Inheritance</h4>
+<p>When a given key is not found in a particular properties files, the entire
+  graph of the supertypes (both interfaces and classes) is used to search for
+  the nearest entry with a matching key. Thus, if we have a class:</p>
+<pre>package be.peopleware.example;
+
+public class Male extends Person {
+
+  public boolean isBariton() {
+    return $bariton;
+  }
+	
+  public void setBariton(boolean bariton) {
+    $bariton = bariton;
+  }
+	
+  private boolean $bariton;
+
+}</pre>
+<p>and associated properties files:</p>
+<p>In the example, this would give for a file <kbd>$CLASSPATH/be/peopleware/example/Male_en_US.properties</kbd>:</p>
+<pre>propertyName.bariton=Bariton
+propertyName.short.bariton=Bar?</pre>
+<p>and for dutch (<kbd>$CLASSPATH/be/peopleware/example/Male_nl_BE.properties</kbd>):</p>
+<pre>propertyName.bariton=Bariton
+propertyName.short.bariton=Bar?</pre>
+<p>the lookup for the label of the property <code>name</code> for the type <code>Male</code></p>
+<pre>String nameLabel = be.peopleware.i18n.Properties.
+    i18nPropertyLabel(&quot;name&quot;, be.peopleware.example.Male, false, myStrategy);</pre>
+<p>will
+  still produce the correct <code>String</code>.</p>
+<h4>Access</h4>
+<p>The class {@link be.peopleware.i18n_I.Properties} offers a number of static
+  methods to access these labels. Constants are defined here for the keys, etcetera.</p>
 <h3>Note on the Acronyms</h3>
 <p>The term <acronym title="internationalization">i18n</acronym> comes
     from the word <var>internationalization</var>,
@@ -122,5 +173,7 @@ propertyName.short.name=N.</pre>
     hence the acronym <acronym title="internationalized">i15d</acronym>. Finally,
     the word <var>international</var> has 11 letters
     between the <var>i</var> and the <var>n</var>, and thus we write <acronym title="international">i11n</acronym>.</p>
+<p>@todo add the JSP library here (EL functions) or better, after stuff is moved
+  to ppw-bean, immediately there</p>
 </body>
 </html>
