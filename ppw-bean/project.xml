@@ -4,13 +4,11 @@
   <extend>ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
   <name>JavaBeans Library</name>
-  <groupId>ppw-bean-I</groupId>
-  <organization />
-  <repository />
-  <build />
   <artifactId>ppw-bean-I</artifactId>
   <shortDescription>Support for JavaBeans, including persistency.</shortDescription>
-  <description>Support for JavaBeans. General superclasses and utility classes that etch a number of idioms and design patterns in code. Also, there is agnostic support here for JavaBeans that are to be persistent.</description>
+  <description>Support for JavaBeans. General superclasses and utility
+  	classes that etch a number of idioms and design patterns in code. Also,
+  	there is agnostic support here for JavaBeans that are to be persistent.</description>
   <inceptionYear>2004</inceptionYear>
   <currentVersion>1.0.0-1.0</currentVersion>
   <package>be.peopleware.bean_I</package>
