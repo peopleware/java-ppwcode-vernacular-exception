@@ -12,8 +12,9 @@ set TagletPath=..\..\target\classes
 set ToolsPath=..\..\lib\tools.jar
 set JexlPath=..\..\lib\commons-jexl-1.0.jar
 set LoggingPath=..\..\lib\commons-logging.jar
+set JUnitPath=..\..\lib\junit.jar
 
-set ClassPath=".;%TagletPath%;%ToolsPath%;%JexlPath%;%LoggingPath%"
+set ClassPath=".;%TagletPath%;%ToolsPath%;%JexlPath%;%LoggingPath%;%JUnitPath%"
 
 
 

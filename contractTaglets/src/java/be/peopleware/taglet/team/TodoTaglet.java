@@ -9,6 +9,8 @@ package be.peopleware.taglet.team;
  * @author    Ren&eacute; Clerckx
  * @author    Abdulvakhid Shoudouev
  * @author    Peopleware n.v.
+ * 
+ * @invar result; testing result identifier
  */
 public class TodoTaglet extends AbstractTeamTaglet {
 

@@ -91,14 +91,14 @@ public abstract class AbstractTaglet implements Taglet {
    * where this taglet can be used. Setting certain boolean
    * variable to true enables usage in corresponding documentation scope. 
    * E.g.:</p>
-   * <pre>
-   *   $inField       = true;
-   *   $inConstructor = true;
-   *   $inMethod      = true;
-   *   $inOverview    = true;
-   *   $inPackage     = true;
-   *   $inType        = true;
-   * </pre>
+   * 
+   * @pre  $inField       = true;
+   * @pre  $inConstructor = true;
+   * @pre  $inMethod      = true;
+   * @pre  $inOverview    = true;
+   * @pre  $inPackage     = true;
+   * @pre  $inType        = true;
+   * 
    * <p>By default, all variables are set to <code>false</code>.</p>
    * 
    * @post new.inField() 			 == false;
@@ -254,7 +254,8 @@ public abstract class AbstractTaglet implements Taglet {
    *            the array of <code>com.sun.javadoc.Tag</code> s representing of
    *            this custom taglet.
    * @pre taglets != null;
-   * @pre (forall int i; (i >= 0) && (i < taglets.length);
+   * 'At' sign before 'pre' is removed for the purpose of testing
+   * pre (forall int i; (i >= 0) && (i < taglets.length);
    *            taglets[i] != null);
    */
   public abstract String toString(Tag[] taglets);
