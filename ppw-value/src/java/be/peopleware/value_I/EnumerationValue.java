@@ -179,7 +179,6 @@ public abstract class EnumerationValue extends ImmutableValue {
 
   /**
    * @invar     $discriminator != null;
-   * @invar     $discriminator.equals(MALE_STRING) || $type.equals(FEMALE_STRING);
    */
   private String $discriminator;
 

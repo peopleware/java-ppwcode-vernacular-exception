@@ -48,7 +48,7 @@ public abstract class Value implements Serializable {
 
   /*</section>*/
 
-
+  protected final String EMPTY = ""; //$NON-NLS-1$
 
   /*<construction>*/
   //------------------------------------------------------------------

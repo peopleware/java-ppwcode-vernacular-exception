@@ -51,6 +51,7 @@ public class LocaleEditor
       Locale l = locales[i];
       LOCALE_MAP.put(l.toString(), l);
     }
+    LOCALE_MAP.put(" ", new Locale(" "));  //$NON-NLS-1$ //$NON-NLS-2$
   }
 
   public final Map getValuesMap() {
@@ -89,7 +90,7 @@ public class LocaleEditor
    * @todo (jand): clean up contract
    */
   public final String getLabel() {
-    String result = null;
+    String result = ""; //$NON-NLS-1$
     if ((getValue() != null) && (getValue() instanceof Locale)) {
       Locale localeToShow = (Locale)getValue();
       Locale localeInWhichToDisplay = (getDisplayLocale() == null)

@@ -71,6 +71,7 @@ public final class Country extends EnumerationValue {
 
   private static Map countriesGenerator() {
     Map result = new HashMap();
+    result.put(" ", new Country(" "));  //$NON-NLS-1$ //$NON-NLS-2$
     String[] isoCodes = Locale.getISOCountries();
     for (int i = 0; i < isoCodes.length; i++) {
       result.put(isoCodes[i], new Country(isoCodes[i]));

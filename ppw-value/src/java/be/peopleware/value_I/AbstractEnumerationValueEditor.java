@@ -130,6 +130,7 @@ public abstract class AbstractEnumerationValueEditor
 
 
   private static final String EMPTY = ""; //$NON-NLS-1$
+  private static final String NBSP = " "; //$NON-NLS-1$
 
 
   /*<property name="asText">*/
@@ -137,28 +138,29 @@ public abstract class AbstractEnumerationValueEditor
 
   /**
    * @result    getValue() == null)
-   *                ? ""
+   *                ? " "
    *                : getValue().toString();
    */
   public final String getAsText() {
     String result = (getValue() == null)
-                       ? EMPTY
+                       ? NBSP
                        : getValue().toString();
     return result;
   }
 
   /**
-   * @post      ((text == null) || (text.equals(""))
+   * @post      ((text == null) || (text.equals("") || (text.equals(" "))
    *                ? new.getValue() == null
    *                : new.getValue() = getValuesMap().get(text);
    * @throws    IllegalArgumentException
    *            (text != null)
    *                && !text.equals("")
+   *                && !text.equals(" ")
    *                && getValuesMap().get(text) == null;
    */
   public final void setAsText(final String text)
       throws IllegalArgumentException {
-    if ((text == null) || text.equals(EMPTY)) {
+    if ((text == null) || text.equals(EMPTY) || text.equals(NBSP)) { //$NON-NLS-1$
       setValue(null);
     }
     else {

@@ -52,7 +52,7 @@ public class CountryEditor
    *               country in its main language. although, that is political.
    */
   public final String getLabel() {
-    String result = null;
+    String result = ""; //$NON-NLS-1$
     if ((getValue() != null) && (getValue() instanceof Country)) {
       Country country = (Country)getValue();
       Locale localeToShow = new Locale("en", country.toString()); //$NON-NLS-1$

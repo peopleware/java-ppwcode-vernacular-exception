@@ -232,8 +232,17 @@ public class Address extends MutableValue implements Serializable {
   private Country $country;
 
   /*</property>*/
-
-
+  
+  
+  public final boolean isEmpty() {
+    return (((getStreetAddress() == null) || getStreetAddress().equals(EMPTY))
+            && ((getPostalCode() == null) || getPostalCode().equals(EMPTY))
+            && ((getCity() == null) || getCity().equals(EMPTY))
+            && ((getState() == null) || getState().equals(EMPTY))
+            && ((getCountry() == null) || getCountry().toString().equals(EMPTY)
+                || (getCountry().toString() == " ")));  //$NON-NLS-1$
+  }
+  
   public final int hashCode() {
     return $streetAddress.hashCode()
            + $postalCode.hashCode()
