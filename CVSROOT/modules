@@ -34,3 +34,4 @@ ppw-value-hibernate					ppw-value-hibernate     			&ppw-libraries-settings
 ppw-servlet									ppw-servlet				     			&ppw-libraries-settings
 ppw-jsp											ppw-jsp     									&ppw-libraries-settings
 ppw-struts										ppw-struts					     			&ppw-libraries-settings
+toryt												toryt							     			&ppw-libraries-settings
