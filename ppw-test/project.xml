@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
   <extend>ppw-libraries-settings/project.xml</extend>
   <name>Unit Test Library</name>
   <artifactId>ppw-test-I</artifactId>
+  <shortDescription>Support for unit testing.</shortDescription>
   <description>Support for unit testing. This is not very much. There is
     also no link to JUnit yet. There are also no Unit Tests.</description>
-  <shortDescription>Support for unit testing.</shortDescription>
   <inceptionYear>2004</inceptionYear>
   <currentVersion>1.0</currentVersion>
   <package>be.peopleware.test</package>
@@ -17,6 +18,7 @@
       <name>Jan Dockx</name>
       <id>jand</id>
       <email>Jan.Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
       <roles>
         <role>architect</role>
@@ -25,29 +27,28 @@
         <role>management</role>
         <role>planning</role>
       </roles>
-      <timezone>+1</timezone>
     </developer>
     <developer>
       <name>David Van Keer</name>
       <id>dvankeer</id>
       <email>David_Van_Keer@peopleware.be</email>
+      <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
       <roles>
         <role>developer</role>
       </roles>
-      <timezone>+1</timezone>
     </developer>
   </developers>
   <contributors>
     <contributor>
       <name>Dirk Couck</name>
       <email>Dirk_Couck@peopleware.be</email>
+      <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
       <roles>
         <role>management</role>
         <role>planning</role>
       </roles>
-      <timezone>+1</timezone>
     </contributor>
   </contributors>
   <properties/>
