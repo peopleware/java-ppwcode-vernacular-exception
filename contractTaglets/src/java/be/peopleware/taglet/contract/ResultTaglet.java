@@ -13,7 +13,7 @@ package be.peopleware.taglet.contract;
 public class ResultTaglet extends AbstractContractTaglet {
 
   public String getName() {
-    return AbstractContractTaglet.TAGLET_RESULT;
+    return "result"; //$NON-NLS-1$
   }
 
   public String getHeader() {
@@ -27,6 +27,10 @@ public class ResultTaglet extends AbstractContractTaglet {
     $inOverview    = false;
     $inPackage     = false;
     $inType        = false;
+    
+    $allowedKeywords.add(AbstractContractTaglet.KEYWORD_RESULT);
+    $allowedKeywords.add(AbstractContractTaglet.KEYWORD_NEW);
+    $allowedKeywords.add(AbstractContractTaglet.KEYWORD_FORALL);
   }
 
 }

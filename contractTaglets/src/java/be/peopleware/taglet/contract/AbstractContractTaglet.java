@@ -1,11 +1,22 @@
 package be.peopleware.taglet.contract;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import be.peopleware.taglet.AbstractStandaloneTaglet;
 
 
 /**
  * Abstract superclass for common code in contract taglets.
+ * Fill in the list of the allowed keywords in the constructor of the subclass.
+ * For example, the taglet <code>ResultTaglet</code> would have 
+ * following settings:
+ * <pre>
+ *   $allowedKeywords.add(AbstractContractTaglet.KEYWORD_RESULT);
+ *   $allowedKeywords.add(AbstractContractTaglet.KEYWORD_NEW);
+ *   $allowedKeywords.add(AbstractContractTaglet.KEYWORD_FORALL);
+ * </pre>
  *
  * @author    Jan Dockx
  * @author    David Van Keer
@@ -41,28 +52,20 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    * 
    * <strong>value = {@value}</strong>
    */
-  public final static String TAGLET_RESULT = "result"; //$NON-NLS-1$
-
-  /**
-   * The name of <code>result</code> taglet.
-   * 
-   * <strong>value = {@value}</strong>
-   */
-  public final static String TAGLET_PRE = "pre"; //$NON-NLS-1$
-
-  /**
-   * The name of <code>result</code> taglet.
-   * 
-   * <strong>value = {@value}</strong>
-   */
-  public final static String TAGLET_POST = "post"; //$NON-NLS-1$
-
-  /**
-   * The name of <code>result</code> taglet.
-   * 
-   * <strong>value = {@value}</strong>
-   */
   public final static String TAGLET_INVAR = "invar"; //$NON-NLS-1$
+
+	/**
+	 * Array of all contract keywords.
+	 */
+	public final String[] $allKeywords = new String[] {KEYWORD_RESULT, 
+																										KEYWORD_NEW, 
+																										KEYWORD_FORALL};
+	
+	/**
+	 * List of allowed keywords in the body of this taglet.
+	 */
+	public final Collection $allowedKeywords = new ArrayList();
+
 
   /**
    * Makes some additional formatting of the content of the taglet.
@@ -102,12 +105,9 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
 			description = "";
   	}
 
-  	String[] keywords = new String[] 
-														{KEYWORD_FORALL, KEYWORD_NEW, KEYWORD_RESULT};
-  	
   	String result = expr;
-  	for (int i = 0; i < keywords.length; i++) {
-  		result = processKeyword(result, keywords[i]);
+  	for (int i = 0; i < $allKeywords.length; i++) {
+  		result = processKeyword(result, $allKeywords[i]);
   	}
   	
   	result += description;
@@ -135,10 +135,10 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
    * @param color
    * @return formatted token
    */
-  private String makeupKeyword(String keyword, String color) {
+  private String makeupKeyword(String keyword) {
   	StringBuffer result = new StringBuffer();
   	result.append("<span style='font: bold; background-color:"); //$NON-NLS-1$
-  	result.append(color).append("'>"); //$NON-NLS-1$
+  	result.append(getKeywordColor(keyword)).append("'>"); //$NON-NLS-1$
   	result.append(keyword);
   	result.append("</span>"); //$NON-NLS-1$
   	return result.toString();
@@ -173,9 +173,13 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
 				// the keyword is found
 				result.append(expr.substring(notParsedFrom, keywordBegin));
 
-				checkKeywordUsage(keyword);
+				if (! canContainKeyword(keyword)) {
+					signalParseError(getName() 
+															+ " taglet can not contain "  //$NON-NLS-1$
+															+ keyword + " keyword");  //$NON-NLS-1$
+				}
 				
-	  		result.append(makeupKeyword(keyword, getKeywordColor(keyword)));
+	  		result.append(makeupKeyword(keyword));
 	  		
 				notParsedFrom = keywordEnd;
 			}
@@ -191,21 +195,25 @@ public abstract class AbstractContractTaglet extends AbstractStandaloneTaglet {
   	return result.toString();
   }
   
-  private void checkKeywordUsage(String keyword) {
-		if (keyword.equals(KEYWORD_RESULT)
-						&& ! getName().equals(TAGLET_RESULT)) {
-			signalParseError("'result' can only be used in the result taglet.");//$NON-NLS-1$
-		}
-
-		if (keyword.equals(KEYWORD_NEW)
-						&& getName().equals(TAGLET_PRE)) {
-			signalParseError("'new' can not be used in the pre taglet.");//$NON-NLS-1$
-		}
-  }
-  
   private String getKeywordColor(String keyword) {
   	//make them all yellow for the time being
   	return "yellow"; //$NON-NLS-1$
   }
   
+  /**
+   * Checks if the text of this taglet can contanain given keyword.
+   * @param keyword
+   * 						keyword to be checked.
+   * @return
+   * 						true, if list of allowed keywords contains <code>keyword</code>,
+   * 						<br>false otherwise.
+   * 
+   * @result result == listOfKeywords.contains(keyword);
+
+   * @todo throw an exception
+   * @question should we color keyword if it's not allowed in the taglet?
+   */
+  public boolean canContainKeyword(String keyword) {
+  	return $allowedKeywords.contains(keyword);
+  }
 }

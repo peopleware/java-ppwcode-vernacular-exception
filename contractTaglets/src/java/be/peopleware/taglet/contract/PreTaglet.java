@@ -13,7 +13,7 @@ package be.peopleware.taglet.contract;
 public class PreTaglet extends AbstractContractTaglet {
 
   public String getName() {
-    return AbstractContractTaglet.TAGLET_PRE;
+    return "pre"; //$NON-NLS-1$
   }
 
   public String getHeader() {
@@ -27,6 +27,8 @@ public class PreTaglet extends AbstractContractTaglet {
     $inOverview    = false;
     $inPackage     = false;
     $inType        = false;
+
+    $allowedKeywords.add(AbstractContractTaglet.KEYWORD_FORALL);
   }
 
 }

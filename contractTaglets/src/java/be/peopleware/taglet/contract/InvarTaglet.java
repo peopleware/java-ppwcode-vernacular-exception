@@ -16,7 +16,6 @@ public class InvarTaglet extends AbstractContractTaglet {
     return AbstractContractTaglet.TAGLET_INVAR;
   }
 
-
   public String getHeader() {
     return "Type Invariants:"; //$NON-NLS-1$
   }
@@ -29,6 +28,9 @@ public class InvarTaglet extends AbstractContractTaglet {
     $inOverview    = false;
     $inPackage     = true;
     $inType        = true;
+    
+    $allowedKeywords.add(AbstractContractTaglet.KEYWORD_NEW);
+    $allowedKeywords.add(AbstractContractTaglet.KEYWORD_FORALL);
   }
 
 }
