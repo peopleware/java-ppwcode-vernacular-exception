@@ -29,7 +29,7 @@ public class _Test_JexlExpression {
       // A script in Jexl is made up of zero or more statements.
     
     // comment-statement doesn't work if it is not terminated by \n
-    expressions.add("## This is a comment in an Jexl expression\n");
+    expressions.add("## This is a 'comment' in an Jexl expression\n");
     
 //    public Object visit(ASTBlock node, Object data) {
       // A block is simply multiple statements inside curly braces ({, }).
@@ -44,6 +44,7 @@ public class _Test_JexlExpression {
       //  5. An empty map
       // empty(var)
     expressions.add("if (empty(x)) {x = something;}");
+    expressions.add("empty x;");
 
 //    public Object visit(ASTSizeFunction node, Object data) {
     // Returns the information about the expression:
@@ -236,6 +237,7 @@ public class _Test_JexlExpression {
 //      assert (node.jjtGetNumChildren() <= 3) : 
 //        "if statement can't contain more than 3 children.";
     expressions.add("if (x lt 0) {x = 0;} else {x = 1;};");
+    expressions.add("if (x lt 10) {x = 100;} else {x = 1001;};");
     //this expression doesn't work - looks like bug in Jexl
     expressions.add("if (x lt 10) {x = 100;} else {if (x eq 1000) {x = 1100;}};");
 
@@ -256,7 +258,8 @@ public class _Test_JexlExpression {
       //       <identifier> "(" [ <parameter> { "," <parameter> } ] ")"
 //      assert (node.jjtGetNumChildren() >= 1) : 
 //        "method statement must have at least one child.";
-
+    expressions.add("this.create(1, x, 'string');");
+    
 //    public Object visit(ASTArrayAccess node, Object data) {
       // multidimensional arrays are not supported.
       // empty index is not allowed.

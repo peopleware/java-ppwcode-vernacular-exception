@@ -34,11 +34,16 @@ public class HtmlGenerator implements ParserVisitor {
     for (int i = 0; i < node.jjtGetNumChildren(); i++) {
       StringBuffer nextChild = new StringBuffer();
       SimpleNode childNode = (SimpleNode) node.jjtGetChild(i);
-//      System.out.println("visiting " + childNode.getClass().getName());
       visit(childNode, nextChild);
       acc.append(nextChild);
     }
     return acc;
+  }
+
+  public Object visitChild(SimpleNode node, Object data) {
+    assert (node.jjtGetNumChildren() == 1) : node.getClass().getName()
+    + " must have one child";
+    return visit((SimpleNode) (node.jjtGetChild(0)), data);
   }
 
   private Object visitBinary(SimpleNode node, Object data, String operator) {
@@ -109,7 +114,7 @@ public class HtmlGenerator implements ParserVisitor {
   }
 
   public Object visit(ASTJexlScript node, Object data) {
-    // TODO
+    // root node
     // A script in Jexl is made up of zero or more statements.
     visitChildren(node, data);
     StringBuffer acc = (StringBuffer)data;
@@ -144,6 +149,7 @@ public class HtmlGenerator implements ParserVisitor {
     //  4. An collection of size zero
     //  5. An empty map
     // empty(var)
+    // empty var - without brackets - also works
     visitChildren(node, data);
     StringBuffer acc = (StringBuffer)data;
     acc.insert(0, "empty(");
@@ -172,8 +178,6 @@ public class HtmlGenerator implements ParserVisitor {
     //    Can then be followed by 0-9, a-z, A-Z, _ or $. 
     // Jexl also supports ant-style variables, e.g. 
     //    my.dotted.var is a valid variable name.
-
-    // TODO ASTIdentifier can have multiple child nodes in Jexl
 
     StringBuffer acc = (StringBuffer) data;
     
@@ -358,16 +362,15 @@ public class HtmlGenerator implements ParserVisitor {
     // TODO format .equals() for strings
     //comment in class ASTExpressionExpression:
     //		represents equality between integers - use .equals() for strings
-    return visitUnary(node, data, EMPTY);
+    return visitChild(node, data);
   }
 
   public Object visit(ASTStatementExpression node, Object data) {
-    // TODO how many children may StatementExpression have?
     // A statement can be the empty statement, the semicolon(;), block, 
     //   assignment or an expression. 
     //   Statements are optionally terminated with a semicolon.
     StringBuffer acc = (StringBuffer) data;
-    visitUnary(node, acc, EMPTY);
+    visitChild(node, acc);
 //    acc.insert(0, "<br />");
     acc.append(";");
     return acc;
@@ -375,7 +378,7 @@ public class HtmlGenerator implements ParserVisitor {
 
   public Object visit(ASTReferenceExpression node, Object data) {
     // TODO ReferenceExpression - what does it do?
-    return visitUnary(node, data, EMPTY);
+    return visitChild(node, data);
   }
 
   public Object visit(ASTIfStatement node, Object data) {
@@ -469,8 +472,6 @@ public class HtmlGenerator implements ParserVisitor {
   }
 
   public Object visit(ASTArrayAccess node, Object data) {
-    // TODO looks like multidimensional arrays are not supported.
-    // TODO is empty index allowed?
     // Array elements may be accessed using either square brackets 
     //   or a dotted numeral 
     //   e.g. arr1[0] and arr1.0 are equivalent 
