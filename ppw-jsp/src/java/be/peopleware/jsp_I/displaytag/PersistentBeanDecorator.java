@@ -11,8 +11,8 @@ import be.peopleware.jsp_I.tag.Functions;
 
 
 /**
- * A decorator for reformatting data located in the
- * {@link PublicationControlled} objects.
+ * A displaytag decorator super class for
+ * {@link PersistenBean} derivates.
  *
  * @author    David Van Keer
  * @author    Peopleware n.v.
