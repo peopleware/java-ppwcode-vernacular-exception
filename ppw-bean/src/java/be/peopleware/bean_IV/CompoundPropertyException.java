@@ -205,8 +205,13 @@ public final class CompoundPropertyException extends PropertyException {
 
   /**
    * @post      new.isClosed();
+   * @throws IllegalStateException
+   *         isClosed();
    */
-  public final void close() {
+  public final void close() throws IllegalStateException {
+    if ($closed) {
+      throw new IllegalStateException("can't close twice");
+    }
     $closed = true;
     makeImmutable();
   }
