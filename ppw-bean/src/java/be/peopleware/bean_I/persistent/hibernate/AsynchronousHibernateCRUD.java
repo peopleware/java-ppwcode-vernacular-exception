@@ -284,6 +284,17 @@ public class AsynchronousHibernateCRUD extends AbstractAsynchronousCRUD {
         LOG.debug("Record not found"); //$NON-NLS-1$
         throw new IdNotFoundException(id, null, null, persistentObjectType);
       }
+      // When hibernate caching is active they can give back a object with
+      // the correct ID but of the wrong type, so this extra check is
+      // introduced as a workaround for it. A posting was done to the hibernate
+      // forum to ask if it is a bug or if we are missing something.
+      //
+      // URL: http://forum.hibernate.org/viewtopic.php?t=938177
+      if (!persistentObjectType.isInstance(result)) {
+        LOG.debug("Incorrect record found (Wrong type"); //$NON-NLS-1$
+        throw new IdNotFoundException(id, null, null, persistentObjectType);
+      }
+      
     }
     catch (ClassCastException ccExc) {
       throw new TechnicalException("retrieved object was not a PersistentBean", //$NON-NLS-1$

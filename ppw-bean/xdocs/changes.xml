@@ -1,11 +1,18 @@
 <document>
   <properties>
-    <title>Page title</title>
+    <title>Changes</title>
     <author email="dvankeer@peopleware.be">David Van Keer</author>
     <author email="jand@peopleware.be">Jan Dockx</author>
   </properties>
   <body>
-
+ 
+    <release version="I v1.1.1/1.0" date="2005-01-04" description="Bugfix release">
+      <action dev="dvankeer" type="fix">
+      	Worked around the hibernate caching issue. Check if returned type does
+      	match the requested type. If not a IdNotFoundException is generated.
+      </action>              
+    </release>
+    
     <release version="I v1.1.0/1.0" date="2005-01-04" description="Hibernate">
       <action dev="jand" type="add">
       	Persistency support for Hibernate.
