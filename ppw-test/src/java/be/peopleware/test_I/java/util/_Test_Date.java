@@ -1,10 +1,11 @@
-package be.peopleware.test.java.util;
+package be.peopleware.test_I.java.util;
 
 
 import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
-import be.peopleware.test.CaseProvider;
+
+import be.peopleware.test_I.CaseProvider;
 
 
 /**

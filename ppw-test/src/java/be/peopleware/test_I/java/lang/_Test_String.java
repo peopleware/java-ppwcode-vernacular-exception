@@ -1,7 +1,8 @@
-package be.peopleware.test.java.lang;
+package be.peopleware.test_I.java.lang;
 
 
-import be.peopleware.test.CaseProvider;
+import be.peopleware.test_I.CaseProvider;
+
 import java.util.Set;
 import java.util.HashSet;
 

@@ -5,7 +5,7 @@
 </license>*/
 
 
-package be.peopleware.test;
+package be.peopleware.test_I;
 
 
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public abstract class Test extends CaseProvider {
     }
     catch (ClassCastException ccExc) {
       System.out.println("ERROR: \"" + clazz //$NON-NLS-1$
-          + "\" does not extend \"be.peopleware.test.Test\".\n"); //$NON-NLS-1$
+          + "\" does not extend \"be.peopleware.test_I.Test\".\n"); //$NON-NLS-1$
     }
     catch (IllegalAccessException iaExc) {
       System.out.println("ERROR: \"" + clazz //$NON-NLS-1$

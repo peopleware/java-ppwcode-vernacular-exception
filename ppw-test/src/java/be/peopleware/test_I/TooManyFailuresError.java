@@ -5,7 +5,7 @@
 </license>*/
 
 
-package be.peopleware.test;
+package be.peopleware.test_I;
 
 
 /**
