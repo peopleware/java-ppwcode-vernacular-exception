@@ -12,5 +12,13 @@
       </action>              
     </release>
 
+    <release version="I v1.1.0/2.0" date="2004-12-20" description="First release">
+      <action dev="jand" type="add">
+      	Fixed merge issues. Mainly, an isEmpty() method is added to some compound
+      	value types, and 1 space is now also allowed as text representation for
+      	some null values.
+      </action>              
+    </release>
+
   </body>
 </document>
