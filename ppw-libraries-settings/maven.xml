@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project >
+<project xmlns:j="jelly:core" xmlns:u="jelly:util">
+
+  <!-- Generic goal to deploy site, jar and distribution at once -->
+  <goal name="release" prereqs="clean,site:deploy,jar:deploy,dist:deploy" />
+
+  <!-- set up tlds before test -->
+  <preGoal name="jar:jar"> 
+    <!-- add tlds to taglib jar -->
+    <echo message="copying tld files ${maven.src.dir}/tld to ${maven.build.dest}/META-INF" />
+    <copy todir="${maven.build.dest}/META-INF">
+      <fileset dir="${maven.src.dir}/tld">
+        <include name="*.tld" />
+      </fileset>
+    </copy>
+    
+    <!-- add jstp-tags to taglib jar -->
+    <mkdir dir="${maven.build.dest}/META-INF/tags"/>
+    <echo message="copying tag files ${maven.src.dir}/jsp-tags to ${maven.build.dest}/META-INF/tags" />
+    <copy todir="${maven.build.dest}/META-INF/tags">
+      <fileset dir="${maven.src.dir}/jsp-tags">
+        <include name="**/*.tagx" />
+        <include name="**/*.tag" />
+        <include name="**/*.usage" />
+      </fileset>
+    </copy>  
+    
+    <!-- copy all properties files for inclusion in jar -->
+    <echo message="copying properties files ${maven.src.dir}/java to ${maven.build.dest}" />
+    <copy todir="${maven.build.dest}">
+      <fileset dir="${maven.src.dir}/java">
+        <include name="**/*.properties" />
+      </fileset>
+    </copy> 
+  </preGoal>
+
+</project>

@@ -73,6 +73,7 @@
         <report>maven-file-activity-plugin</report>
         <report>maven-tasklist-plugin</report>        
         <!-- <report>maven-doccheck-plugin</report> -->
+        <report>taglib</report>
     </reports>
     
     <properties/>
