@@ -12,7 +12,9 @@ import org.apache.commons.logging.LogFactory;
 /**
  * <p>A type that formalizes how to work with JavaBeans that represent
  *   real-world objects during only a part of there life cycle.</p>
- * <a href="http://en.wikipedia.org/wiki/Jean-Jacques_Rousseau"><img src="180px-Jean-JacquesRousseau.jpg" align="right" /></a>
+ * <a href="http://en.wikipedia.org/wiki/Jean-Jacques_Rousseau">
+ * <img src="http://upload.wikimedia.org/wikipedia/en/thumb/0/0e/180px-Jean-JacquesRousseau.jpg"
+ *      align="right" /></a>
  * <p>Since JavaBeans are required to have a default constructor, often
  *   some properties cannot be given a semantically acceptable value
  *   at instantiation. This triggers a pattern where instances of the
