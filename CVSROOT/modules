@@ -30,3 +30,5 @@ aliasModule -a simpleAliasModule ppw-libraries/ppw-test
 
 simpleRegularModule ppw-i18n/src
 regularModule ppw-test project.xml project.properties
+
+moduleWithAmpersand ppw-i18n $ppw-test
