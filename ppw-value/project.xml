@@ -12,7 +12,7 @@
   	the implementation of value types (including enumeration types), are laid out.
   	Some common value types are implemented and offered for reuse.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.2.1-2.2</currentVersion>
+  <currentVersion>1.2.1-2.3</currentVersion>
   <package>be.peopleware.value_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
@@ -62,7 +62,7 @@
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
-      <artifactId>ppw-bean-III</artifactId>
+      <artifactId>ppw-bean-IV</artifactId>
       <version>1.0.0-1.0</version>
       <type>jar</type>
       <url>http://cvs.peopleware.be/projects/JavaLibraries/ppw-bean-II/</url>

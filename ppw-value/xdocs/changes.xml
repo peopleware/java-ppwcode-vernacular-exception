@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.2.1/2.3" date="2005-03-08" description="ppw-bean-III">
+      <action dev="jand" type="update">
+      	Version that supports ppw-bean-IV.
+      </action>              
+    </release>
+
     <release version="I v1.2.1/2.2" date="2005-03-06" description="ppw-bean-III">
       <action dev="jand" type="update">
       	Version that supports ppw-bean-III.
