@@ -190,7 +190,7 @@ public final class NationalNumber extends ImmutableValue {
     if (leftNumber != null &&
         middleNumber != null &&
         rightNumber != null &&
-        !checkNationalNumber(leftNumber, middleNumber, rightNumber)
+        !NationalNumber.checkNationalNumber(leftNumber, middleNumber, rightNumber)
     ) {
       cpe.addElementException(
           new PropertyException(this, null, "INVALID_CHECK", null)
@@ -271,7 +271,7 @@ public final class NationalNumber extends ImmutableValue {
    * @pre     Pattern.matches(RIGHT_PATTERN, rightNumber);
    * @return  (97 - Integer.parseInt(leftNumber + middleNumber) % 97) == (Integer.parseInt(rightNumber));
    */
-  public final boolean checkNationalNumber(String leftNumber, String middleNumber, String rightNumber) {
+  public static final boolean checkNationalNumber(String leftNumber, String middleNumber, String rightNumber) {
     String left = leftNumber + middleNumber;
     int first = Integer.parseInt(left);
     int second = Integer.parseInt(rightNumber);
@@ -298,10 +298,10 @@ public final class NationalNumber extends ImmutableValue {
    *          getRightNumber().hashCode();
    */
   public int hashCode() {
-    return
-      getLeftNumber().hashCode() +
+    return 73; 
+/*      getLeftNumber().hashCode() +
       getMiddleNumber().hashCode() +
-      getRightNumber().hashCode();
+      getRightNumber().hashCode(); */
   }
 
   /**
