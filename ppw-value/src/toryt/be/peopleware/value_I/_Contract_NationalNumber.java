@@ -82,7 +82,7 @@ public class _Contract_NationalNumber extends ClassContract {
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
             	return 	( leftNumber == null )
 						          && (pExc.reportsOn(
-						          				null, "leftNumber",
+						          		NationalNumber.class, "leftNumber",
 								              "LEFT_NUMBER_IS_NULL", null)
 								      );
             }});
@@ -96,7 +96,7 @@ public class _Contract_NationalNumber extends ClassContract {
 
               return	((leftNumber != null && !Pattern.matches(NationalNumber.LEFT_PATTERN, leftNumber))
 						           && pExc.reportsOn(
-						                           	null, "leftNumber",
+						           									NationalNumber.class, "leftNumber",
 																				"LEFT_NUMBER_INVALID_PATTERN", null)
               				);
             }});
@@ -110,7 +110,7 @@ public class _Contract_NationalNumber extends ClassContract {
 
               return   ((middleNumber == null)
 						           		&& pExc.reportsOn(
-						                           null, "middleNumber",
+						           									NationalNumber.class, "middleNumber",
 						                           "MIDDLE_NUMBER_IS_NULL", null)
               				 );
             }});
@@ -124,7 +124,7 @@ public class _Contract_NationalNumber extends ClassContract {
 
               return ( 	(middleNumber != null && !Pattern.matches(NationalNumber.MIDDLE_PATTERN, middleNumber))
 						           	&& pExc.reportsOn(
-						                           null, "middleNumber",
+						           								 NationalNumber.class, "middleNumber",
 																			 "MIDDLE_NUMBER_INVALID_PATTERN", null)
               			 );	
             }});
@@ -138,7 +138,7 @@ public class _Contract_NationalNumber extends ClassContract {
 
               return (	(rightNumber == null)
 						          	&& pExc.reportsOn(
-						                           null, "rightNumber",
+						          								 NationalNumber.class, "rightNumber",
 						                           "RIGHT_NUMBER_IS_NULL", null)
               			 );
             }});
@@ -153,7 +153,7 @@ public class _Contract_NationalNumber extends ClassContract {
 
               return (	(rightNumber != null && !Pattern.matches(NationalNumber.RIGHT_PATTERN, rightNumber))
 						             && pExc.reportsOn(
-						                           null, "rightNumber",
+						             							NationalNumber.class, "rightNumber",
 						                           "RIGHT_NUMBER_INVALID_PATTERN", null)
 										 );								 
             }});
@@ -163,17 +163,16 @@ public class _Contract_NationalNumber extends ClassContract {
             	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
             	String leftNumber = (String)context.get("leftNumber");
             	String middleNumber = (String)context.get("middleNumber");
-            	String rightNumber = (String)context.get("rightsNumber");
+            	String rightNumber = (String)context.get("rightNumber");
             	
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
-
               return (	(  leftNumber != null &&
               	           middleNumber != null &&
               	           rightNumber != null &&
-              	           !result.checkNationalNumber(leftNumber, middleNumber, rightNumber)
+              	           !NationalNumber.checkNationalNumber(leftNumber, middleNumber, rightNumber)
               	        )
-              	        && pExc.reportsOn(null, null, "INVALID_CHECK", null)
-											);	
+              	        &&  pExc.reportsOn(NationalNumber.class, null, "INVALID_CHECK", null)
+											);
             }});
           
           close();
@@ -182,9 +181,9 @@ public class _Contract_NationalNumber extends ClassContract {
         public StraightList getTestCases() throws TorytException {
           return new LazyCombinationStraightList(
               new String[] {"leftNumber", "middleNumber", "rightNumber"},
-							new StraightList[] {	new ArrayStraightList( new String[] {"000000", "781101", "700509", "760905", "ABCDEF"}),
-              											new ArrayStraightList( new String[] {"000", "456", "169", "145", "XYZ"}),
-																		new ArrayStraightList( new String[] {"97", "65", "96", "06", "QQ"})
+							new StraightList[] {	new ArrayStraightList( new String[] {"000000", "781101", "700509", "760905"}),
+              											new ArrayStraightList( new String[] {"000", "456", "169", "145"}),
+																		new ArrayStraightList( new String[] {"97", "65", "96", "06"})
               });
         }
       }
@@ -341,9 +340,9 @@ public class _Contract_NationalNumber extends ClassContract {
           return new LazyCombinationStraightList(
               new String[] {SUBJECT_KEY, "leftNumber", "middleNumber", "rightNumber"},
 							new StraightList[] {	getCases(),
-              											new ArrayStraightList( new String[] {"000000", "781101", "700509", "760905", "ABCDEF"}),
-              											new ArrayStraightList( new String[] {"000", "456", "169", "145", "XYZ"}),
-																		new ArrayStraightList( new String[] {"97", "65", "96", "06", "QQ"})
+              											new ArrayStraightList( new String[] {"000000", "781101", "700509", "760905"}),
+              											new ArrayStraightList( new String[] {"000", "456", "169", "145"}),
+																		new ArrayStraightList( new String[] {"97", "65", "96", "06"})
               });
         }
       }
@@ -395,8 +394,8 @@ public class _Contract_NationalNumber extends ClassContract {
 		        // postconditions
 		        addPostcondition(new Condition() {
 		          public boolean validate(Map context) {
-		            NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
-		            int result = ((Integer)context.get(RESULT_KEY)).intValue();
+		            NationalNumber subject = (NationalNumber)context.get(SUBJECT_KEY);
+		            int result = ((Integer)context.get(RESULT_KEY)).intValue();		            
 		            return result
 		                   ==
 		                   subject.getLeftNumber().hashCode() + subject.getMiddleNumber().hashCode() + subject.getRightNumber().hashCode();
@@ -441,6 +440,58 @@ public class _Contract_NationalNumber extends ClassContract {
 
     });
 
+    // type invariants
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
+        return (subject.getLeftNumber() != null);
+      }
+    });
+
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
+        return (Pattern.matches(NationalNumber.LEFT_PATTERN, subject.getLeftNumber()));
+      }
+    });
+
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
+        return (subject.getMiddleNumber() != null);
+      }
+    });
+    
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
+        return (Pattern.matches(NationalNumber.MIDDLE_PATTERN, subject.getMiddleNumber()));
+      }
+    });
+    
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
+        return (subject.getRightNumber() != null);
+      }
+    });
+    
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
+        return (Pattern.matches(NationalNumber.RIGHT_PATTERN, subject.getRightNumber()));
+      }
+    });
+
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
+        return (subject.checkNationalNumber(subject.getLeftNumber(), subject.getMiddleNumber(), subject.getRightNumber()));
+      }
+    });
+
+    close();
+    
   }
   
   public StraightList getCasesMaps() throws TorytException {
