@@ -73,37 +73,37 @@ public final class NationalNumber extends ImmutableValue {
    * @throws  PropertyException pExc
    *          (leftNumber == null)
    *              && pExc.reportsOn(
-   *                        null, "leftNumber",
+   *                        NationalNumber.class, "leftNumber",
    *                        "LEFT_NUMBER_IS_NULL", null
    *                 );
    * @throws  PropertyException pExc
    *          (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber))
    *              && pExc.reportsOn(
-   *                        null, "leftNumber",
+   *                        NationalNumber.class, "leftNumber",
    *                        "LEFT_NUMBER_INVALID_PATTERN", null
    *                 );
    * @throws  PropertyException pExc
    *          (middleNumber == null)
    *              && pExc.reportsOn(
-   *                        null, "middleNumber",
+   *                        NationalNumber.class, "middleNumber",
    *                        "MIDDLE_NUMBER_IS_NULL", null
    *                 );
    * @throws  PropertyException pExc
    *          (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber))
    *              && pExc.reportsOn(
-   *                        null, "middleNumber",
+   *                        NationalNumber.class, "middleNumber",
    *                        "MIDDLE_NUMBER_INVALID_PATTERN", null
    *                 );
    * @throws  PropertyException pExc
    *          (rightNumber == null)
    *              && pExc.reportsOn(
-   *                        null, "rightNumber",
+   *                        NationalNumber.class, "rightNumber",
    *                        "RIGHT_NUMBER_IS_NULL", null
    *                 );
    * @throws  PropertyException pExc
    *          (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber))
    *              && pExc.reportsOn(
-   *                        null, "rightNumber",
+   *                        NationalNumber.class, "rightNumber",
    *                        "RIGHT_NUMBER_INVALID_PATTERN", null
    *                 );
    * @throws  PropertyException pExc
@@ -113,7 +113,7 @@ public final class NationalNumber extends ImmutableValue {
    *             !checkNationalNumber(leftNumber, middleNumber, rightNumber)
    *          )
    *              && pExc.reportsOn(
-   *                        null, null,
+   *                        NationalNumber.class, null,
    *                        "INVALID_CHECK", null
    *                 );
    */
@@ -156,35 +156,35 @@ public final class NationalNumber extends ImmutableValue {
   private void initialize(String leftNumber, String middleNumber, String rightNumber)
      throws PropertyException {
     CompoundPropertyException cpe =
-      new CompoundPropertyException(this, null, null, null);
+      new CompoundPropertyException(NationalNumber.class, null, null, null);
     if (leftNumber == null) {
       cpe.addElementException(
-          new PropertyException(this, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
+          new PropertyException(NationalNumber.class, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
       );
     }
     if (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber)) {
       cpe.addElementException(
-          new PropertyException(this, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(NationalNumber.class, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (middleNumber == null) {
       cpe.addElementException(
-          new PropertyException(this, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
+          new PropertyException(NationalNumber.class, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
       );
     }
     if (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber)) {
       cpe.addElementException(
-          new PropertyException(this, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(NationalNumber.class, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (rightNumber == null) {
       cpe.addElementException(
-          new PropertyException(this, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
+          new PropertyException(NationalNumber.class, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
       );
     }
     if (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber)) {
       cpe.addElementException(
-          new PropertyException(this, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(NationalNumber.class, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (leftNumber != null &&
@@ -193,7 +193,7 @@ public final class NationalNumber extends ImmutableValue {
         !NationalNumber.checkNationalNumber(leftNumber, middleNumber, rightNumber)
     ) {
       cpe.addElementException(
-          new PropertyException(this, null, "INVALID_CHECK", null)
+          new PropertyException(NationalNumber.class, null, "INVALID_CHECK", null)
       );
     }
     cpe.throwIfNotEmpty();
@@ -298,10 +298,10 @@ public final class NationalNumber extends ImmutableValue {
    *          getRightNumber().hashCode();
    */
   public int hashCode() {
-    return 73; 
-/*      getLeftNumber().hashCode() +
+    return 
+      getLeftNumber().hashCode() +
       getMiddleNumber().hashCode() +
-      getRightNumber().hashCode(); */
+      getRightNumber().hashCode();
   }
 
   /**
