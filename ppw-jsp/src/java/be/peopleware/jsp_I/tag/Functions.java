@@ -1,12 +1,14 @@
 package be.peopleware.jsp_I.tag;
 
 
+import java.security.Principal;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.servlet.jsp.jstl.fmt.LocalizationContext;
@@ -333,6 +335,19 @@ import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
     Context initCtx = new InitialContext();
     Context envCtx = (Context)initCtx.lookup("java:comp/env"); //$NON-NLS-1$
     return (String)envCtx.lookup(name);
+  }
+  
+  /**
+   * Return the Principal out of the pageContext.
+   *
+   * @param     pageContext
+   *            The page context to retrieve the Principal out of.
+   * @return    String
+   *            The value looked up, or null if not found.
+   */
+  public static Principal principal(final PageContext pageContext) {
+    HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+    return request.getUserPrincipal();
   }
 
 }
