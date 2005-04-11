@@ -15,6 +15,9 @@ import java.util.Date;
  * should not be empty).
  * The start date is included in the interval, the end date is not
  * (right half-open interval).
+ * 
+ * The {@link #compareTo(Object) compare method} compares the
+ * {@link #getStartDate()}.
  *
  * @author    nsmeets
  * @author    Peopleware NV
@@ -27,7 +30,7 @@ import java.util.Date;
  *       normalize method and getWildExceptions ?)
  * @mudo (nsmeets) Normalization does not seem to be a good idea.
  */
-public class Period extends MutableValue {
+public class Period extends MutableValue implements Comparable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -274,6 +277,24 @@ public class Period extends MutableValue {
         return differenceInMillis /(24*60*60*1000);
     }
     return -1;
+  }
+
+  public int compareTo(Object o) {
+    Period p= (Period)o; // ClassCastException ok
+    if (getStartDate() == null) {
+      if (p.getStartDate() == null) { // NullPointerException ok
+        return 0;
+      }
+      else {
+        return -1;
+      }
+    }
+    else if (p.getStartDate() == null) {
+      return 1;
+    }
+    else {
+      return getStartDate().compareTo(p.getStartDate());
+    }
   }
 
 }
