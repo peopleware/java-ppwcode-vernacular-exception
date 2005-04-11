@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.6.0/2.4" date="2005-04-11" description="Extension">
+      <action dev="nsmeets" type="add">
+      	Made Period comparable
+      </action>              
+    </release>
+
     <release version="I v1.5.0/2.3" date="2005-04-01" description="Extension">
       <action dev="nsmeets" type="add">
       	Added Cases and added extra method to Period.
