@@ -21,7 +21,7 @@
       <type>plugin</type>
     </dependency>
   </dependencies>
-  <groupId>ppw-projectss</groupId>
+  <groupId>ppw-projects</groupId>
   <url>http://www.peopleware.be/projects/Java/${pom.artifactId}/</url>
   <siteAddress>cvs.peopleware.be</siteAddress>
   <siteDirectory>/ppw/projects/Java/public_html/${pom.artifactId}/</siteDirectory>
@@ -55,6 +55,9 @@
         </includes>
         <filtering>false</filtering>
       </resource>
+      <resource>
+        <directory>src/resources</directory>
+      </resource>
     </resources>
   </build>
   <reports>
@@ -68,18 +71,18 @@
     <report>maven-pmd-plugin</report>
     <report>maven-tasklist-plugin</report>
     <report>taglib</report>
-<!--    
+    <!--    
   	<report>maven-xhtml-plugin</report>
 -->
-    <report>maven-statcvs-plugin</report>    
-<!--
+    <report>maven-statcvs-plugin</report>
+    <!--
   This plugin is usefull when we have different version to compare, currently
   we only have 1 version in CVS. This plugin needs to be tested when we have 
   at least 2 version in CVS.
         <report>maven-jdiff-plugin</report>      
 -->
     <!-- <report>maven-doccheck-plugin</report> -->
-  </reports>  
+  </reports>
   <properties />
 </project>
 
