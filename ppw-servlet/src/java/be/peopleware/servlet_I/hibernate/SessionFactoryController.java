@@ -95,13 +95,14 @@ public class SessionFactoryController
    */
   public void contextDestroyed(final ServletContextEvent event) {
     try {
-      if (LOG.isDebugEnabled()) {
-        LOG.debug("closing Hibernate SessionFactory ..."); //$NON-NLS-1$
-      }
-      _sessionFactory.close();
-      _sessionFactory = null;
-      if (LOG.isDebugEnabled()) {
+      LOG.debug("closing Hibernate SessionFactory ..."); //$NON-NLS-1$
+      if (_sessionFactory != null) {
+        _sessionFactory.close();
+        _sessionFactory = null;
         LOG.debug("Hibernate SessionFactory closed"); //$NON-NLS-1$
+      }
+      else {
+        LOG.debug("_sessionFactory is null; noting to close");
       }
     }
     catch (HibernateException hExc) {
