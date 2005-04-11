@@ -76,7 +76,6 @@ public class _Contract_NationalNumber extends ClassContract {
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
-            	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
             	String leftNumber = (String)context.get("leftNumber");
             	
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
@@ -89,7 +88,6 @@ public class _Contract_NationalNumber extends ClassContract {
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
-            	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
             	String leftNumber = (String)context.get("leftNumber");
             	
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
@@ -103,7 +101,6 @@ public class _Contract_NationalNumber extends ClassContract {
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
-            	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
             	String middleNumber = (String)context.get("middleNumber");
             	
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
@@ -117,7 +114,6 @@ public class _Contract_NationalNumber extends ClassContract {
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
-            	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
             	String middleNumber = (String)context.get("middleNumber");
             	
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
@@ -131,7 +127,6 @@ public class _Contract_NationalNumber extends ClassContract {
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
-            	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
             	String rightNumber = (String)context.get("rightNumber");
             	
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
@@ -146,7 +141,6 @@ public class _Contract_NationalNumber extends ClassContract {
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
-            	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
             	String rightNumber = (String)context.get("rightNumber");
             	
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
@@ -160,7 +154,6 @@ public class _Contract_NationalNumber extends ClassContract {
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
-            	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
             	String leftNumber = (String)context.get("leftNumber");
             	String middleNumber = (String)context.get("middleNumber");
             	String rightNumber = (String)context.get("rightNumber");
@@ -197,21 +190,18 @@ public class _Contract_NationalNumber extends ClassContract {
             addPostcondition(new Condition() {
               public boolean validate(Map context) {
               	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
-              	String leftNumber = (String)context.get("leftNumber");
               	return (result.getLeftNumber().equals("000000"));
               }});
 
             addPostcondition(new Condition() {
               public boolean validate(Map context) {
               	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
-              	String middleNumber = (String)context.get("middleNumber");
               	return (result.getMiddleNumber().equals("000"));
               }});
 
             addPostcondition(new Condition() {
               public boolean validate(Map context) {
               	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
-              	String rightNumber = (String)context.get("rightNumber");
               	return (result.getRightNumber().equals("97"));
               }});
          
@@ -486,7 +476,7 @@ public class _Contract_NationalNumber extends ClassContract {
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
         NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
-        return (subject.checkNationalNumber(subject.getLeftNumber(), subject.getMiddleNumber(), subject.getRightNumber()));
+        return (NationalNumber.checkNationalNumber(subject.getLeftNumber(), subject.getMiddleNumber(), subject.getRightNumber()));
       }
     });
 
