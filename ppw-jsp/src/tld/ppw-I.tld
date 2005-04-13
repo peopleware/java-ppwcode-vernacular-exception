@@ -110,7 +110,7 @@
     <function>
     <name>principal</name>
     <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
-    <function-signature>java.security.Principal principal(javax.servlet.jsp.PageContex)</function-signature>
+    <function-signature>java.security.Principal principal(javax.servlet.jsp.PageContext)</function-signature>
   </function>
 
 </taglib>
