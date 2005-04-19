@@ -253,7 +253,7 @@ public class Beans {
              NoSuchMethodException,
              IllegalAccessException,
              InvocationTargetException {
-  	String[] parts = propertyExpression.split(".");
+  	String[] parts = propertyExpression.split("\\.");
   	Object cursor = bean;
   	for (int lcv = 0; lcv < parts.length; lcv++) {
   		cursor = getPropertyValue(cursor, parts[lcv]);
