@@ -11,8 +11,7 @@
   </properties>
   <body>
  
-<!-- next version will be compatible
-    <release version="IV v1.0.2/1.1" date="2005-03-14"
+    <release version="IV v1.1.0/1.0" date="2005-04-19"
     			description="CompoundPropertyException close throws exception">
       <action dev="jand" type="fix">
 		CompoundPropertyException close() now throws IllegalStateException
@@ -22,8 +21,15 @@
 		IllegalStateException is a RuntimeException).
 		For OLTS, this change has to appear also in a branch.
       </action>              
+      
+      <action dev="wlambrec" type="add">
+      	Added Beans.getNavigatedPropertyValue:
+		The value of the property <code>propertyExpression</code>
+ 		of object <code>bean</code>. <code>propertyExpression</code>
+   		can be an expression to navigate through an object graph,
+   		of the form <code><var>property1</var>.<var>property2</var>.<var>property3</var></code>.      	
+      </action>
     </release>
--->
 
 
 	<!-- this is wrong; version below should have been labeled
