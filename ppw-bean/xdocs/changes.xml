@@ -11,6 +11,14 @@
   </properties>
   <body>
  
+    <release version="IV v1.1.0/1.1" date="2005-04-19"
+    			description="CompoundPropertyException close throws exception">
+      <action dev="jand" type="fix">
+		Fix for Beans.getNavigatedPropertyValue:
+      </action>              
+    </release>
+
+
     <release version="IV v1.1.0/1.0" date="2005-04-19"
     			description="CompoundPropertyException close throws exception">
       <action dev="jand" type="fix">
