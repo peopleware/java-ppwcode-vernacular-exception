@@ -221,6 +221,45 @@ public class Beans {
   }
 
   /**
+   * The value of the property <code>propertyExpression</code>
+   * of object <code>bean</code>. <code>propertyExpression</code>
+   * can be an expression to navigate through an object graph,
+   * of the form <code><var>property1</var>.<var>property2</var>.<var>property3</var></code>.
+   *
+   * @param     bean
+   *            The bean to get the property value of
+   * @param     propertyExpression
+   *            A dot-separated chain of programmatic property names
+   *            to navigate.
+   * @throws    NullPointerException
+   *            bean == null; or an intermediate property is null
+   * @throws    IntrospectionException
+   *            Cannot get the <code>BeanInfo</code> of <code>bean</code> class.
+   * @throws    NoSuchMethodException
+   *            There is no read method for this property in the bean.
+   * @throws    IllegalAccessException
+   *            This user is not allowed to access the read method of
+   *            the <code>propertyName()</code>-property of <code>bean</code>.
+   * @throws    InvocationTargetException
+   *            The read method of the property <code>propertyName</code>,
+   *            applied to <code>bean</code>, has thrown an exception.
+   */
+  public static Object getNavigatedPropertyValue(final Object bean,
+                                        final String propertyExpression)
+      throws NullPointerException,
+             IntrospectionException,
+             NoSuchMethodException,
+             IllegalAccessException,
+             InvocationTargetException {
+  	String[] parts = propertyExpression.split(".");
+  	Object cursor = bean;
+  	for (int lcv = 0; lcv < parts.length; lcv++) {
+  		cursor = getPropertyValue(cursor, parts[lcv]);
+  	}
+  	return cursor;
+  }
+
+  /**
    * The value to be written to the text file, as String.
    *
    * @param     bean
