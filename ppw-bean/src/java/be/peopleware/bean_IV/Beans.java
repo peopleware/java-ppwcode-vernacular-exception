@@ -19,6 +19,8 @@ import org.apache.taglibs.standard.lang.jstl.Logger;
 
 /**
  * Convenience methods for working with JavaBeans.
+ * 
+ * @mudo (jand) most methods are also in Toryt.support.Reflection; consolidate
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
