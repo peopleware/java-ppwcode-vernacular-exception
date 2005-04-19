@@ -25,10 +25,10 @@ package be.peopleware.persistence_I.dao;
  * Implementations should be JavaBeans,
  * with a default constructor. Further dependencies should be filled
  * out using setters, and DAO methods should be allowed to throw a
- * {@link be.peopleware.exception_I.TechnicalException} if the depencies
+ * {@link be.peopleware.exception_I.TechnicalException} if the dependencies
  * are not fulfilled when the DAO method is called.
  * 
- * Subtypes may dependent on the fact that the objects in persistent storage are
+ * Subtypes may depend on the fact that the objects in persistent storage are
  * {@link be.peopleware.persistence_I.PersistentBean PersistentBeans},
  * although this will not always be necessary.
  *

@@ -23,7 +23,7 @@ import be.peopleware.bean_IV.RousseauBean;
  *   any semantic object {@link Cloneable}. From experience we know that
  *   it is very difficult to decide in general how deep a clone should go.
  *   Persistent beans are {@link java.io.Serializable} though, because
- *   the are often used also as Data Transfer Objects in multi-tier
+ *   they are often used also as Data Transfer Objects in multi-tier
  *   applications.</p>
  * <p>To make clear that more than 1 persistent bean instance representing
  *   the same persistent instance can exist, this class implements
