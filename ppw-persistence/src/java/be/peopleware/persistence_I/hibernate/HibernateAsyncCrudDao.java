@@ -534,7 +534,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
 
   // retrieving a Hibernate session
 
-  private Session retrieveSession() throws TechnicalException {
+  protected Session retrieveSession() throws TechnicalException {
     ServletRequest sr = getServletRequest();
     try {
       Session session = SessionInView.getSession(sr);
