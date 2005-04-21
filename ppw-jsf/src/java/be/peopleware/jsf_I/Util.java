@@ -3,6 +3,7 @@ package be.peopleware.jsf_I;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import be.peopleware.exception_I.TechnicalException;
@@ -71,4 +72,29 @@ public class Util {
     }
   }
 
+  /**
+   * The current session, which is the external context
+   * of the current {@link FacesContext#getCurrentInstance()}.
+   * Returns <code>null</code> if there is no such session
+   *
+   * @result (FacesContext.getCurrentInstance() == null)
+   *         || (FacesContext.getCurrentInstance().getExternalContext() == null)
+   *         || (! FacesContext.getCurrentInstance().getExternalContext()
+   *                .getSession(false) instanceof HttpSession)
+   *         ==> null;
+   * @result FacesContext.getCurrentInstance()
+   *            .getExternalContext().getSession(false);
+   */
+  public static HttpSession getHttpSession() {
+    try {
+      return (HttpSession)FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(false);
+    }
+    catch (NullPointerException npExc) {
+      LOG.fatal("called outside context of a JSF HTTP request", npExc);
+      return null;
+    }
+  }
+
+  
 }
