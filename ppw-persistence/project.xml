@@ -2,12 +2,9 @@
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
-  <pomVersion>1</pomVersion>
+  <pomVersion>4</pomVersion>
   <name>Persistence Library</name>
   <groupId>ppw-libraries</groupId>
-  <organization />
-  <repository />
-  <build />
   <artifactId>ppw-persistence-I</artifactId>
   <shortDescription>Support for persistency.</shortDescription>
   <description>Support for persistency.</description>
@@ -78,6 +75,4 @@
       <type>jar</type>
     </dependency>
   </dependencies>
-  <properties />
 </project>
-
