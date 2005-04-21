@@ -72,11 +72,15 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
       = "No persistent object";
   private static final String WRONG_SUBTYPE
       = " not a subtype of PersistentBean";
-  /**
-   * @invar     isInTransaction() == (tx != null);
-   */
-  private Transaction $tx;
 
+  
+  /*<property name="session">*/
+  //------------------------------------------------------------------
+  
+  public Session getSession() {
+    return $session;
+  }
+  
   /**
    * @param     session
    *            The hibernate session to use for database manipulations.
@@ -90,8 +94,17 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
       throw new IllegalStateException("Cannot set session now, " 
                                       + "transaction still in use");
     }
-    super.setSession(session);
+    $session = session;
   }
+  
+  private Session $session;
+
+  /*</property>*/
+  
+  /**
+   * @invar     isInTransaction() == (tx != null);
+   */
+  private Transaction $tx;
 
   /**
    * @throws    TechnicalException

@@ -8,10 +8,6 @@ package be.peopleware.persistence_I.hibernate;
 
 
 import net.sf.hibernate.Session;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import be.peopleware.persistence_I.dao.Dao;
 
 
@@ -22,7 +18,7 @@ import be.peopleware.persistence_I.dao.Dao;
  * @author Jan Dockx
  * @author Peopleware n.v.
  */
-public class AbstractHibernateDao implements Dao {
+public abstract class AbstractHibernateDao implements Dao {
   
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -36,34 +32,10 @@ public class AbstractHibernateDao implements Dao {
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /*</section>*/
 
-
-  
-  private static final Log LOG = LogFactory.getLog(AbstractHibernateDao.class);
-
-
-  
   /**
    * @basic
    * @init      null;
    */
-  public final Session getSession() {
-    return $session;
-  }
-
-  /**
-   * @param     session
-   *            The hibernate session to use for database manipulations.
-   * @post      new.getSession() == session;
-   * @throws    IllegalStateException
-   */
-  public void setSession(final Session session) throws IllegalStateException {
-    LOG.debug("setting session (" + session + ")");
-    $session = session;
-  }
-
-  /**
-   * @invar     $session != null;
-   */
-  private Session $session;
+  public abstract Session getSession();
 
 }
