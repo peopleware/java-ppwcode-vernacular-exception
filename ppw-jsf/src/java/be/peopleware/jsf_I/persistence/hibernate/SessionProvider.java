@@ -7,16 +7,11 @@
 package be.peopleware.jsf_I.persistence.hibernate;
 
 
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-
 import net.sf.hibernate.Session;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import be.peopleware.exception_I.TechnicalException;
+import be.peopleware.jsf_I.Util;
 import be.peopleware.servlet_I.hibernate.SessionInView;
 
 
@@ -55,7 +50,6 @@ public class SessionProvider {
   private static final Log LOG = LogFactory.getLog(SessionProvider.class);
 
   
-  
   /**
    * Get the Hibernate {@link Session} from {@link SessionInView}.
    * 
@@ -65,48 +59,9 @@ public class SessionProvider {
    */
   public final Session getRequestSession() throws TechnicalException {
     LOG.debug("Looking for Hibernate Session in request");
-    Session result = SessionInView.getSession(getServletRequest());
+    Session result = SessionInView.getSession(Util.getServletRequest());
     LOG.debug("Found Hibernate Session in request: " + result);
     return result;
-  }
-
-  /**
-   * The faces context of the request/response cyclye this method is
-   * called in.
-   * @see FacesContext#getCurrentInstance()
-   * 
-   * @return FacesContext.getCurrentInstance();
-   */
-  private static FacesContext getFacesContext() {
-    return FacesContext.getCurrentInstance();
-  }
-  
-  /**
-   * The {@link ServletRequest} object of ther request/response cycle this method
-   * is called in. In a JSP context, this is an {@link HttpServletRequest}.
-   * 
-   * @throws TechnicalException
-   *         getFacesContext() == null;
-   */
-  private static ServletRequest getServletRequest() throws TechnicalException {
-    try {
-      ServletRequest result
-          = (HttpServletRequest)getFacesContext().getExternalContext().getRequest();
-      LOG.debug("retrieved servlet request");
-      return result;
-    }
-    catch (NullPointerException npExc) {
-      throw new TechnicalException("Cannot get ServletRequest, "
-                                   + "because there is no FacesContext", npExc);
-    }
-    catch (ClassCastException ccExc) {
-      throw new TechnicalException("Cannot get ServletRequest, "
-                                   + "because there is another type of ExternalContext ("
-                                   + getFacesContext().getExternalContext()
-                                       .getRequest().getClass().getName()
-                                   + ")",
-                                   ccExc);
-    }
   }
 
 }
