@@ -6,11 +6,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.QueryException;
 import net.sf.hibernate.Session;
@@ -27,7 +22,6 @@ import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.persistence_I.IdNotFoundException;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
-import be.peopleware.servlet_I.hibernate.SessionInView;
 
 
 /**
@@ -316,11 +310,6 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
                                         final boolean retrieveSubClasses)
       throws TechnicalException {
     LOG.debug("Retrieving all records of type \"" + persistentObjectType + "\" ..."); //$NON-NLS-2$
-
-    //@mudo Added initialisation of session here to get things working
-    if (getSession() == null) {
-      setSession(retrieveSession());
-    }
     if (getSession() == null) {
       throw new TechnicalException(NULL_SESSION, null);
     }
@@ -531,77 +520,5 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
   }
 
   private boolean $isInTransaction;
-
-  // retrieving a Hibernate session
-
-  protected Session retrieveSession() throws TechnicalException {
-    ServletRequest sr = getServletRequest();
-    try {
-      Session session = SessionInView.getSession(sr);
-      LOG.debug("acquired Hibernate Session from SessionInView");
-      return session;
-    }
-    catch (TechnicalException e) {
-      LOG.fatal("could not retrieve Hibernate Session", e);
-      forceLogOut();
-      throw e;
-    }
-  }
-
-  /**
-   * The current servlet request, which is the external context
-   * of the current {@link FacesContext#getCurrentInstance()}.
-   *
-   * @throws TechnicalException
-   *         (FacesContext.getCurrentInstance() == null)
-   *         || (FacesContext.getCurrentInstance().getExternalContext() == null)
-   *         || (! FacesContext.getCurrentInstance().getExternalContext()
-   *                .getRequest() instanceof HttpServletRequest);
-   *         Called outside the context of a JSF HTTP request
-   */
-  private HttpServletRequest getServletRequest() throws TechnicalException {
-    try {
-      return (HttpServletRequest)FacesContext.getCurrentInstance()
-                .getExternalContext().getRequest();
-    }
-    catch (NullPointerException npExc) {
-      LOG.fatal("called outside context of a JSF HTTP request", npExc);
-      forceLogOut();
-      throw new TechnicalException("called outside faces context", npExc);
-    }
-  }
-
-  private void forceLogOut() {
-    LOG.fatal("invalidating session");
-    HttpSession session = getHttpSession();
-    if (session != null) {
-      session.invalidate();
-    }
-  }
-
-
-  /**
-   * The current session, which is the external context
-   * of the current {@link FacesContext#getCurrentInstance()}.
-   * Returns <code>null</code> if there is no such session
-   *
-   * @result (FacesContext.getCurrentInstance() == null)
-   *         || (FacesContext.getCurrentInstance().getExternalContext() == null)
-   *         || (! FacesContext.getCurrentInstance().getExternalContext()
-   *                .getSession(false) instanceof HttpSession)
-   *         ==> null;
-   * @result FacesContext.getCurrentInstance()
-   *            .getExternalContext().getSession(false);
-   */
-  private HttpSession getHttpSession() {
-    try {
-      return (HttpSession)FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(false);
-    }
-    catch (NullPointerException npExc) {
-      LOG.fatal("called outside context of a JSF HTTP request", npExc);
-      return null;
-    }
-  }
 
 }
