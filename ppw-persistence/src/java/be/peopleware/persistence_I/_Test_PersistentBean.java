@@ -35,7 +35,7 @@ public class _Test_PersistentBean extends _Test_RousseauBean {
 
   public static void main(final String[] args) {
     Test.main(new String[]
-        {"be.peopleware.bean_II.persistent._Test_PersistentBean"}); //$NON-NLS-1$
+        {"be.peopleware.presistence_I._Test_PersistentBean"}); //$NON-NLS-1$
   }
 
   protected void testClassMethods() {
