@@ -2,14 +2,14 @@
 <?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
-  <pomVersion>4</pomVersion>
+  <pomVersion>1</pomVersion>
   <name>Persistence Library</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-persistence-I</artifactId>
   <shortDescription>Support for persistency.</shortDescription>
   <description>Support for persistency.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.0-1.0</currentVersion>
+  <currentVersion>1.0.1-1.0</currentVersion>
   <package>be.peopleware.persistence_I</package>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
@@ -76,3 +76,4 @@
     </dependency>
   </dependencies>
 </project>
+
