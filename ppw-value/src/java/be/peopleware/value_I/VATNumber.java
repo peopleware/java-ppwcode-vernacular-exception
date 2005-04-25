@@ -40,6 +40,9 @@ public final class VATNumber extends ImmutableValue {
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /*</section>*/
 
+  // @mudo (nsmeets) Are these patterns correct? We cannot find the correct
+  //       patterns in the FVB documentation.
+
   /**
    * The pattern identifying the left part of a national number.
    */
