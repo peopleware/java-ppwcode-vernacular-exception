@@ -96,8 +96,8 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     }
     $session = session;
   }
-  
-  private Session $session;
+
+  protected Session $session;
 
   /*</property>*/
   
