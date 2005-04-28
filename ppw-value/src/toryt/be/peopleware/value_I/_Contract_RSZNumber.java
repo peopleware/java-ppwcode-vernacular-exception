@@ -498,9 +498,9 @@ public class _Contract_RSZNumber extends ClassContract {
       return new LazyCombinationStraightList(
                   new String[] {"leftNumber", "middleNumber", "rightNumber"},
                   new StraightList[] {
-                      new ArrayStraightList( new String[] {"123", "222", "999"}),
-                      new ArrayStraightList( new String[] {"456", "333", "888"}),
-                      new ArrayStraightList( new String[] {"749", "403", "767"})
+                      new ArrayStraightList( new String[] {"024", "1234567", "49"}),
+                      new ArrayStraightList( new String[] {"024", "2223334", "08"}),
+                      new ArrayStraightList( new String[] {"024", "9998887", "06"})
                   }
       );
   }
