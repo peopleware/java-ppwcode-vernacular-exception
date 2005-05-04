@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.7.0/2.4" date="2005-05-04" description="Extension">
+      <action dev="rclerckx" type="add">
+      	Added static method getDateOfBirthFromNationalNumber(NationalNumber nationalNumber).
+      </action>              
+    </release>
+
     <release version="I v1.6.0/2.4" date="2005-04-11" description="Extension">
       <action dev="nsmeets" type="add">
       	Made Period comparable

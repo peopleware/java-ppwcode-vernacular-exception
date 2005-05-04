@@ -7,6 +7,9 @@
 package be.peopleware.value_I;
 
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.regex.Pattern;
 
 import be.peopleware.bean_IV.CompoundPropertyException;
@@ -278,6 +281,25 @@ public final class NationalNumber extends ImmutableValue {
     return (97 - first % 97) == (second);
   }
 
+  /**
+   * @param nationalNumber 
+   *   The national number to get the date of birth from.
+   * @pre 
+   *   nationalNumber != null;
+   * @return 
+   *   The date of birth from <code>nationalNumber</code>.
+   */
+  public static final Date getDateOfBirthFromNationalNumber(NationalNumber nationalNumber) {
+    assert nationalNumber != null: "nationalNumber should not be null";
+    String left = nationalNumber.getLeftNumber();
+    int year = Integer.parseInt(left.substring(0, 2));
+    int month = Integer.parseInt(left.substring(2, 4));
+    int day = Integer.parseInt(left.substring(4, 6));
+    year += (year > 20) ? 1900 : 2000;
+    Calendar date = new GregorianCalendar(year, month, day);
+    return date.getTime();
+  }
+  
   /**
    * @return  o instanceof NationalNumber &&
    *          ((NationalNumber) o).getLeftNumber().equals(getLeftNumber()) &&
