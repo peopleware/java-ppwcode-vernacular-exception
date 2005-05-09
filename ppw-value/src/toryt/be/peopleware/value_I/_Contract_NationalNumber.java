@@ -320,7 +320,8 @@ public class _Contract_NationalNumber extends ClassContract {
             	String leftNumber = (String)context.get("leftNumber");
             	String middleNumber = (String)context.get("middleNumber");
             	String rightNumber = (String)context.get("rightNumber");
-            	return ( result == ((97 - Integer.parseInt(leftNumber + middleNumber) % 97) == (Integer.parseInt(rightNumber))) );
+            	return ( result == ((97 - Integer.parseInt(leftNumber + middleNumber) % 97) == (Integer.parseInt(rightNumber)))
+            	    || ((97 - (Integer.parseInt(leftNumber + middleNumber) + NationalNumber.TWO_BILLION) % 97) == (Integer.parseInt(rightNumber))));
             }});
       		
       		close();
@@ -330,9 +331,9 @@ public class _Contract_NationalNumber extends ClassContract {
           return new LazyCombinationStraightList(
               new String[] {SUBJECT_KEY, "leftNumber", "middleNumber", "rightNumber"},
 							new StraightList[] {	getCases(),
-              											new ArrayStraightList( new String[] {"000000", "781101", "700509", "760905"}),
-              											new ArrayStraightList( new String[] {"000", "456", "169", "145"}),
-																		new ArrayStraightList( new String[] {"97", "65", "96", "06"})
+              											new ArrayStraightList( new String[] {"000000", "781101", "700509", "760905", "020314", "030617"}),
+              											new ArrayStraightList( new String[] {"000", "456", "169", "145", "120", "059"}),
+																		new ArrayStraightList( new String[] {"97", "65", "96", "06", "37", "50"})
               });
         }
       }
@@ -487,9 +488,9 @@ public class _Contract_NationalNumber extends ClassContract {
   public StraightList getCasesMaps() throws TorytException {
       return new LazyCombinationStraightList(
                   new String[] {"leftNumber", "middleNumber", "rightNumber"},
-									new StraightList[] {	new ArrayStraightList(new String[] {"000000", "781101", "700509", "760905"}),
-                  											new ArrayStraightList(new String[] {"000", "456", "169", "145"}),
-																				new ArrayStraightList(new String[] {"97", "65", "96", "06"})
+									new StraightList[] {	new ArrayStraightList(new String[] {"000000", "781101", "700509", "760905", "020314", "030617"}),
+                  											new ArrayStraightList(new String[] {"000", "456", "169", "145", "120", "059"}),
+																				new ArrayStraightList(new String[] {"97", "65", "96", "06", "37", "50"})
                   									 }
       );
   }

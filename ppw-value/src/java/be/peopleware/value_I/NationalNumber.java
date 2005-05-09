@@ -259,6 +259,8 @@ public final class NationalNumber extends ImmutableValue {
 
   /*</property>*/
 
+  public static final int TWO_BILLION = 2000000000;
+  
   /**
    * @param   leftNumber
    *          The left part of a national number.
@@ -272,30 +274,36 @@ public final class NationalNumber extends ImmutableValue {
    * @pre     Pattern.matches(MIDDLE_PATTERN, middleNumber);
    * @pre     rightNumber != null;
    * @pre     Pattern.matches(RIGHT_PATTERN, rightNumber);
-   * @return  (97 - Integer.parseInt(leftNumber + middleNumber) % 97) == (Integer.parseInt(rightNumber));
+   * @return  (97 - Integer.parseInt(leftNumber + middleNumber) % 97) == (Integer.parseInt(rightNumber))
+   *          || (97 - (Integer.parseInt(leftNumber + middleNumber) + TWO_BILLION) % 97) == (Integer.parseInt(rightNumber));
    */
   public static final boolean checkNationalNumber(String leftNumber, String middleNumber, String rightNumber) {
+    return checkBefore2000(leftNumber, middleNumber, rightNumber) || checkAfter2000(leftNumber, middleNumber, rightNumber);
+  }
+
+  private static final boolean checkAfter2000(String leftNumber, String middleNumber, String rightNumber) {
     String left = leftNumber + middleNumber;
     int first = Integer.parseInt(left);
     int second = Integer.parseInt(rightNumber);
-    return (97 - first % 97) == (second);
+    return (97 - ((first + TWO_BILLION) % 97)) == second;
   }
-
+  
+  private static final boolean checkBefore2000(String leftNumber, String middleNumber, String rightNumber) {
+    String left = leftNumber + middleNumber;
+    int first = Integer.parseInt(left);
+    int second = Integer.parseInt(rightNumber);
+    return (97 - (first % 97)) == second;
+  }
+  
   /**
-   * @param nationalNumber 
-   *   The national number to get the date of birth from.
-   * @pre 
-   *   nationalNumber != null;
    * @return 
-   *   The date of birth from <code>nationalNumber</code>.
+   *   The date of birth from this national number.
    */
-  public static final Date getDateOfBirthFromNationalNumber(NationalNumber nationalNumber) {
-    assert nationalNumber != null: "nationalNumber should not be null";
-    String left = nationalNumber.getLeftNumber();
-    int year = Integer.parseInt(left.substring(0, 2));
-    int month = Integer.parseInt(left.substring(2, 4));
-    int day = Integer.parseInt(left.substring(4, 6));
-    year += (year > 20) ? 1900 : 2000;
+  public final Date getDateOfBirth() {
+    int year = Integer.parseInt(getLeftNumber().substring(0, 2));
+    int month = Integer.parseInt(getLeftNumber().substring(2, 4)) - 1;
+    int day = Integer.parseInt(getLeftNumber().substring(4, 6));
+    year += checkBefore2000(getLeftNumber(), getMiddleNumber(), getRightNumber()) ? 1900 : 2000;
     Calendar date = new GregorianCalendar(year, month, day);
     return date.getTime();
   }
