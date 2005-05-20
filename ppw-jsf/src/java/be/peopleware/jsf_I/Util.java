@@ -1,5 +1,6 @@
 package be.peopleware.jsf_I;
 
+import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -95,6 +96,27 @@ public class Util {
       return null;
     }
   }
-
   
+  /**
+   * The current session map, which is the external context
+   * of the current {@link FacesContext#getCurrentInstance()}.
+   * Returns <code>null</code> if there is no such map.
+   *
+   * @result (FacesContext.getCurrentInstance() == null)
+   *         || (FacesContext.getCurrentInstance().getExternalContext() == null)
+   *         || (! FacesContext.getCurrentInstance().getExternalContext()
+   *                .getSessionMap() instanceof Map)
+   *         ==> null;
+   * @result FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+   */
+  public static Map getSessionMap() {
+    try {
+      return (Map)FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+    }
+    catch (NullPointerException npExc) {
+      LOG.fatal("called outside context of a JSF HTTP request", npExc);
+      return null;
+    }
+  }
+
 }
