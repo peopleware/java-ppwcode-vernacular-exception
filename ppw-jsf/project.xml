@@ -9,7 +9,7 @@
   <shortDescription>Support for JSF.</shortDescription>
   <description>Support for JSF.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.0-1.0</currentVersion>
+  <currentVersion>1.0.1-1.0</currentVersion>
   <package>be.peopleware.jsf_I</package>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
