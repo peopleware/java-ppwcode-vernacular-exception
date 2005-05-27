@@ -64,5 +64,34 @@
       <attainGoal name="taglib:deregister"/>  
     </j:if>
   </postGoal>
+  
+  
+  <!-- Set up the war command so it includes tld, jsp tagfiles, properties
+       and betwixt files -->
+  <preGoal name="war:webapp">    
+    <!-- copy all properties files for inclusion in war -->
+    <echo message="Copying properties files ${maven.src.dir}/java to ${maven.build.dest}" />
+    <copy todir="${maven.build.dest}">
+      <fileset dir="${maven.src.dir}/java">
+        <include name="**/*.properties" />
+      </fileset>
+    </copy>
+    
+    <!-- copy all betwixt files for inclusion in war -->
+    <echo message="Copying betwixt files ${maven.src.dir}/java to ${maven.build.dest}" />
+    <copy todir="${maven.build.dest}">
+      <fileset dir="${maven.src.dir}/java">
+        <include name="**/*.betwixt" />
+      </fileset>
+    </copy>
+    
+    <!-- copy all xml files for inclusion in war -->
+    <echo message="Copying betwixt files ${maven.src.dir}/java to ${maven.build.dest}" />
+    <copy todir="${maven.build.dest}">
+      <fileset dir="${maven.src.dir}/java">
+        <include name="**/*.xml" />
+      </fileset>
+    </copy> 
+  </preGoal>
 
 </project>
