@@ -10,16 +10,19 @@ package be.peopleware.persistence_I.hibernate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
+
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.expression.Criterion;
+import net.sf.hibernate.expression.Expression;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.persistence_I.dao.FilterDao;
-import be.peopleware.persistence_I.hibernate.HibernateAsyncCrudDao;
 
 
 /**
@@ -47,61 +50,114 @@ public final class HibernateFilterDao extends HibernateAsyncCrudDao implements F
 
   private static final Log LOG = LogFactory.getLog(HibernateFilterDao.class);
 
-  /* <construction> */
+  /*<construction>*/
   //------------------------------------------------------------------
 
-  /**
-   *
-   */
-  public HibernateFilterDao() {
-    // NOP
-  }
+  // Default constructor
 
-  /* </construction> */
+  /*</construction>*/
 
   /**
-   * @see    FilterDao
+   * @see FilterDao
+   * @mudo (dvankeer) This code is duplicated in JsfHibernateFilterDao.
    */
-  public final Set retrievePersistentBeans(final Class type, final Map criteriaMap)
+  public final Set retrievePersistentBeans(final Class type,
+                                           final List criteriaList)
       throws TechnicalException {
-		LOG.debug("starting find for persistent beans with type="+type.getName()+
-               "and properties="+criteriaMap.toString());
+    LOG.debug("Starting find for persistent beans with type=" + type.getName()
+              + "and criteria " + criteriaList.toString());
     if (getSession() == null) {
       throw new TechnicalException(NULL_SESSION, null);
     }
-    // @mudo Mag dit hier staan?
-		LOG.debug("Hibernate session retrieved: " + getSession());
-
-		Set result = Collections.EMPTY_SET;
-
-		try {
-			Criteria criteria = getSession().createCriteria(type);
-      // sort on id
-      Iterator i = criteriaMap.keySet().iterator();
+    Set result = Collections.EMPTY_SET;
+    try {
+      // the persistent beans should be of the given type
+      Criteria criteria = getSession().createCriteria(type);
+      // the persistent beans should satisfy the given criteria
+      Iterator i = criteriaList.iterator();
       while (i.hasNext()) {
-        String key = (String) i.next();
-        Object value = criteriaMap.get(key);
-        if (value != null) {
-          // empty string are not accepted as a criterion
-          if (  !( value instanceof String
-                   &&
-                   ((String)value).length() == 0
-                )
-          ) {
-            Criterion criterion =
-              net.sf.hibernate.expression.Expression.eq(key, value);
-            criteria.add(criterion);
-          }
+        FilterCriterion filterCriterion = (FilterCriterion) i.next();
+        Criterion hibernateCriterion = createHibernateCriterion(filterCriterion);
+        if (hibernateCriterion != null) {
+          criteria.add(hibernateCriterion);
         }
       }
-			result = Collections.unmodifiableSet (new HashSet (criteria.list()));
-		}
+      // retrieve the persistent beans of the given type satisfying the given criteria
+      result = Collections.unmodifiableSet(new HashSet(criteria.list()));
+    }
     catch (HibernateException e) {
-			throw new TechnicalException(e.getMessage(), e);
-		}
+      throw new TechnicalException(e.getMessage(), e);
+    }
+    LOG.debug("found " + result.size() + " matching persistentBean(s)");
+    LOG.debug("session released");
+    return result;
+  }
 
-		LOG.debug("found " + result.size() + " matching persistentBean(s)");
-		LOG.debug("session released");
-		return result;
-	}
+  /**
+   * Create a hibernate criterion from the given filter criterion.
+   * @param   filterCriterion
+   * @pre     filterCriterion != null;
+   * @return  if (operator.equals(FilterCriterion.EQ) &&
+   *              !isNullOrEmptyString(values.get(0))
+   *          )
+   *            then
+   *              result == Expression.eq(filterCriterion.getPropertyName(), values.get(0));
+   *            else
+   *              if (operator.equals(FilterCriterion.LIKE) &&
+   *                  !isNullOrEmptyString(values.get(0))
+   *              )
+   *                then
+   *                  result == Expression.like(filterCriterion.getPropertyName(), values.get(0));
+   *                else
+   *                  result == null;
+   */
+  public Criterion createHibernateCriterion(FilterCriterion filterCriterion) {
+    String operator = filterCriterion.getOperator();
+    String propertyName = filterCriterion.getPropertyName();
+    List values = filterCriterion.getValues();
+    if (operator.equals(FilterCriterion.EQ)) {
+      // create 'eq' criterion
+      Object value = values.get(0);
+      // null values and empty strings are ignored (they are interpreted as no constraint)
+      if (!(isNullOrEmptyString(value))) {
+        return Expression.eq(propertyName, value);
+      }
+      else {
+        return null;
+      }
+    }
+    if (operator.equals(FilterCriterion.LIKE)) {
+      // create 'like' criterion
+      Object value = values.get(0);
+      // null values and empty strings are ignored (they are interpreted as no constraint)
+      if (!(isNullOrEmptyString(value))) {
+        String str = value.toString();
+        str = "%" + str + "%";
+        return Expression.like(propertyName, str);
+      }
+      else {
+        return null;
+      }
+    }
+    assert false : "Unknown operator in filter criterion: "+operator;
+    return null;
+  }
+
+  /**
+   * Returns true when the given object is null, or when it is an empty string.
+   * Returns false otherwise.
+   *
+   * @param   value
+   *          The value to check.
+   * @return  (value == null)
+   *          ||
+   *          ((value instanceof String) && (((String)value).length() == 0))
+   */
+  private boolean isNullOrEmptyString(Object value) {
+    return
+      (value == null)
+      ||
+      ((value instanceof String) && (((String)value).length() == 0));
+  }
+
 }

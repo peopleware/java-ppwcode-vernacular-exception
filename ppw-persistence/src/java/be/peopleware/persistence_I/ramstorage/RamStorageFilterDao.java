@@ -7,7 +7,7 @@
 package be.peopleware.persistence_I.ramstorage;
 
 
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import be.peopleware.exception_I.TechnicalException;
@@ -54,7 +54,7 @@ public final class RamStorageFilterDao extends RamStorageAsyncCrudDao implements
    * @see    FilterDao
    * @mudo
    */
-  public final Set retrievePersistentBeans(final Class type, final Map criteriaMap)
+  public final Set retrievePersistentBeans(final Class type, final List criteriaList)
       throws TechnicalException {
     assert false : "not implemented yet";
 		return null;

@@ -1,6 +1,6 @@
 package be.peopleware.persistence_I.dao;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import be.peopleware.exception_I.TechnicalException;
@@ -8,7 +8,7 @@ import be.peopleware.exception_I.TechnicalException;
 
 /**
  * <p>An {@link AsyncCrudDao} that contains an extra method for retrieving
- *   persistent beans of a given type that have properties with given values.
+ *   persistent beans of a given type that satisfy certain criteria.
  * </p>
  *
  * @author    nsmeets
@@ -32,34 +32,30 @@ public interface FilterDao extends AsyncCrudDao {
   /*</section>*/
 
   /**
-   * Retrieve all persistent beans with the given type that have properties
-   * with given values.
+   * Retrieve all persistent beans with the given type that satisfy the given
+   * criteria.
    *
    * @param   type
    *          The type of the persistent beans to retrieve.
-   * @param   criteriaMap
-   *          A map containing propertyName-value pairs.
+   * @param   criteriaList
+   *          A list of criteria.
    * @pre     type != null;
-   * @pre     criteriaMap != null;
-   * @pre     (forall Object key;
-   *                   criteriaMap.keySet().contains(key);
-   *                   key instanceof String);
-   * @pre     (forall Object key;
-   *                   criteriaMap.keySet().contains(key);
-   *                   ** key is a property of the given type ** );
-   * @mudo  (nsmeets) formal specification for the preceding precondition
+   * @pre     criteriaList != null;
+   * @pre     (forall Object criterion;
+   *                   criteriaList.contains(criterion);
+   *                   criterion instanceof FilterCriterion);
    * @result  result != null
    * @result  (forall Object bean;
    *                   result.contains(bean);
-   *                   bean.isInstance(type) &&
-   *                   ( forall Object key;
-   *                         criteriaMap.keySet().contains(key);
-   *                         the property "key" of the bean has value criteriaMap.get(key)
+   *                   type.isInstance(bean) &&
+   *                   ( forall Object criterion;
+   *                         criteriaList.contains(criterion);
+   *                         the bean satisfies the criterion
    *                   )
    *          );
    * @throws TechnicalException
    */
-  Set retrievePersistentBeans(final Class type, final Map criteriaMap)
+  Set retrievePersistentBeans(final Class type, final List criteriaList)
       throws TechnicalException;
 
 
