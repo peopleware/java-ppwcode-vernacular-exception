@@ -56,9 +56,8 @@ public class _Test_Gender extends _Test_EnumerationValue {
 
   public Set getCases() {
     Set result = new HashSet();
-    result.add(new Gender());
-    result.add(Gender.MALE);
-    result.add(Gender.FEMALE);
+    result.add(create_Gender());
+    result.addAll(Gender.VALUES.values());
     return result;
   }
 
