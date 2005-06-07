@@ -67,8 +67,6 @@ public final class Gender extends EnumerationValue {
 
   private static Map generateValues() {
     Map result = new HashMap();
-    String unknown = " ";
-    result.put(unknown, new Gender(unknown));
     result.put(MALE.toString(), MALE);
     result.put(FEMALE.toString(), FEMALE);
     return Collections.unmodifiableMap(result);
