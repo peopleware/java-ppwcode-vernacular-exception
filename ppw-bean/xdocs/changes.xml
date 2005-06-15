@@ -11,6 +11,13 @@
   </properties>
   <body>
  
+    <release version="IV v1.1.0/1.2" date="2005-06-15"
+    			description="Fix for NullPointerException in debug code">
+      <action dev="jand" type="fix">
+				Fix for NullPointerException in debug code.
+      </action>              
+    </release>
+
     <release version="IV v1.1.0/1.1" date="2005-04-19"
     			description="CompoundPropertyException close throws exception">
       <action dev="jand" type="fix">
