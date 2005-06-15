@@ -142,7 +142,15 @@ public abstract class RousseauBean {
         Iterator iter =  cpe.getElementExceptions().entrySet().iterator();
         while (iter.hasNext()) {
           Map.Entry entry = (Map.Entry)iter.next();
-          LOG.debug(entry.getKey().toString() + ":"); //$NON-NLS-1$
+          if (LOG.isDebugEnabled()) {
+            Object key = entry.getKey();
+            if (key == null) {
+              LOG.debug("null as key:");
+            }
+            else {
+              LOG.debug(key + ":");
+            }
+          }
           Set propertyExceptions = (Set)entry.getValue();
           Iterator exceptions = propertyExceptions.iterator();
           while (exceptions.hasNext()) {
