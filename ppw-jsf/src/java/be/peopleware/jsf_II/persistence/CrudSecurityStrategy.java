@@ -1,12 +1,13 @@
-package be.peopleware.jsf_I.persistence;
+package be.peopleware.jsf_II.persistence;
 
 
 import javax.servlet.http.HttpServletRequest;
 
+
 /**
  * @MUDO (jand): AANPASSEN
  *
- * Security strategy API for {@link AsyncCrudHandler AsyncCrudHandlers}.
+ * Security strategy API for {@link PersistentBeanCrudHandler AsyncCrudHandlers}.
  * AsyncCrudHandlers enable the user to
  * get a page for a new object, to get a page to create an object,
  * and to view, edit, update, delete an existing object, and to

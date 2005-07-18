@@ -1,9 +1,9 @@
-package be.peopleware.jsf_I.persistence;
+package be.peopleware.jsf_II.persistence;
 
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import be.peopleware.persistence_I.DaoFactory;
+
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.Dao;
 
@@ -68,33 +68,6 @@ public abstract class AbstractHandler {
   /*</property>*/
 
   
-  
-  /*<property name="daoFactory">*/
-  //------------------------------------------------------------------
-
-  /**
-   * The dao factory.
-   *
-   * @basic
-   * @init null;
-   */
-  public final DaoFactory getDaoFactory() {
-    return $daoFactory;
-  }
-
-  /**
-   * @post    (new.getDaoFactory() == daoFactory);
-   */
-  public final void setDaoFactory(final DaoFactory daoFactory) {
-    $daoFactory = daoFactory;
-    LOG.debug("new daoFactory is set: " + daoFactory);
-  }
-
-  private DaoFactory $daoFactory ;
-
-  /*</property>*/
-
-
   
   /*<property name="securityStrategy">*/
   //------------------------------------------------------------------

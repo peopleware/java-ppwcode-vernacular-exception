@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>jsf-ppw</title>
+  <style type="text/css">
+<!--
+.codingGuideline {
+color: #FFFFFF;
+background-color: #006633;
+}
+-->
+  </style>
+</head>
+<body>
+<p>The development of user
+interfaces for web applications is a tedious job. On the one hand,
+there is the fact that the HTTP protocol is stateless (we do not have
+that much issue with HTML/CSS as a display technology). On the other
+hand, we know fairly well how to create MVC-desktop-clients user
+interfaces (using Swing or eclipse RCP, or Delphi), and we know that
+this is manageable. JSF tries to reconcile these 2 positions, and
+certainly has some benefits. However, a lot about JSF stays mysterious:
+there is no clear development philosophy, some parts are lacking. </p>
+<p>What is positive about JSF is
+the component market place that it is creating, and the clear
+request/response life-cycle. We have some issues with this life-cycle,
+but the fact that it is standardized is positive. To us, it is clear
+that JSF was developed with <em>simple</em>
+webapplication user interfaces in mind: 1 page to interact with 1
+business object, and that's it. There notably is a lack in guidelines,
+development philosophy and support for more complex semantic object
+graphs. JSF is certainly a step forward for UIs where a user is taken
+through several steps before his interaction with a business object is
+complete (wizard style). This was a problem with earlier frameworks
+like Struts.</p>
+<h2>Background</h2>
+<h3>Desktop Applications (komt overeen met tweede soort UI, of toch in
+apart puntje?)
+</h3>
+<p>In a desktop-MVC-application, a UI consists at
+each moment of a set of windows, where each window (in general)
+represents a
+semantic object (and it's downstream related objects). There can be
+more than 1 window open for a given semantic object, either presenting
+the same or a different view. In RAM, we hold semantic objects, and an
+object structure for each open window (and possibly some in reserve,
+that are currently not open), that has a reference to the semantic
+object it is a view of.</p>
+<p>E.g., we have a <code>Person</code>
+instance <code>p</code>,
+and a number of <code>PersonFrame</code>
+instances referring to <code>p</code>.
+The <code>PersonFrame</code>
+instances are an aggregate of Swing component instances, such as
+panels, frames, text fields, drop-down boxes, layout managers,
+etcetera.</p>
+<h3>User Interfaces</h3>
+<p>There are essentially 2 kinds of user interfaces: those where
+there is exactly 1 window instance per <span
+ style="font-style: italic;">type</span> of semantic object, and
+those where there is 1 window instance per semantic instance. <br>
+</p>
+<p>In the
+first kind, the window is actually a singleton. This kind of UI
+descends from the elder days, when UI widgets were a rare, OS
+controlled resource (think X terminals and X11, e.g.). These machines
+were really RAM-deprived, and UIs were designed in such a way that the
+data structure to display a type of object was reused, in time, for
+different objects of that type. To display an object, we grab the
+applicable data structure from RAM (or create it if it did not exist
+yet), and overwrite whatever data is there now, with data from the
+instance we wish to display. In effect, we connect the window to a
+specific instance, and it is now no longer connected to the instance it
+displayed earlier.</p>
+<p>We have more RAM and speedier
+processors now, and creating a new data structure for each instance we
+want to display, and keeping it in RAM, is not really an issue anymore.
+The semantic object will store the semantic state, and the
+display-object-structure will store view-related state (e.g., which
+elements of a tree are open, which tabs are shown, whether a button is
+enabled or not, &hellip;). So, the second kind of UI is made possible.</p>
+<h3>MVC</h3>
+<p>In MVC fashion, the connection between
+the display-objects and the semantic objects, is 2-way. The
+display-object-structure (<dfn>view</dfn>)
+listens to events from the semantic object (<dfn>model</dfn>)
+that signal changes in the model, and the <dfn>controller</dfn>
+initiates changes on the semantic object, immediately in response to
+events that signal
+end-user actions. This loose-coupling
+via events and listeners is at the heart of the original MVC pattern,
+and makes it possible to have multiple windows to display the same
+semantic object. Note that if there is no need for multiple windows,
+there is no need for this loose-MVC-coupling. <br>
+</p>
+<p>In the elder UI design
+described above, user interaction was dealt with through call-back
+methods, and display was dealt with by pulling data from the semantic
+object. Keeping the semantic object in RAM after the data is fetched,
+is not really needed.</p>
+<p></p>
+<h2>Background2</h2>
+There are essentially 2 kinds of user interfaces: those where
+there is exactly 1 window instance per <span
+ style="font-style: italic;">type</span> of semantic object, and
+those where there is 1 window instance per semantic instance.
+<h3>Multiple Window Instances per Semantic Object
+</h3>
+<p>In a desktop-MVC-application, a UI consists at
+each moment of a set of windows, where each window (in general)
+represents a
+semantic object (and it's downstream related objects). There can be
+more than 1 window open for a given semantic object, either presenting
+the same or a different view. In RAM, we hold semantic objects, and an
+object structure for each open window (and possibly some in reserve,
+that are currently not open), that has a reference to the semantic
+object it is a view of.</p>
+<p>E.g., we have a <code>Person</code>
+instance <code>p</code>,
+and a number of <code>PersonFrame</code>
+instances referring to <code>p</code>.
+The <code>PersonFrame</code>
+instances are an aggregate of Swing component instances, such as
+panels, frames, text fields, drop-down boxes, layout managers,
+etcetera.</p>
+<p>The connection between
+the display-objects and the semantic objects follows the MVC pattern,
+which is 2-way. The
+display-object-structure (<dfn>view</dfn>)
+listens to events from the semantic object (<dfn>model</dfn>)
+that signal changes in the model, and the <dfn>controller</dfn>
+initiates changes on the semantic object, immediately in response to
+events that signal
+end-user actions. This loose-coupling
+via events and listeners is at the heart of the original MVC pattern,
+and makes it possible to have multiple windows to display the same
+semantic object. Note that if there is no need for multiple windows,
+there is no need for this loose-MVC-coupling.<br>
+</p>
+<h3>One Window Instance per Semantic Object<br>
+</h3>
+<p>In the
+first kind, the window is actually a singleton. This kind of UI
+descends from the elder days, when UI widgets were a rare, OS
+controlled resource (think X terminals and X11, e.g.). These machines
+were really RAM-deprived, and UIs were designed in such a way that the
+data structure to display a type of object was reused, in time, for
+different objects of that type. To display an object, we grab the
+applicable data structure from RAM (or create it if it did not exist
+yet), and overwrite whatever data is there now, with data from the
+instance we wish to display. In effect, we connect the window to a
+specific instance, and it is now no longer connected to the instance it
+displayed earlier.</p>
+<p>We have more RAM and speedier
+processors now, and creating a new data structure for each instance we
+want to display, and keeping it in RAM, is not really an issue anymore.
+The semantic object will store the semantic state, and the
+display-object-structure will store view-related state (e.g., which
+elements of a tree are open, which tabs are shown, whether a button is
+enabled or not, &hellip;). So, the second kind of UI is made possible.</p>
+<p>In the elder UI design
+described above, user interaction was dealt with through call-back
+methods, and display was dealt with by pulling data from the semantic
+object. Keeping the semantic object in RAM after the data is fetched,
+is not really needed.<br>
+</p>
+<h2>JSF Page Design (titel ok ?)</h2>
+In a JSF application, the display-object-structure is composed of the
+JSF
+UIView and 1 or more handlers. They should therefore store
+display-related
+information. However, where in a true MVC desktop application, we would
+have at least 1 such structure per semantic object (we could have more
+than 1 if we display the same semantic object in more than 1 window
+simultaneously), in a JSF application, we only have 1 such structure
+per semantic object <em>type</em>.
+Normally, you create 1 JSF page per semantic object type, and 1 JSF
+page (URL) creates 1 UIView, identified by a view id that is the URL.
+Furthermore, 1 such UIView is backed normally by 1 or more handlers.<br>
+<br>
+In any case, we see no
+possibility to have more than 1 UIView per semantic object <em>type</em>.
+--&gt; waarom?<br>
+<p>Now, we could devise a way to have a separate handler object per
+semantic
+object (e.g., by using a managed map, with a separate entry per
+semantic object, with the semantic object's PK as key in the map;
+accessing the handler and its semantic object from a JSF component
+could then be done as follows: <code>#{handlerMap[9859032].instance}</code>
+instead of the <code>#{myHandler.instance}</code>
+you are accustomed to see). It is not immediately clear how to do this
+for more than 1 handler per semantic object (to show the same object in
+more than 1 window e.g., because HTTP does not support an
+identification scheme for windows -- yet). <br>
+</p>
+<p>An aspect of real desktop MVC
+applications is that data is pushed from the semantics to the view
+layer, when changes happen, through events. This makes it possible to
+give feedback about changes to the user immediately and interactively.
+Now, this push-design is impossible for web applications anyway,
+because of the limitations of HTTP. We can only tell things to the user
+in response to a request from the browser. This implies a pull-design.</p>
+<p>--&gt; ook een reden waarom vershillende windows moeilijk zijn?</p>
+<span style="font-style: italic;">Conclusion</span>: In JSF, we should
+design UIs where there is 1 window (page) per semantic
+object <em>type </em><span style="color: rgb(204, 51, 204);">(volgens
+mij moet hier page staan, omdat we verderop wel praten over het opage
+!= window)<br>
+</span>
+<p>It seems to us that the
+elder approach to UI development is closer to JSF technology than the
+modern, desktop-client, MVC pattern.</p>
+<h2>State</h2>
+<p>The RAM
+limitations that played in the early GUIs play in web applications
+again: 1 machine (or cluster) serves multiple (1 to 100&nbsp;000)
+concurrent users. Keeping the complete state of all these users in RAM
+is impossible. And from experience we know that even for small numbers
+of users this poses problems for advanced applications. If a desktop
+application uses 200MB of RAM, this is not an issue. For a web
+application to use more than 2MB per user, is. On the other hand, web
+application containers support externalizing this state through
+serialization. A web container such as Tomcat will, if necessary, write
+the entire session of a user to a serialized file on disk, and reload
+it when the next request of this user arrives. <span
+ class="codingGuideline">This requires all objects
+that are directly or indirectly reachable from the session to be <code>Serializable</code></span>,
+but that is not difficult. This serializability is also needed to
+enable
+clustering, load balancing, continuity and fault tolerance in web
+applications, and needed for semantic objects if you work with an
+application server via RMI anyway. Then again, this serialization will
+happen at the end of each request / response-cycle, and takes time and
+resources itself. Writing 200MB to disk (and reloading it on the next
+request) is not an option. <span class="codingGuideline">This implies
+that it is
+necessary to remove data that does not have to be remembered at the end
+of the request&nbsp; / response-cycle.<code></code></span></p>
+<p>If there is state to keep,
+sending state around to the next request / response-cycle via the
+browser is bad for
+internet applications (bandwidth). So, state has to be kept in the
+server.</p>
+<p>Since the HTTP is stateless, the developent of a stateless web
+application UI is easy. But this is not what we want. In general, we
+need to remember some state between requests.<br>
+</p>
+<p>Which state do we need to remember?</p>
+<ol>
+  <li>user identification</li>
+  <li>possibly navigation logic
+state (PK of current object, history)</li>
+  <li>possibly view state</li>
+  <li>possibly some semantic state
+in a wizard-style operations</li>
+</ol>
+<span class="codingGuideline"></span>
+<p><span style="font-style: italic;">Conclusion</span>: State has to be
+kept in the server, but it is necessary to store as little state as
+possible between requests.</p>
+<h2>Storing Navigation Logic State</h2>
+<p><span class="codingGuideline">We think it is best to
+keep the id of the semantic object corresponding to a JSF page in the
+page itself.</span> We do not like storing state in a JSF page, but
+this way
+of working seems to avoid problems when opening JSF pages in multiple
+windows. For instance, a JSF page representing a patient p1 is opened
+in one page in edit mode; the same page is opened in another window,
+and we navigate to another window, representing patient p2. When we
+submit the values in the first window, the values will be stored in the
+wrong patient,&nbsp; namely p2 instead of p1. <br>
+</p>
+<p>Storing the id of the semantic
+page in the JSF page could be done as follows: the id is stored in a
+hidden field (h:inputHidden) whose immediate attribute is set to true.
+This means that the id will be set early in the life cycle. When
+setting the id, the setId method is called which will, as a
+side-effect, load the corresponding object from the database and
+perform any other necessary initialization of the handler. The id in
+the handler has to be set to null at the end of the request / response
+cycle to force the setId method to be executed in the next phase.</p>
+</body>
+</html>

@@ -4,14 +4,17 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.jsf_I.persistence.hibernate;
+package be.peopleware.jsf_II.persistence.hibernate;
 
 
 import net.sf.hibernate.Session;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.exception_I.TechnicalException;
-import be.peopleware.jsf_I.Util;
+import be.peopleware.jsf_II.FatalFacesException;
+import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.servlet_I.hibernate.SessionInView;
 
 
@@ -57,9 +60,9 @@ public class SessionProvider {
    * @throws TechnicalException
    *         ; cannot provide Session
    */
-  public final Session getRequestSession() throws TechnicalException {
+  public final Session getRequestSession() throws TechnicalException, FatalFacesException {
     LOG.debug("Looking for Hibernate Session in request");
-    Session result = SessionInView.getSession(Util.getServletRequest());
+    Session result = SessionInView.getSession(RobustCurrent.httpServletRequest());
     LOG.debug("Found Hibernate Session in request: " + result);
     return result;
   }

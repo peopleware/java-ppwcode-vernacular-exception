@@ -5,12 +5,12 @@
   <pomVersion>1</pomVersion>
   <name>JSF Library</name>
   <groupId>ppw-libraries</groupId>
-  <artifactId>ppw-jsf-I</artifactId>
+  <artifactId>ppw-jsf-II</artifactId>
   <shortDescription>Support for JSF.</shortDescription>
   <description>Support for JSF.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.1-1.0</currentVersion>
-  <package>be.peopleware.jsf_I</package>
+  <currentVersion>SNAPSHOT</currentVersion>
+  <package>be.peopleware.jsf_II</package>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
     <developer>
@@ -33,6 +33,13 @@
       <email>Rene.Clerckx@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
       <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <name>Nele Smeets</name>
+      <id>nsmeets</id>
+      <email>Nele_Smeets@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
     </developer>
   </developers>
   <contributors>
@@ -90,6 +97,18 @@
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-persistence-I</artifactId>
       <version>1.0.1-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ppw-libraries</groupId>
+      <artifactId>ppw-i18n-I</artifactId>
+      <version>1.0.2-1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
       <type>jar</type>
     </dependency>
   </dependencies>
