@@ -668,7 +668,67 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
   public final PersistentBean getInstance() {
     return $instance;
   }
+  
+  /**
+   * @post new.getInstance() == instance;
+   * @post (instance != null) ? new.getId().equals(instance.getId());
+   * @post new.getViewMode().equals(VIEWMODE_DISPLAY);
+   */
+  public final void setInstance(PersistentBean instance) {
+    $instance = instance;
+    if (instance != null) {
+      setId(instance.getId());
+    }
+    setViewMode(VIEWMODE_DISPLAY);
+  }
 
+  /**
+   * @pre getDao() != null;
+   * @throws FatalFacesException
+   *         {@link AsyncCrudDao#retrievePersistentBean(java.lang.Long, java.lang.Class)} / {@link TechnicalException}
+   * @throws FatalFacesException
+   *         MUDO (jand) other occurences must be replaced by goBack()
+   */
+  public void loadInstance() throws FatalFacesException {
+    assert getDao() != null;
+    try {
+      if (getId() == null) {
+        RobustCurrent.fatalProblem("id is null", LOG);
+        // MUDO (jand) replace with goback?
+      }
+      if (getType() == null) {
+        RobustCurrent.fatalProblem("type is null", LOG);
+        // MUDO (jand) replace with goback?
+      }
+      LOG.debug("retrieving persistent bean with id "
+                  + getId() + " and type " + getType() + "...");
+      $instance = getDao().retrievePersistentBean(getId(), getType()); // IdNotFoundException, TechnicalException
+      assert getInstance() != null;
+      assert getInstance().getId().equals(getId());
+      assert getType().isInstance(getInstance());
+      if (LOG.isDebugEnabled()) {
+        // if makes that there really is lazy loading if not in debug
+        LOG.debug("retrieved persistent bean is " + getInstance());
+      }
+    }
+    catch (IdNotFoundException infExc) {
+      // this will force $instance null
+      LOG.info("could not find instance of type " + getType() +
+               " with id " + getId(), infExc);
+      $instance = null;
+      // MUDO goback() instead of exception
+      RobustCurrent.fatalProblem("could not find persistent bean with id " +
+                                 getId() + " of type " +
+                                 getType(), infExc, LOG);
+    }
+    catch (TechnicalException tExc) {
+      RobustCurrent.fatalProblem("could not retrieve persistent bean with id " +
+                                 getId() + " of type " +
+                                 getType(), tExc, LOG);
+    }
+  }
+
+  
   /**
    * Create a new instance of type {@link #getType()} and store
    * it in {@link #getInstance()}.
