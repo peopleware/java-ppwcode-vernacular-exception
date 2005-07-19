@@ -11,24 +11,24 @@
   <uri>http://www.peopleware.be/tags/jsf-II</uri>
   
   <tag>
+    <display-name>ppw-jsf:pbInit</display-name>
     <name>pbInit</name>
+    <tag-class>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandlerTag</tag-class>
     <description>
-      Tag for <code>be.peopleware.jsf_II.persistence.UIPersistentBeanCrudHandler</code>.
+      Tag for be.peopleware.jsf_II.persistence.UIPersistentBeanCrudHandler.
       This component renders the id and view mode of a
-      <code>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler</code>, and
+      be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler, and
       initialises such a handler during the Restore View phase.
     </description>
-    <display-name>ppw-jsf:pbInit</display-name>
-    <tag-class>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandlerTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
+      <name>handler</name>
+      <type>java.lang.String</type>
       <description>An expression that evaluates to the correct handler.
         The handler must be a subtype of
         <code>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler</code>.</description>
-      <name>handler</name>
       <required>true</required>
       <rtexprvalue>false</rtexprvalue>
-      <type>java.lang.String</type>
     </attribute>
     <!-- default attributes -->
     <attribute>
