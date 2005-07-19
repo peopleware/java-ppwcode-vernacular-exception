@@ -7,6 +7,7 @@
 package be.peopleware.jsf_II.persistence.hibernate;
 
 
+import javax.servlet.ServletRequest;
 import net.sf.hibernate.Session;
 
 import org.apache.commons.logging.Log;
@@ -54,17 +55,25 @@ public class SessionProvider {
 
   
   /**
-   * Get the Hibernate {@link Session} from {@link SessionInView}.
+   * Return the Hibernate {@link Session} from {@link SessionInView}.
    * 
-   * @result result != null;
-   * @throws TechnicalException
-   *         ; cannot provide Session
+   * @return    SessionInView.getSession(RobustCurrent.httpServletRequest());
+   * @throws    FatalFacesException
+   *            RobustCurrent.httpServletRequest();
+   * @throws    FatalFacesException
+   *            SessionInView.getSession(RobustCurrent.httpServletRequest()) / TechnicalException;
    */
-  public final Session getRequestSession() throws TechnicalException, FatalFacesException {
-    LOG.debug("Looking for Hibernate Session in request");
-    Session result = SessionInView.getSession(RobustCurrent.httpServletRequest());
-    LOG.debug("Found Hibernate Session in request: " + result);
-    return result;
+  public Session getSession() throws FatalFacesException {
+    Session session = null;
+    try {
+      ServletRequest sr = RobustCurrent.httpServletRequest();
+      session = SessionInView.getSession(sr);
+      LOG.debug("acquired Hibernate Session from SessionInView");
+    }
+    catch (TechnicalException tExc) {
+      RobustCurrent.fatalProblem("Could not retrieve Hibernate Session", tExc, LOG);
+    }
+    return session;
   }
 
 }

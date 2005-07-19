@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.exception_I.TechnicalException;
+import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
 
@@ -121,13 +122,39 @@ public class RetrieveAllHandler extends AbstractHandler {
   /**
    * The resulting set of {@link PersistentBean PersistentBeans},
    * retrieved from persistent storage, that contains all the instances
-   * in the storage with type {@link #getType()}. If {@link #display()} is not
-   * executed, this method returns <code>null</code>.
+   * in the storage with type {@link #getType()}. If no data is found,
+   * this method returns <code>null</code>.
    *
    * @basic
    * @init null;
    */
   public final Set getPersistentBeans() {
+    if ($persistentBeans == null) {
+      LOG.debug("Looking for all PersistentBeans of type "
+                + ((getType() == null) ? "null" : getType().getName()));
+      // MUDO (jand) security
+      Class clazz = null;
+      AsyncCrudDao asyncCRUD = getAsyncCrudDao();
+      clazz = getType();
+      LOG.debug("Retrieving all " + clazz.getName() + " instances");
+      try {
+        // we are not doing this in a transaction, deliberately
+        $persistentBeans =  asyncCRUD.retrieveAllPersistentBeans(clazz,
+                                                                 isSubtypesIncluded());
+      }
+      catch (TechnicalException tExc) {
+        RobustCurrent.fatalProblem("Failed to retrieve all PersistenBeans of type"
+                                     + ((getType() == null) ? "null" : getType().getName()),
+                                   tExc,
+                                   LOG);
+      }
+      // @todo (jand): think more about this
+      LOG.debug("Retrieve action succeeded");
+      setCreateable(true); // MUDO (jand) security
+      // @question (dvankeer): Why is creatable set to true here, are subclasses not
+      // responsibly to set this value themself? And a default value of false would be
+      // more appropriate.
+    }
     return ($persistentBeans == null)
               ? null
               : Collections.unmodifiableSet($persistentBeans);
@@ -164,32 +191,5 @@ public class RetrieveAllHandler extends AbstractHandler {
   private boolean $createable;
 
   /*</property>*/
-
-
-  /**
-   * Retrieve the {@link PersistentBean} instances of type
-   * {@link #getType()}. If retrieval is successful, forward to
-   * {@link #FORWARD_SUCCESS}. If no instance of type {@link #getType()}
-   * was found, the empty set is returned.
-   *
-   * @return FORWARD_SUCCESS.equals(result);
-   * @throws TechnicalException
-   *         ; Could not create an AsyncCrudDao
-   */
-  public final String display() throws TechnicalException {
-    LOG.debug("looking for all PersistentBeans of type "
-              + ((getType() == null) ? "null" : getType().getName()));
-    // MUDO (jand) security
-    Class clazz = null;
-    AsyncCrudDao asyncCRUD = getAsyncCrudDao();
-    clazz = getType();
-    LOG.debug("retrieving all " + clazz.getName() + " instances");
-    $persistentBeans =  asyncCRUD.retrieveAllPersistentBeans(clazz, isSubtypesIncluded());
-      // we are not doing this in a transaction, deliberately
-      // @todo (jand): think more about this
-    LOG.debug("retrieve action succeeded");
-    setCreateable(true); // MUDO (jand) security
-    return getType().getName();
-  }
 
 }
