@@ -25,7 +25,9 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.faces.el.VariableResolver;
+import javax.faces.webapp.UIComponentTag;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -665,6 +667,36 @@ public class RobustCurrent {
       fatalProblem("no managed bean with name " + name + " found");
       return null;
    }
+  }
+
+  /**
+   * <strong>= &quot;&quot;</strong>
+   */
+  public final static String EMPTY = "";
+  
+  /**
+   * Create a value binding instance with expression <code>value</code>,
+   * and add it to the <code>component</code> with name <code>name</code>.
+   *
+   * @pre component != null;
+   * @pre name != null;
+   * @pre ! name.equals(EMPTY);
+   * @throws FatalFacesException
+   *         application();
+   * @throws FatalFacesException
+   *         ! UIComponentTag.isValueReference(value)
+   */
+  public static void creatValueBinding(UIComponent component, String name, String value)
+      throws FatalFacesException {
+    assert component != null;
+    assert name != null;
+    assert ! name.equals(EMPTY);
+    if (! UIComponentTag.isValueReference(value)) {
+      fatalProblem("\"" + value + "\" is not a valid value reference", LOG); 
+    }
+    ValueBinding vb = application().createValueBinding(value);
+    assert vb != null;
+    component.setValueBinding(name, vb);
   }
 
 }

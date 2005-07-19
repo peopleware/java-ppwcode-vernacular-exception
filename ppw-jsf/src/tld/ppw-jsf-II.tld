@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+  version="2.0">
+  
+  <description>Peopleware custom tag library for JSF extensions</description>
+  <display-name>Peopleware JSF Extensions</display-name>
+  <tlib-version>1.0</tlib-version>
+  <short-name>ppw-jsf</short-name>
+  <uri>http://www.peopleware.be/tags/jsf-II</uri>
+  
+  <tag>
+    <name>pbInit</name>
+    <description>
+      Tag for <code>be.peopleware.jsf_II.persistence.UIPersistentBeanCrudHandler</code>.
+      This component renders the id and view mode of a
+      <code>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler</code>, and
+      initialises such a handler during the Restore View phase.
+    </description>
+    <display-name>ppw-jsf:pbInit</display-name>
+    <tag-class>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandlerTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <description>An expression that evaluates to the correct handler.
+        The handler must be a subtype of
+        <code>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler</code>.</description>
+      <name>handler</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <!-- default attributes -->
+    <attribute>
+      <name>id</name>
+      <description>The client id of this component.</description>
+    </attribute>
+    <attribute>
+      <name>rendered</name>
+      <description>Is this component rendered?
+        Should be <code>true</code> for this tag.</description>
+    </attribute>
+  </tag>
+  
+</taglib>
+
+<!--
+  <document-info>
+    This file is part of the PeopleWare ppw-jsf project
+    <authors>
+      <author>Jan Dockx</author>
+      <author>PeopleWare n.v.</author>
+    </authors>
+    <cvs>
+      <path>$Source$</path>
+      <revision>$Revision$</revision>
+      <date>$Date$ (UTC)</date>
+      <state>$State$</state>
+      <release>$Name$</release>
+    </cvs>
+    <copyright xml:lang="en-US">
+      <creationdate>2004</creationdate>
+      <lastmodifieddate>$Date$ (UTC)</lastmodifieddate>
+      <p xml:lang="nl-BE">Dit document is auteursrechtelijk beschermd.</p>
+      <p xml:lang="en-US">This document is copyrighted by the people and
+                          entities mentioned above in the <author> tag.</p>
+    </copyright>
+  </document-info>
+-->
