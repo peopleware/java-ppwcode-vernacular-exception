@@ -3,14 +3,6 @@ package be.peopleware.jsf_II.persistence;
 
 import java.util.Map;
 
-import javax.faces.FacesException;
-import javax.faces.FactoryFinder;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -54,28 +46,6 @@ public abstract class AbstractPersistentBeanHandler {
   private static final Log LOG = LogFactory.getLog(AbstractPersistentBeanHandler.class);
 
 
-  public AbstractPersistentBeanHandler() {
-    // NOP
-    LifecycleFactory lifecycleFactory =
-      (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-    Lifecycle lifecycle = lifecycleFactory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
-    lifecycle.addPhaseListener(
-        new PhaseListener() {
-          public void beforePhase(PhaseEvent event) {
-            LOG.debug("Before phase "+event.getPhaseId());
-            System.out.println("Before phase "+event.getPhaseId());
-          }
-          public void afterPhase(PhaseEvent event) {
-            LOG.debug("After phase "+event.getPhaseId());
-            System.out.println("After phase "+event.getPhaseId());
-          }
-          public PhaseId getPhaseId() {
-            return PhaseId.ANY_PHASE;
-          }
-        }
-    );
-  }
-
 
   /*<property name="dao">*/
   //------------------------------------------------------------------
@@ -105,34 +75,6 @@ public abstract class AbstractPersistentBeanHandler {
   private AsyncCrudDao $dao;
 
   /*</property>*/
-
-
-
-// MUDO (jand) first show me this is needed, than remove the setter for the dao
-//  /*<property name="daoFactory">*/
-//  //------------------------------------------------------------------
-//
-//  /**
-//   * The dao factory.
-//   *
-//   * @basic
-//   * @init null;
-//   */
-//  public final DaoFactory getDaoFactory() {
-//    return $daoFactory;
-//  }
-//
-//  /**
-//   * @post    (new.getDaoFactory() == daoFactory);
-//   */
-//  public final void setDaoFactory(final DaoFactory daoFactory) {
-//    $daoFactory = daoFactory;
-//    LOG.debug("new daoFactory is set: " + daoFactory);
-//  }
-//
-//  private DaoFactory $daoFactory ;
-//
-//  /*</property>*/
 
 
 
@@ -175,14 +117,14 @@ public abstract class AbstractPersistentBeanHandler {
     return $editable;
   }
 
-//  /**
-//   * @param     editable
-//   *            Marks the persistent bean as a object that can be edited.
-//   * @post      new.isEditable() == editable;
-//   */
-//  private void setEditable(final boolean editable) {
-//    $editable = editable;
-//  }
+  /**
+   * @param     editable
+   *            Marks the persistent bean as a object that can be edited.
+   * @post      new.isEditable() == editable;
+   */
+  protected final void setEditable(final boolean editable) {
+    $editable = editable;
+  }
 
   private boolean $editable;
 
@@ -203,14 +145,14 @@ public abstract class AbstractPersistentBeanHandler {
     return $deleteable;
   }
 
-//  /**
-//   * @param     deleteable
-//   *            Marks the persistent bean as a object that can be deleted.
-//   * @post      new.isDeleteable() == deleteable;
-//   */
-//  private void setDeleteable(final boolean deleteable) {
-//    $deleteable = deleteable;
-//  }
+  /**
+   * @param     deleteable
+   *            Marks the persistent bean as a object that can be deleted.
+   * @post      new.isDeleteable() == deleteable;
+   */
+  protected final void setDeleteable(final boolean deleteable) {
+    $deleteable = deleteable;
+  }
 
   private boolean $deleteable;
 
@@ -256,39 +198,39 @@ public abstract class AbstractPersistentBeanHandler {
     LOG.debug("label properties loaded");
   }
 
-  /**
-   * Set the type of the {@link PersistentBean} that will be handled
-   * by the requests, as text.
-   *
-   * @todo This method is here for the faces-config managed bean stuff. Apparently,
-   *       converters are not used during creation and property setting of managed
-   *       beans. So, with the {@link #setType(Class)} method, we would be trying
-   *       to push a String into a Class type parameter (actually, it seems, but
-   *       we are not sure, that JSF attempts to <em>instantiate</em> the class
-   *       for which the name is given, which is pretty weird). When this gets
-   *       solved, or when we no longer need this method here, this method should
-   *       be removed.
-   *
-   * @param   typeName
-   *          The fully qualified name of the type to be set.
-   * @post    getType() == Class.forName(type);
-   * @throws  FacesException
-   *          {@link Class#forName(String)}
-   */
-  public void setTypeAsString(String typeName) throws FacesException {
-    Class type;
-    try {
-      type = Class.forName(typeName);
-    }
-    catch (LinkageError e) {
-      throw new FacesException("cannot convert String to Class", e);
-    }
-    catch (ClassNotFoundException e) {
-      throw new FacesException("cannot convert String to Class", e);
-    }
-    $type = type;
-    LOG.debug("type of " + this + " set to Class " + type.getName());
-  }
+//  /**
+//   * Set the type of the {@link PersistentBean} that will be handled
+//   * by the requests, as text.
+//   *
+//   * @todo This method is here for the faces-config managed bean stuff. Apparently,
+//   *       converters are not used during creation and property setting of managed
+//   *       beans. So, with the {@link #setType(Class)} method, we would be trying
+//   *       to push a String into a Class type parameter (actually, it seems, but
+//   *       we are not sure, that JSF attempts to <em>instantiate</em> the class
+//   *       for which the name is given, which is pretty weird). When this gets
+//   *       solved, or when we no longer need this method here, this method should
+//   *       be removed.
+//   *
+//   * @param   typeName
+//   *          The fully qualified name of the type to be set.
+//   * @post    getType() == Class.forName(type);
+//   * @throws  FacesException
+//   *          {@link Class#forName(String)}
+//   */
+//  public void setTypeAsString(String typeName) throws FacesException {
+//    Class type;
+//    try {
+//      type = Class.forName(typeName);
+//    }
+//    catch (LinkageError e) {
+//      throw new FacesException("cannot convert String to Class", e);
+//    }
+//    catch (ClassNotFoundException e) {
+//      throw new FacesException("cannot convert String to Class", e);
+//    }
+//    $type = type;
+//    LOG.debug("type of " + this + " set to Class " + type.getName());
+//  }
 
   /**
    * The type of the {@link PersistentBean} that will be handled

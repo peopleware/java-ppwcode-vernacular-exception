@@ -117,6 +117,9 @@ public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanHandle
       // responsibly to set this value themself? And a default value of false would be
       // more appropriate.
     }
+    else {
+      LOG.debug("returning cached instances");
+    }
     return ($persistentBeans == null)
               ? null
               : Collections.unmodifiableSet($persistentBeans);

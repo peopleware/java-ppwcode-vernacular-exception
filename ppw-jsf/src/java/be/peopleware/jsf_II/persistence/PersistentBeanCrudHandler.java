@@ -2,9 +2,10 @@ package be.peopleware.jsf_II.persistence;
 
 
 import java.util.Arrays;
-import java.util.Map;
 
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.ServletRequestListener;
 
 import org.apache.commons.logging.Log;
@@ -14,13 +15,44 @@ import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
-import be.peopleware.persistence_I.IdException;
 import be.peopleware.persistence_I.IdNotFoundException;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
 
 
 /**
+ * <p>Handler for {@link PersistentBean} detail CRUD pages.</p>
+ * <p>This handler can be used in a number of circumstances. The main use
+ *   is as the backing bean for a detail CRUD page of an instance of semantics.
+ *   For this to work, the handler needs a {@link #getDao()} the
+ *   {@link #getType()} filled out,
+ *   needs to know the previous {@link #getViewMode()},
+ *   and it needs an {@link #getInstance() instance}.</p>
+ * <p>The instance can be set explicitly with {@link #setInstance(PersistentBean)}.
+ *   This immediately also sets the {@link #getId()}. If the
+ *   {@link #getInstance() instance} is <code>null</code> when it is requested,
+ *   we will retrieve the instance with id {@link #getId()} and type
+ *   {@link #getType()} from persistent storage, and cache it. If at this time
+ *   {@link #getId()} is <code>null</code>, a new instance of {@link #getType()}
+ *   will be created.</p>
+ * <p>In conclusion this means that, before an instance of this class can be used,
+ *   you need to set the<p>
+ * <ul>
+ *   <li>the {@link #setType(Class) type} and</li>
+ *   <li>the {@link #setViewMode(String) previous view mode}, and</li>
+ *   <li>either
+ *     <ul>
+ *       <li>an {@link #setInstance(PersistentBean) instance},</li>
+ *       <li>or
+ *         <ul>
+ *           <li>a {@link #setDao(AsyncCrudDao) dao}, and</li>
+ *           <li>an {@link #setId(Long) id}.</li>
+ *         </ul>
+ *       </li>
+ *     </ul>
+ *   </li>
+ * </ul>
+ *
  * <h2>States &amp; Transitions</h2>
  * <p>An <code>PersistentBeanCrudHandler</code> has 4 states and
  *  a number of state transitions. The states are actually <dfn>view modes</dfn>
@@ -309,50 +341,34 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
 
   public PersistentBeanCrudHandler() {
     LOG.debug("constructor of PersistentBeanCrudHandler");
-//    setTypeAsString(Bookmark.class.getName());
-//    setDao(new JsfHibernateAsyncCrudDao());
-//    setNavigationString("bookmarkDetail");
-//    Map requestParameterMap = RobustCurrent.externalContext().getRequestParameterMap();
-//    // set id
-//    String idString = (String)requestParameterMap.get("form:id");
-//    Long id = null;
-//    if (idString != null && !idString.equals("")) {
-//      id = Long.valueOf(idString);
+  }
+
+//  public final void setDao(final AsyncCrudDao dao) {
+//    super.setDao(dao);
+//    if (getNavigationString() != null && getType() != null) {
+//      ValueChangeEvent event = null;
+//      setIdAndInitialisePersistentBean(event);
+//      setViewModeAndInitialisePersistentBean(event);
 //    }
-//    setIdAndInitialisePersistentBean(id);
-//    // set view mode
-//    String viewModeString = (String)requestParameterMap.get("form:viewMode");
-//    if (viewModeString != null && !viewModeString.equals("")) {
-//      setViewModeAndInitialisePersistentBean(viewModeString);
+//  }
+
+//  public final void setNavigationString(final String navigationString) {
+//    super.setNavigationString(navigationString);
+//    if (getDao() != null && getType() != null) {
+//      ValueChangeEvent event = null;
+//      setIdAndInitialisePersistentBean(event);
+//      setViewModeAndInitialisePersistentBean(event);
 //    }
-  }
+//  }
 
-  public final void setDao(final AsyncCrudDao dao) {
-    super.setDao(dao);
-    if (getNavigationString() != null && getType() != null) {
-      ValueChangeEvent event = null;
-      setIdAndInitialisePersistentBean(event);
-      setViewModeAndInitialisePersistentBean(event);
-    }
-  }
-
-  public final void setNavigationString(final String navigationString) {
-    super.setNavigationString(navigationString);
-    if (getDao() != null && getType() != null) {
-      ValueChangeEvent event = null;
-      setIdAndInitialisePersistentBean(event);
-      setViewModeAndInitialisePersistentBean(event);
-    }
-  }
-
-  public final void setTypeAsString(final String type) {
-    super.setTypeAsString(type);
-    if (getDao() != null && getNavigationString() != null) {
-      ValueChangeEvent event = null;
-      setIdAndInitialisePersistentBean(event);
-      setViewModeAndInitialisePersistentBean(event);
-    }
-  }
+//  public final void setTypeAsString(final String type) {
+//    super.setTypeAsString(type);
+//    if (getDao() != null && getNavigationString() != null) {
+//      ValueChangeEvent event = null;
+//      setIdAndInitialisePersistentBean(event);
+//      setViewModeAndInitialisePersistentBean(event);
+//    }
+//  }
 
   /*<property name="id">*/
   //------------------------------------------------------------------
@@ -381,131 +397,131 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     LOG.debug("id of " + this + " set to " + id);
   }
 
-  /**
-   * Retrieve the persistent bean of type {@link type} and id {@link id}
-   * from persistent storage, and store it in {@link #getInstance()}.
-   *
-   * If the necessary arguments and utilities are not set, exceptions are thrown.
-   *
-   * If no bean of type {@link type} with id {@link id} is found in
-   * persistent storage, {@link #getInstance()} is forced to <code>null</code>.
-   *
-   * @param     dao
-   *            The dao used to retrieve the {@link PersistentBean} from storage.
-   * @param     id
-   *            The id of the {@link PersistentBean} to retrieve.
-   * @param     type
-   *            The type of the {@link PersistentBean} to retrieve.
-   * @pre       dao != null;
-   * @post      (new.getInstance() != null)
-   *                ? id.equals(new.getInstance().getId())
-   *                : true;
-   * @post      (new.getInstance() != null)
-   *                ? type.isInstance(new.getInstance())
-   *                : true;
-   * @throws    IdException
-   *            id == null;
-   * @throws    IdException
-   *            type == null;
-   * @throws    TechnicalException tExc
-   *            ; something technical went wrong, but surely
-   *            ! (tExc instanceof IdNotFoundException)
-   */
-  private void retrieveWithId(final AsyncCrudDao dao, Long id, Class type)
-      throws IdException, TechnicalException {
-// (nsmeets) waarom worden die drie dingen als param meegegeven?
-    // mudo (jand) remove params
-    try {
-      assert dao != null;
-      //id or type are not known so passing the id to the exception is useless
-      if (id == null) {
-        LOG.error("id == null");
-        throw new IdException("ID_NULL", null, type);
-      }
-      if (type == null) {
-        LOG.error("type == null");
-        throw new IdException("TYPE_NULL", null, type);
-      }
-      LOG.debug("retrieving persistent bean with id "
-                  + id.toString() + " and type "
-                  + type.getName() + "...");
-      $instance = dao.retrievePersistentBean(id, type); // IdNotFoundException, TechnicalException
-      if (LOG.isDebugEnabled()) { // @mudo (nsmeets) consequent overal doen? Alleen bij dingen die veel vergen.
-        // if makes that there really is lazy loading if not in debug
-        LOG.debug("retrieved persistent bean is " + getInstance());
-      }
-      assert getInstance() != null;
-      assert getInstance().getId().equals(id);
-      assert type.isInstance(getInstance());
-    }
-    catch (IdNotFoundException e) {
-      // this will force $instance null
-      LOG.info("could not find instance of type "
-               + type.getName()
-               + " with id " + id, e);
-      $instance = null;
-    }
-    catch (TechnicalException e) {
-      LOG.error("exception during retrieveWithId", e);
-      throw e;
-    }
-  }
+//  /**
+//   * Retrieve the persistent bean of type {@link type} and id {@link id}
+//   * from persistent storage, and store it in {@link #getInstance()}.
+//   *
+//   * If the necessary arguments and utilities are not set, exceptions are thrown.
+//   *
+//   * If no bean of type {@link type} with id {@link id} is found in
+//   * persistent storage, {@link #getInstance()} is forced to <code>null</code>.
+//   *
+//   * @param     dao
+//   *            The dao used to retrieve the {@link PersistentBean} from storage.
+//   * @param     id
+//   *            The id of the {@link PersistentBean} to retrieve.
+//   * @param     type
+//   *            The type of the {@link PersistentBean} to retrieve.
+//   * @pre       dao != null;
+//   * @post      (new.getInstance() != null)
+//   *                ? id.equals(new.getInstance().getId())
+//   *                : true;
+//   * @post      (new.getInstance() != null)
+//   *                ? type.isInstance(new.getInstance())
+//   *                : true;
+//   * @throws    IdException
+//   *            id == null;
+//   * @throws    IdException
+//   *            type == null;
+//   * @throws    TechnicalException tExc
+//   *            ; something technical went wrong, but surely
+//   *            ! (tExc instanceof IdNotFoundException)
+//   */
+//  private void retrieveWithId(final AsyncCrudDao dao, Long id, Class type)
+//      throws IdException, TechnicalException {
+//// (nsmeets) waarom worden die drie dingen als param meegegeven?
+//    // mudo (jand) remove params
+//    try {
+//      assert dao != null;
+//      //id or type are not known so passing the id to the exception is useless
+//      if (id == null) {
+//        LOG.error("id == null");
+//        throw new IdException("ID_NULL", null, type);
+//      }
+//      if (type == null) {
+//        LOG.error("type == null");
+//        throw new IdException("TYPE_NULL", null, type);
+//      }
+//      LOG.debug("retrieving persistent bean with id "
+//                  + id.toString() + " and type "
+//                  + type.getName() + "...");
+//      $instance = dao.retrievePersistentBean(id, type); // IdNotFoundException, TechnicalException
+//      if (LOG.isDebugEnabled()) { // @mudo (nsmeets) consequent overal doen? Alleen bij dingen die veel vergen.
+//        // if makes that there really is lazy loading if not in debug
+//        LOG.debug("retrieved persistent bean is " + getInstance());
+//      }
+//      assert getInstance() != null;
+//      assert getInstance().getId().equals(id);
+//      assert type.isInstance(getInstance());
+//    }
+//    catch (IdNotFoundException e) {
+//      // this will force $instance null
+//      LOG.info("could not find instance of type "
+//               + type.getName()
+//               + " with id " + id, e);
+//      $instance = null;
+//    }
+//    catch (TechnicalException e) {
+//      LOG.error("exception during retrieveWithId", e);
+//      throw e;
+//    }
+//  }
 
-  /**
-   * Store the given id and retrieve the corresponding {@link PersistentBean}
-   * from storage.
-   *
-   * Store the given id in {@link #getId()}.
-   * Load the {@link PersistentBean} with the given id, whose type is equal to
-   * {@link #getType()} from persistent storage and store this bean in
-   * {@link #getInstance()}.
-   * If no such bean is found in persistent storage, or when some
-   * technical exception occurs, {@link #getInstance()} is set
-   * to <code>null</code>.
-   *
-   * @param   id
-   *          The id of the {@link PersistentBean} that will be handled in the
-   *          requests.
-   * @post    new.getId().equals(id);
-   * @post    (new.getInstance() != null)
-   *            ? new.getInstance().getId().equals(id)
-   *            : true;
-   * @post    (new.getInstance() != null)
-   *            ? getType().isInstance(new.getInstance())
-   *            : true;
-   */
-  private final void setIdAndInitialisePersistentBean(final Long id) {
-    // set the id
-    setId(id);
-    // load the persistent bean with type getType() and the given id from
-    // persistent storage
-    try {
-      retrieveWithId(getDao(), id, getType()); // IdException, TechnicalException
-    }
-    catch(IdException exc) {
-      // This exception is thrown when id == null or getType() == null.
-      // 1. when id == null, then (normally) a new bean is created in
-      //    {@link #setViewMode}, so we leave {@link #getInstance()} unchanged
-      // 2. getType() cannot be null; the type of a handler should be declared
-      //    as a managed property in faces-config.xml
-    }
-    catch(TechnicalException exc) {
-      $instance = null;
-    }
-    // @idea (nsmeets) retrieve other resources
-  }
+//  /**
+//   * Store the given id and retrieve the corresponding {@link PersistentBean}
+//   * from storage.
+//   *
+//   * Store the given id in {@link #getId()}.
+//   * Load the {@link PersistentBean} with the given id, whose type is equal to
+//   * {@link #getType()} from persistent storage and store this bean in
+//   * {@link #getInstance()}.
+//   * If no such bean is found in persistent storage, or when some
+//   * technical exception occurs, {@link #getInstance()} is set
+//   * to <code>null</code>.
+//   *
+//   * @param   id
+//   *          The id of the {@link PersistentBean} that will be handled in the
+//   *          requests.
+//   * @post    new.getId().equals(id);
+//   * @post    (new.getInstance() != null)
+//   *            ? new.getInstance().getId().equals(id)
+//   *            : true;
+//   * @post    (new.getInstance() != null)
+//   *            ? getType().isInstance(new.getInstance())
+//   *            : true;
+//   */
+//  private final void setIdAndInitialisePersistentBean(final Long id) {
+//    // set the id
+//    setId(id);
+//    // load the persistent bean with type getType() and the given id from
+//    // persistent storage
+//    try {
+//      retrieveWithId(getDao(), id, getType()); // IdException, TechnicalException
+//    }
+//    catch(IdException exc) {
+//      // This exception is thrown when id == null or getType() == null.
+//      // 1. when id == null, then (normally) a new bean is created in
+//      //    {@link #setViewMode}, so we leave {@link #getInstance()} unchanged
+//      // 2. getType() cannot be null; the type of a handler should be declared
+//      //    as a managed property in faces-config.xml
+//    }
+//    catch(TechnicalException exc) {
+//      $instance = null;
+//    }
+//    // @idea (nsmeets) retrieve other resources
+//  }
 
-  public void setIdAndInitialisePersistentBean(ValueChangeEvent event) {
-    Map requestParameterMap = RobustCurrent.externalContext().getRequestParameterMap();
-    // get id
-    String idString = (String)requestParameterMap.get("form:id");
-    Long id = null;
-    if (idString != null && !idString.equals("")) {
-      id = Long.valueOf(idString);
-    }
-    // set id
-    setIdAndInitialisePersistentBean(id);
-  }
+//  public void setIdAndInitialisePersistentBean(ValueChangeEvent event) {
+//    Map requestParameterMap = RobustCurrent.externalContext().getRequestParameterMap();
+//    // get id
+//    String idString = (String)requestParameterMap.get("form:id");
+//    Long id = null;
+//    if (idString != null && !idString.equals("")) {
+//      id = Long.valueOf(idString);
+//    }
+//    // set id
+//    setIdAndInitialisePersistentBean(id);
+//  }
 
   /**
    * The id of the {@link PersistentBean} that will be handled
@@ -576,43 +592,43 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     $viewMode = viewMode;
   }
 
-  /**
-   * Set the view mode to the given string and create a new
-   * {@link PersistentBean} when the given view mode is VIEWMODE_EDITNEW.
-   *
-   * Store the given string in {@link #getViewMode()}. When the given string
-   * is equal to VIEWMODE_EDITNEW, a new {@link PersistentBean} of type
-   * {@link #getType()} is created and stored in {@link #getInstance()}.
-   *
-   * @param   viewMode
-   *          The view mode to set.
-   * @post    (viewMode == null)
-   *             ? new.getViewMode() == null
-   *             : new.getViewMode().equals(viewMode);
-   * @post    ( (viewMode != null) && viewMode.equals(VIEWMODE_EDITNEW) )
-   *             ? new.getInstance() isfresh
-   *             : true;
-   * @throws  IllegalArgumentException
-   *          ! isViewMode(viewMode);
-   */
-  private final void setViewModeAndInitialisePersistentBean(String viewMode) throws IllegalArgumentException {
-    setViewMode(viewMode);
-    // When the view mode is equal to VIEWMODE_EDITNEW, then create
-    // a new instance of {@link getType()} and store it in {@link #getInstance()}
-    if ($viewMode.equals(VIEWMODE_EDITNEW)) {
-      createNewInstance();
-    }
-  }
+//  /**
+//   * Set the view mode to the given string and create a new
+//   * {@link PersistentBean} when the given view mode is VIEWMODE_EDITNEW.
+//   *
+//   * Store the given string in {@link #getViewMode()}. When the given string
+//   * is equal to VIEWMODE_EDITNEW, a new {@link PersistentBean} of type
+//   * {@link #getType()} is created and stored in {@link #getInstance()}.
+//   *
+//   * @param   viewMode
+//   *          The view mode to set.
+//   * @post    (viewMode == null)
+//   *             ? new.getViewMode() == null
+//   *             : new.getViewMode().equals(viewMode);
+//   * @post    ( (viewMode != null) && viewMode.equals(VIEWMODE_EDITNEW) )
+//   *             ? new.getInstance() isfresh
+//   *             : true;
+//   * @throws  IllegalArgumentException
+//   *          ! isViewMode(viewMode);
+//   */
+//  private final void setViewModeAndInitialisePersistentBean(String viewMode) throws IllegalArgumentException {
+//    setViewMode(viewMode);
+//    // When the view mode is equal to VIEWMODE_EDITNEW, then create
+//    // a new instance of {@link getType()} and store it in {@link #getInstance()}
+//    if ($viewMode.equals(VIEWMODE_EDITNEW)) {
+//      createNewInstance();
+//    }
+//  }
 
-  public final void setViewModeAndInitialisePersistentBean(ValueChangeEvent event) {
-    Map requestParameterMap = RobustCurrent.externalContext().getRequestParameterMap();
-    // get view mode
-    String viewModeString = (String)requestParameterMap.get("form:viewMode");
-    // set view mode
-    if (viewModeString != null && !viewModeString.equals("")) {
-      setViewModeAndInitialisePersistentBean(viewModeString);
-    }
-  }
+//  public final void setViewModeAndInitialisePersistentBean(ValueChangeEvent event) {
+//    Map requestParameterMap = RobustCurrent.externalContext().getRequestParameterMap();
+//    // get view mode
+//    String viewModeString = (String)requestParameterMap.get("form:viewMode");
+//    // set view mode
+//    if (viewModeString != null && !viewModeString.equals("")) {
+//      setViewModeAndInitialisePersistentBean(viewModeString);
+//    }
+//  }
 
   /**
    * @invar ($viewMode != null)
@@ -666,20 +682,34 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @init null;
    */
   public final PersistentBean getInstance() {
+    if ($instance == null) {
+      if (getId() != null) {
+        loadInstance();
+      }
+      else {
+        createInstance();
+      }
+    }
     return $instance;
   }
-  
+
   /**
    * @post new.getInstance() == instance;
    * @post (instance != null) ? new.getId().equals(instance.getId());
-   * @post new.getViewMode().equals(VIEWMODE_DISPLAY);
+   * @throws IllegalArgumentException
+   *         ! getType().isAssignableFrom(instance.getClass());
    */
-  public final void setInstance(PersistentBean instance) {
+  public final void setInstance(PersistentBean instance) throws IllegalArgumentException {
+    if (! getType().isAssignableFrom(instance.getClass())) {
+      throw new IllegalArgumentException("instance " + instance +
+                                         " is not a subtype of " +
+                                         getType());
+    }
     $instance = instance;
     if (instance != null) {
       setId(instance.getId());
     }
-    setViewMode(VIEWMODE_DISPLAY);
+    // else, we do NOT set the ID to null
   }
 
   /**
@@ -689,7 +719,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @throws FatalFacesException
    *         MUDO (jand) other occurences must be replaced by goBack()
    */
-  public void loadInstance() throws FatalFacesException {
+  private void loadInstance() throws FatalFacesException {
     assert getDao() != null;
     try {
       if (getId() == null) {
@@ -728,7 +758,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     }
   }
 
-  
+
   /**
    * Create a new instance of type {@link #getType()} and store
    * it in {@link #getInstance()}.
@@ -736,7 +766,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @post new.getInstance() isfresh
    * @post new.getInstance() == getType().newInstance();
    */
-  private void createNewInstance() {
+  private void createInstance() {
     try {
       $instance = (PersistentBean)getType().newInstance();
     }
@@ -792,8 +822,6 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *    by throwing an IdNotFoundException.
    * 3. We go to display mode.
    *
-   * @param   id
-   *          The id of the {@link PersistentBean} that should be displayed.
    * @post    new.getId().equals(id);
    * @post    (new.getInstance() != null)
    *            ? new.getInstance().getId().equals(id)
@@ -802,21 +830,33 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *            ? getType().isInstance(new.getInstance())
    *            : true;
    * @post    new.getViewMode().equals(VIEWMODE_DISPLAY);
-   * @throws  IdNotFoundException exc
-   *          No persistent bean is found in storage or a technical exception
-   *          happened
    *
    * @mudo (jand) security
    */
-  public final void navigate(Long id) throws IdNotFoundException {
+  public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
+    assert getType() != null : "type cannot be null";
     LOG.debug("PersistentBeanCrudHandler.navigate called; initialising id and bean");
-    setIdAndInitialisePersistentBean(id);
     if (getInstance() == null) {
-      throw new IdNotFoundException(id, "The persistent bean could not be " +
-          "found in persistent storage", null, getType());
+      LOG.debug("no instance in " + this +
+                "; cannot navigate; staying where we are");
+//      String componentId = aEv.getComponent().getId();
+      // MUDO (jand) add i18n message!!!!
     }
     setViewMode(VIEWMODE_DISPLAY);
-    // IDEA navigate to "/" + s/\./\// of getType().getName() and renderResponse
+    // create new view & navigate
+    FacesContext context = RobustCurrent.facesContext();
+    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getDetailViewId());
+    context.setViewRoot(viewRoot);
+    context.renderResponse();
+  }
+
+  private final static String DETAIL_VIEW_ID_PREFIX = "/jsf/";
+
+  protected String getDetailViewId() {
+    assert getType() != null : "type cannot be null";
+    String typeName = getType().getName();
+    typeName = typeName.replace('.', '/');
+    return DETAIL_VIEW_ID_PREFIX + typeName;
   }
 
   /**
@@ -1018,7 +1058,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     assert getInstance() != null;
     assert getInstance().getId() == null;
     assert getType().isInstance(instance);
-    setViewModeAndInitialisePersistentBean(VIEWMODE_EDITNEW);
+    setViewMode(VIEWMODE_EDITNEW);
     LOG.debug("Stored new persistent bean successfully");
   }
 

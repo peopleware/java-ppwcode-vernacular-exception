@@ -30,7 +30,7 @@ import be.peopleware.jsf_II.RobustCurrent;
  * {@link PersistentBeanCrudHandler#getViewMode()} as hidden fields, and reads them from
  * the HTTP request, validates them, converts them, and sets them in the handler during
  * the Apply Request Values phase.
- * 
+ *
  * @mudo Or during the Restore View phase if possible?
  *
  * @author    Jan Dockx
@@ -54,7 +54,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
 
   private static final Log LOG = LogFactory.getLog(UIPersistentBeanCrudHandler.class);
 
- 
+
 
   /*<property name="handler">*/
   //------------------------------------------------------------------
@@ -63,10 +63,10 @@ public class UIPersistentBeanCrudHandler extends UIInput {
    * <strong>= {@value}</strong>
    */
   public final static String HANDLER_VALUE_BINDING_NAME = "handler";
-  
+
   /**
    * Return the result of {@link #HANDLER_VALUE_BINDING_NAME} value binding.
-   * 
+   *
    * @return result != null;
    * @throws FatalFacesException
    *         ; could not locate a handler through the value binding
@@ -84,7 +84,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     }
     return (PersistentBeanCrudHandler)result;
   }
-  
+
 //  /**
 //   * @post new.getHandler() == handler;
 //   */
@@ -92,12 +92,12 @@ public class UIPersistentBeanCrudHandler extends UIInput {
 //    $handler = handler;
 //    LOG.debug("handler set: " + handler);
 //  }
-//  
+//
 //  private PersistentBeanCrudHandler $handler;
 
   /*</property>*/
 
-  
+
   /*<section name="tag names">*/
   //------------------------------------------------------------------
 
@@ -110,29 +110,29 @@ public class UIPersistentBeanCrudHandler extends UIInput {
    * <strong>= {@value}</strong>
    */
   public final static String INPUT_TAG_NAME_VIEWMODE_EXTENSION = ".viewMode";
-  
+
   /**
    * The name of the hidden input tag for the id.
-   * 
+   *
    * @return getClientId(context) + INPUT_TAG_NAME_ID_EXTENSION;
    */
   public final String idTagName(FacesContext context) {
     return getClientId(context) + INPUT_TAG_NAME_ID_EXTENSION;
   }
-  
+
   /**
    * The name of the hidden input tag for the view mode.
-   * 
+   *
    * @return getClientId(context) + INPUT_TAG_NAME_VIEWMODE_EXTENSION;
    */
   public final String viewModeTagName(FacesContext context) {
     return getClientId(context) + INPUT_TAG_NAME_VIEWMODE_EXTENSION;
   }
-  
+
   /*</section>*/
 
 
-  
+
   /*<section name="rendering">*/
   //------------------------------------------------------------------
 
@@ -142,7 +142,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
    *   &lt;input type=&quot;hidden&quot; name=&quot;<var>clientId</var>.id&quot; value=&quot;<var>handler.id</var>&quot; /&gt;
    *   &lt;input type=&quot;hidden&quot; name=&quot;<var>clientId</var>.viewMode&quot; value=&quot;<var>handler.viewMode</var>&quot; /&gt;
    * </pre>
-   * 
+   *
    * @throws FatalFacesException
    *         getHandler();
    */
@@ -152,7 +152,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     encodeHiddenInput(context.getResponseWriter(),
                       viewModeTagName(context), getHandler(context).getViewMode());
   }
-  
+
   private final static String INPUT_TAG = "input";
   private final static String INPUT_TAG_TYPE_ATTR = "type";
   private final static String INPUT_TAG_TYPE_HIDDEN = "hidden";
@@ -173,11 +173,11 @@ public class UIPersistentBeanCrudHandler extends UIInput {
 
   /*</rendering>*/
 
-  
-  
+
+
   /*<section name="decoding">*/
   //------------------------------------------------------------------
-  
+
   /**
    * @pre context != null;
    * @throws FatalFacesException
@@ -228,11 +228,11 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     assert id != null;
     assert PersistentBeanCrudHandler.isViewMode(viewMode);
     // fill id and viewmode in handler
+    handler.setInstance(null); // be sure
     handler.setId(id);
     handler.setViewMode(viewMode);
-    handler.loadInstance();
   }
-  
+
   /*</section>*/
 
 }

@@ -81,26 +81,37 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
    */
   public DataModel getDataModel() {
     if ($dataModel == null) {
+      LOG.debug("no datamodel cached; creating new datamodel");
       List handlers = new ArrayList();
       List beans = new ArrayList(getInstances());
+      LOG.debug("retrieved instances");
       if (getComparator() != null) {
         Collections.sort(beans, getComparator());
       }
-
       Class clazz = getType();
       String beanPackage = clazz.getPackage().getName();
       String handlerPackage = beanPackage + handlerSubPackageName;
       String className = clazz.getName();
       className.replaceAll(beanPackage, handlerPackage);
-
-
+      LOG.debug("name of handler type for instances: " + className);
+      Class classDefinition = null;
+      try {
+        classDefinition = Class.forName(className);
+      }
+      catch (ClassNotFoundException cnfExc) {
+        RobustCurrent.fatalProblem("Class not found for ", cnfExc, LOG);
+      }
+      LOG.debug("handler class loaded: " + classDefinition);
+      assert PersistentBeanCrudHandler.class.isAssignableFrom(classDefinition) :
+             "loaded handler is not a subtype of PersistentBeanCrudHandler (" +
+             classDefinition + ")";
+      LOG.debug("creating handler for each instance");
       Iterator iter = beans.iterator();
       while (iter.hasNext()) {
         PersistentBean bean = (PersistentBean)iter.next();
-
+        LOG.debug("    instance is " + bean);
         PersistentBeanCrudHandler handler = null;
         try {
-          Class classDefinition = Class.forName(className);
           handler = (PersistentBeanCrudHandler)classDefinition.newInstance();
         }
         catch (InstantiationException iExc) {
@@ -114,15 +125,16 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
                                      iaExc,
                                      LOG);
         }
-        catch (ClassNotFoundException cnfExc) {
-          RobustCurrent.fatalProblem("Class not found for ",
-                                     cnfExc,
-                                     LOG);
-        }
+        LOG.debug("    handler is " + handler);
         handler.setId(bean.getId());
+        handler.setInstance(bean);
         handlers.add(handler);
       }
       $dataModel = new ListDataModel(handlers);
+      LOG.debug("datamodel created and cached");
+    }
+    else {
+      LOG.debug("returning cached datamodel");
     }
     return $dataModel;
   }
