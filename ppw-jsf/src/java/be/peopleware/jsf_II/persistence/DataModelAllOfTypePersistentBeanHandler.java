@@ -108,6 +108,8 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
 
   private final static String HANDLER_PACKAGE_EXTENSION = ".web.jsf";
 
+  private final static String HANDLER_TYPE_SUFFIX = "Handler";
+
   /**
    * @mudo (jand) hunt for a handler type; use superclasses of bean if not found directly;
    *       use PersistentBeanCrudHandler if not found still.
@@ -120,7 +122,7 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
     String[] pbTypeNameParts = pbType.getName().split("\\.");
     LOG.debug("parts of type name: " + pbTypeNameParts);
     String simplePbClassName = pbTypeNameParts[pbTypeNameParts.length - 1];
-    String handlerClassName = handlerPackageName + "." + simplePbClassName;
+    String handlerClassName = handlerPackageName + "." + simplePbClassName + HANDLER_TYPE_SUFFIX;
     LOG.debug("name of handler class we will try to load: " + handlerClassName);
     Class result = null;
     try {
