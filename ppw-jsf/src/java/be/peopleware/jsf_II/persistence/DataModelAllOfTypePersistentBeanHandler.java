@@ -20,7 +20,7 @@ import be.peopleware.persistence_I.PersistentBean;
  * @author     David Van Keer
  * @author     Peopleware n.v.
  */
-public class RetrievelAllWithDataModelHandler extends RetrieveAllHandler {
+public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistentBeanHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -36,14 +36,14 @@ public class RetrievelAllWithDataModelHandler extends RetrieveAllHandler {
 
 
 
-  private static final Log LOG = LogFactory.getLog(RetrievelAllWithDataModelHandler.class);
+  private static final Log LOG = LogFactory.getLog(DataModelAllOfTypePersistentBeanHandler.class);
 
-  private String handlerSubPackageName = ".web.jsf"; 
+  private String handlerSubPackageName = ".web.jsf";
 
 
   /*<property name="comparator">*/
   //------------------------------------------------------------------
-  
+
   /**
    * Return the comparator which is/can be used for sorting the
    * retrieved {@link PersistentBean}'s
@@ -51,53 +51,53 @@ public class RetrievelAllWithDataModelHandler extends RetrieveAllHandler {
   public Comparator getComparator() {
     return $comparator;
   }
-  
+
   /**
    * Set a comparator for sorting the retrieved {@link PersistentBean}'s
-   * 
+   *
    * @param     comparator
    *            The new Comparator to use for sorting
    */
   public void setComparator(final Comparator comparator) {
     $comparator = comparator;
   }
-  
+
   private Comparator $comparator;
-  
+
   /*</property>*/
-  
-  
-  
+
+
+
   /*<property name="dataModel">*/
   //------------------------------------------------------------------
-  
+
   /**
    * TODO: Write better docs.
-   * 
+   *
    * Wrap all the retrieve beans in their respective Handler and add them into a ListDataModel.
-   * 
+   *
    * @return    DataModel
    *            ...
    */
   public DataModel getDataModel() {
     if ($dataModel == null) {
       List handlers = new ArrayList();
-      List beans = new ArrayList(getPersistentBeans());
+      List beans = new ArrayList(getInstances());
       if (getComparator() != null) {
         Collections.sort(beans, getComparator());
       }
-      
+
       Class clazz = getType();
       String beanPackage = clazz.getPackage().getName();
       String handlerPackage = beanPackage + handlerSubPackageName;
       String className = clazz.getName();
       className.replaceAll(beanPackage, handlerPackage);
-      
-      
+
+
       Iterator iter = beans.iterator();
       while (iter.hasNext()) {
         PersistentBean bean = (PersistentBean)iter.next();
-        
+
         PersistentBeanCrudHandler handler = null;
         try {
           Class classDefinition = Class.forName(className);
@@ -126,9 +126,9 @@ public class RetrievelAllWithDataModelHandler extends RetrieveAllHandler {
     }
     return $dataModel;
   }
-  
+
   private DataModel $dataModel;
-  
+
   /*</property>*/
-  
+
 }
