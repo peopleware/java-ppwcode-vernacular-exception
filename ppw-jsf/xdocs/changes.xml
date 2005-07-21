@@ -1,0 +1,22 @@
+<document>
+  <properties>
+    <title>ppw-jsf</title>
+    <author email="dvankeer@peopleware.be">David Van Keer</author>
+    <author email="jand@peopleware.be">Jan Dockx</author>
+  </properties>
+  <body>
+
+    <release version="II v1.0.0/1.0" date="??" description="complete refactor">
+      <action dev="jand" type="add">
+      	Complete refactor.
+      </action>
+    </release>
+
+    <release version="I v1.0.0/1.0" date="2005-01-05" description="First release">
+      <action dev="dvankeer" type="add">
+      	First release with this version number scheme.
+      </action>
+    </release>
+
+  </body>
+</document>
