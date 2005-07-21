@@ -10,6 +10,8 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.persistence_I.PersistentBean;
 
@@ -37,8 +39,6 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
 
 
   private static final Log LOG = LogFactory.getLog(DataModelAllOfTypePersistentBeanHandler.class);
-
-  private String handlerSubPackageName = ".web.jsf";
 
 
   /*<property name="comparator">*/
@@ -79,7 +79,7 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
    * @return    DataModel
    *            ...
    */
-  public DataModel getDataModel() {
+  public DataModel getDataModel() throws FatalFacesException {
     if ($dataModel == null) {
       LOG.debug("no datamodel cached; creating new datamodel");
       List handlers = new ArrayList();
@@ -88,46 +88,13 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
       if (getComparator() != null) {
         Collections.sort(beans, getComparator());
       }
-      Class clazz = getType();
-      String beanPackage = clazz.getPackage().getName();
-      String handlerPackage = beanPackage + handlerSubPackageName;
-      String className = clazz.getName();
-      className.replaceAll(beanPackage, handlerPackage);
-      LOG.debug("name of handler type for instances: " + className);
-      Class classDefinition = null;
-      try {
-        classDefinition = Class.forName(className);
-      }
-      catch (ClassNotFoundException cnfExc) {
-        RobustCurrent.fatalProblem("Class not found for ", cnfExc, LOG);
-      }
-      LOG.debug("handler class loaded: " + classDefinition);
-      assert PersistentBeanCrudHandler.class.isAssignableFrom(classDefinition) :
-             "loaded handler is not a subtype of PersistentBeanCrudHandler (" +
-             classDefinition + ")";
       LOG.debug("creating handler for each instance");
       Iterator iter = beans.iterator();
       while (iter.hasNext()) {
         PersistentBean bean = (PersistentBean)iter.next();
         LOG.debug("    instance is " + bean);
-        PersistentBeanCrudHandler handler = null;
-        try {
-          handler = (PersistentBeanCrudHandler)classDefinition.newInstance();
-        }
-        catch (InstantiationException iExc) {
-          RobustCurrent.fatalProblem("Failed to instantiate a handler for " + className,
-                                     iExc,
-                                     LOG);
-        }
-        catch (IllegalAccessException iaExc) {
-          RobustCurrent.fatalProblem("Encounterd an IllegalAccessException while trying to "
-                                     + "instantiate a handler for " + className,
-                                     iaExc,
-                                     LOG);
-        }
+        PersistentBeanCrudHandler handler = createInstanceHandler(bean);
         LOG.debug("    handler is " + handler);
-        handler.setId(bean.getId());
-        handler.setInstance(bean);
         handlers.add(handler);
       }
       $dataModel = new ListDataModel(handlers);
@@ -137,6 +104,62 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
       LOG.debug("returning cached datamodel");
     }
     return $dataModel;
+  }
+
+  private final static String HANDLER_PACKAGE_EXTENSION = ".web.jsf";
+
+  /**
+   * @mudo (jand) hunt for a handler type; use superclasses of bean if not found directly;
+   *       use PersistentBeanCrudHandler if not found still.
+   */
+  private Class handlerClassFor(Class pbType) throws FatalFacesException {
+    assert PersistentBean.class.isAssignableFrom(pbType);
+    LOG.debug("looking for handler for instances of type " + pbType);
+    Package pbPackage = pbType.getPackage();
+    String handlerPackageName = pbPackage.getName() + HANDLER_PACKAGE_EXTENSION;
+    String[] pbTypeNameParts = pbType.getName().split("\\.");
+    LOG.debug("parts of type name: " + pbTypeNameParts);
+    String simplePbClassName = pbTypeNameParts[pbTypeNameParts.length - 1];
+    String handlerClassName = handlerPackageName + "." + simplePbClassName;
+    LOG.debug("name of handler class we will try to load: " + handlerClassName);
+    Class result = null;
+    try {
+      result  = Class.forName(handlerClassName);
+    }
+    catch (ClassNotFoundException cnfExc) {
+      RobustCurrent.fatalProblem("Class not found for " + handlerClassName, cnfExc, LOG);
+    }
+    LOG.debug("handler class loaded: " + result);
+    return result;
+  }
+
+  private PersistentBeanCrudHandler createInstanceHandler(Class handlerClass) throws FatalFacesException {
+    assert PersistentBeanCrudHandler.class.isAssignableFrom(handlerClass);
+    PersistentBeanCrudHandler handler = null;
+    try {
+      handler = (PersistentBeanCrudHandler)handlerClass.newInstance();
+      LOG.debug("created new handler: " + handler);
+    }
+    catch (InstantiationException iExc) {
+      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
+                                 iExc,
+                                 LOG);
+    }
+    catch (IllegalAccessException iaExc) {
+      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
+                                 iaExc,
+                                 LOG);
+    }
+    return handler;
+  }
+
+  private PersistentBeanCrudHandler createInstanceHandler(PersistentBean pb) throws FatalFacesException {
+    LOG.debug("creating handler for " + pb);
+    Class pbType = pb.getClass();
+    PersistentBeanCrudHandler result = createInstanceHandler(handlerClassFor(pbType));
+    result.setType(pbType);
+    result.setInstance(pb);
+    return result;
   }
 
   private DataModel $dataModel;
