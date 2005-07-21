@@ -852,11 +852,13 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
 
   private final static String DETAIL_VIEW_ID_PREFIX = "/jsf/";
 
+  private final static String DETAIL_VIEW_ID_SUFFIX = ".jspx";
+
   protected String getDetailViewId() {
     assert getType() != null : "type cannot be null";
     String typeName = getType().getName();
     typeName = typeName.replace('.', '/');
-    return DETAIL_VIEW_ID_PREFIX + typeName;
+    return DETAIL_VIEW_ID_PREFIX + typeName + DETAIL_VIEW_ID_SUFFIX;
   }
 
   /**
