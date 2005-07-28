@@ -94,6 +94,7 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
         PersistentBean bean = (PersistentBean)iter.next();
         LOG.debug("    instance is " + bean);
         PersistentBeanCrudHandler handler = createInstanceHandler(bean);
+        handler.setViewMode(PersistentBeanCrudHandler.VIEWMODE_DISPLAY);
         LOG.debug("    handler is " + handler);
         handlers.add(handler);
       }
@@ -167,5 +168,9 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
   private DataModel $dataModel;
 
   /*</property>*/
+  
+  public PersistentBeanCrudHandler getSelected() {
+    return (PersistentBeanCrudHandler)getDataModel().getRowData(); 
+  }
 
 }

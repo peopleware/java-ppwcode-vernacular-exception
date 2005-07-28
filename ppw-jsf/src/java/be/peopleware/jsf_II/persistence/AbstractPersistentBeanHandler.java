@@ -2,12 +2,12 @@ package be.peopleware.jsf_II.persistence;
 
 
 import java.util.Map;
-
+import javax.faces.FacesException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
+import be.peopleware.jsf_II.i18n.I18nButtonLabelMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
@@ -198,39 +198,39 @@ public abstract class AbstractPersistentBeanHandler {
     LOG.debug("label properties loaded");
   }
 
-//  /**
-//   * Set the type of the {@link PersistentBean} that will be handled
-//   * by the requests, as text.
-//   *
-//   * @todo This method is here for the faces-config managed bean stuff. Apparently,
-//   *       converters are not used during creation and property setting of managed
-//   *       beans. So, with the {@link #setType(Class)} method, we would be trying
-//   *       to push a String into a Class type parameter (actually, it seems, but
-//   *       we are not sure, that JSF attempts to <em>instantiate</em> the class
-//   *       for which the name is given, which is pretty weird). When this gets
-//   *       solved, or when we no longer need this method here, this method should
-//   *       be removed.
-//   *
-//   * @param   typeName
-//   *          The fully qualified name of the type to be set.
-//   * @post    getType() == Class.forName(type);
-//   * @throws  FacesException
-//   *          {@link Class#forName(String)}
-//   */
-//  public void setTypeAsString(String typeName) throws FacesException {
-//    Class type;
-//    try {
-//      type = Class.forName(typeName);
-//    }
-//    catch (LinkageError e) {
-//      throw new FacesException("cannot convert String to Class", e);
-//    }
-//    catch (ClassNotFoundException e) {
-//      throw new FacesException("cannot convert String to Class", e);
-//    }
-//    $type = type;
-//    LOG.debug("type of " + this + " set to Class " + type.getName());
-//  }
+  /**
+   * Set the type of the {@link PersistentBean} that will be handled
+   * by the requests, as text.
+   *
+   * @todo This method is here for the faces-config managed bean stuff. Apparently,
+   *       converters are not used during creation and property setting of managed
+   *       beans. So, with the {@link #setType(Class)} method, we would be trying
+   *       to push a String into a Class type parameter (actually, it seems, but
+   *       we are not sure, that JSF attempts to <em>instantiate</em> the class
+   *       for which the name is given, which is pretty weird). When this gets
+   *       solved, or when we no longer need this method here, this method should
+   *       be removed.
+   *
+   * @param   typeName
+   *          The fully qualified name of the type to be set.
+   * @post    getType() == Class.forName(type);
+   * @throws  FacesException
+   *          {@link Class#forName(String)}
+   */
+  public void setTypeAsString(String typeName) throws FacesException {
+    Class type;
+    try {
+      type = Class.forName(typeName);
+    }
+    catch (LinkageError lErr) {
+      throw new FacesException("cannot convert String to Class", lErr);
+    }
+    catch (ClassNotFoundException cnfExc) {
+      throw new FacesException("cannot convert String to Class", cnfExc);
+    }
+    setType(type);
+    LOG.debug("type of " + this + " set to Class " + type.getName());
+  }
 
   /**
    * The type of the {@link PersistentBean} that will be handled
@@ -288,6 +288,24 @@ public abstract class AbstractPersistentBeanHandler {
    * @invar (getType() != null) ==> ($shortLabels.getType().equals(getType()));
    */
   private I18nPropertyLabelMap $shortLabels;
+
+  /*</property>*/
+  
+  
+  /*<property name="buttonLabels">*/
+  //------------------------------------------------------------------
+
+  /**
+   * TODO
+   */
+  public Map getButtonLabels() {
+    return $buttonLabels;
+  }
+
+
+  /**
+   */
+  private Map $buttonLabels = new I18nButtonLabelMap();
 
   /*</property>*/
 

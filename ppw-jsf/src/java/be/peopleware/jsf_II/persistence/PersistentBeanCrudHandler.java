@@ -2,15 +2,12 @@ package be.peopleware.jsf_II.persistence;
 
 
 import java.util.Arrays;
-
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletRequestListener;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
@@ -671,7 +668,6 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     }
   }
 
-
   /*<property name="instance">*/
   //------------------------------------------------------------------
 
@@ -719,7 +715,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @throws FatalFacesException
    *         MUDO (jand) other occurences must be replaced by goBack()
    */
-  private void loadInstance() throws FatalFacesException {
+  public void loadInstance() throws FatalFacesException {
     assert getDao() != null;
     try {
       if (getId() == null) {
@@ -847,6 +843,8 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     FacesContext context = RobustCurrent.facesContext();
     UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getDetailViewId());
     context.setViewRoot(viewRoot);
+    String handlerName = getType().getName().replaceFirst(getType().getPackage().getName() + "." , "") + "H";
+    RobustCurrent.requestMap().put(handlerName, this);
     context.renderResponse();
   }
 

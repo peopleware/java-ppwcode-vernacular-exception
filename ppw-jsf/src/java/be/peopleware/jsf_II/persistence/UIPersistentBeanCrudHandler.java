@@ -228,11 +228,11 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     assert id != null;
     assert PersistentBeanCrudHandler.isViewMode(viewMode);
     // fill id and viewmode in handler
-    handler.setInstance(null); // be sure
     handler.setId(id);
     handler.setViewMode(viewMode);
+    handler.loadInstance();
   }
 
   /*</section>*/
-
+  
 }
