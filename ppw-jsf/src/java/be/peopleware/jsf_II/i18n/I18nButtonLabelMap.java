@@ -7,17 +7,13 @@ TO SELECTED PARTIES.
 package be.peopleware.jsf_II.i18n;
 
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.faces.component.UIViewRoot;
 
@@ -46,7 +42,7 @@ import be.peopleware.jsf_II.RobustCurrent;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public class I18nButtonLabelMap implements Map {
+public class I18nButtonLabelMap extends AbstractResourceBundleMap {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -79,9 +75,25 @@ public class I18nButtonLabelMap implements Map {
    *         getCurrentResourceBundle();
    */
   public I18nButtonLabelMap(String baseName) throws FatalFacesException {
+    super(createKeySet(baseName));
     $resourceBundleBaseName = baseName;
-    initKeySet(); // $resourceBundleBaseName must be set
-    initEntrySet(); // initKeySet() must have run already
+  }
+
+  /**
+   * @pre $resourceBundleBaseName must be set
+   * @throws FatalFacesException
+   *         getCurrentResourceBundle();
+   */
+  private static final Set createKeySet(String baseName) throws FatalFacesException {
+    Set result = new HashSet();
+    Enumeration enumeration = currentResourceBundle(baseName).getKeys();
+    while (enumeration.hasMoreElements()) {
+      String bundleKey = (String)enumeration.nextElement();
+      result.add(bundleKey);
+    }
+    Set keySet = Collections.unmodifiableSet(result);
+    LOG.debug("keySet init complete: " + keySet);
+    return keySet;
   }
 
   /*</construction>*/
@@ -104,7 +116,7 @@ public class I18nButtonLabelMap implements Map {
 
 
 
-  /*<property name="resourceBundleBaseName">*/
+  /*<property name="resourceBundle">*/
   //------------------------------------------------------------------
 
   /**
@@ -119,10 +131,25 @@ public class I18nButtonLabelMap implements Map {
    *         RobustCurrent.resourceBundle(getResourceBundleBaseName()) == null;
    */
   public final ResourceBundle getCurrentResourceBundle() throws FatalFacesException {
-    ResourceBundle result = RobustCurrent.resourceBundle(getResourceBundleBaseName());
+    return currentResourceBundle(getResourceBundleBaseName());
+  }
+
+  /**
+   * The resource bundle with base name <code>baseName</code>,
+   * loaded with the locale of the current {@link UIViewRoot} with
+   * {@link JsfResourceBundleLoadStrategy}. If no such bundle can be found,
+   * an exception is thrown.
+   *
+   * @throws FatalFacesException
+   *         RobustCurrent.resourceBundle(getResourceBundleBaseName());
+   * @throws FatalFacesException
+   *         RobustCurrent.resourceBundle(getResourceBundleBaseName()) == null;
+   */
+  private final static ResourceBundle currentResourceBundle(String baseName) throws FatalFacesException {
+    ResourceBundle result = RobustCurrent.resourceBundle(baseName);
     if (result == null) {
       RobustCurrent.fatalProblem("could not load resource bundle with basename \"" +
-                                 getResourceBundleBaseName() + "\" (locale: " +
+                                 baseName + "\" (locale: " +
                                  RobustCurrent.locale() + ")", LOG);
     }
     return result;
@@ -132,82 +159,6 @@ public class I18nButtonLabelMap implements Map {
 
 
 
-  /*<section name="keys">*/
-  //------------------------------------------------------------------
-
-  /**
-   * TODO (dvankeer): Write description
-   */
-  public final Set keySet() {
-    return $keySet;
-  }
-
-  /**
-   * @pre $resourceBundleBaseName must be set
-   * @throws FatalFacesException
-   *         getCurrentResourceBundle();
-   */
-  private void initKeySet() throws FatalFacesException {
-    Set result = new HashSet();
-    Enumeration enumeration = getCurrentResourceBundle().getKeys();
-    while (enumeration.hasMoreElements()) {
-      String bundleKey = (String)enumeration.nextElement();
-      result.add(bundleKey);
-    }
-    $keySet = Collections.unmodifiableSet(result);
-    LOG.debug("$keySet init complete: " + $keySet);
-  }
-
-  /**
-   * @invar $keySet != null;
-   */
-  private Set $keySet;
-
-  /**
-   * @return PropertyUtils.getPropertyDescriptors(getType());
-   */
-  public final int size() {
-    return keySet().size();
-  }
-
-  /**
-   * @return size() == 0;
-   */
-  public final boolean isEmpty() {
-    return size() == 0;
-  }
-
-  /**
-   * @return keySet().contains(key);
-   */
-  public final boolean containsKey(Object key) {
-    return keySet().contains(key);
-  }
-
-  /*</section>*/
-
-
-
-  /*<section name="values">*/
-  //------------------------------------------------------------------
-
-  /**
-   * If the <code>key</code> is
-   * @todo description, contract
-   *
-   * @throws FatalFacesException
-   *         getCurrentResourceBundle();
-   */
-  public final Object get(Object key) throws FatalFacesException {
-    LOG.debug("getting entry for " + key);
-    if (! (key instanceof String)) {
-      LOG.warn("key \"" + key + "\" is not a String; returning null");
-      return null;
-    }
-    else {
-      return getLabel((String)key);
-    }
-  }
 
   /**
    * If there is no key <code>key</code>, return <code>null</code>.
@@ -215,12 +166,7 @@ public class I18nButtonLabelMap implements Map {
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
-  private String getLabel(final String buttonName) throws FatalFacesException {
-    if (! containsKey(buttonName)) {
-      LOG.warn("key \"" + buttonName + "\" not initialized for resource bundle with basename \"" +
-               getResourceBundleBaseName() + "\"; returning null");
-      return null;
-    }
+  protected final String getLabel(final String buttonName) throws FatalFacesException {
     String result = null;
     try {
       result = getCurrentResourceBundle().getString(buttonName);
@@ -238,105 +184,6 @@ public class I18nButtonLabelMap implements Map {
     }
     LOG.debug("entry for " + buttonName + ": " + result);
     return result;
-  }
-
-  /**
-   * @note This is a costly method.
-   *
-   * @return values().contains(value);
-   */
-  public final boolean containsValue(Object value) {
-    return values().contains(value);
-  }
-
-  public final Collection values() {
-    Set result = new TreeSet();
-    Iterator keys = keySet().iterator();
-    while (keys.hasNext()) {
-      String key = (String)keys.next();
-      result.add(getLabel(key));
-    }
-    return Collections.unmodifiableSet(result);
-  }
-
-  /*</property>*/
-
-
-
-  /*<property name="entrySet">*/
-  //------------------------------------------------------------------
-
-  /**
-   * This set contains label-value pairs, for all
-   */
-  public final Set entrySet() {
-    return $entrySet;
-  }
-
-  /**
-   * @pre initKeySet() must have run already
-   */
-  private void initEntrySet() {
-    Set result = new TreeSet();
-    Iterator keys = keySet().iterator();
-    while (keys.hasNext()) {
-      String key = (String)keys.next();
-      result.add(new EntrySetEntry(key));
-    }
-    $entrySet = Collections.unmodifiableSet(result);
-  }
-
-  private class EntrySetEntry implements Map.Entry, Comparable {
-
-    public EntrySetEntry(String buttonLabel) {
-      $buttonLabel = buttonLabel;
-    }
-
-    private String $buttonLabel;
-
-    public final Object getKey() {
-      return $buttonLabel;
-    }
-
-    public final Object getValue() {
-      return getLabel($buttonLabel);
-    }
-
-    public final Object setValue(Object value) throws UnsupportedOperationException {
-      throw new UnsupportedOperationException();
-    }
-
-    public final int compareTo(Object o) {
-      if (o == null) {
-        return -1;
-      }
-      else {
-        return ((String)getKey()).compareTo(((EntrySetEntry)o).getKey());
-      }
-    }
-
-  }
-
-  private Set $entrySet;
-
-  /*</property>*/
-
-
-
-  public final Object put(Object key, Object value) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  public final Object remove(Object key) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  public final void putAll(Map t) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  public final void clear() throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
   }
 
 }

@@ -290,8 +290,8 @@ public abstract class AbstractPersistentBeanHandler {
   private I18nPropertyLabelMap $shortLabels;
 
   /*</property>*/
-  
-  
+
+
   /*<property name="buttonLabels">*/
   //------------------------------------------------------------------
 
@@ -302,10 +302,28 @@ public abstract class AbstractPersistentBeanHandler {
     return $buttonLabels;
   }
 
+  /**
+   * <strong>= {@value}</strong>
+   */
+  private final static String BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME =
+    "ButtonLabels";
+
+  /**
+   * <strong>= {@value}</strong>
+   */
+  private final static String DOT = ".";
+
+  /**
+   * <strong>= AbstractPersistentBeanHandler.class.getPackage().getName() +
+   *   DOT + BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME;</strong>
+   */
+  private final static String BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME =
+    AbstractPersistentBeanHandler.class.getPackage().getName() +
+    DOT + BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME;
 
   /**
    */
-  private Map $buttonLabels = new I18nButtonLabelMap();
+  private Map $buttonLabels = new I18nButtonLabelMap(BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME);
 
   /*</property>*/
 
