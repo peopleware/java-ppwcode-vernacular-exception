@@ -7,7 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
-import be.peopleware.jsf_II.i18n.I18nButtonLabelMap;
+import be.peopleware.jsf_II.i18n.BasenameResourceBundleMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
@@ -323,7 +323,7 @@ public abstract class AbstractPersistentBeanHandler {
 
   /**
    */
-  private Map $buttonLabels = new I18nButtonLabelMap(BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME);
+  private Map $buttonLabels = new BasenameResourceBundleMap(BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME);
 
   /*</property>*/
 

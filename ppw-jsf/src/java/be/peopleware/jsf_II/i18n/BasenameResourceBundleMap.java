@@ -42,7 +42,7 @@ import be.peopleware.jsf_II.RobustCurrent;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public class I18nButtonLabelMap extends AbstractResourceBundleMap {
+public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -58,7 +58,7 @@ public class I18nButtonLabelMap extends AbstractResourceBundleMap {
 
 
 
-  private static final Log LOG = LogFactory.getLog(I18nButtonLabelMap.class);
+  private static final Log LOG = LogFactory.getLog(BasenameResourceBundleMap.class);
 
 
 
@@ -74,7 +74,7 @@ public class I18nButtonLabelMap extends AbstractResourceBundleMap {
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
-  public I18nButtonLabelMap(String baseName) throws FatalFacesException {
+  public BasenameResourceBundleMap(String baseName) throws FatalFacesException {
     super(createKeySet(baseName));
     $resourceBundleBaseName = baseName;
   }
