@@ -566,15 +566,6 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
                                  getType(), tExc, LOG);
     }
   }
-  
-  /**
-   * Remove the current instance.
-   * 
-   * @post    getInstance() == null;
-   */
-  public void resetInstance() {
-    $instance = null;
-  }
 
 
   /**
@@ -691,14 +682,20 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     return getSimpleTypeName() + "H";
   }
 
-  private final static String DOT = ".";
+  private final static String DOT_GREP = "\\.";
 
   /**
    * The simple type name of the type {@link #getType()}.
+   *
+   * @throws FatalFacesException
+   *         getType() == null;
    */
   private String getSimpleTypeName() {
+    if (getType() == null) {
+      RobustCurrent.fatalProblem("cannot get simple type name when type is null", LOG);
+    }
     String fqcn = getType().getName();
-    String[] parts = fqcn.split(DOT);
+    String[] parts = fqcn.split(DOT_GREP);
     return parts[parts.length - 1];
   }
 

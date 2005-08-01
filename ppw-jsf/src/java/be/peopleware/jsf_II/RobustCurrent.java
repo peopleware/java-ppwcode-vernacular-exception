@@ -155,6 +155,19 @@ public class RobustCurrent {
   }
 
   /**
+   * The resource bundle with <code>baseName</code> as base name,
+   * with the locale currently in the {@link UIViewRoot} ({@link #locale()}),
+   * retrieved with {@link #JSF_RESOURCE_BUNDLE_LOAD_STRATEGY}. If no
+   * resource bundle could be found in this way, <code>null</code> is returned.
+   *
+   * @throws FatalFacesException
+   *         locale();
+   */
+  public static ResourceBundle resourceBundle(String baseName) throws FatalFacesException {
+    return RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY.loadResourceBundle(baseName);
+  }
+
+  /**
    * The current {@link ExternalContext}. Exception if <code>null</code>.
    *
    * @returns facesContext().getExternalContext();
@@ -673,7 +686,7 @@ public class RobustCurrent {
    * <strong>= &quot;&quot;</strong>
    */
   public final static String EMPTY = "";
-  
+
   /**
    * Create a value binding instance with expression <code>value</code>,
    * and add it to the <code>component</code> with name <code>name</code>.
@@ -692,7 +705,7 @@ public class RobustCurrent {
     assert name != null;
     assert ! name.equals(EMPTY);
     if (! UIComponentTag.isValueReference(value)) {
-      fatalProblem("\"" + value + "\" is not a valid value reference", LOG); 
+      fatalProblem("\"" + value + "\" is not a valid value reference", LOG);
     }
     ValueBinding vb = application().createValueBinding(value);
     assert vb != null;

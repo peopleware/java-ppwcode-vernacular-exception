@@ -12,6 +12,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
+import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 
 
@@ -45,10 +46,12 @@ public class JsfResourceBundleLoadStrategy implements ResourceBundleLoadStrategy
    * and the {@link ClassLoader} of the {@link Thread current thread}.
    * If no matching resource bundle can be found with this strategy,
    * <code>null</code> is returned.
-   *  
+   *
    * @see ResourceBundleLoadStrategy#loadResourceBundle(String)
+   * @throws FatalFacesException
+   *         RobustCurrent.locale();
    */
-  public ResourceBundle loadResourceBundle(final String basename) {
+  public ResourceBundle loadResourceBundle(final String basename) throws FatalFacesException {
     ResourceBundle result = null;
     if ((basename != null) && !(basename.equals(""))) {
       try {
@@ -61,5 +64,5 @@ public class JsfResourceBundleLoadStrategy implements ResourceBundleLoadStrategy
     }
     return result;
   }
-  
+
 }
