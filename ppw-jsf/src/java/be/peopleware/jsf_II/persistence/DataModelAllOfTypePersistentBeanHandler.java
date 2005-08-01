@@ -16,7 +16,9 @@ import be.peopleware.persistence_I.PersistentBean;
 
 
 /**
- * TODO (dvankeer): (JAVADOC) Write class description.
+ * JSF action that retrieves all instances of a given subtype of {@link PersistentBean}
+ * from persistent storage and makes them available in the associatied Handlers in the
+ * form of a {@link DataModel}
  *
  * @author     David Van Keer
  * @author     Peopleware n.v.
@@ -71,12 +73,10 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
   //------------------------------------------------------------------
 
   /**
-   * TODO: Write better docs.
-   *
-   * Wrap all the retrieve beans in their respective Handler and add them into a ListDataModel.
+   * Returns a DataModel containing all peristentBeans wrapped in the associated Handler.
    *
    * @return    DataModel
-   *            ...
+   *            A datamodel with PersistentBeanHandlers.
    */
   public DataModel getDataModel() throws FatalFacesException {
     if ($dataModel == null) {
@@ -169,6 +169,13 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
 
   /*</property>*/
   
+  /**
+   * Return the currently selected row of the DataModel or null if no row is selected or
+   * available.
+   * 
+   * @post    (getDataModel().getRowcount() > 0) ? getDataModel().getRowData()
+   *                                             : null 
+   */
   public PersistentBeanCrudHandler getSelected() {
     PersistentBeanCrudHandler result = null;
     if (getDataModel().getRowCount() > 0) {
