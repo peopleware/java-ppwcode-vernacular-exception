@@ -12,41 +12,42 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
+
 import javax.faces.component.UIViewRoot;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import be.peopleware.i18n_I.Properties;
-import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
+
+import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 
-// TODO: DOCUMENTATION......
 
 /**
- * <p>A map that offers the i18n labels for properties of beans, to be found
- *   in properties files, as described in
- *   {@link Properties#i18nPropertyLabel(java.lang.String, java.lang.Class, boolean, ResourceBundleLoadStrategy)}.</p>
- *   This is based on the functionality of <code>&lt;f:loadBundle&gt;</code>.</p>
- * <p>The keys in this map are the programmatic property names of {@link #getType()}.
- *   If no match can be found in the property file with the name
- *   <code>getType() + &quot;.properties&quot;</code> with the expected key,
- *   we look in the properties file for all supertypes.</p>
- * <p>The locale used is retrieved from the {@link UIViewRoot#getLocale()}, and
- *   the resource bundles are loaded using the JSF strategy. The returned
- *   label is the nominal label if {@link #isShortLabel()} is <code>false</code>,
- *   and the short label if it is <code>true</code>.</p>
- * <p>A value is returned for each property of {@link #getType()}. If no label
- *   can be found for a property, <code>&quot;???&quot; + <var>propertyName</var>
- *   + &quot;???&quot;</code>.</p>
- * 
+ * <p>A map that offers access to entries in a properties file.</p>
+ * <p>Note that the {@link #keySet()} and {@link #entrySet()} are generated
+ *   during construction, based on the properties file that is found
+ *   with the {@link JsfResourceBundleLoadStrategy}
+ *   with the {@link Locale} that is in the {@link UIViewRoot}
+ *   at that time. Later request for an actual entry will use the Locale that
+ *   is in the {@link UIViewRoot} then. If there are entries in the properties
+ *   file for 1 {@link Locale} that are not in the properties file for another
+ *   {@link Locale}, strange behavior is to be expected.</p>
+ * <p>Due to the contract of a map, when an entry is requested for a
+ *   non-existent key, <code>null</code> is returned. This is hard to debug.
+ *   Therefor, a warning is written to the log in this case.</p>
+ *
  * @author David Van Keer
+ * @author Jan Dockx
  * @author PeopleWare n.v.
  */
 public class I18nButtonLabelMap implements Map {
-  
+
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
   /** {@value} */
@@ -60,29 +61,77 @@ public class I18nButtonLabelMap implements Map {
   /*</section>*/
 
 
-  
+
   private static final Log LOG = LogFactory.getLog(I18nButtonLabelMap.class);
 
 
-  
+
   /*<construction>*/
   //------------------------------------------------------------------
 
   /**
-   * Create a new initialized Button Label Map, all button for use in the application are
-   * available via this Map.
+   * Create a new initialized properties map for the resource bundle
+   * with basename <code>baseName</code>.
+   * The {@link Locale} in the current {@link UIViewRoot} is used
+   * to initialize the {@link #keySet()} and {@link #entrySet()}.
+   *
+   * @throws FatalFacesException
+   *         getCurrentResourceBundle();
    */
-  public I18nButtonLabelMap() {
-    initKeySet();
-    initEntrySet();
+  public I18nButtonLabelMap(String baseName) throws FatalFacesException {
+    $resourceBundleBaseName = baseName;
+    initKeySet(); // $resourceBundleBaseName must be set
+    initEntrySet(); // initKeySet() must have run already
   }
-  
+
   /*</construction>*/
-  
-  ResourceBundle $bundle = ResourceBundle.getBundle(getClass().getPackage().getName() + ".ButtonLabels",
-                                                    RobustCurrent.facesContext().getViewRoot().getLocale());
-  
-  
+
+
+
+  /*<property name="resourceBundleBaseName">*/
+  //------------------------------------------------------------------
+
+  public final String getResourceBundleBaseName() {
+    return $resourceBundleBaseName;
+  }
+
+  /**
+   * @invar $resourceBundleBaseName != null;
+   */
+  private String $resourceBundleBaseName;
+
+  /*</property>*/
+
+
+
+  /*<property name="resourceBundleBaseName">*/
+  //------------------------------------------------------------------
+
+  /**
+   * The resource bundle with base name {@link #getResourceBundleBaseName()},
+   * loaded with the locale of the current {@link UIViewRoot} with
+   * {@link JsfResourceBundleLoadStrategy}. If no such bundle can be found,
+   * an exception is thrown.
+   *
+   * @throws FatalFacesException
+   *         RobustCurrent.resourceBundle(getResourceBundleBaseName());
+   * @throws FatalFacesException
+   *         RobustCurrent.resourceBundle(getResourceBundleBaseName()) == null;
+   */
+  public final ResourceBundle getCurrentResourceBundle() throws FatalFacesException {
+    ResourceBundle result = RobustCurrent.resourceBundle(getResourceBundleBaseName());
+    if (result == null) {
+      RobustCurrent.fatalProblem("could not load resource bundle with basename \"" +
+                                 getResourceBundleBaseName() + "\" (locale: " +
+                                 RobustCurrent.locale() + ")", LOG);
+    }
+    return result;
+  }
+
+  /*</property>*/
+
+
+
   /*<section name="keys">*/
   //------------------------------------------------------------------
 
@@ -91,23 +140,29 @@ public class I18nButtonLabelMap implements Map {
    */
   public final Set keySet() {
     return $keySet;
-  }    
-  
-  private void initKeySet() {
+  }
+
+  /**
+   * @pre $resourceBundleBaseName must be set
+   * @throws FatalFacesException
+   *         getCurrentResourceBundle();
+   */
+  private void initKeySet() throws FatalFacesException {
     Set result = new HashSet();
-    Enumeration enumeration = $bundle.getKeys();
+    Enumeration enumeration = getCurrentResourceBundle().getKeys();
     while (enumeration.hasMoreElements()) {
-      result.add((String)enumeration.nextElement());
+      String bundleKey = (String)enumeration.nextElement();
+      result.add(bundleKey);
     }
     $keySet = Collections.unmodifiableSet(result);
     LOG.debug("$keySet init complete: " + $keySet);
   }
-  
+
   /**
    * @invar $keySet != null;
    */
   private Set $keySet;
-  
+
   /**
    * @return PropertyUtils.getPropertyDescriptors(getType());
    */
@@ -132,18 +187,21 @@ public class I18nButtonLabelMap implements Map {
   /*</section>*/
 
 
-  
+
   /*<section name="values">*/
   //------------------------------------------------------------------
 
   /**
    * If the <code>key</code> is
    * @todo description, contract
+   *
+   * @throws FatalFacesException
+   *         getCurrentResourceBundle();
    */
-  public final Object get(Object key) {
-    LOG.debug("getting button label for " + key);
-    if ((! (key instanceof String)) || (! containsKey(key))) {
-      LOG.debug("Button label for " + key + " does not exist; returning null");
+  public final Object get(Object key) throws FatalFacesException {
+    LOG.debug("getting entry for " + key);
+    if (! (key instanceof String)) {
+      LOG.warn("key \"" + key + "\" is not a String; returning null");
       return null;
     }
     else {
@@ -152,18 +210,39 @@ public class I18nButtonLabelMap implements Map {
   }
 
   /**
-   * @pre containsKey(propertyName);
+   * If there is no key <code>key</code>, return <code>null</code>.
+   *
+   * @throws FatalFacesException
+   *         getCurrentResourceBundle();
    */
-  private String getLabel(final String buttonName) {
-    assert containsKey(buttonName);
-    String result = $bundle.getString(buttonName);
-    LOG.debug("Button label for " + buttonName + ": " + result);
+  private String getLabel(final String buttonName) throws FatalFacesException {
+    if (! containsKey(buttonName)) {
+      LOG.warn("key \"" + buttonName + "\" not initialized for resource bundle with basename \"" +
+               getResourceBundleBaseName() + "\"; returning null");
+      return null;
+    }
+    String result = null;
+    try {
+      result = getCurrentResourceBundle().getString(buttonName);
+    }
+    catch (MissingResourceException mrExc) {
+      LOG.warn("no entry for key \"" + buttonName + "\" found in resource bundle with basename \"" +
+               getResourceBundleBaseName() + "\" (locale: " + RobustCurrent.locale() +
+               "); returning null",
+               mrExc);
+    }
+    catch (ClassCastException ccExc) {
+      LOG.warn("entry for key \"" + buttonName + "\" in resource bundle with basename \"" +
+               getResourceBundleBaseName() + "\" (locale: " + RobustCurrent.locale() +
+               ") is no a String; returning null", ccExc);
+    }
+    LOG.debug("entry for " + buttonName + ": " + result);
     return result;
   }
-  
+
   /**
    * @note This is a costly method.
-   * 
+   *
    * @return values().contains(value);
    */
   public final boolean containsValue(Object value) {
@@ -182,8 +261,8 @@ public class I18nButtonLabelMap implements Map {
 
   /*</property>*/
 
-  
-  
+
+
   /*<property name="entrySet">*/
   //------------------------------------------------------------------
 
@@ -193,7 +272,10 @@ public class I18nButtonLabelMap implements Map {
   public final Set entrySet() {
     return $entrySet;
   }
-  
+
+  /**
+   * @pre initKeySet() must have run already
+   */
   private void initEntrySet() {
     Set result = new TreeSet();
     Iterator keys = keySet().iterator();
@@ -203,27 +285,27 @@ public class I18nButtonLabelMap implements Map {
     }
     $entrySet = Collections.unmodifiableSet(result);
   }
-  
+
   private class EntrySetEntry implements Map.Entry, Comparable {
-    
+
     public EntrySetEntry(String buttonLabel) {
       $buttonLabel = buttonLabel;
     }
-    
+
     private String $buttonLabel;
-    
+
     public final Object getKey() {
       return $buttonLabel;
     }
-    
+
     public final Object getValue() {
       return getLabel($buttonLabel);
     }
-    
+
     public final Object setValue(Object value) throws UnsupportedOperationException {
       throw new UnsupportedOperationException();
     }
-    
+
     public final int compareTo(Object o) {
       if (o == null) {
         return -1;
@@ -232,15 +314,15 @@ public class I18nButtonLabelMap implements Map {
         return ((String)getKey()).compareTo(((EntrySetEntry)o).getKey());
       }
     }
-    
+
   }
-    
+
   private Set $entrySet;
 
   /*</property>*/
 
-  
-  
+
+
   public final Object put(Object key, Object value) throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }
@@ -256,5 +338,5 @@ public class I18nButtonLabelMap implements Map {
   public final void clear() throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }
-  
+
 }
