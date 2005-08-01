@@ -160,6 +160,7 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
     LOG.debug("creating handler for " + pb);
     Class pbType = pb.getClass();
     PersistentBeanCrudHandler result = createInstanceHandler(handlerClassFor(pbType));
+    result.setDao(getDao());
     result.setType(pbType);
     result.setInstance(pb);
     return result;

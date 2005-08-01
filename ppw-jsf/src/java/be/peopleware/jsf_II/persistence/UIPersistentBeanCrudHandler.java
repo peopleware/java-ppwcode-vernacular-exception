@@ -140,6 +140,10 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     encodeHiddenInput(context.getResponseWriter(),
                       viewModeTagName(context), getHandler(context).getViewMode());
   }
+  
+  public void encodeEnd(FacesContext context) throws IOException {
+    // Empty encodeEnd so no input field is written out by default.
+  }
 
   private final static String INPUT_TAG = "input";
   private final static String INPUT_TAG_TYPE_ATTR = "type";
@@ -155,7 +159,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     response.startElement(INPUT_TAG, this);
     response.writeAttribute(INPUT_TAG_TYPE_ATTR, INPUT_TAG_TYPE_HIDDEN, null);
     response.writeAttribute(INPUT_TAG_NAME_ATTR, componentId, null);
-    response.writeAttribute(INPUT_TAG_VALUE_ATTR, value, null);
+    response.writeAttribute(INPUT_TAG_VALUE_ATTR, (value != null) ? value : "", null);
     response.endElement(INPUT_TAG);
   }
 
@@ -215,6 +219,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     }
     assert id != null;
     assert PersistentBeanCrudHandler.isViewMode(viewMode);
+    handler.resetInstance();
     // fill id and viewmode in handler
     handler.setInstance(null); // be sure
     handler.setId(id);
