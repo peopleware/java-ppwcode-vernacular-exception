@@ -2,12 +2,15 @@ package be.peopleware.jsf_II.persistence;
 
 
 import java.util.Arrays;
+
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletRequestListener;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
@@ -668,6 +671,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     }
   }
 
+
   /*<property name="instance">*/
   //------------------------------------------------------------------
 
@@ -693,10 +697,10 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @post new.getInstance() == instance;
    * @post (instance != null) ? new.getId().equals(instance.getId());
    * @throws IllegalArgumentException
-   *         ! getType().isAssignableFrom(instance.getClass());
+   *         (instance != null) && ! getType().isAssignableFrom(instance.getClass());
    */
   public final void setInstance(PersistentBean instance) throws IllegalArgumentException {
-    if (! getType().isAssignableFrom(instance.getClass())) {
+    if ((instance != null) && (! getType().isAssignableFrom(instance.getClass()))) {
       throw new IllegalArgumentException("instance " + instance +
                                          " is not a subtype of " +
                                          getType());
@@ -715,7 +719,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @throws FatalFacesException
    *         MUDO (jand) other occurences must be replaced by goBack()
    */
-  public void loadInstance() throws FatalFacesException {
+  private void loadInstance() throws FatalFacesException {
     assert getDao() != null;
     try {
       if (getId() == null) {
@@ -818,6 +822,11 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *    by throwing an IdNotFoundException.
    * 3. We go to display mode.
    *
+   * Navigate to {@link #getDetailViewId()}.
+   *
+   * This handler is made available to the JSP/JSF page in request scope,
+   * as a variable with name {@link #getDetailHandlerName()}.
+   *
    * @post    new.getId().equals(id);
    * @post    (new.getInstance() != null)
    *            ? new.getInstance().getId().equals(id)
@@ -839,20 +848,51 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
       // MUDO (jand) add i18n message!!!!
     }
     setViewMode(VIEWMODE_DISPLAY);
-    // create new view & navigate
+    // put this handler in request scope, under an agreed name, create new view & navigate
+    RobustCurrent.requestMap().put(getDetailHandlerName(), this);
     FacesContext context = RobustCurrent.facesContext();
     UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getDetailViewId());
     context.setViewRoot(viewRoot);
-    String handlerName = getType().getName().replaceFirst(getType().getPackage().getName() + "." , "") + "H";
-    RobustCurrent.requestMap().put(handlerName, this);
     context.renderResponse();
   }
 
-  private final static String DETAIL_VIEW_ID_PREFIX = "/jsf/";
+  /**
+   * <strong>= {@value}</strong>
+   */
+  public final static String DETAIL_HANDLER_NAME_SUFFIX = "H";
 
-  private final static String DETAIL_VIEW_ID_SUFFIX = ".jspx";
+  /**
+   * The name under which this handler is stored in request scope when
+   * {@link #navigateHere(ActionEvent)} is called.
+   * This name is the simple type name of {@link #getType()}, with the suffix
+   * {@link #DETAIL_HANDLER_NAME_SUFFIX}.
+   *
+   * @idea (jand) make this parameterizable
+   */
+  public String getDetailHandlerName() {
+    return getSimpleTypeName() + "H";
+  }
 
-  protected String getDetailViewId() {
+  private final static String DOT = ".";
+
+  /**
+   * The simple type name of the type {@link #getType()}.
+   */
+  private String getSimpleTypeName() {
+    String fqcn = getType().getName();
+    String[] parts = fqcn.split(DOT);
+    return parts[parts.length - 1];
+  }
+
+  public final static String DETAIL_VIEW_ID_PREFIX = "/jsf/";
+
+  public final static String DETAIL_VIEW_ID_SUFFIX = ".jspx";
+
+  /**
+   * @pre getType() != null;
+   * @return DETAIL_VIEW_ID_PREFIX + s/\./\//(getType().getName()) + DETAIL_VIEW_ID_SUFFIX;
+   */
+  public String getDetailViewId() {
     assert getType() != null : "type cannot be null";
     String typeName = getType().getName();
     typeName = typeName.replace('.', '/');

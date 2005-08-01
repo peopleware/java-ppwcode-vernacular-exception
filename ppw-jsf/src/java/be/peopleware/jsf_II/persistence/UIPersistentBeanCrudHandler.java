@@ -31,8 +31,6 @@ import be.peopleware.jsf_II.RobustCurrent;
  * the HTTP request, validates them, converts them, and sets them in the handler during
  * the Apply Request Values phase.
  *
- * @mudo Or during the Restore View phase if possible?
- *
  * @author    Jan Dockx
  * @author    Peopleware n.v.
  *
@@ -84,16 +82,6 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     }
     return (PersistentBeanCrudHandler)result;
   }
-
-//  /**
-//   * @post new.getHandler() == handler;
-//   */
-//  public final void setHandler(PersistentBeanCrudHandler handler) {
-//    $handler = handler;
-//    LOG.debug("handler set: " + handler);
-//  }
-//
-//  private PersistentBeanCrudHandler $handler;
 
   /*</property>*/
 
@@ -228,11 +216,11 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     assert id != null;
     assert PersistentBeanCrudHandler.isViewMode(viewMode);
     // fill id and viewmode in handler
+    handler.setInstance(null); // be sure
     handler.setId(id);
     handler.setViewMode(viewMode);
-    handler.loadInstance();
   }
 
   /*</section>*/
-  
+
 }
