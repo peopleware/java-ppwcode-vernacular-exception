@@ -62,7 +62,7 @@ public class UINumberOf extends UIOutput {
    * @throws FatalFacesException
    *         ; could not locate a collection through the value binding
    */
-  public Collection getCollection(FacesContext context)
+  public Collection getValue(FacesContext context)
       throws FatalFacesException {
     ValueBinding vb = getValueBinding(COLLECTION_VALUE_BINDING_NAME);
     if (vb == null) {
@@ -89,11 +89,11 @@ public class UINumberOf extends UIOutput {
    * Writes to the output stream the size of the collection.
    *
    * @throws FatalFacesException
-   *         getCollection();
+   *         getValue();
    */
   public void encodeBegin(FacesContext context) throws IOException, FatalFacesException {
     ResponseWriter writer = context.getResponseWriter();
-    writer.write(format(getCollection(context).size()));
+    writer.write(format(getValue(context).size()));
   }
   public void encodeEnd(FacesContext context) throws IOException, FatalFacesException {
     // NOP

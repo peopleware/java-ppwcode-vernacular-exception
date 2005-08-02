@@ -46,13 +46,13 @@
   
   <tag>
     <description>
-      Tag for be.peopleware.jsf-II.component.UINumberOf.
+      Tag for be.peopleware.jsf_II.component.UINumberOf.
       This component counts the number of elements of a Collection. 
       The Collection is given as a value of the attribute value.
     </description>
     <display-name>ppw-jsf:numberOf</display-name>
     <name>numberOf</name>
-    <tag-class>be.peopleware.jsf-II.component.NumberOfTag</tag-class>
+    <tag-class>be.peopleware.jsf_II.component.NumberOfTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
       <description>An expression that evaluates to the java.util.Collection.

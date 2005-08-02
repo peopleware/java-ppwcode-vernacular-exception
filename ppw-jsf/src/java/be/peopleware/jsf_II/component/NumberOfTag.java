@@ -45,7 +45,7 @@ public class NumberOfTag extends UIComponentTag {
     return null;
   }
 
-  public void setCollection(String collectionExpression) {
+  public void setValue(String collectionExpression) {
     $collectionExpression = collectionExpression;
   }
   
