@@ -11,7 +11,6 @@ import javax.faces.model.ListDataModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import be.peopleware.jsf_II.FatalFacesException;
-import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.persistence_I.PersistentBean;
 
 
@@ -104,65 +103,6 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
       LOG.debug("returning cached datamodel");
     }
     return $dataModel;
-  }
-
-  private final static String HANDLER_PACKAGE_EXTENSION = ".web.jsf";
-
-  private final static String HANDLER_TYPE_SUFFIX = "Handler";
-
-  /**
-   * @mudo (jand) hunt for a handler type; use superclasses of bean if not found directly;
-   *       use PersistentBeanCrudHandler if not found still.
-   */
-  private Class handlerClassFor(Class pbType) throws FatalFacesException {
-    assert PersistentBean.class.isAssignableFrom(pbType);
-    LOG.debug("looking for handler for instances of type " + pbType);
-    Package pbPackage = pbType.getPackage();
-    String handlerPackageName = pbPackage.getName() + HANDLER_PACKAGE_EXTENSION;
-    String[] pbTypeNameParts = pbType.getName().split("\\.");
-    LOG.debug("parts of type name: " + pbTypeNameParts);
-    String simplePbClassName = pbTypeNameParts[pbTypeNameParts.length - 1];
-    String handlerClassName = handlerPackageName + "." + simplePbClassName + HANDLER_TYPE_SUFFIX;
-    LOG.debug("name of handler class we will try to load: " + handlerClassName);
-    Class result = null;
-    try {
-      result  = Class.forName(handlerClassName);
-    }
-    catch (ClassNotFoundException cnfExc) {
-      RobustCurrent.fatalProblem("Class not found for " + handlerClassName, cnfExc, LOG);
-    }
-    LOG.debug("handler class loaded: " + result);
-    return result;
-  }
-
-  private PersistentBeanCrudHandler createInstanceHandler(Class handlerClass) throws FatalFacesException {
-    assert PersistentBeanCrudHandler.class.isAssignableFrom(handlerClass);
-    PersistentBeanCrudHandler handler = null;
-    try {
-      handler = (PersistentBeanCrudHandler)handlerClass.newInstance();
-      LOG.debug("created new handler: " + handler);
-    }
-    catch (InstantiationException iExc) {
-      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
-                                 iExc,
-                                 LOG);
-    }
-    catch (IllegalAccessException iaExc) {
-      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
-                                 iaExc,
-                                 LOG);
-    }
-    return handler;
-  }
-
-  private PersistentBeanCrudHandler createInstanceHandler(PersistentBean pb) throws FatalFacesException {
-    LOG.debug("creating handler for " + pb);
-    Class pbType = pb.getClass();
-    PersistentBeanCrudHandler result = createInstanceHandler(handlerClassFor(pbType));
-    result.setDao(getDao());
-    result.setType(pbType);
-    result.setInstance(pb);
-    return result;
   }
 
   private DataModel $dataModel;

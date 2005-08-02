@@ -19,10 +19,8 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  *
  * @author    Jan Dockx
  * @author    Peopleware n.v.
- *
- * @mudo (jand) this must be adapted to be more then display; also edit-in-grid
  */
-public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanHandler {
+public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanListHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -126,34 +124,6 @@ public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanHandle
   }
 
   private Set $persistentBeans;
-
-  /*</property>*/
-
-
-
-  /*<property name="createable">*/
-  //------------------------------------------------------------------
-
-  /**
-   * Can we create a new object of the type represented by this form?
-   *
-   * @basic
-   * @init      false;
-   */
-  public final boolean isCreateable() {
-    return $createable;
-  }
-
-  /**
-   * @param     editable
-   *            Marks the persistent bean as a object that can be created.
-   * @post      new.isCreateable() == createable;
-   */
-  private void setCreateable(final boolean createable) {
-    $createable = createable;
-  }
-
-  private boolean $createable;
 
   /*</property>*/
 
