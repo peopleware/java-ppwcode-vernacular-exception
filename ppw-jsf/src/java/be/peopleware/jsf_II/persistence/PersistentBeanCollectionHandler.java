@@ -72,6 +72,12 @@ public class PersistentBeanCollectionHandler extends AbstractPersistentBeanListH
 
   /*</property>*/
   
+  /**
+   * Returns a Set containing all peristentBeans wrapped in the associated Handler.
+   *
+   * @return    Set
+   *            A Set with PersistentBeanHandlers based on the instances of this Handler..
+   */
   public final Set getInstanceHandlers() {
     if ($handlers == null) {
       LOG.debug("no handlers cached; creating new handlers");
