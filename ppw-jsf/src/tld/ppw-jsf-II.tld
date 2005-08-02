@@ -11,37 +11,60 @@
   <uri>http://www.peopleware.be/tags/jsf-II</uri>
   
   <tag>
-    <display-name>ppw-jsf:pbInit</display-name>
-    <name>pbInit</name>
-    <tag-class>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandlerTag</tag-class>
     <description>
       Tag for be.peopleware.jsf_II.persistence.UIPersistentBeanCrudHandler.
       This component renders the id and view mode of a
       be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler, and
       initialises such a handler during the Restore View phase.
     </description>
+    <display-name>ppw-jsf:pbInit</display-name>
+    <name>pbInit</name>
+    <tag-class>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandlerTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
-      <name>handler</name>
-      <type>java.lang.String</type>
       <description>An expression that evaluates to the correct handler.
         The handler must be a subtype of
-        <code>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler</code>.</description>
+        be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler.
+      </description>
+      <name>handler</name>
       <required>true</required>
       <rtexprvalue>false</rtexprvalue>
+      <type>java.lang.String</type>
     </attribute>
     <!-- default attributes -->
     <attribute>
-      <name>id</name>
       <description>The client id of this component.</description>
+      <name>id</name>
     </attribute>
     <attribute>
-      <name>rendered</name>
       <description>Is this component rendered?
-        Should be <code>true</code> for this tag.</description>
+        Should be 'true' for this tag.
+      </description>
+      <name>rendered</name>
     </attribute>
   </tag>
   
+  <tag>
+    <description>
+      Tag for be.peopleware.jsf-II.component.UINumberOf.
+      This component counts the number of elements of a Collection. 
+      The Collection is given as a value of the attribute value.
+    </description>
+    <display-name>ppw-jsf:numberOf</display-name>
+    <name>numberOf</name>
+    <tag-class>be.peopleware.jsf-II.component.NumberOfTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <description>An expression that evaluates to the java.util.Collection.
+      </description>
+      <name>value</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+  </tag>
+  
+
 </taglib>
 
 <!--
