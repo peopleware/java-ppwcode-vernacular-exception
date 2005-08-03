@@ -1,13 +1,20 @@
 package be.peopleware.jsf_II.persistence;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletRequestListener;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -15,6 +22,7 @@ import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
+import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
 import be.peopleware.persistence_I.IdNotFoundException;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
@@ -1174,7 +1182,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *
    * @param   message
    *          A message signalling why we are going back to a previous page.
-   * @return  @mudo
+   * @mudo
    */
   public String goBack(String message) {
 //  MUDO
@@ -1258,5 +1266,142 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     }
     return goBack(CANCEL_EDITNEW);
   }
+
+
+  /*<section name="Association Handlers">*/
+  //------------------------------------------------------------------
+  /**
+   * <p>{@link PersistentBean} instances are often related to other {@link PersistentBean}
+   *   instances, according to the same pattern (a bidirectional one-to-many
+   *   association). These relations need to be navigatable and editable.</p>
+   * <p>For the to-many associations, there is a property in the {@link PersistentBean instance}
+   *   that returns a {@link Collection} of other {@link PersistentBean PersistentBeans}.
+   *   We often want to show this collection in one way, and interact with it, via
+   *   the web interface. This is handled by an {@link AbstractPersistentBeanListHandler}.
+   *   In the handler that wraps around the original instance (an object of this class),
+   *   we need a way to create and access such a
+   *   {@link AbstractPersistentBeanListHandler list handler}. Below you will find code
+   *   to do this via reflection, automatically. Different
+   *   {@link AbstractPersistentBeanListHandler list handlers} can be accessed through
+   *   a (fake) {@link Map}, where the key is the property name of the JavaBean
+   *   property that returns the collection of associated {@link PersistentBean PersistentBeans}
+   *   from the instance this handler works for.</p>
+   *
+   *   @mudo (jand) now ok for to-many relationships; add stuff for to-one relationships
+   *                (but we don't need the meta inf there)
+   */
+  public final Map getAssociationHandlers() {
+    return $associationHandlers;
+  }
+  
+  /**
+   * Alias for {@link #getAssociationHandlers()} with a shorter name.
+   */
+  public final Map getAssocH() {
+    return getAssociationHandlers();
+  }
+
+  private final Map $associationHandlers =
+      new AbstractUnmodifiableMap() {
+
+            public final Set keySet() {
+              return getAssociationMetaMap().keySet();
+            }
+
+            Map $backingMap = new HashMap();
+
+            public Object get(Object key) throws FatalFacesException {
+              if (! keySet().contains(key)) {
+                return null;
+              }
+              Object result = $backingMap.get(key);
+              if (result == null) {
+                result = createListHandlerFor((Class)getAssociationMetaMap().get(key), (String)key);
+                $backingMap.put(key, result);
+              }
+              return result;
+            }
+
+          };
+
+  /**
+   * <p>The automated {@link #getAssociationHandlers() association handlers map} requires
+   *   some meta information about the relations that instances of {@link #getType()}
+   *   are involved in. This map should list entries with the property name
+   *   that represents the association as key, and the type of the related elements
+   *   as value.</p>
+   * <p>Since this is meta information, the implementation should probably use a
+   *   class variable instead of an instance variable. The implementation could look
+   *   like this:</p>
+   * <pre>
+   *   public final static Map ASSOCIATIONS_META_MAP = new HashMap();
+   *
+   *   static {
+   *     ASSOCIATIONS_META_MAP.put("groups", Group.class);
+   *     ASSOCIATIONS_META_MAP.put("friends", Person.class);
+   *     ASSOCIATIONS_META_MAP.put("hobbies", Things.class);
+   *   }
+   *
+   *   protected Map getAssociationMetaMap() {
+   *    return ASSOCIATIONS_META_MAP;
+   *   }
+   * </pre>
+   * <p>This default implementation returns an empty map. This method should never
+   *   return <code>null</code>.</p>
+   *
+   * @result result != null;
+   * @todo (jand) more contract
+   *
+   * @idea with 1.5 we will probably no longer need this meta information
+   * @todo (jand) map should be made unmodifiable in example
+   */
+  protected Map getAssociationMetaMap() {
+    return Collections.EMPTY_MAP;
+  }
+
+  private DataModelPersistentBeanCollectionHandler createListHandlerFor(Class associatedType, String propertyName)
+      throws FatalFacesException {
+    DataModelPersistentBeanCollectionHandler lh = null;
+    try {
+      lh = new DataModelPersistentBeanCollectionHandler();
+      lh.setType(associatedType);
+      lh.setDao(getDao());
+      Collection c = (Collection)PropertyUtils.getProperty(getInstance(), propertyName);
+      lh.setInstances(c);
+      return lh;
+    }
+    catch (ClassCastException ccExc) {
+      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+                                 " for property " + propertyName + "\"", ccExc, LOG);
+    }
+    catch (IllegalArgumentException iaExc) {
+      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+                                 " for property " + propertyName + "\"", iaExc, LOG);
+    }
+    catch (IllegalAccessException iaExc) {
+      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+                                 " for property " + propertyName + "\"", iaExc, LOG);
+    }
+    catch (InvocationTargetException itExc) {
+      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+                                 " for property " + propertyName + "\"", itExc, LOG);
+    }
+    catch (NullPointerException npExc) {
+      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+                                 " for property " + propertyName + "\"", npExc, LOG);
+    }
+    catch (ExceptionInInitializerError eiiErr) {
+      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+                                 " for property " + propertyName + "\"", eiiErr, LOG);
+    }
+    catch (NoSuchMethodException nsmExc) {
+      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+                                 " for property " + propertyName + "\"", nsmExc, LOG);
+    }
+    return lh;
+  }
+
+  /*</section>*/
+
 
 }
