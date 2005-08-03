@@ -3,23 +3,23 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
   version="2.0">
-  
+
   <description>Peopleware custom tag library for JSF extensions</description>
   <display-name>Peopleware JSF Extensions</display-name>
   <tlib-version>1.0</tlib-version>
   <short-name>ppw-jsf</short-name>
   <uri>http://www.peopleware.be/tags/jsf-II</uri>
-  
+
   <tag>
     <description>
-      Tag for be.peopleware.jsf_II.persistence.UIPersistentBeanCrudHandler.
+      Tag for be.peopleware.jsf_II.persistence.component.UIPersistentBeanCrudHandler.
       This component renders the id and view mode of a
       be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler, and
       initialises such a handler during the Restore View phase.
     </description>
     <display-name>ppw-jsf:pbInit</display-name>
     <name>pbInit</name>
-    <tag-class>be.peopleware.jsf_II.persistence.PersistentBeanCrudHandlerTag</tag-class>
+    <tag-class>be.peopleware.jsf_II.persistence.component.PersistentBeanCrudHandlerTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
       <description>An expression that evaluates to the correct handler.
@@ -43,11 +43,11 @@
       <name>rendered</name>
     </attribute>
   </tag>
-  
+
   <tag>
     <description>
       Tag for be.peopleware.jsf_II.component.UINumberOf.
-      This component counts the number of elements of a Collection. 
+      This component counts the number of elements of a Collection.
       The Collection is given as a value of the attribute value.
     </description>
     <display-name>ppw-jsf:numberOf</display-name>
@@ -63,7 +63,7 @@
       <type>java.lang.String</type>
     </attribute>
   </tag>
-  
+
 
 </taglib>
 
