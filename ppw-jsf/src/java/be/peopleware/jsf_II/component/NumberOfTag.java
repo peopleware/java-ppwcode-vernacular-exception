@@ -4,9 +4,6 @@ package be.peopleware.jsf_II.component;
 import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentTag;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 
