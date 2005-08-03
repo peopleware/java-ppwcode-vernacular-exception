@@ -1,6 +1,7 @@
 package be.peopleware.jsf_II.persistence;
 
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
@@ -88,7 +89,7 @@ public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanListHa
    * @basic
    * @init null;
    */
-  public final Set getInstances() {
+  public final Collection getInstances() {
     if ($persistentBeans == null) {
       LOG.debug("Looking for all PersistentBeans of type "
                 + ((getType() == null) ? "null" : getType().getName()));
@@ -120,7 +121,7 @@ public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanListHa
     }
     return ($persistentBeans == null)
               ? null
-              : Collections.unmodifiableSet($persistentBeans);
+              : Collections.unmodifiableCollection($persistentBeans);
   }
 
   private Set $persistentBeans;

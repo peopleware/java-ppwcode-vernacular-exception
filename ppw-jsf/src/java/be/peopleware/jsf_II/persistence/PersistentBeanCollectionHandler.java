@@ -2,13 +2,16 @@ package be.peopleware.jsf_II.persistence;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.persistence_I.PersistentBean;
 
 
@@ -44,34 +47,34 @@ public class PersistentBeanCollectionHandler extends AbstractPersistentBeanListH
   //------------------------------------------------------------------
 
   /**
-   * Return the set of {@link PersistentBean PersistentBeans},
+   * Return the collection of {@link PersistentBean PersistentBeans},
    * which was set by means of setInstances(Set) .
    *
    * @basic
    * @init null;
    */
-  public final Set getInstances() {
+  public final Collection getInstances() {
     return ($persistentBeans == null)
               ? null
-              : Collections.unmodifiableSet($persistentBeans);
+              : Collections.unmodifiableCollection($persistentBeans);
   }
-  
+
   /**
    * Set a {@link Set} containing {@link PersistentBean PersistentBeans} as
    * the instances of this Handler.
    *
    * @post    getInstances().containsAll(instances);
    */
-  public final void setInstances(final Set instances) {
+  public final void setInstances(final Collection instances) {
     // MUDO (dvankeer): Check if all entries in Insstances are persistent beans?
     LOG.debug("Setting " + instances + " as instances");
     $persistentBeans = instances;
   }
 
-  private Set $persistentBeans;
+  private Collection $persistentBeans;
 
   /*</property>*/
-  
+
   /**
    * Returns a Set containing all peristentBeans wrapped in the associated Handler.
    *
@@ -102,7 +105,7 @@ public class PersistentBeanCollectionHandler extends AbstractPersistentBeanListH
     }
     return $handlers;
   }
-  
+
   private Set $handlers;
 
 }

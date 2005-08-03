@@ -1,9 +1,11 @@
 package be.peopleware.jsf_II.persistence;
 
 
-import java.util.Set;
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.persistence_I.PersistentBean;
@@ -12,10 +14,10 @@ import be.peopleware.persistence_I.PersistentBean;
 /**
  * Common functionality of JavaServer Faces backing beans that process requests
  * for a list of {@link PersistentBean PersistentBeans}.
- * 
+ *
  * @author     David Van Keer
  * @author     Peopleware n.v.
- * 
+ *
  * @mudo (jand) this must be adapted to be more then display; also edit-in-grid
  */
 public abstract class AbstractPersistentBeanListHandler extends AbstractPersistentBeanHandler {
@@ -38,7 +40,7 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
 
   /*<property name="instances">*/
   //------------------------------------------------------------------
-  
+
   /**
    * The set of {@link PersistentBean PersistentBeans},
    * retrieved from persistent storage, that contains all the instances
@@ -48,15 +50,15 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
    * @basic
    * @init null;
    */
-  public abstract Set getInstances();
-  
+  public abstract Collection getInstances();
+
   /*</property>*/
 
 
 
   /*<property name="creatable">*/
   //------------------------------------------------------------------
-  
+
   /**
    * Can we create a new object of the type represented by this form?
    *
@@ -77,16 +79,16 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
   }
 
   private boolean $createable;
-  
+
   /*</property>*/
-  
-  
+
+
 
   private final static String HANDLER_PACKAGE_EXTENSION = ".web.jsf";
 
   private final static String HANDLER_TYPE_SUFFIX = "Handler";
 
-  
+
   private Class handlerClassFor(Class pbType) throws FatalFacesException {
     assert PersistentBean.class.isAssignableFrom(pbType);
     LOG.debug("looking for handler for instances of type " + pbType);
@@ -144,7 +146,7 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
 
   /**
    * Return a {@link PersistentBeanCrudHandler} bases on the given (@link PersistentBean}
-   * 
+   *
    * @param     pb
    *            The PersistentBean for which to find a Handler
    * @return    PersistentBeanCrudHandler
@@ -163,5 +165,5 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
     return result;
   }
 
-  
+
 }
