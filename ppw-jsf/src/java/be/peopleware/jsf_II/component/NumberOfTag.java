@@ -34,9 +34,6 @@ public class NumberOfTag extends UIComponentTag {
   /*</section>*/
 
 
-  private static final Log LOG = LogFactory.getLog(NumberOfTag.class);
-
- 
   public String getComponentType() {
     return UINumberOf.class.getName();
   }
@@ -48,9 +45,9 @@ public class NumberOfTag extends UIComponentTag {
   public void setValue(String collectionExpression) {
     $collectionExpression = collectionExpression;
   }
-  
+
   private String $collectionExpression;
-  
+
   /**
    * @throws FatalFacesException
    *         {@link RobustCurrent#creatValueBinding(UIComponent, String, String)};
@@ -61,10 +58,10 @@ public class NumberOfTag extends UIComponentTag {
                                     UINumberOf.COLLECTION_VALUE_BINDING_NAME,
                                     $collectionExpression);
   }
-  
+
   public final void release() {
     super.release();
     $collectionExpression = null;
   }
-  
+
 }
