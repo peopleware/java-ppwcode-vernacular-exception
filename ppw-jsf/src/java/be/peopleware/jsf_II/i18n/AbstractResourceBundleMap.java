@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -21,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.jsf_II.FatalFacesException;
+import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
 
 
 /**
@@ -40,7 +40,7 @@ import be.peopleware.jsf_II.FatalFacesException;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public abstract class AbstractResourceBundleMap implements Map {
+public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -100,27 +100,6 @@ public abstract class AbstractResourceBundleMap implements Map {
    */
   private Set $keySet;
 
-  /**
-   * @return PropertyUtils.getPropertyDescriptors(getType());
-   */
-  public final int size() {
-    return keySet().size();
-  }
-
-  /**
-   * @return size() == 0;
-   */
-  public final boolean isEmpty() {
-    return size() == 0;
-  }
-
-  /**
-   * @return keySet().contains(key);
-   */
-  public final boolean containsKey(Object key) {
-    return keySet().contains(key);
-  }
-
   /*</section>*/
 
 
@@ -160,15 +139,6 @@ public abstract class AbstractResourceBundleMap implements Map {
    */
   protected abstract String getLabel(String key);
 
-  /**
-   * @note This is a costly method.
-   *
-   * @return values().contains(value);
-   */
-  public final boolean containsValue(Object value) {
-    return values().contains(value);
-  }
-
   public final Collection values() {
     Set result = new TreeSet();
     Iterator keys = keySet().iterator();
@@ -201,62 +171,13 @@ public abstract class AbstractResourceBundleMap implements Map {
     Iterator keys = keySet().iterator();
     while (keys.hasNext()) {
       String key = (String)keys.next();
-      result.add(new EntrySetEntry(key));
+      result.add(new DefaultSetEntry(key));
     }
     $entrySet = Collections.unmodifiableSet(result);
-  }
-
-  private class EntrySetEntry implements Map.Entry, Comparable {
-
-    public EntrySetEntry(String key) {
-      $key = key;
-    }
-
-    private String $key;
-
-    public final Object getKey() {
-      return $key;
-    }
-
-    public final Object getValue() {
-      return getLabel($key);
-    }
-
-    public final Object setValue(Object value) throws UnsupportedOperationException {
-      throw new UnsupportedOperationException();
-    }
-
-    public final int compareTo(Object o) {
-      if (o == null) {
-        return -1;
-      }
-      else {
-        return ((String)getKey()).compareTo(((EntrySetEntry)o).getKey());
-      }
-    }
-
   }
 
   private Set $entrySet;
 
   /*</property>*/
-
-
-
-  public final Object put(Object key, Object value) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  public final Object remove(Object key) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  public final void putAll(Map t) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  public final void clear() throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
 
 }
