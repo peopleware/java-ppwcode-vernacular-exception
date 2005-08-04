@@ -7,6 +7,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
+import be.peopleware.jsf_II.FatalFacesException;
+import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.i18n.BasenameResourceBundleMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
 import be.peopleware.persistence_I.PersistentBean;
@@ -358,7 +360,132 @@ public abstract class AbstractPersistentBeanHandler {
    * The navigation string used in faces-config.xml to come to this page.
    */
   private String $navigationString;
-
+  
   /*</property>*/
+  
+
+  /*<section name="handlerCreation">*/
+  //------------------------------------------------------------------
+
+  private static final String HANDLER_PACKAGE_EXTENSION = ".web.jsf";
+  private static final String HANDLER_TYPE_SUFFIX = "Handler";
+
+  private Class handlerClassFor(Class pbType) throws FatalFacesException {
+    assert PersistentBean.class.isAssignableFrom(pbType);
+    LOG.debug("looking for handler for instances of type " + pbType);
+    Package pbPackage = pbType.getPackage();
+    String handlerPackageName = pbPackage.getName() + HANDLER_PACKAGE_EXTENSION;
+    String[] pbTypeNameParts = pbType.getName().split("\\.");
+    LOG.debug("parts of type name: " + pbTypeNameParts);
+    String simplePbClassName = pbTypeNameParts[pbTypeNameParts.length - 1];
+    String handlerClassName = handlerPackageName + "." + simplePbClassName + HANDLER_TYPE_SUFFIX;
+    LOG.debug("name of handler class we will try to load: " + handlerClassName);
+    Class result = null;
+    try {
+      result  = Class.forName(handlerClassName);
+    }
+    catch (ClassNotFoundException cnfExc) {
+      // try to get a handler for the supertype, if this is not PersistentBean itself
+      LOG.debug("no handler found with name \"" + handlerClassName + "\" for class \"" +
+                pbType + "\"");
+      Class superClass = pbType.getSuperclass();
+      if (superClass !=  PersistentBean.class) {
+        LOG.debug("trying to load handler for superclass \"" + superClass + "\"");
+        return handlerClassFor(superClass);
+      }
+      else {
+        LOG.debug("superclass is \"" + PersistentBean.class + "\"; " +
+                  "will use \"" + PersistentBeanCrudHandler.class + "\" as handler type");
+        assert superClass == PersistentBean.class;
+        return PersistentBeanCrudHandler.class;
+      }
+    }
+    LOG.debug("handler class loaded: " + result);
+    return result;
+  }
+
+  protected final PersistentBeanCrudHandler createInstanceHandler(Class pbType) throws FatalFacesException {
+    assert PersistentBean.class.isAssignableFrom(pbType);
+    Class handlerClass = handlerClassFor(pbType);
+    assert PersistentBeanCrudHandler.class.isAssignableFrom(handlerClass);
+    PersistentBeanCrudHandler handler = null;
+    try {
+      handler = (PersistentBeanCrudHandler)handlerClass.newInstance();
+      handler.setType(pbType);
+      handler.setDao(getDao());
+      LOG.debug("created new handler for PersistentBean type \"" +
+                pbType + "\": " + handler);
+    }
+    catch (InstantiationException iExc) {
+      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
+                                 iExc,
+                                 LOG);
+    }
+    catch (ClassCastException ccExc) {
+      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
+                                 ccExc, LOG);
+    }
+    catch (IllegalArgumentException iaExc) {
+      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
+                                 iaExc, LOG);
+    }
+    catch (IllegalAccessException iaExc) {
+      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
+                                 iaExc, LOG);
+    }
+    catch (NullPointerException npExc) {
+      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
+                                 npExc, LOG);
+    }
+    catch (ExceptionInInitializerError eiiErr) {
+      RobustCurrent.fatalProblem("Failed to instantiate a handler of type " + handlerClass,
+                                 eiiErr, LOG);
+    }
+    return handler;
+  }
+
+  /**
+   * Return a {@link PersistentBeanCrudHandler} based on the given (@link PersistentBean}. If
+   * <code>pb</code> is <code>null</code>, the <code>fallbackType</code> is used.
+   *
+   * @param     pb
+   *            The PersistentBean for which to find a Handler
+   * @pre (pb == null) ? (fallbackType != null);
+   * @return    PersistentBeanCrudHandler
+   *            The Handler beloning to the given PersistentBean
+   * @throws    FatalFacesException
+   *            Thrown when no handler could be found for the given PersistentBean
+   */
+  protected final PersistentBeanCrudHandler createInstanceHandler(final PersistentBean pb, Class fallbackType) throws FatalFacesException {
+    if (pb == null) {
+      assert fallbackType != null;
+      PersistentBeanCrudHandler pbch = createInstanceHandler(fallbackType);
+      return pbch;
+    }
+    else {
+      return createInstanceHandler(pb);
+    }
+  }
+
+    /**
+   * Return a {@link PersistentBeanCrudHandler} bases on the given (@link PersistentBean}
+   *
+   * @param     pb
+   *            The PersistentBean for which to find a Handler
+   * @pre pb != null;
+   * @return    PersistentBeanCrudHandler
+   *            The Handler beloning to the given PersistentBean
+   * @throws    FatalFacesException
+   *            Thrown when no handler could be found for the given PersistentBean
+   */
+  protected final PersistentBeanCrudHandler createInstanceHandler(final PersistentBean pb) throws FatalFacesException {
+    assert pb != null;
+    LOG.debug("creating handler for " + pb);
+    PersistentBeanCrudHandler result = createInstanceHandler(pb.getClass());
+    result.setInstance(pb);
+    return result;
+  }
+  
+  /*</section>*/
 
 }
