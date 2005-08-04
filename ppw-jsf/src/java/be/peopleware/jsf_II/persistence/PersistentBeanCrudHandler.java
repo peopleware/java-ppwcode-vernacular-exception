@@ -1293,7 +1293,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
   public final Map getAssociationHandlers() {
     return $associationHandlers;
   }
-  
+
   /**
    * Alias for {@link #getAssociationHandlers()} with a shorter name.
    */
@@ -1312,6 +1312,8 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
 
             public Object get(Object key) throws FatalFacesException {
               if (! keySet().contains(key)) {
+                LOG.warn("request for associations handler with unknown key (property name) \" +" +
+                         key + "\"; returning null");
                 return null;
               }
               Object result = $backingMap.get(key);
@@ -1368,7 +1370,6 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
       lh.setDao(getDao());
       Collection c = (Collection)PropertyUtils.getProperty(getInstance(), propertyName);
       lh.setInstances(c);
-      return lh;
     }
     catch (ClassCastException ccExc) {
       RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
