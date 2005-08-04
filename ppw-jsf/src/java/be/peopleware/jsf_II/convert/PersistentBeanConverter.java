@@ -104,7 +104,7 @@ public class PersistentBeanConverter implements Converter {
     if (!(value instanceof PersistentBean)) {
       throw new ConverterException("Value is not subclass of PersistentBean Class");
     }
-    PersistentBean rd = ((PersistentBean)value);
-    return (rd.getId() != null) ? rd.getId().toString() : EMPTY;
+    PersistentBean persistentBean = ((PersistentBean)value);
+    return (persistentBean.getId() != null) ? persistentBean.getId().toString() : EMPTY;
   }
 }
