@@ -1304,25 +1304,73 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
       new AbstractUnmodifiableMap() {
 
             public final Set keySet() {
-              return getAssociationMetaMap().keySet();
+              if ($keySet == null) {
+                initKeySet();
+              }
+              return $keySet;
             }
+            
+            private void initKeySet() {
+              $keySet = new HashSet();
+              $keySet.addAll(getAssociationMetaMap().keySet());
+              PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(getType());
+              for (int i = 0; i < descriptors.length; i++) {                
+                PropertyDescriptor pd = descriptors[i];
+                if (PersistentBean.class.isAssignableFrom(pd.getPropertyType())) {
+                  $keySet.add(pd.getDisplayName());
+                }
+              }
+            }
+            
+            private HashSet $keySet;
 
             Map $backingMap = new HashMap();
 
             public Object get(Object key) throws FatalFacesException {
               if (! keySet().contains(key)) {
-                LOG.warn("request for associations handler with unknown key (property name) \" +" +
+                LOG.warn("request for associations handler with unknown key (property name) \"" +
                          key + "\"; returning null");
                 return null;
               }
               Object result = $backingMap.get(key);
               if (result == null) {
-                result = createListHandlerFor((Class)getAssociationMetaMap().get(key), (String)key);
-                $backingMap.put(key, result);
+                String propertyName = (String)key;
+                try {
+                  Object propertyValue = PropertyUtils.getProperty(getInstance(), propertyName);
+                  if (PersistentBean.class.isAssignableFrom((propertyValue.getClass()))) {
+                    PersistentBean pb = (PersistentBean)PropertyUtils.getProperty(getInstance(), propertyName);
+                    PropertyDescriptor pd = PropertyUtils.getPropertyDescriptor(getType(), propertyName);
+                    result = createInstanceHandler(pb, pd.getPropertyType());
+                  }
+                  else {
+                    result = createListHandlerFor((Class)getAssociationMetaMap().get(key), (String)key);
+                  }
+                  $backingMap.put(key, result);
+                }
+                catch (ClassCastException ccExc) {
+                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", ccExc, LOG);
+                }
+                catch (IllegalArgumentException iaExc) {
+                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", iaExc, LOG);
+                }
+                catch (IllegalAccessException iaExc) {
+                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", iaExc, LOG);
+                }
+                catch (InvocationTargetException itExc) {
+                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", itExc, LOG);
+                }
+                catch (NullPointerException npExc) {
+                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", npExc, LOG);
+                }
+                catch (ExceptionInInitializerError eiiErr) {
+                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", eiiErr, LOG);
+                }
+                catch (NoSuchMethodException nsmExc) {
+                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", nsmExc, LOG);
+                }
               }
               return result;
             }
-
           };
 
   /**
@@ -1400,108 +1448,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     }
     return lh;
   }
-
-  /*</section>*/
-
-
-  /*<section name="Association Handlers">*/
-  //------------------------------------------------------------------
-  /**
-   * <p>{@link PersistentBean} instances are often related to other {@link PersistentBean}
-   *   instances, according to the same pattern (a bidirectional one-to-many
-   *   association). These relations need to be navigatable and editable.</p>
-   * <p>For the to-many associations, there is a property in the {@link PersistentBean instance}
-   *   that returns a {@link Collection} of other {@link PersistentBean PersistentBeans}.
-   *   We often want to show this collection in one way, and interact with it, via
-   *   the web interface. This is handled by an {@link AbstractPersistentBeanListHandler}.
-   *   In the handler that wraps around the original instance (an object of this class),
-   *   we need a way to create and access such a
-   *   {@link AbstractPersistentBeanListHandler list handler}. Below you will find code
-   *   to do this via reflection, automatically. Different
-   *   {@link AbstractPersistentBeanListHandler list handlers} can be accessed through
-   *   a (fake) {@link Map}, where the key is the property name of the JavaBean
-   *   property that returns the collection of associated {@link PersistentBean PersistentBeans}
-   *   from the instance this handler works for.</p>
-   *
-   *   @mudo (jand) now ok for to-many relationships; add stuff for to-one relationships
-   *                (but we don't need the meta inf there)
-   */
-  public final Map getPersistentBeanCrudHandlers() {
-    return $pbCrudHandlers;
-  }
   
-  /**
-   * Alias for {@link #getAssociationHandlers()} with a shorter name.
-   */
-  public final Map getPbH() {
-    return getPersistentBeanCrudHandlers();
-  }
-
-  private final Map $pbCrudHandlers =
-      new AbstractUnmodifiableMap() {
-
-            public final Set keySet() {
-              if ($keySet == null) {
-                initKeySet();
-              }
-              return $keySet;
-            }
-
-            private void initKeySet() {
-              $keySet = new HashSet();
-              PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(getType());
-              for (int i = 0; i < descriptors.length; i++) {                
-                PropertyDescriptor pd = descriptors[i];
-                if (PersistentBean.class.isAssignableFrom(pd.getPropertyType())) {
-                  $keySet.add(pd.getDisplayName());
-                }
-              }
-            }
-            
-            private HashSet $keySet;
-
-            Map $backingMap = new HashMap();
-
-            public Object get(Object key) throws FatalFacesException {
-              if (! keySet().contains(key)) {
-                return null;
-              }
-              Object result = $backingMap.get(key);
-              if (result == null) {
-                String propertyName = (String)key;
-                try {
-                  PersistentBean pb = (PersistentBean)PropertyUtils.getProperty(getInstance(), propertyName);
-                  PropertyDescriptor pd = PropertyUtils.getPropertyDescriptor(getType(), propertyName);
-                  result = createInstanceHandler(pb, pd.getPropertyType());
-                  $backingMap.put(key, result);
-                }
-                catch (ClassCastException ccExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", ccExc, LOG);
-                }
-                catch (IllegalArgumentException iaExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property " + propertyName + "\"", iaExc, LOG);
-                }
-                catch (IllegalAccessException iaExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property " + propertyName + "\"", iaExc, LOG);
-                }
-                catch (InvocationTargetException itExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property " + propertyName + "\"", itExc, LOG);
-                }
-                catch (NullPointerException npExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property " + propertyName + "\"", npExc, LOG);
-                }
-                catch (ExceptionInInitializerError eiiErr) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property " + propertyName + "\"", eiiErr, LOG);
-                }
-                catch (NoSuchMethodException nsmExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property " + propertyName + "\"", nsmExc, LOG);
-                }
-              }
-              return result;
-            }
-
-          };
-
   /*</section>*/
 
 }
