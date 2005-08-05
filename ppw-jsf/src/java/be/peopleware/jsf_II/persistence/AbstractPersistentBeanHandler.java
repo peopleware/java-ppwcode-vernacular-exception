@@ -301,6 +301,9 @@ public abstract class AbstractPersistentBeanHandler {
    * TODO
    */
   public Map getButtonLabels() {
+    if ($buttonLabels == null) {
+      $buttonLabels = new BasenameResourceBundleMap(BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME);
+    }
     return $buttonLabels;
   }
 
@@ -325,7 +328,7 @@ public abstract class AbstractPersistentBeanHandler {
 
   /**
    */
-  private Map $buttonLabels = new BasenameResourceBundleMap(BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME);
+  private Map $buttonLabels;
 
   /*</property>*/
 
