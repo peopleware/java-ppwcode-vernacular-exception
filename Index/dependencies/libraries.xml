@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Information about Java libraries
+		 Lookup table, as described in
+		 http://www-128.ibm.com/developerworks/library/x-xsltip.html -->
+
+<libraries>
+  	
+  	<library>
+  		<artifactId>catalina</artifactId>
+  		<name>Catalina</name>
+  		<url>http://jakarta.apache.org/tomcat/</url>
+  		<logoUrl>http://jakarta.apache.org/tomcat/images/tomcat.gif</logoUrl>
+  		<license>apache-2.0</license>
+	</library>
+	
+  	<library>
+  		<artifactId>cglib-full</artifactId>
+  		<name>Code Generation Library</name>
+  		<url>http://cglib.sourceforge.net/</url>
+  		<logoUrl>http://cglib.sourceforge.net/images/cglib.png</logoUrl>
+  		<license>apache-2.0</license>
+	</library>
+	
+  	<library>
+  		<artifactId>commons-beanutils</artifactId>
+  		<name>Apache Jakarta Commons BeanUtils</name>
+  		<url>http://jakarta.apache.org/commons/beanutils/</url>
+  		<logoUrl>http://jakarta.apache.org/commons/beanutils/images/logo.png</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>commons-collections</artifactId>
+  		<name>Apache Jakarta Commons Collections</name>
+  		<url>http://jakarta.apache.org/commons/collections/</url>
+  		<logoUrl>http://jakarta.apache.org/commons/collections/images/logo.png</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>commons-digester</artifactId>
+  		<name>Apache Jakarta Commons Digester</name>
+  		<url>http://jakarta.apache.org/commons/digester/</url>
+  		<logoUrl>http://jakarta.apache.org/commons/digester/images/logo.png</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>commons-fileupload</artifactId>
+  		<name>Apache Jakarta Commons FileUpload</name>
+  		<url>http://jakarta.apache.org/commons/fileupload/</url>
+  		<logoUrl>http://jakarta.apache.org/commons/fileupload/images/logo.png</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>commons-logging</artifactId>
+  		<name>Apache Jakarta Commons Logging</name>
+  		<url>http://jakarta.apache.org/commons/logging/</url>
+  		<logoUrl>http://jakarta.apache.org/commons/logging/images/logo.png</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>commons-validator</artifactId>
+  		<name>Apache Jakarta Commons Validator</name>
+  		<url>http://jakarta.apache.org/commons/validator/</url>
+  		<logoUrl>http://jakarta.apache.org/commons/validator/images/logo.png</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+  	
+  	<library>
+  		<artifactId>dom4j</artifactId>
+  		<name>dom4j</name>
+  		<url>http://www.dom4j.org/</url>
+  		<logoUrl>http://www.dom4j.org/images/logo.gif</logoUrl>
+  		<license>dom4j</license>
+  	</library>
+
+  	<library>
+  		<artifactId>ehcache</artifactId>
+  		<name>EHCACHE</name>
+  		<url>http://ehcache.sourceforge.net/</url>
+  		<logoUrl>http://ehcache.sourceforge.net/images/ehcache_logo_trans.gif</logoUrl>
+  		<license>apache-1.1</license>
+  	</library>
+  	
+  	<library>
+  		<artifactId>hibernate</artifactId>
+  		<name>Hibernate</name>
+  		<url>http://www.hibernate.org/</url>
+  		<logoUrl>http://www.hibernate.org/tpl/hibernate3/img/01_oben_logo.gif</logoUrl>
+  		<license>LGPL-2.1</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>jsf-api</artifactId>
+  		<name>JavaServer Faces Specification</name>
+  		<url>http://java.sun.com/j2ee/javaserverfaces/</url>
+  		<logoUrl>http://java.sun.com/im/a.gif</logoUrl>
+  		<license>sun</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>jsf-impl</artifactId>
+  		<name>JavaServer Faces Reference Implementation</name>
+  		<url>http://java.sun.com/j2ee/javaserverfaces/</url>
+  		<logoUrl>http://java.sun.com/im/a.gif</logoUrl>
+  		<license>sun</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>jsp-api</artifactId>
+  		<name>Java Servlet Specification</name>
+  		<url>http://java.sun.com/products/servlet/</url>
+  		<logoUrl>http://java.sun.com/im/a.gif</logoUrl>
+  		<license>sun</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>jstl</artifactId>
+  		<name>JavaServer Pages Standard Tag Library</name>
+  		<url>http://java.sun.com/products/jsp/jstl/</url>
+  		<logoUrl>http://java.sun.com/im/a.gif</logoUrl>
+  		<license>sun</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>jta</artifactId>
+  		<name>Java Transaction API</name>
+  		<url>http://java.sun.com/products/jta/</url>
+  		<logoUrl>http://java.sun.com/im/a.gif</logoUrl>
+  		<license>sun</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>jtds</artifactId>
+  		<name>jTDS</name>
+  		<url>http://jtds.sourceforge.net/</url>
+  		<logoUrl>http://jtds.sourceforge.net/images/logo.gif</logoUrl>
+  		<license>LGPL-2.1</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>junit</artifactId>
+  		<name>JUnit</name>
+  		<url>http://www.junit.org/</url>
+  		<logoUrl>http://www.junit.org/images/junitlogo.gif</logoUrl>
+  		<license>CPL-1.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>log4j</artifactId>
+  		<name>LOG4J</name>
+  		<url>http://logging.apache.org/log4j/</url>
+  		<logoUrl>http://logging.apache.org/log4j/docs/images/logo.jpg</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>maven-xhtml-plugin</artifactId>
+  		<name>Maven Xhtml Plug-in</name>
+  		<url>http://maven-validator.sourceforge.net/</url>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>myfaces-extensions</artifactId>
+  		<name>Apache MyFaces</name>
+  		<url>http://myfaces.apache.org/</url>
+  		<logoUrl>http://myfaces.apache.org/images/logo.png</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>myfaces</artifactId>
+  		<name>Apache MyFaces</name>
+  		<url>http://myfaces.apache.org/</url>
+  		<logoUrl>http://myfaces.apache.org/images/logo.png</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>odmg</artifactId>
+  		<name>ODMG</name>
+  		<url>http://www.odmg.org/</url>
+  		<logoUrl>http://www.odmg.org/odmg.gif</logoUrl>
+  		<license>ODMG</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>oro</artifactId>
+  		<name>Apache Jakarta ORO</name>
+  		<url>http://jakarta.apache.org/oro</url>
+  		<logoUrl>http://jakarta.apache.org/oro/images/logo.gif</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>ppw-bean-IV</artifactId>
+  		<name>Peopleware Bean Library</name>
+  		<url>https://cvs.peopleware.be/projects/JavaLibraries/ppw-bean-IV/</url>
+  		<logoUrl>../img/ppwlogo.jpg</logoUrl>
+  		<license>peopleware</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>ppw-exception-I</artifactId>
+  		<name>Peopleware Exceptions Library</name>
+  		<url>https://cvs.peopleware.be/projects/JavaLibraries/ppw-exception-I/</url>
+  		<logoUrl>../img/ppwlogo.jpg</logoUrl>
+  		<license>peopleware</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>ppw-i18n-I</artifactId>
+  		<name>Peopleware Internationalization Library</name>
+  		<url>https://cvs.peopleware.be/projects/JavaLibraries/ppw-i18n-I/</url>
+  		<logoUrl>../img/ppwlogo.jpg</logoUrl>
+  		<license>peopleware</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>ppw-jsf-I</artifactId>
+  		<name>Peopleware JSF Library</name>
+  		<url>https://cvs.peopleware.be/projects/JavaLibraries/ppw-jsf-I/</url>
+  		<logoUrl>../img/ppwlogo.jpg</logoUrl>
+  		<license>peopleware</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>ppw-jsp-I</artifactId>
+  		<name>Peopleware Java Server Pages Library</name>
+  		<url>https://cvs.peopleware.be/projects/JavaLibraries/ppw-jsp-I/</url>
+  		<logoUrl>../img/ppwlogo.jpg</logoUrl>
+  		<license>peopleware</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>ppw-persistence-I</artifactId>
+  		<name>Peopleware Persistence Library</name>
+  		<url>https://cvs.peopleware.be/projects/JavaLibraries/ppw-persistence-I/</url>
+  		<logoUrl>../img/ppwlogo.jpg</logoUrl>
+  		<license>peopleware</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>ppw-servlet-I</artifactId>
+  		<name>Peopleware Servlet Library</name>
+  		<url>https://cvs.peopleware.be/projects/JavaLibraries/ppw-servlet-I/</url>
+  		<logoUrl>../img/ppwlogo.jpg</logoUrl>
+  		<license>peopleware</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>ppw-value-I</artifactId>
+  		<name>Peopleware Value Type Library</name>
+  		<url>https://cvs.peopleware.be/projects/JavaLibraries/ppw-value-I/</url>
+  		<logoUrl>../img/ppwlogo.jpg</logoUrl>
+  		<license>peopleware</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>securityfilter</artifactId>
+  		<name>SecurityFilter</name>
+  		<url>http://securityfilter.sourceforge.net/</url>
+  		<license>apache-2.0</license>
+  	</library>
+	
+  	<library>
+  		<artifactId>standard</artifactId>
+  		<name>Apache Jakarta Taglibs</name>
+  		<url>http://jakarta.apache.org/taglibs/</url>
+  		<logoUrl>http://jakarta.apache.org/taglibs/images/taglibs.gif</logoUrl>
+  		<license>apache-2.0</license>
+  	</library>
+	
+</libraries>

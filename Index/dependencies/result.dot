@@ -1,0 +1,75 @@
+
+    digraph PeopleWare_Libraries_Dependencies {
+
+      graph [	fontname = "Helvetica-Oblique",
+        fontsize = 36,
+        label = "PeopleWare Libraries Dependencies, NOW",
+        size = "10,50"];
+
+      nslimit=10.0;
+      mclimit=10.0;
+
+      node [shape = rectangle, fillcolor=aquamarine2,
+        fontname = "Helvetica", fontsize = 11];
+
+      edge [];
+      /* optional = blue
+         only needed for the tests = chocolate */
+
+      subgraph cluster_PPW_Libraries {
+        color = aquamarine4;
+        fontcolor = aquamarine4;
+        label = "Peopleware Java Libraries";
+        
+        node [style=filled, fillcolor=aquamarine2];
+        edge [style=bold];
+        
+        /* this node */
+        ppw_libraries_ppw_jsf_II
+          [label="JSF Library\nv SNAPSHOT"];
+      }
+    
+      subgraph cluster_web_apis {
+        label = "Standard Web API's";
+        
+        servlet_api       [label="Servlet API\nv2.4"];
+        jsp_api           [label="JSP API\nv2.0"];
+        jstl_api          [label="JSTL\nv1.1.2"];
+        mail_api          [label="Mail API\nv1.3.2"];
+      }
+    
+      subgraph cluster_Apache_jakarta {
+        label = "Apache Jakarta";
+      
+        jstl_apache       [label="standard\n(Apache JSTL Impl.)"];
+        struts            [label="Struts"];
+        
+        subgraph cluster_commons {
+          label = "Apache Jakarta Commons";
+          
+          commons_logging_commons_logging   [label="Commons logging"];
+          commons_beanutils_commons_beanutils [label="Commons beanutils"];
+        }
+      
+      }
+    
+    
+    
+      /* dependencies */
+      ppw_libraries_ppw_jsf_II
+        -> {
+    commons_logging_commons_logging;
+    hibernate_hibernate;
+    servletapi_servletapi;
+    ppw_libraries_ppw_exception_I;
+    ppw_libraries_ppw_bean_IV;
+    myfaces_myfaces;
+    ppw_libraries_ppw_servlet_I;
+    ppw_libraries_ppw_persistence_I;
+    ppw_libraries_ppw_i18n_I;
+    commons_beanutils_commons_beanutils;
+    jspapi_jsp_api;
+             };
+
+    }
+  

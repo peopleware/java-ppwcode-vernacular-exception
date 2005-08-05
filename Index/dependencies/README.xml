@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+    <head>
+        <title>Dependencies</title>
+    </head>
+    <body>
+        <p>To represent dependencies graphically, we read the <code>project.xml</code> and transform
+            it using <code>xslt</code> into a file for <code>dot</code>.</p>
+        <p>This file is then transformed into a <code>PNG</code> file.</p>
+    </body>
+</html>
