@@ -4,15 +4,16 @@ package be.peopleware.jsp_I.displaytag;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
+
 import org.displaytag.decorator.TableDecorator;
 
-import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.jsp_I.tag.Functions;
+import be.peopleware.persistence_I.PersistentBean;
 
 
 /**
  * A displaytag decorator super class for
- * {@link PersistenBean} derivates.
+ * {@link PersistentBean} derivates.
  *
  * @author    David Van Keer
  * @author    Peopleware n.v.
