@@ -106,12 +106,6 @@
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>ppw-libraries</groupId>
-      <artifactId>ppw-value-I</artifactId>
-      <version>1.11.1-4.4</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
       <version>1.7.0</version>
