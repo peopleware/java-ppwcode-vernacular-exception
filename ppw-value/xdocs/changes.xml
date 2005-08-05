@@ -6,6 +6,15 @@
   </properties>
   <body>
 
+    <release version="I v1.12.0/4.4" date="2005-08-05" description="Extension">
+      <action dev="jand" type="add">
+        Added Abstract and Automatic JSF converter, that falls back on
+        PropertyEditors. This introduces a dependency on JSF of this library,
+        but as long as these classes are not used, a project that uses
+        ppw-value does not need the JSF libraries.
+      </action>
+    </release>
+
     <release version="I v1.10.0/2.4" date="2005-05-17" description="Extension">
       <action dev="nsmeets" type="add">
       	Added user type for NationalNumber.
