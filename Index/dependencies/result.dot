@@ -1,239 +1,190 @@
-digraph PeopleWare_Libraries_Dependencies {
-	graph [ranksep="1.50", fontname="Helvetica-Oblique", fontsize=36, label="PeopleWare Libraries Dependencies, NOW", size="10,50", concentrate=true, nslimit="10.0", mclimit="10.0"];
-	node [label="\N", shape=rectangle, fillcolor=aquamarine2, fontname=Helvetica, fontsize=11];
-	graph [lp="558,25",
-		bb="0,0,1116,1060"];
-	subgraph cluster_PPW_Libraries {
-		graph [label="Peopleware Java Libraries",
-			ordering=out,
-			color=aquamarine4,
-			fontcolor=aquamarine4,
-			lp="328,1027",
-			bb="101,59,555,1052"];
-		node [style=filled];
-		ppw_libraries_ppw_bean_IV [label="JavaBeans Library\nv 1.1.0-1.2", pos="346,543", width="1.47", height="0.50"];
-		ppw_libraries_ppw_exception_I [label="Exceptions Library\nv 1.0.0-1.0", pos="370,373", width="1.47", height="0.50"];
-		ppw_libraries_ppw_i18n_I [label="Internationalization Library\nv 1.0.2-1.0", pos="234,229", width="2.00", height="0.50"];
-		ppw_libraries_ppw_jsf_II [label="JSF Library\nv SNAPSHOT", pos="252,831", width="1.17", height="0.50"];
-		ppw_libraries_ppw_jsp_I [label="Java Server Pages Library\nv 1.1.0-1.1", pos="474,831", width="2.03", height="0.50"];
-		ppw_libraries_ppw_persistence_I [label="Persistence Library\nv 1.0.0-1.0", pos="348,687", width="1.53", height="0.50"];
-		ppw_libraries_ppw_servlet_I [label="Servlet Library\nv 1.0.0-1.1", pos="484,687", width="1.19", height="0.50"];
-		ppw_libraries_ppw_struts_III [label="Struts Library\nv 1.1.0-1.0", pos="474,975", width="1.11", height="0.50"];
-		ppw_libraries_ppw_test_I [label="Unit Test Library\nv 1.0.1-1.0", pos="234,85", width="1.31", height="0.50"];
-		ppw_libraries_ppw_value_I [label="Value Type Library\nv 1.12.0-4.4", pos="182,687", width="1.47", height="0.50"];
-		ppw_libraries_ppw_bean_IV -> ppw_libraries_ppw_exception_I [weight=1, pos="e,367,391 349,525 353,495 361,436 366,401"];
-		ppw_libraries_ppw_bean_IV -> ppw_libraries_ppw_i18n_I [weight=1, pos="e,245,247 298,373 289,330 266,284 250,256;321,525 316,520 311,515 308,509 282,454 311,432 298,373"];
-		ppw_libraries_ppw_bean_IV -> ppw_libraries_ppw_test_I [weight=1, pos="e,250,103 325,229 310,184 279,138 257,111;298,373 285,309 346,290 325,229"];
-		ppw_libraries_ppw_exception_I -> ppw_libraries_ppw_i18n_I [weight=1, pos="e,251,247 353,355 329,329 285,283 258,254"];
-		ppw_libraries_ppw_exception_I -> ppw_libraries_ppw_test_I [weight=1, pos="364,355 355,330 340,285 329,247 327,239 328,236 325,229"];
-		ppw_libraries_ppw_i18n_I -> ppw_libraries_ppw_test_I [weight=1, pos="e,234,103 234,211 234,186 234,142 234,113"];
-		ppw_libraries_ppw_jsf_II -> ppw_libraries_ppw_bean_IV [weight=1, pos="e,333,561 274,687 283,643 309,597 327,569"];
-		ppw_libraries_ppw_jsf_II -> ppw_libraries_ppw_exception_I [weight=1, pos="283,813 288,808 292,804 295,801 321,779 397,734 412,705 446,641 432,614 422,543"];
-		ppw_libraries_ppw_jsf_II -> ppw_libraries_ppw_i18n_I [weight=1, pos="254,813 258,785 266,732 274,687;e,237,247 274,687 291,604 252,344 239,257"];
-		ppw_libraries_ppw_jsf_II -> ppw_libraries_ppw_persistence_I [weight=1, pos="e,336,705 264,813 281,788 312,743 331,713"];
-		ppw_libraries_ppw_jsf_II -> ppw_libraries_ppw_servlet_I [weight=1, pos="e,455,705 281,813 323,787 400,739 446,710"];
-		ppw_libraries_ppw_jsp_I -> ppw_libraries_ppw_bean_IV [weight=1, pos="e,359,561 546,687 536,626 441,636 417,620 397,606 379,585 365,569;484,813 504,776 548,693 546,687"];
-		ppw_libraries_ppw_jsp_I -> ppw_libraries_ppw_exception_I [weight=1, pos="e,378,391 442,543 420,492 395,434 382,401;546,687 539,643 460,624 457,620 438,591 457,574 442,543"];
-		ppw_libraries_ppw_jsp_I -> ppw_libraries_ppw_i18n_I [weight=1, pos="e,306,246 442,543 440,537 435,343 432,339 397,280 366,265 316,249"];
-		ppw_libraries_ppw_jsp_I -> ppw_libraries_ppw_persistence_I [weight=1, pos="e,364,705 458,813 436,787 396,742 371,713"];
-		ppw_libraries_ppw_persistence_I -> ppw_libraries_ppw_bean_IV [weight=1, pos="e,346,561 348,669 347,644 347,600 346,571"];
-		ppw_libraries_ppw_persistence_I -> ppw_libraries_ppw_exception_I [weight=1, pos="369,669 383,656 399,639 408,620 424,588 427,577 422,543;e,378,391 422,543 416,491 395,434 382,401"];
-		ppw_libraries_ppw_servlet_I -> ppw_libraries_ppw_exception_I [weight=1, pos="468,669 458,656 445,638 437,620 424,587 427,577 422,543"];
-		ppw_libraries_ppw_struts_III -> ppw_libraries_ppw_bean_IV [weight=1, pos="e,331,561 254,687 272,643 304,597 325,569"];
-		ppw_libraries_ppw_struts_III -> ppw_libraries_ppw_exception_I [weight=1, pos="e,366,391 254,687 283,615 237,576 284,517 290,509 297,515 303,509 335,479 354,431 363,401;182,831 158,763 226,752 254,687"];
-		ppw_libraries_ppw_struts_III -> ppw_libraries_ppw_i18n_I [weight=1, pos="e,230,247 182,831 182,831 182,827 182,827 181,815 179,812 175,801 174,795 173,794 170,789 165,777 163,775 156,765 141,738 129,73\
-4 120,705 116,689 118,684 120,669 124,646 129,641 135,620 173,485 213,321 228,257"];
-		ppw_libraries_ppw_struts_III -> ppw_libraries_ppw_jsp_I [weight=1, pos="e,474,849 474,957 474,932 474,888 474,859"];
-		ppw_libraries_ppw_struts_III -> ppw_libraries_ppw_persistence_I [weight=1, pos="e,295,705 182,831 161,774 230,733 285,709"];
-		ppw_libraries_ppw_struts_III -> ppw_libraries_ppw_servlet_I [weight=1, pos="e,441,698 182,831 164,779 340,725 431,701"];
-		ppw_libraries_ppw_struts_III -> ppw_libraries_ppw_value_I [weight=1, pos="e,178,705 182,831 168,793 172,745 176,715"];
-		ppw_libraries_ppw_value_I -> ppw_libraries_ppw_bean_IV [weight=1, pos="e,325,561 203,669 232,643 285,597 317,568"];
-		ppw_libraries_ppw_value_I -> ppw_libraries_ppw_exception_I [weight=1, pos="e,367,391 234,543 239,530 238,524 249,517 270,503 284,523 303,509 339,483 356,433 365,401"];
-		ppw_libraries_ppw_value_I -> ppw_libraries_ppw_i18n_I [weight=1, pos="e,232,247 234,373 229,333 230,286 231,257"];
-		ppw_libraries_ppw_value_I -> ppw_libraries_ppw_test_I [weight=1, pos="234,543 261,472 246,447 234,373;188,669 198,641 217,588 234,543;e,217,103 234,373 222,293 131,288 153,211 165,173 191,135 211,11\
-1"];
-	}
-	subgraph cluster_web_apis {
-		graph [label="Standard Web API's",
-			lp="829,595",
-			bb="605,517,1053,620"];
-		servletapi_servletapi [label="Servlet API\nv 2.4", pos="790,543", width="0.97", height="0.50"];
-		jspapi_jsp_api [label="JSP API\nv 2.0", pos="871,543", width="0.78", height="0.50"];
-		jstl_jstl [label="JSTL\nv 1.1.2", pos="944,543", width="0.75", height="0.50"];
-		javamail_mailapi [label="Mail API\nv 1.3.2", pos="1017,543", width="0.78", height="0.50"];
-		jsf_jsf_api [label="JavaServer Faces API\nv 1.1.01", pos="675,543", width="1.72", height="0.50"];
-	}
-	subgraph cluster_Apache_jakarta {
-		graph [label="Apache Jakarta",
-			lp="841,484",
-			bb="574,339,1108,509"];
-		subgraph cluster_Apache_jakarta_commons {
-			graph [label="Apache Jakarta Commons",
-				lp="833,425",
-				bb="708,347,958,450"];
-			commons_logging_commons_logging [label="Commons logging", pos="768,373", width="1.44", height="0.50"];
-			commons_beanutils_commons_beanutils [label="Commons beanutils", pos="894,373", width="1.56", height="0.50"];
-		}
-		taglibs_standard [label="standard\n(Apache JSTL Impl.)", pos="640,373", width="1.61", height="0.50"];
-		struts_struts [label=Struts, pos="1073,373", width="0.75", height="0.50"];
-		myfaces_myfaces [label=MyFaces, pos="998,373", width="0.83", height="0.50"];
-	}
-	subgraph cluster_JBoss {
-		graph [label=JBoss,
-			lp="53,425",
-			bb="13,347,93,450"];
-		hibernate_hibernate [label=Hibernate, pos="53,373", width="0.89", height="0.50"];
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_exception_I;
-		ppw_libraries_ppw_i18n_I;
-		ppw_libraries_ppw_test_I;
-		taglibs_standard;
-		commons_logging_commons_logging;
-		hibernate_hibernate;
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_i18n_I;
-		ppw_libraries_ppw_test_I;
-		jspapi_jsp_api;
-		servletapi_servlet_api [pos="624,229", width="1.69", height="0.50"];
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_test_I;
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_bean_IV;
-		ppw_libraries_ppw_exception_I;
-		ppw_libraries_ppw_i18n_I;
-		ppw_libraries_ppw_persistence_I;
-		ppw_libraries_ppw_servlet_I;
-		servletapi_servletapi;
-		jspapi_jsp_api;
-		myfaces_myfaces;
-		commons_logging_commons_logging;
-		commons_beanutils_commons_beanutils;
-		hibernate_hibernate;
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_bean_IV;
-		ppw_libraries_ppw_exception_I;
-		ppw_libraries_ppw_i18n_I;
-		ppw_libraries_ppw_persistence_I;
-		servletapi_servletapi;
-		jspapi_jsp_api;
-		jstl_jstl;
-		taglibs_standard;
-		displaytag_displaytag [label=displaytag, pos="646,687", width="0.92", height="0.50"];
-		maven_taglib_maven_taglib_plugin [pos="895,687", width="2.61", height="0.50"];
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_bean_IV;
-		ppw_libraries_ppw_exception_I;
-		commons_logging_commons_logging;
-		hibernate_hibernate;
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_exception_I;
-		servletapi_servletapi;
-		commons_logging_commons_logging;
-		hibernate_hibernate;
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_bean_IV;
-		ppw_libraries_ppw_exception_I;
-		ppw_libraries_ppw_i18n_I;
-		ppw_libraries_ppw_jsp_I;
-		ppw_libraries_ppw_persistence_I;
-		ppw_libraries_ppw_servlet_I;
-		ppw_libraries_ppw_value_I;
-		servletapi_servletapi;
-		jspapi_jsp_api;
-		jstl_jstl;
-		javamail_mailapi;
-		struts_struts;
-		commons_logging_commons_logging;
-		commons_beanutils_commons_beanutils;
-		hibernate_hibernate;
-		maven_taglib_maven_taglib_plugin;
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-	}
-	{
-		graph [lp="",
-			bb=""];
-		edge [weight=1];
-		ppw_libraries_ppw_bean_IV;
-		ppw_libraries_ppw_exception_I;
-		ppw_libraries_ppw_i18n_I;
-		ppw_libraries_ppw_test_I;
-		jsf_jsf_api;
-		hibernate_hibernate;
-		toryt_toryt [label=Toryt, pos="66,543", width="0.75", height="0.50"];
-	}
-	ppw_libraries_ppw_bean_IV -> taglibs_standard [weight=1, pos="e,635,391 399,526 412,522 425,519 437,517 464,512 536,523 559,509 599,485 621,433 632,401"];
-	ppw_libraries_ppw_bean_IV -> commons_logging_commons_logging [weight=1, pos="e,767,391 399,525 412,522 425,519 437,517 453,514 704,517 716,509 751,484 763,433 766,401"];
-	ppw_libraries_ppw_bean_IV -> hibernate_hibernate [weight=1, pos="e,53,391 293,528 276,524 257,520 239,517 224,514 110,518 97,509 64,484 56,433 53,401"];
-	ppw_libraries_ppw_exception_I -> jspapi_jsp_api [weight=1, pos="e,850,525 389,391 422,422 495,484 570,509 626,527 779,498 834,517 837,518 839,519 841,520"];
-	ppw_libraries_ppw_exception_I -> servletapi_servlet_api [weight=1, pos="e,592,247 402,355 448,329 533,281 583,252"];
-	ppw_libraries_ppw_jsf_II -> servletapi_servletapi [weight=1, pos="e,784,561 585,687 593,681 588,674 595,669 650,624 692,664 746,620 762,607 773,587 780,571"];
-	ppw_libraries_ppw_jsf_II -> jspapi_jsp_api [weight=1, pos="e,867,561 585,687 593,681 588,674 595,669 683,604 749,686 834,620 850,608 859,588 864,571"];
-	ppw_libraries_ppw_jsf_II -> myfaces_myfaces [weight=1, pos="e,1000,391 585,687 615,663 574,543 601,517 616,503 947,521 962,509 995,484 1000,433 1000,401"];
-	ppw_libraries_ppw_jsf_II -> commons_logging_commons_logging [weight=1, pos="e,767,391 509,543 518,514 542,523 571,517 587,513 703,518 716,509 751,484 763,433 766,401;585,687 614,664 499,577 509,543;294,82\
-1 361,803 495,760 585,687"];
-	ppw_libraries_ppw_jsf_II -> commons_beanutils_commons_beanutils [weight=1, pos="e,891,391 509,543 518,514 542,523 571,517 600,510 805,524 829,509 867,485 883,433 889,401"];
-	ppw_libraries_ppw_jsf_II -> hibernate_hibernate [weight=1, pos="222,813 184,789 120,742 81,687"];
-	ppw_libraries_ppw_jsp_I -> servletapi_servletapi [weight=1, pos="e,793,561 773,687 797,653 797,603 794,571"];
-	ppw_libraries_ppw_jsp_I -> jspapi_jsp_api [weight=1, pos="e,865,561 773,687 779,679 778,676 783,669 803,644 816,645 834,620 845,604 854,585 861,570"];
-	ppw_libraries_ppw_jsp_I -> jstl_jstl [weight=1, pos="e,940,561 773,687 779,679 777,675 783,669 828,629 865,660 908,620 922,607 931,587 937,571"];
-	ppw_libraries_ppw_jsp_I -> taglibs_standard [weight=1, pos="e,637,391 773,687 779,679 771,674 763,669 705,621 646,680 601,620 549,549 609,509 630,424 632,416 634,408 635,401;484,813 585,72\
-5 663,792 763,705 770,698 768,694 773,687"];
-	ppw_libraries_ppw_jsp_I -> displaytag_displaytag [weight=1, pos="e,616,705 484,813 520,771 572,733 607,710"];
-	ppw_libraries_ppw_jsp_I -> maven_taglib_maven_taglib_plugin [weight=1, pos="e,810,705 484,813 533,773 694,732 800,707"];
-	ppw_libraries_ppw_persistence_I -> commons_logging_commons_logging [weight=1, pos="386,669 407,657 432,641 447,620 469,591 448,570 471,543;e,767,391 471,543 482,531 481,523 495,517 518,506 697,523 716,509 751,48\
-4 763,433 766,401"];
-	ppw_libraries_ppw_persistence_I -> hibernate_hibernate [weight=1, pos="307,669 258,646 176,601 121,543;e,55,391 121,543 113,533 120,526 111,517 107,511 102,514 97,509 71,477 60,431 56,401"];
-	ppw_libraries_ppw_servlet_I -> servletapi_servletapi [weight=1, pos="e,785,561 527,673 532,672 537,670 541,669 632,643 672,676 746,620 763,607 774,587 781,570"];
-	ppw_libraries_ppw_servlet_I -> commons_logging_commons_logging [weight=1, pos="475,669 462,639 441,578 471,543"];
-	ppw_libraries_ppw_servlet_I -> hibernate_hibernate [weight=1, pos="441,676 371,658 239,624 229,620 176,594 162,586 121,543"];
-	ppw_libraries_ppw_struts_III -> servletapi_servletapi [weight=1, pos="e,796,561 1017,687 996,603 866,644 834,620 818,607 807,587 800,571;1017,831 1045,773 1033,749 1017,687"];
-	ppw_libraries_ppw_struts_III -> jspapi_jsp_api [weight=1, pos="e,876,561 1017,687 1004,631 948,660 908,620 895,606 886,586 879,570"];
-	ppw_libraries_ppw_struts_III -> jstl_jstl [weight=1, pos="e,952,561 1017,687 1009,654 996,650 980,620 972,604 963,585 956,570"];
-	ppw_libraries_ppw_struts_III -> javamail_mailapi [weight=1, pos="e,1014,561 1017,687 1007,647 1010,600 1013,571"];
-	ppw_libraries_ppw_struts_III -> struts_struts [weight=1, pos="e,1071,391 1073,543 1063,493 1066,435 1070,401"];
-	ppw_libraries_ppw_struts_III -> commons_logging_commons_logging [weight=1, pos="e,770,391 1073,543 1070,529 1068,523 1057,517 1036,504 851,523 829,509 794,485 778,433 772,401;1017,687 1009,653 1044,652 1057,6\
-20 1069,587 1079,577 1073,543"];
-	ppw_libraries_ppw_struts_III -> commons_beanutils_commons_beanutils [weight=1, pos="e,889,391 1073,543 1070,529 1068,523 1057,517 1042,508 917,520 904,509 876,481 881,432 887,401"];
-	ppw_libraries_ppw_struts_III -> hibernate_hibernate [weight=1, pos="182,831 155,757 126,751 81,687;434,971 363,962 220,931 182,831;e,43,391 11,543 0,492 22,434 38,400;81,687 59,654 38,656 21,620 7\
-,588 19,576 11,543"];
-	ppw_libraries_ppw_struts_III -> maven_taglib_maven_taglib_plugin [weight=1, pos="e,931,705 1017,831 1040,782 983,736 940,710;514,972 632,961 972,923 1017,831"];
-	ppw_libraries_ppw_value_I -> jsf_jsf_api [weight=1, pos="e,654,561 235,672 240,671 244,670 249,669 386,639 430,670 559,620 591,608 623,585 646,567"];
-	ppw_libraries_ppw_value_I -> hibernate_hibernate [weight=1, pos="129,671 88,657 35,638 21,620 1,592 19,576 11,543"];
-	ppw_libraries_ppw_value_I -> toryt_toryt [weight=1, pos="e,70,561 152,669 134,657 112,640 97,620 86,605 79,586 73,571"];
-}
+
+    digraph PeopleWare_Libraries_Dependencies {
+
+      graph [	fontname = "Helvetica-Oblique",
+        fontsize = 36,
+        label = "PeopleWare Libraries Dependencies, 2005-08-06"];
+
+      concentrate = true;
+      nslimit=1000.0;
+      mclimit=1000.0;
+
+      node [shape = rectangle, fillcolor=aquamarine2,
+        fontname = "Helvetica", fontsize = 11];
+
+      // edge [len=4.2];
+      /* optional = blue
+      only needed for the tests = chocolate */
+      
+      subgraph cluster_PPW_Libraries {
+    
+        ordering = out;
+        color = aquamarine4;
+        fontcolor = aquamarine4;
+        label = "Peopleware Java Libraries";
+        
+        node [style=filled, fillcolor=aquamarine2];
+    
+        ppw_libraries_ppw_bean_IV
+    [label="JavaBeans Library\nv 1.1.0-1.2"];
+  ppw_libraries_ppw_exception_I
+    [label="Exceptions Library\nv 1.0.0-1.0"];
+  ppw_libraries_ppw_i18n_I
+    [label="Internationalization Library\nv 1.0.2-1.0"];
+  ppw_libraries_ppw_jsf_II
+    [label="JSF Library\nv SNAPSHOT"];
+  ppw_libraries_ppw_jsp_I
+    [label="Java Server Pages Library\nv 1.1.0-1.1"];
+  ppw_libraries_ppw_persistence_I
+    [label="Persistence Library\nv 1.0.0-1.0"];
+  ppw_libraries_ppw_servlet_I
+    [label="Servlet Library\nv 1.0.0-1.1"];
+  ppw_libraries_ppw_struts_III
+    [label="Struts Library\nv 1.1.0-1.0"];
+  ppw_libraries_ppw_test_I
+    [label="Unit Test Library\nv 1.0.1-1.0"];
+  ppw_libraries_ppw_value_I
+    [label="Value Type Library\nv 1.12.0-4.4"];
+  
+      }
+    
+      subgraph cluster_web_apis {
+    
+        label = "Standard Web API's";
+    
+        servletapi_servletapi      [label="Servlet API\nv 2.4"];
+        jspapi_jsp_api             [label="JSP API\nv 2.0"];
+        jstl_jstl                  [label="JSTL\nv 1.1.2"];
+        javamail_mailapi           [label="Mail API\nv 1.3.2"];
+        jsf_jsf_api                [label="JavaServer Faces API\nv 1.1.01"];
+    
+      }
+    
+        
+      subgraph cluster_Apache_jakarta {
+    
+        label = "Apache Jakarta";
+      
+        taglibs_standard       [label="standard\n(Apache JSTL Impl.)"];
+        struts_struts     [label="Struts"];
+        myfaces_myfaces   [label="MyFaces"];
+    
+        subgraph cluster_Apache_jakarta_commons {
+      
+          label = "Apache Jakarta Commons";
+      
+          commons_logging_commons_logging   [label="Commons logging"];
+          commons_beanutils_commons_beanutils [label="Commons beanutils"];
+    
+        }
+      
+      }
+    
+      subgraph cluster_JBoss {
+  
+        label = "JBoss";
+  
+        hibernate_hibernate [label="Hibernate"];
+  
+      }
+    
+      displaytag_displaytag [label="displaytag"];
+      toryt_toryt [label="Toryt"];
+    
+      /* dependencies */
+      edge [weight=1];
+    
+      ppw_libraries_ppw_bean_IV
+    -> {
+    commons_logging_commons_logging;
+    hibernate_hibernate;
+    ppw_libraries_ppw_test_I;
+    ppw_libraries_ppw_i18n_I;
+    taglibs_standard;
+    ppw_libraries_ppw_exception_I;
+             };
+  ppw_libraries_ppw_exception_I
+    -> {
+    ppw_libraries_ppw_test_I;
+    ppw_libraries_ppw_i18n_I;
+    jspapi_jsp_api;
+             };
+  ppw_libraries_ppw_i18n_I
+    -> {
+    ppw_libraries_ppw_test_I;
+             };
+  ppw_libraries_ppw_jsf_II
+    -> {
+    commons_logging_commons_logging;
+    hibernate_hibernate;
+    servletapi_servletapi;
+    ppw_libraries_ppw_exception_I;
+    ppw_libraries_ppw_bean_IV;
+    myfaces_myfaces;
+    ppw_libraries_ppw_servlet_I;
+    ppw_libraries_ppw_persistence_I;
+    ppw_libraries_ppw_i18n_I;
+    commons_beanutils_commons_beanutils;
+    jspapi_jsp_api;
+             };
+  ppw_libraries_ppw_jsp_I
+    -> {
+    servletapi_servletapi;
+    jstl_jstl;
+    displaytag_displaytag;
+    jspapi_jsp_api;
+    taglibs_standard;
+    ppw_libraries_ppw_bean_IV;
+    ppw_libraries_ppw_exception_I;
+    ppw_libraries_ppw_i18n_I;
+    ppw_libraries_ppw_persistence_I;
+    maven_taglib_maven_taglib_plugin;
+             };
+  ppw_libraries_ppw_persistence_I
+    -> {
+    commons_logging_commons_logging;
+    hibernate_hibernate;
+    ppw_libraries_ppw_exception_I;
+    ppw_libraries_ppw_bean_IV;
+             };
+  ppw_libraries_ppw_servlet_I
+    -> {
+    commons_logging_commons_logging;
+    servletapi_servletapi;
+    hibernate_hibernate;
+    ppw_libraries_ppw_exception_I;
+             };
+  ppw_libraries_ppw_struts_III
+    -> {
+    commons_logging_commons_logging;
+    struts_struts;
+    commons_beanutils_commons_beanutils;
+    servletapi_servletapi;
+    jstl_jstl;
+    hibernate_hibernate;
+    ppw_libraries_ppw_value_I;
+    ppw_libraries_ppw_bean_IV;
+    ppw_libraries_ppw_exception_I;
+    ppw_libraries_ppw_i18n_I;
+    ppw_libraries_ppw_persistence_I;
+    jspapi_jsp_api;
+    javamail_mailapi;
+    ppw_libraries_ppw_servlet_I;
+    ppw_libraries_ppw_jsp_I;
+    maven_taglib_maven_taglib_plugin;
+             };
+  ppw_libraries_ppw_test_I
+    -> {           };
+  ppw_libraries_ppw_value_I
+    -> {
+    toryt_toryt;
+    hibernate_hibernate;
+    ppw_libraries_ppw_test_I;
+    ppw_libraries_ppw_i18n_I;
+    ppw_libraries_ppw_bean_IV;
+    ppw_libraries_ppw_exception_I;
+    jsf_jsf_api;
+             };
+  
+    }
+  

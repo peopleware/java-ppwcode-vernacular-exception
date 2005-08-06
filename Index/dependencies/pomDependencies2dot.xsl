@@ -1,7 +1,11 @@
 <?xml version='1.0' encoding='iso-8859-1'?>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="text" version="1.0" encoding="utf-8" indent="yes"/>
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:date="http://exslt.org/dates-and-times"
+  extension-element-prefixes="date">
+  <!-- uses EXSLT, which is supported by Saxon and Xalan; see http://www.exslt.org/ -->
+  
+  <xsl:output method="text" version="1.0" encoding="utf-8" indent="yes"/>
 
   <xsl:variable name="ppw-bean" select="document('../../ppw-bean/project.xml')/project" />
   <xsl:variable name="ppw-exception" select="document('../../ppw-exception/project.xml')/project" />
@@ -28,12 +32,11 @@
 
       graph [	fontname = "Helvetica-Oblique",
         fontsize = 36,
-        label = "PeopleWare Libraries Dependencies, NOW",
-        size = "10,50"];
+        label = "PeopleWare Libraries Dependencies, <xsl:value-of select="date:date()"/>"];
 
       concentrate = true;
-      nslimit=10.0;
-      mclimit=10.0;
+      nslimit=1000.0;
+      mclimit=1000.0;
 
       node [shape = rectangle, fillcolor=aquamarine2,
         fontname = "Helvetica", fontsize = 11];
