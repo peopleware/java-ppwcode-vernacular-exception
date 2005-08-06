@@ -31,25 +31,26 @@
         label = "PeopleWare Libraries Dependencies, NOW",
         size = "10,50"];
 
+      concentrate = true;
       nslimit=10.0;
       mclimit=10.0;
 
       node [shape = rectangle, fillcolor=aquamarine2,
         fontname = "Helvetica", fontsize = 11];
 
-      edge [len=4.2];
+      // edge [len=4.2];
       /* optional = blue
       only needed for the tests = chocolate */
       
-      {
+      subgraph cluster_PPW_Libraries {
+    
+        ordering = out;
         color = aquamarine4;
         fontcolor = aquamarine4;
+        label = "Peopleware Java Libraries";
         
         node [style=filled, fillcolor=aquamarine2];
-        
-        cluster_PPW_Libraries [style="invis"];
     
-        edge [style="invis", weight=2];
         <xsl:call-template name="ppwNode">
           <xsl:with-param name="project" select="$ppw-bean" />
         </xsl:call-template>
@@ -82,59 +83,48 @@
         </xsl:call-template>
       }
     
-       
-
-      cluster_web_apis [style="invis"];
-          
-        {
-          edge [style="invis", weight=2];
-
-          servletapi_servlet_api       [label="Servlet API\nv2.4"];
-          servletapi_servletapi       [label="Servlet API\nv2.4"];
-          jspapi_jsp_api           [label="JSP API\nv2.0"];
-          jstl_jstl          [label="JSTL\nv1.1.2"];
-          javamail_mail_api          [label="Mail API\nv1.3.2"];
+      subgraph cluster_web_apis {
     
-          servletapi_servletapi -> cluster_web_apis;
-          servletapi_servlet_api -> cluster_web_apis;
-          jspapi_jsp_api -> cluster_web_apis;
-          jstl_jstl -> cluster_web_apis;
-          javamail_mail_api -> cluster_web_apis;
-        }
-          
-      cluster_Apache_jakarta [style="invis"];
+        label = "Standard Web API's";
     
-        {
-          edge [style="invis", weight=2];
-
-          jstl_apache       [label="standard\n(Apache JSTL Impl.)"];
-          struts_struts     [label="Struts"];
+        servletapi_servletapi      [label="Servlet API\nv 2.4"];
+        jspapi_jsp_api             [label="JSP API\nv 2.0"];
+        jstl_jstl                  [label="JSTL\nv 1.1.2"];
+        javamail_mailapi           [label="Mail API\nv 1.3.2"];
+        jsf_jsf_api                [label="JavaServer Faces API\nv 1.1.01"];
+    
+      }
+    
+        
+      subgraph cluster_Apache_jakarta {
+    
+        label = "Apache Jakarta";
       
-          cluster_Apache_jakarta_commons [style="invis"];
-
-            {
-              edge [style="invis", weight=3];
-
-              commons_logging_commons_logging   [label="Commons logging"];
-              commons_beanutils_commons_beanutils [label="Commons beanutils"];
+        taglibs_standard       [label="standard\n(Apache JSTL Impl.)"];
+        struts_struts     [label="Struts"];
+        myfaces_myfaces   [label="MyFaces"];
+    
+        subgraph cluster_Apache_jakarta_commons {
+      
+          label = "Apache Jakarta Commons";
+      
+          commons_logging_commons_logging   [label="Commons logging"];
+          commons_beanutils_commons_beanutils [label="Commons beanutils"];
+    
+        }
+      
+      }
+    
+      subgraph cluster_JBoss {
   
-              commons_logging_commons_logging -> cluster_Apache_jakarta_commons;
-              commons_beanutils_commons_beanutils -> cluster_Apache_jakarta_commons;
-            }
+        label = "JBoss";
+  
+        hibernate_hibernate [label="Hibernate"];
+  
+      }
     
-          commons_logging_commons_logging -> cluster_Apache_jakarta;
-          commons_beanutils_commons_beanutils -> cluster_Apache_jakarta;
-          cluster_Apache_jakarta_commons -> cluster_Apache_jakarta;
-        }
-    
-        subgraph cluster_JBoss {
-    
-          label = "JBoss";
-    
-          hibernate_hibernate [label="Hibernate"];
-    
-        }
-    
+      displaytag_displaytag [label="displaytag"];
+      toryt_toryt [label="Toryt"];
     
       /* dependencies */
       edge [weight=1];
@@ -177,8 +167,6 @@
     <xsl:value-of select="translate($project/groupId, '-', '_')"/>_<xsl:value-of
       select="translate($project/artifactId, '-', '_')"/>
     [label="<xsl:value-of select="$project/name"/>\nv <xsl:value-of select="$project/currentVersion"/>"];
-    <xsl:value-of select="translate($project/groupId, '-', '_')"/>_<xsl:value-of
-      select="translate($project/artifactId, '-', '_')"/> -> cluster_PPW_Libraries;
   </xsl:template>    
     
   <xsl:template name="projectDependencies">
