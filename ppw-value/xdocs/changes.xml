@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.13.0/5.0" date="2005-08-08" description="Logging">
+      <action dev="jand" type="add">
+        Added more logging to JSF convertor code.
+      </action>
+    </release>
+
     <release version="I v1.13.0/4.4" date="2005-08-08" description="Extension">
       <action dev="jand" type="add">
         AutomaticPropertyEditorConverter now supports DisplayLocaleBasedEnumerationValueEditor.
