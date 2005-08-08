@@ -50,6 +50,11 @@ public abstract class AbstractPropertyEditorConverter implements Converter {
   private static final Log LOG =
     LogFactory.getLog(AbstractPropertyEditorConverter.class);
 
+  protected AbstractPropertyEditorConverter() {
+    LOG.debug("creation of new ...PropertyEditorConverter (" +
+              getClass().getName() + ")");
+  }
+
 
   /**
    * @pre context != null;
