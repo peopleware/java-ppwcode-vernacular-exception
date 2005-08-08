@@ -712,6 +712,19 @@ public class RobustCurrent {
     component.setValueBinding(name, vb);
   }
 
+  /**
+   * Return a HTTP request parameter, that came with the current request.
+   * If the parameter does not exist, <code>null</code> is returned.
+   *
+   * @return externalContext().getRequestParameterValuesMap().get(parameterName);
+   * @throws FatalFacesException
+   *         externalContext();
+   */
+  public static String[] requestParameterValues(String parameterName) throws FatalFacesException {
+    return (String[])externalContext().getRequestParameterValuesMap().get(parameterName);
+    // exceptions cannot happen according to contract of getRequestParameterValuesMap
+  }
+
 }
 
 
