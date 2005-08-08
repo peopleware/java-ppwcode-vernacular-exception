@@ -9,6 +9,7 @@
     <release version="I v1.13.0/4.4" date="2005-08-08" description="Extension">
       <action dev="jand" type="add">
         AutomaticPropertyEditorConverter now supports DisplayLocaleBasedEnumerationValueEditor.
+        Added Util class.
       </action>
     </release>
 
