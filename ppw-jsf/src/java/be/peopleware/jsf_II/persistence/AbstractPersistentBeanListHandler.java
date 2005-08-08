@@ -95,10 +95,10 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
     LOG.debug("Event component ID: " + event.getComponent().getId());
     LOG.debug("Event component attributes: " + event.getComponent().getAttributes());
     LOG.debug("Request map: " + RobustCurrent.requestMap());
+    String idString = null;
     try {
-      String idString = (String)RobustCurrent.requestMap().get(ID_REQUEST_PARAMETER_NAME);
-      LOG.debug("request parameter " + ID_REQUEST_PARAMETER_NAME +
-                " = " + idString);
+      idString = RobustCurrent.requestParameterValues(ID_REQUEST_PARAMETER_NAME)[0];
+      LOG.debug("request parameter " + ID_REQUEST_PARAMETER_NAME + " = " + idString);
       Long id = Long.valueOf(idString);
       PersistentBeanCrudHandler handler = createInstanceHandler(getType());
       LOG.debug("Created handler for id = " + id +
@@ -106,8 +106,13 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
       handler.setId(id);
       handler.navigateHere(event);
     }
+    catch (ArrayIndexOutOfBoundsException aioobExc) {
+      RobustCurrent.fatalProblem("no parameter " + ID_REQUEST_PARAMETER_NAME +
+                                 " found in HTTP request parameters", aioobExc, LOG);
+    }
     catch (NumberFormatException nfExc) {
-      RobustCurrent.fatalProblem("given id is not a Long", nfExc, LOG);
+      RobustCurrent.fatalProblem("HTTP request parameter " + ID_REQUEST_PARAMETER_NAME +
+                                 " (" + idString + ") is not a Long", nfExc, LOG);
     }
   }
 
