@@ -2,6 +2,14 @@ package be.peopleware.jsf_II.persistence;
 
 
 import java.util.Collection;
+
+import javax.faces.event.ActionEvent;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import be.peopleware.jsf_II.FatalFacesException;
+import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.persistence_I.PersistentBean;
 
 
@@ -28,6 +36,7 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
 
+  static private final Log LOG = LogFactory.getLog(AbstractPersistentBeanListHandler.class);
 
 
   /*<property name="instances">*/
@@ -73,5 +82,33 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
   private boolean $createable;
 
   /*</property>*/
-  
+
+
+
+  public static final String ID_REQUEST_PARAMETER_NAME = "pbId";
+
+  public void navigateToDetail(ActionEvent event) throws FatalFacesException {
+    // MUDO (jand) remove superfluous debug logging
+    LOG.debug("Event: " + event);
+    LOG.debug("Event source: " + event.getSource());
+    LOG.debug("Event component: " + event.getComponent());
+    LOG.debug("Event component ID: " + event.getComponent().getId());
+    LOG.debug("Event component attributes: " + event.getComponent().getAttributes());
+    LOG.debug("Request map: " + RobustCurrent.requestMap());
+    try {
+      String idString = (String)RobustCurrent.requestMap().get(ID_REQUEST_PARAMETER_NAME);
+      LOG.debug("request parameter " + ID_REQUEST_PARAMETER_NAME +
+                " = " + idString);
+      Long id = Long.valueOf(idString);
+      PersistentBeanCrudHandler handler = createInstanceHandler(getType());
+      LOG.debug("Created handler for id = " + id +
+                "and type " + getType() + ": " + handler);
+      handler.setId(id);
+      handler.navigateHere(event);
+    }
+    catch (NumberFormatException nfExc) {
+      RobustCurrent.fatalProblem("given id is not a Long", nfExc, LOG);
+    }
+  }
+
 }
