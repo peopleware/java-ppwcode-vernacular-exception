@@ -231,7 +231,6 @@ public abstract class AbstractPersistentBeanHandler {
       throw new FacesException("cannot convert String to Class", cnfExc);
     }
     setType(type);
-    LOG.debug("type of " + this + " set to Class " + type.getName());
   }
 
   /**
@@ -363,9 +362,9 @@ public abstract class AbstractPersistentBeanHandler {
    * The navigation string used in faces-config.xml to come to this page.
    */
   private String $navigationString;
-  
+
   /*</property>*/
-  
+
 
   /*<section name="handlerCreation">*/
   //------------------------------------------------------------------
@@ -488,7 +487,7 @@ public abstract class AbstractPersistentBeanHandler {
     result.setInstance(pb);
     return result;
   }
-  
+
   /*</section>*/
 
 }

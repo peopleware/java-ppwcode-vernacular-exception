@@ -78,8 +78,12 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
    *            A datamodel with PersistentBeanHandlers.
    */
   public DataModel getDataModel() throws FatalFacesException {
+    LOG.debug("request for datamodel");
     if ($dataModel == null) {
       LOG.debug("no datamodel cached; creating new datamodel");
+
+
+
       List handlers = new ArrayList();
       List beans = new ArrayList(getInstances());
       LOG.debug("retrieved instances");
@@ -97,6 +101,9 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
         handlers.add(handler);
       }
       $dataModel = new ListDataModel(handlers);
+
+
+
       LOG.debug("datamodel created and cached");
     }
     else {
@@ -108,13 +115,13 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
   private DataModel $dataModel;
 
   /*</property>*/
-  
+
   /**
    * Return the currently selected row of the DataModel or null if no row is selected or
    * available.
-   * 
+   *
    * @post    (getDataModel().getRowcount() > 0) ? getDataModel().getRowData()
-   *                                             : null 
+   *                                             : null
    */
   public PersistentBeanCrudHandler getSelected() {
     PersistentBeanCrudHandler result = null;

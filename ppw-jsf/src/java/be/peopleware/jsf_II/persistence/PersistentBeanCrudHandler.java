@@ -498,7 +498,9 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @init null;
    */
   public final PersistentBean getInstance() {
+    LOG.debug("instance requested; id = " + getId());
     if ($instance == null) {
+      LOG.debug("instance is not cached");
       if (getId() != null) {
         loadInstance();
       }
@@ -506,6 +508,10 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
         createInstance();
       }
     }
+    else {
+      LOG.debug("returning instance from cache");
+    }
+    LOG.debug("returning instance: " + $instance);
     return $instance;
   }
 
@@ -536,6 +542,8 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *         MUDO (jand) other occurences must be replaced by goBack()
    */
   private void loadInstance() throws FatalFacesException {
+    LOG.debug("loading instance with id = " + getId() +
+              " and type = " + getType());
     assert getDao() != null;
     try {
       if (getId() == null) {
@@ -583,8 +591,10 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @post new.getInstance() == getType().newInstance();
    */
   private void createInstance() {
+    LOG.debug("creating new instance of type \"" + getType() + "\"");
     try {
       $instance = (PersistentBean)getType().newInstance();
+      LOG.debug("fresh instance: " + $instance);
     }
     // all exceptions are programmatic errors here, in subclass, in config or in JSF
     catch (InstantiationException iExc) {
@@ -1309,19 +1319,19 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
               }
               return $keySet;
             }
-            
+
             private void initKeySet() {
               $keySet = new HashSet();
               $keySet.addAll(getAssociationMetaMap().keySet());
               PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(getType());
-              for (int i = 0; i < descriptors.length; i++) {                
+              for (int i = 0; i < descriptors.length; i++) {
                 PropertyDescriptor pd = descriptors[i];
                 if (PersistentBean.class.isAssignableFrom(pd.getPropertyType())) {
                   $keySet.add(pd.getDisplayName());
                 }
               }
             }
-            
+
             private HashSet $keySet;
 
             Map $backingMap = new HashMap();
@@ -1448,7 +1458,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     }
     return lh;
   }
-  
+
   /*</section>*/
 
 }

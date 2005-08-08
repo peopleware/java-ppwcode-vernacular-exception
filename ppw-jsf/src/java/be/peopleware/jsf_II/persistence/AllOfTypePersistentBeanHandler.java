@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.exception_I.TechnicalException;
+import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
@@ -89,9 +90,11 @@ public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanListHa
    * @basic
    * @init null;
    */
-  public final Collection getInstances() {
+  public final Collection getInstances() throws FatalFacesException {
+    LOG.debug("request for collection of all persistent beans of type \"" + getType() + "\"");
     if ($persistentBeans == null) {
-      LOG.debug("Looking for all PersistentBeans of type "
+      LOG.debug("collection of all persistent beans of type \"" + getType() + "\" not cached");
+      LOG.debug("retrieving all PersistentBeans of type "
                 + ((getType() == null) ? "null" : getType().getName()));
       // MUDO (jand) security
       Class clazz = null;
@@ -110,7 +113,7 @@ public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanListHa
                                    LOG);
       }
       // @todo (jand): think more about this
-      LOG.debug("Retrieve action succeeded");
+      LOG.debug("Retrieve action succeeded; " + $persistentBeans.size() + " objects retrieved");
       setCreateable(true); // MUDO (jand) security
       // @question (dvankeer): Why is creatable set to true here, are subclasses not
       // responsibly to set this value themself? And a default value of false would be
@@ -119,9 +122,9 @@ public class AllOfTypePersistentBeanHandler extends AbstractPersistentBeanListHa
     else {
       LOG.debug("returning cached instances");
     }
-    return ($persistentBeans == null)
-              ? null
-              : Collections.unmodifiableCollection($persistentBeans);
+    assert $persistentBeans != null : "$persistentBeans cannot be null";
+    LOG.debug("returning collection of " + $persistentBeans.size() + " instances");
+    return Collections.unmodifiableCollection($persistentBeans);
   }
 
   private Set $persistentBeans;
