@@ -12,7 +12,7 @@
     the implementation of value types (including enumeration types), are laid out.
     Some common value types are implemented and offered for reuse.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.12.0-4.4</currentVersion>
+  <currentVersion>1.13.0-4.4</currentVersion>
   <package>be.peopleware.value_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>

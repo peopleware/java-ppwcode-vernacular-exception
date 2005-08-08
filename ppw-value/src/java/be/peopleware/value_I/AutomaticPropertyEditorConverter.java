@@ -10,11 +10,14 @@ package be.peopleware.value_I;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
+import java.util.Locale;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
 import javax.faces.el.EvaluationException;
+import javax.faces.el.ValueBinding;
 
 
 /**
@@ -52,6 +55,14 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
   /*</section>*/
 
   /**
+   * A {@link PropertyEditor} for the {@link ValueBinding#getType(FacesContext) type of the value binding}
+   * is requested from the {@link PropertyEditorManager}. If no such
+   * editor is found, a {@link ConverterException} is thrown.
+   * If the retrieved {@link PropertyEditor} is of type,
+   * {@link DisplayLocaleBasedEnumerationValueEditor},
+   * the {@link DisplayLocaleBasedEnumerationValueEditor#setDisplayLocale(Locale) display locale}
+   * of the editor is set to the locale of the current {@link UIViewRoot}.
+   *
    * @basic
    * @throws ConverterException
    *         PropertyEditorManager.findEditor(component.getValueBinding("value").getType(context)) == null;
@@ -73,6 +84,11 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
         if ($propertyEditor == null) { // still
           throw new ConverterException("Could not locate a PropertyEditor for type "
                                        + targetType);
+        }
+        else if ($propertyEditor instanceof DisplayLocaleBasedEnumerationValueEditor) {
+          assert $propertyEditor != null;
+          ((DisplayLocaleBasedEnumerationValueEditor)$propertyEditor).
+              setDisplayLocale(context.getViewRoot().getLocale());
         }
       }
       catch (NullPointerException npExc) {

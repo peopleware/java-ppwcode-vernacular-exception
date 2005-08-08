@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.13.0/4.4" date="2005-08-08" description="Extension">
+      <action dev="jand" type="add">
+        AutomaticPropertyEditorConverter now supports DisplayLocaleBasedEnumerationValueEditor.
+      </action>
+    </release>
+
     <release version="I v1.12.0/4.4" date="2005-08-05" description="Extension">
       <action dev="jand" type="add">
         Added Abstract and Automatic JSF converter, that falls back on
@@ -17,75 +23,75 @@
 
     <release version="I v1.10.0/2.4" date="2005-05-17" description="Extension">
       <action dev="nsmeets" type="add">
-      	Added user type for NationalNumber.
+        Added user type for NationalNumber.
       </action>
     </release>
 
     <release version="I v1.7.0/2.4" date="2005-05-04" description="Extension">
       <action dev="rclerckx" type="add">
-      	Added static method getDateOfBirthFromNationalNumber(NationalNumber nationalNumber).
+        Added static method getDateOfBirthFromNationalNumber(NationalNumber nationalNumber).
       </action>
     </release>
 
     <release version="I v1.6.0/2.4" date="2005-04-11" description="Extension">
       <action dev="nsmeets" type="add">
-      	Made Period comparable
+        Made Period comparable
       </action>
     </release>
 
     <release version="I v1.5.0/2.3" date="2005-04-01" description="Extension">
       <action dev="nsmeets" type="add">
-      	Added Cases and added extra method to Period.
+        Added Cases and added extra method to Period.
       </action>
     </release>
 
     <release version="I v1.4.0/2.3" date="2005-04-01" description="Extension">
       <action dev="nsmeets" type="add">
-      	Added Period.
+        Added Period.
       </action>
     </release>
 
     <release version="I v1.3.0/2.3" date="2005-03-31" description="Extension">
       <action dev="nsmeets" type="add">
-      	Added NationalNumber.
+        Added NationalNumber.
       </action>
     </release>
 
     <release version="I v1.2.1/2.3" date="2005-03-08" description="ppw-bean-III">
       <action dev="jand" type="update">
-      	Version that supports ppw-bean-IV.
+        Version that supports ppw-bean-IV.
       </action>
     </release>
 
     <release version="I v1.2.1/2.2" date="2005-03-06" description="ppw-bean-III">
       <action dev="jand" type="update">
-      	Version that supports ppw-bean-III.
+        Version that supports ppw-bean-III.
       </action>
     </release>
 
     <release version="I v1.2.1/2.0" date="2004-12-20" description="betwixt bugfix">
       <action dev="dvankeer" type="add">
-      	Betwixt files were not update to new structure, fixed in this release.
+        Betwixt files were not update to new structure, fixed in this release.
       </action>
     </release>
 
     <release version="I v1.2.0/2.0" date="2004-12-20" description="@todo">
       <action dev="jand" type="add">
-      	@todo
+        @todo
       </action>
     </release>
 
     <release version="I v1.1.0/2.0" date="2004-12-20" description="First release">
       <action dev="jand" type="add">
-      	Fixed merge issues. Mainly, an isEmpty() method is added to some compound
-      	value types, and 1 space is now also allowed as text representation for
-      	some null values.
+        Fixed merge issues. Mainly, an isEmpty() method is added to some compound
+        value types, and 1 space is now also allowed as text representation for
+        some null values.
       </action>
     </release>
 
     <release version="I v1.0.0/1.0" date="2004-12-20" description="First release">
       <action dev="jand" type="add">
-      	First release with this version number scheme.
+        First release with this version number scheme.
       </action>
     </release>
 
