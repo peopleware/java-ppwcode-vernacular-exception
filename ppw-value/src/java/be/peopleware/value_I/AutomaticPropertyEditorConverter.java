@@ -19,6 +19,9 @@ import javax.faces.convert.ConverterException;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.ValueBinding;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 /**
  * <p>This implementation of {@link AbstractPropertyEditorConverter} finds
@@ -54,6 +57,10 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /*</section>*/
 
+  private static final Log LOG =
+    LogFactory.getLog(AutomaticPropertyEditorConverter.class);
+
+
   /**
    * A {@link PropertyEditor} for the {@link ValueBinding#getType(FacesContext) type of the value binding}
    * is requested from the {@link PropertyEditorManager}. If no such
@@ -73,6 +80,7 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
     assert component != null;
     assert context != null;
     if ($propertyEditor == null) {
+      LOG.debug("no PropertyEditor in cache; retrieving fresh one");
       try {
         // try to find target type
         Class targetType = component.getValueBinding("value").getType(context);
@@ -80,15 +88,23 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
              throws NullPointerException, not  for component == null, context == null
              or "value" == null, but because their might not be a value binding */
         // try to find a property editor for target type
+        LOG.debug("target type of component value binding \"value\": " + targetType);
         $propertyEditor = PropertyEditorManager.findEditor(targetType);
         if ($propertyEditor == null) { // still
+          LOG.debug("no PropertyEditor found for type \"" + targetType + "\"");
           throw new ConverterException("Could not locate a PropertyEditor for type "
                                        + targetType);
         }
-        else if ($propertyEditor instanceof DisplayLocaleBasedEnumerationValueEditor) {
-          assert $propertyEditor != null;
-          ((DisplayLocaleBasedEnumerationValueEditor)$propertyEditor).
-              setDisplayLocale(context.getViewRoot().getLocale());
+        else {
+          LOG.debug("PropertyEditor found: " + $propertyEditor);
+          if ($propertyEditor instanceof DisplayLocaleBasedEnumerationValueEditor) {
+            assert $propertyEditor != null;
+            Locale displayLocale = context.getViewRoot().getLocale();
+            LOG.debug("PropertyEditor is of type DisplayLocaleBasedEnumerationValueEditor; " +
+                      "setting display locale to " + displayLocale);
+            ((DisplayLocaleBasedEnumerationValueEditor)$propertyEditor).
+                setDisplayLocale(displayLocale);
+          }
         }
       }
       catch (NullPointerException npExc) {
@@ -99,6 +115,7 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
         new ConverterException("Could not retrieve target type from component", eExc);
       }
     }
+    LOG.debug("returning PropertyEditor: " + $propertyEditor);
     return $propertyEditor;
   }
 
