@@ -490,4 +490,9 @@ public abstract class AbstractPersistentBeanHandler {
 
   /*</section>*/
 
+
+  protected String simpleString(PersistentBean bean) {
+    return ((bean == null) ? "null" : (bean.getClass().getName() + "@" + bean.hashCode()));
+  }
+
 }

@@ -511,7 +511,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     else {
       LOG.debug("returning instance from cache");
     }
-    LOG.debug("returning instance: " + $instance);
+    LOG.debug("returning instance: " + simpleString($instance));
     return $instance;
   }
 

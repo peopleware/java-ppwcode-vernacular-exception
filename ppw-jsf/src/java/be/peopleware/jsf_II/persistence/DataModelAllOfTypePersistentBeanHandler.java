@@ -94,7 +94,7 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
       Iterator iter = beans.iterator();
       while (iter.hasNext()) {
         PersistentBean bean = (PersistentBean)iter.next();
-        LOG.debug("    instance is " + bean);
+        LOG.debug("    instance is " + simpleString(bean));
         PersistentBeanCrudHandler handler = createInstanceHandler(bean);
         handler.setViewMode(PersistentBeanCrudHandler.VIEWMODE_DISPLAY);
         LOG.debug("    handler is " + handler);
