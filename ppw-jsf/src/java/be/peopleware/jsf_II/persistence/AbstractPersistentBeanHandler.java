@@ -372,6 +372,17 @@ public abstract class AbstractPersistentBeanHandler {
   private static final String HANDLER_PACKAGE_EXTENSION = ".web.jsf";
   private static final String HANDLER_TYPE_SUFFIX = "Handler";
 
+  private static final String HANLDER_TYPE_SUFFIX_DATAMODEL = "_datamodel";
+  private static final String HANLDER_TYPE_SUFFIX_TREEMODEL = "_treemodel";
+
+  public static String directHandlerNameFor(Class type) {
+    String fqcn = type.getName();
+    String result = fqcn.replace('.', '$');
+    return result;
+  }
+
+  // MUDO use this name and managed bean mechanism
+
   private Class handlerClassFor(Class pbType) throws FatalFacesException {
     assert PersistentBean.class.isAssignableFrom(pbType);
     LOG.debug("looking for handler for instances of type " + pbType);
@@ -482,7 +493,7 @@ public abstract class AbstractPersistentBeanHandler {
    */
   protected final PersistentBeanCrudHandler createInstanceHandler(final PersistentBean pb) throws FatalFacesException {
     assert pb != null;
-    LOG.debug("creating handler for " + pb);
+    LOG.debug("creating handler for " + simpleString(pb));
     PersistentBeanCrudHandler result = createInstanceHandler(pb.getClass());
     result.setInstance(pb);
     return result;
