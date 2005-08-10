@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
+import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.i18n.BasenameResourceBundleMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
 import be.peopleware.persistence_I.PersistentBean;
@@ -294,6 +295,39 @@ public abstract class AbstractPersistentBeanHandler {
   /*</property>*/
 
 
+  /*<property name="typeLabel">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Return the type label of this PeristentBean.
+   * 
+   * @basic
+   */
+  public String getTypeLabel() {
+    return Properties.i18nTypeLabel(getType(),
+                                    false,
+                                    RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY);
+  }
+
+  /*</property>*/
+
+
+  /*<property name="pluralTypeLabel">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Return the plural type label of this PeristentBean.
+   * 
+   * @basic
+   */
+  public String getPluralTypeLabel() {
+    return Properties.i18nTypeLabel(getType(),
+                                    true, 
+                                    RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY);
+  }
+
+  /*</property>*/
+  
   /*<property name="buttonLabels">*/
   //------------------------------------------------------------------
 
