@@ -46,7 +46,6 @@ import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.bean_IV.PropertyException;
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.jsf_II.i18n.JsfResourceBundleLoadStrategy;
-import be.peopleware.jsf_II.persistence.PersistentBeanHandler;
 
 
 /**
@@ -668,24 +667,6 @@ public class RobustCurrent {
    */
   public static boolean hasMessages() {
     return facesContext().getMessages().hasNext();
-  }
-
-  /**
-   * @mudo
-   * @param name
-   */
-  public static PersistentBeanHandler findPersistentBeanHandler(String name) {
-    FacesContext facesContext = facesContext();
-    Application application = application();
-    VariableResolver variableResolver = application.getVariableResolver();
-    Object handler = variableResolver.resolveVariable(facesContext, name);
-    if (handler != null) {
-      return (PersistentBeanHandler) handler;
-    }
-    else {
-      fatalProblem("no managed bean with name " + name + " found");
-      return null;
-   }
   }
 
   /**
