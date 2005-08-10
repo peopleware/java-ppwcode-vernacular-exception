@@ -126,7 +126,6 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   public final void setInstances(final Collection instances) {
     LOG.debug("Setting " + instances + " as instances");
     assert getType() != null;
-    assert org.toryt.contract.Collections.instanceOf(instances, getType());
     $storedInstances = (instances == null) ? null
                          : Collections.unmodifiableCollection(instances);
   }
