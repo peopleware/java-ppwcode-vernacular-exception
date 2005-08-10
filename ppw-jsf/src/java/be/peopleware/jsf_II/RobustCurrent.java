@@ -13,6 +13,7 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.el.EvaluationException;
 import javax.faces.el.ValueBinding;
 import javax.faces.el.VariableResolver;
 import javax.faces.webapp.UIComponentTag;
@@ -35,6 +37,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.config.ManagedBeanBuilder;
+import org.apache.myfaces.config.RuntimeConfig;
+import org.apache.myfaces.config.element.ManagedBean;
+import org.apache.myfaces.el.VariableResolverImpl;
 
 import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.bean_IV.PropertyException;
@@ -723,6 +729,190 @@ public class RobustCurrent {
   public static String[] requestParameterValues(String parameterName) throws FatalFacesException {
     return (String[])externalContext().getRequestParameterValuesMap().get(parameterName);
     // exceptions cannot happen according to contract of getRequestParameterValuesMap
+  }
+
+  /**
+   * The current {@link VariableResolver}
+   * This cannot be <code>null</code>.
+   *
+   * @return application().getVariableResolver();
+   * @except application();
+   */
+  public static VariableResolver variableResolver() throws FatalFacesException {
+    VariableResolver result = application().getVariableResolver();
+    assert result != null;
+    return result;
+  }
+
+  /**
+   * Retrieve the variable with name <code>variableName</code>.
+   * This will create managed beans if needed. If the name cannot be resolved,
+   * <code>null</code> is returned.
+   *
+   * @return application().getVariableResolver();
+   * @except application();
+   * @throws FatalFacesException
+   *         An exception occured when resolving <code>variableName</code>.
+   */
+  public static Object resolve(String variableName) throws FatalFacesException {
+    Object result = null;
+    try {
+      result = variableResolver().resolveVariable(facesContext(), variableName);
+    }
+    catch (EvaluationException eExc) {
+      fatalProblem("Exception resolving variable with name \"" + variableName + "\"", eExc);
+    }
+    return result;
+  }
+
+  /**
+   * Retrieve the variable with name <code>variableName</code>, without
+   * creating new managed beans. Also, we do not look for the implicit
+   * variables like <code>param</code>, <code>header</code>, etc.
+   * If the name cannot be resolved, <code>null</code> is returned.
+   *
+   * @return (requestMap().get(variableName) != null) ?
+   *            requestMap().get(variableName) :
+   *            ((sessionMap().get(variableName) != null) ?
+   *                sessionMap().get(variableName) :
+   *                applicationMap().get(variableName));
+   * @except requestMap();
+   * @except sessionMap();
+   * @except applicationMap();
+   */
+  public static ScopeEntry lookup(String variableName) throws FatalFacesException {
+    try {
+      return new ScopeEntry(variableName, requestMap());
+    }
+    catch (NoSuchElementException nseExcR) {
+      try {
+        return new ScopeEntry(variableName, sessionMap());
+      }
+      catch (NoSuchElementException nseExcS) {
+        try {
+          return new ScopeEntry(variableName, applicationMap());
+        }
+        catch (NoSuchElementException nseExcA) {
+          return null;
+        }
+      }
+    }
+  }
+
+  public static class ScopeEntry {
+
+    /**
+     * @pre key != null;
+     * @pre scope != null;
+     */
+    public ScopeEntry(String key, Map scope) throws NoSuchElementException {
+      assert key != null;
+      assert scope != null;
+      if (scope.get(key) == null) {
+        throw new NoSuchElementException();
+      }
+      $key = key;
+      $scope = scope;
+    }
+
+    public final String getKey() {
+      return $key;
+    }
+
+    private String $key;
+
+    public final Map getScope() {
+      return $scope;
+    }
+
+    private Map $scope;
+
+    public final Object getValue() {
+      if ($cache != null) {
+        return $cache;
+      }
+      else {
+        return $scope.get($key);
+      }
+    }
+
+    private Object $cache;
+
+    public final void remove() {
+      $cache = $scope.get($key);
+      $scope.remove($key);
+    }
+
+    public final void reput() {
+      $scope.put($key, $cache);
+      $cache = null;
+    }
+
+  }
+
+  /**
+   * Remove the variable with name <code>variableName</code> from all
+   * scopes.
+   *
+   * @post ! requestMap().containsKey(variableName);
+   * @post ! sessionMap().containsKey(variableName);
+   * @post ! applicationMap().containsKey(variableName);
+   * @except requestMap();
+   * @except sessionMap();
+   * @except applicationMap();
+   */
+  public static void remove(String variableName) throws FatalFacesException {
+    requestMap().remove(variableName);
+    sessionMap().remove(variableName);
+    applicationMap().remove(variableName);
+  }
+
+  /**
+   * Create a fresh managed bean, defined in <code>faces-config.xml</code>,
+   * with name <code>name</code>. If no definition for <code>name</code>
+   * can be found, return <code>null</code>. The created bean is not stored in
+   * any scope, but returned.
+   *
+   * @note This method makes this class dependent on MyFaces. The API used
+   *       is not part of the general JSF API, which doesn't expose the
+   *       possibility to make managed beans ourself. A workaround would
+   *       be to get the current managed bean with name <code>name</code>,
+   *       if any, without creating a new one (by looking in all scopes
+   *       directly ourselves), remove it from that scope and remember it,
+   *       then ask for the variable with name <code>name</code> via
+   *       {@link #resolve(String)}, and then putting back the original bean
+   *       where we found it.
+   * @note This code is based on
+   *        {@link VariableResolverImpl#resolveVariable(FacesContext, String)}.
+   */
+  public static Object freshManagedBean(String name) throws FatalFacesException {
+    LOG.debug("request for managed bean with name \"" + name + "\"");
+    RuntimeConfig rtcfg = RuntimeConfig.getCurrentInstance(externalContext());
+    ManagedBean mbc = rtcfg.getManagedBean(name);
+    if (mbc == null) {
+      return null;
+    }
+    ManagedBeanBuilder builder = new ManagedBeanBuilder();
+    Object result = null;
+    try {
+      result = builder.buildManagedBean(facesContext(), mbc);
+    }
+    catch (Exception exc) {
+      fatalProblem("error building managed bean with name \"" +
+                   name + "\"", exc);
+    }
+    return result;
+    /* MyFaces independent implementation
+    ScopeEntry alreadyExisting = lookup(name);
+    if (alreadyExisting != null) {
+      alreadyExisting.remove();
+    }
+    Object result = resolve(name);
+    if (alreadyExisting != null) {
+      alreadyExisting.reput();
+    }
+    return result;
+    */
   }
 
 }
