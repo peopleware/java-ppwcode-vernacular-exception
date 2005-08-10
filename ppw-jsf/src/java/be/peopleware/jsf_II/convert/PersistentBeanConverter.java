@@ -10,9 +10,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+
 import net.sf.hibernate.Session;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.persistence_I.DaoFactory;
@@ -27,16 +30,16 @@ import be.peopleware.servlet_I.hibernate.SessionInView;
  * Converter for {@link PersistentBean}. The value must be the ID of
  * the class. To activate this, the following entry has to appear in
  * <kbd>faces-config.xml </kbd>:
- * 
+ *
  * <pre>
- * 
+ *
  *  &lt;converter&gt;
  *    &lt;converter-for-class&gt;be.peopleware.persistence_I.PersistentBean&lt;/converter-for-class&gt;
  *    &lt;converter-class&gt;be.peopleware.jsf_II.convertor.PersistentBeanConverter&lt;/converter-class&gt;
  *  &lt;/converter&gt;
- *  
+ *
  * </pre>
- * 
+ *
  * @author David Van Keer
  * @author Peopleware n.v.
  */
@@ -53,9 +56,9 @@ public class PersistentBeanConverter implements Converter {
   /** {@value} */
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /* </section> */
-  
+
   private static final Log LOG = LogFactory.getLog(PersistentBeanConverter.class);
-  
+
 
   /**
    * @param     context
@@ -68,7 +71,7 @@ public class PersistentBeanConverter implements Converter {
    *              ? result.getId().equals((Long)value))
    *              : null;
    * @throws    ConverterException
-   *            No PersistentBean was found with a ID of {@param value} or
+   *            No PersistentBean was found with a ID of <code>value</code> or
    *            technical problems occured while trying to retrieve the correct
    *            PersistentBean
    */
@@ -131,9 +134,13 @@ public class PersistentBeanConverter implements Converter {
     PersistentBean persistentBean = ((PersistentBean)value);
     return (persistentBean.getId() != null) ? persistentBean.getId().toString() : EMPTY;
   }
-  
+
   /*<property name="type">*/
   //------------------------------------------------------------------
+
+  // MUDO (jand) we need the type; better get it from the request too!
+  //   (if only we could)
+  // same problem as in be.peopleware.jsf_II.persistence.AbstractPersistentBeanListHandler navigateToDetail
 
   /**
    * The type of the object (subclass of PersistentBean) that will
@@ -145,7 +152,7 @@ public class PersistentBeanConverter implements Converter {
   public final Class getType() {
     return $type;
   }
-  
+
   public final String getTypeName() {
     return $type.getName();
   }
@@ -188,5 +195,5 @@ public class PersistentBeanConverter implements Converter {
   private Class $type;
 
   /*</property>*/
-  
+
 }
