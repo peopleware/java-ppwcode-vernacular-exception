@@ -1,7 +1,10 @@
 package be.peopleware.persistence_I;
 
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 import be.peopleware.bean_IV.RousseauBean;
 
@@ -51,13 +54,13 @@ public class PersistentBean
   //------------------------------------------------------------------
 
   /** {@value} */
-  public static final String CVS_REVISION = "$Revision$"; //$NON-NLS-1$
+  public static final String CVS_REVISION = "$Revision$";
   /** {@value} */
-  public static final String CVS_DATE = "$Date$"; //$NON-NLS-1$
+  public static final String CVS_DATE = "$Date$";
   /** {@value} */
-  public static final String CVS_STATE = "$State$"; //$NON-NLS-1$
+  public static final String CVS_STATE = "$State$";
   /** {@value} */
-  public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
+  public static final String CVS_TAG = "$Name$";
 
   /*</section>*/
 
@@ -94,17 +97,83 @@ public class PersistentBean
   /*</property>*/
 
 
+  // IDEA (jand) move the String stuff to a ppw-util, or at least ppw-bean
+  // IDEA (jand) automatic implementation of hasSameValues there too
+
+  /**
+   * @deprecated because this is too much work to implement
+   */
   protected String unclosedPropertiesString() {
-    return "id: " + getId(); //$NON-NLS-1$
+    return "id: " + getId();
   }
 
+  /**
+   * Short representation of the bean.
+   *
+   * @return getClass().getName() + "@" + hashCode()
+   *           + "[id: " + $id + "]";
+   */
   public final String toString() {
-    return getClass().getName() + "@" + hashCode() //$NON-NLS-1$
-               + "[" + unclosedPropertiesString() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+    return getClass().getName() + "@" + hashCode()
+               + "[id: " + $id + "]";
   }
 
+  /**
+   * Long representation of this bean.
+   */
+  public final String toStringLong() {
+    StringBuffer result = new StringBuffer(1024);
+    appendLongRepresentation(result);
+    return result.toString();
+  }
+
+  /**
+   * Append a long representation of this to <code>acc</code>.
+   */
+  public void appendLongRepresentation(StringBuffer acc) {
+    acc.append(getClass().getName());
+    acc.append("@");
+    acc.append(hashCode());
+    acc.append("[");
+    appendProperties(acc);
+    acc.append("]");
+  }
+
+  private final static String SEPARATOR = ", ";
+
+  private void appendProperties(StringBuffer acc) {
+    PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(this);
+    for (int i = 0; i < pds.length; i++) {
+      appendPropertyString(pds[i].getName(), acc);
+      if (i < pds.length - 1) {
+        acc.append(SEPARATOR);
+      }
+    }
+  }
+
+  private void appendPropertyString(String propertyName, StringBuffer acc) {
+    acc.append(propertyName);
+    acc.append("=");
+    try {
+      Object value = PropertyUtils.getProperty(this, propertyName);
+      acc.append(value);
+    }
+    catch (Throwable exc) {
+      // if anything goes wrong, mention it, but eat it
+      acc.append("!!EXCEPTION!! (");
+      acc.append(exc);
+      acc.append(")");
+    }
+  }
+
+  /**
+   * @deprecated the regular {@link #toString()} now gives a short
+   *             representation, as it should. For a long version,
+   *             see {@link #toStringLong()} and
+   *             {@link #appendLongRepresentation(StringBuffer)}.
+   */
   public final String toShortString() {
-    return getClass().getName() + "@" + hashCode(); //$NON-NLS-1$
+    return getClass().getName() + "@" + hashCode();
   }
 
   /**

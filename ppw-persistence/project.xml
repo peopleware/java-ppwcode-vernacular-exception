@@ -3,13 +3,13 @@
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>1</pomVersion>
-  <name>Persistence Library</name>
+  <name>PeopleWare Persistence Library I</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-persistence-I</artifactId>
   <shortDescription>Support for persistency.</shortDescription>
   <description>Support for persistency.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>2.0.1-2.0</currentVersion>
+  <currentVersion>3.0.0-2.0</currentVersion>
   <package>be.peopleware.persistence_I</package>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
@@ -69,11 +69,18 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-test-I</artifactId>
       <version>1.0.1-1.0</version>
       <type>jar</type>
     </dependency>
   </dependencies>
+  <properties />
 </project>
 
