@@ -220,8 +220,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       while (iter.hasNext()) {
         PersistentBean bean = (PersistentBean)iter.next();
         LOG.debug("    instance is " + bean);
-        InstanceHandler handler = (InstanceHandler)InstanceHandler.
-            RESOLVER.freshHandlerFor(bean.getClass(), getDao());
+        InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(bean.getClass(), getDao());
+        handler.setInstance(bean);
         handler.setViewMode(InstanceHandler.VIEWMODE_DISPLAY);
         LOG.debug("    handler is " + handler);
         handlers.add(handler);
