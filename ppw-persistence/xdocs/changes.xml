@@ -1,0 +1,25 @@
+<document>
+  <properties>
+    <title>Changes to ppw-persistence</title>
+    <author email="dvankeer@peopleware.be">David Van Keer</author>
+    <author email="jand@peopleware.be">Jan Dockx</author>
+  </properties>
+  <body>
+
+    <release version="I v3.0.0/2.0" date="2005-08-10" description="toString issue solved">
+      <action dev="dvankeer" type="fix">
+          Fixed longstanding toString() issue. toString returned a full description
+          of the bean, effectively (especially during debugging) taking shitloads
+          of time. Now, we just return the standard toString plus the id.
+      </action>
+      <action dev="jand" type="remove">
+        toShortString() and unclosedProperties() methods deprecated
+      </action>
+      <action dev="jand" type="add">
+        Added methods to produce full String representation of bean,
+        automatically, also for subclasses.
+      </action>
+    </release>
+
+  </body>
+</document>
