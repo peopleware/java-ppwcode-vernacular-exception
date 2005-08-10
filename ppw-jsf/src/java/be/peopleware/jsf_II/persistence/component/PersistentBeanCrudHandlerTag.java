@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
-import be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler;
+import be.peopleware.jsf_II.persistence.InstanceHandler;
 
 
 /**
@@ -38,7 +38,7 @@ public class PersistentBeanCrudHandlerTag extends UIComponentTag {
 
  
   public String getComponentType() {
-    return PersistentBeanCrudHandler.class.getName();
+    return InstanceHandler.class.getName();
   }
 
   public String getRendererType() {

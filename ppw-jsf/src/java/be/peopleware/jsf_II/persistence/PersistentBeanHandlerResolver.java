@@ -11,9 +11,9 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
 
 
 /**
- * <p>Retrieve or create {@link AbstractPersistentBeanHandler} instances for a given
+ * <p>Retrieve or create {@link PersistentBeanHandler} instances for a given
  *  subtype of {@link PersistentBean}.</p>
- * <p>{@link AbstractPersistentBeanHandler Handlers} should be defined in
+ * <p>{@link PersistentBeanHandler Handlers} should be defined in
  *  <code>faces-config.xml</code>, for each subtype of {@link PersistentBean}
  *  for which you create a specific JSF page, with name
  *  {@link #handlerVariableNameFor(Class)}. Here, the correct type and the
@@ -21,7 +21,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * <p>If these properties are not set, the resolver methods will set fallback
  *  values, that are given by the caller as arguments.</p>
  * <p>If no managed handler can be found, or just any handler with the expected
- *  name, an instance of the {@link #getHandlerDefaultClass()} is created, and its
+ *  name, an instance of the {@link #getDefaultHandlerClass()} is created, and its
  *  properties are set to the fallback arguments.</p>
  * <p>For actual instances, see the static field <code>RESOLVER</code> in the
  *  class of the kind of handler you need.</p>
@@ -29,8 +29,10 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * @author    Jan Dockx
  * @author    Peopleware n.v.
  *
- * @invar getHandlerDefaultClass() != null;
- * @invar AbstractPersistentBeanHandler.class.isAssignableFrom(getHandlerDefaultClass());
+ * @invar getMinimalHandlerClass() != null;
+ * @invar PersistentBeanHandler.class.isAssignableFrom(getMinimalHandlerClass());
+ * @invar getDefaultHandlerClass() != null;
+ * @invar getMinimalHandlerClass.isAssignableFrom(getDefaultHandlerClass());
  * @invar handlerVarNameSuffix() != null;
  */
 public class PersistentBeanHandlerResolver {
@@ -53,19 +55,57 @@ public class PersistentBeanHandlerResolver {
 
 
   /**
-   * @pre handlerDefaultClass != null;
-   * @pre AbstractPersistentBeanHandler.class.isAssignableFrom(handlerDefaultClass);
+   * @pre minimalHandlerClass != null;
+   * @pre PersistentBeanHandler.class.isAssignableFrom(minimalHandlerClass);
+   * @pre (defaultHandlerClass != null) ?
+   *            minimalHandlerClass.isAssignableFrom(defaultHandlerClass);
    * @pre handlerNameSuffix != null;
-   * @post new.getHandlerDefaultClass() == handlerDefaultClass;
+   * @post new.getMininalHandlerClass() == minimalHandlerClass;
+   * @post (defaultHandlerClass != null) ?
+   *            (new.getDefaultHandlerClass() == defaultHandlerClass) :
+   *            (new.getDefaultHandlerClass() == minimalHandlerClass);
    * @post new.getHandlerVarNameSuffix().equals(handlerVarNameSuffix);
    */
-  public PersistentBeanHandlerResolver(Class handlerDefaultClass, String handlerVarNameSuffix) {
-    assert handlerDefaultClass != null;
-    assert AbstractPersistentBeanHandler.class.isAssignableFrom(handlerDefaultClass);
+  public PersistentBeanHandlerResolver(Class defaultHandlerClass,
+                                       Class minimalHandlerClass,
+                                       String handlerVarNameSuffix) {
+    assert minimalHandlerClass != null;
+    assert PersistentBeanHandler.class.isAssignableFrom(minimalHandlerClass);
+    assert (defaultHandlerClass != null) ?
+              minimalHandlerClass.isAssignableFrom(defaultHandlerClass) : true;
     assert handlerVarNameSuffix != null;
-    $handlerDefaultClass = handlerDefaultClass;
+    $mininalHandlerClass = minimalHandlerClass;
+    $defaultHandlerClass = (defaultHandlerClass != null) ? defaultHandlerClass : minimalHandlerClass;
     $handlerVarNameSuffix = handlerVarNameSuffix;
   }
+
+  /**
+   * @pre defaultHandlerClass != null;
+   * @pre PersistentBeanHandler.class.isAssignableFrom(defaultHandlerClass);
+   * @pre handlerNameSuffix != null;
+   * @post new.getMinimalHandlerClass() == minimalHandlerClass;
+   * @post new.getDefaultHandlerClass() == minimalHandlerClass;
+   * @post new.getHandlerVarNameSuffix().equals(handlerVarNameSuffix);
+   */
+  public PersistentBeanHandlerResolver(Class minimalHandlerClass,
+                                       String handlerVarNameSuffix) {
+    this(minimalHandlerClass, minimalHandlerClass, handlerVarNameSuffix);
+  }
+
+  /**
+   * This is used to state what type the resolved handlers have to have minimally.
+   *
+   * @basic
+   */
+  public final Class getMinimalHandlerClass() {
+    return $mininalHandlerClass;
+  }
+
+  /**
+   * @invar $mininalHandlerClass != null;
+   * @invar PersistentBeanHandler.class.isAssignableFrom($mininalHandlerClass);
+   */
+  private final Class $mininalHandlerClass;
 
   /**
    * This is used to create a default handler, if no managed handler can
@@ -73,15 +113,15 @@ public class PersistentBeanHandlerResolver {
    *
    * @basic
    */
-  public final Class getHandlerDefaultClass() {
-    return $handlerDefaultClass;
+  public final Class getDefaultHandlerClass() {
+    return $defaultHandlerClass;
   }
 
   /**
-   * @invar $handlerDefaultClass != null;
-   * @invar AbstractPersistentBeanHandler.class.isAssignableFrom(handlerDefaultClass);
+   * @invar $defaultHandlerClass != null;
+   * @invar $minimalHandlerClass.isAssignableFrom($defaultHandlerClass);
    */
-  private final Class $handlerDefaultClass;
+  private final Class $defaultHandlerClass;
 
   /**
    * @basic
@@ -96,7 +136,7 @@ public class PersistentBeanHandlerResolver {
   private final String $handlerVarNameSuffix;
 
   /**
-   * Return the name for the managed bean {@link AbstractPersistentBeanHandler}
+   * Return the name for the managed bean {@link PersistentBeanHandler}
    * for instances of type <code>type</code>, to be used as main bean in a
    * JSF page. This is the FQCN of
    * <code>type</code>, with dots replaced by the dollar sign,
@@ -121,21 +161,21 @@ public class PersistentBeanHandlerResolver {
    * @result result != null ? result.getType() != null;
    * @result result != null ? result.getDao() != null;
    * @throws FatalFacesException
-   *         ! getHandlerDefaultClass().isAssignableFrom(RobustCurrent.
+   *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      resolve(handlerVariableNameFor(pbType)));
    */
-  private AbstractPersistentBeanHandler initHandler(Class pbType, AsyncCrudDao dao, String varName, Object handler)
+  private PersistentBeanHandler initHandler(Class pbType, AsyncCrudDao dao, String varName, Object handler)
       throws FatalFacesException {
     if (handler == null) {
       return null;
     }
     else {
-      if (! (getHandlerDefaultClass().isInstance(handler))) {
+      if (! (getMinimalHandlerClass().isInstance(handler))) {
         RobustCurrent.fatalProblem("variable name \"" + varName +
                                    "\" resolved to an object that is not an instance of " +
-                                   getHandlerDefaultClass() + ": " + handler, LOG);
+                                   getDefaultHandlerClass() + ": " + handler, LOG);
       }
-      AbstractPersistentBeanHandler pbh = (AbstractPersistentBeanHandler)handler;
+      PersistentBeanHandler pbh = (PersistentBeanHandler)handler;
       if (pbh.getType() == null) {
         LOG.debug("type was not set in managed bean with name \"" + varName +
                   "\"; now set to " + pbType);
@@ -151,7 +191,7 @@ public class PersistentBeanHandlerResolver {
   }
 
   /**
-   * <p>Retrieve the managed bean {@link AbstractPersistentBeanHandler} for
+   * <p>Retrieve the managed bean {@link PersistentBeanHandler} for
    *   {@link PersistentBean PersistentBeans} of type <code>pbType</code>
    *   with name {@link #variableName(Class) variableName(pbType)} from
    *   request, session or application scope.</p>
@@ -167,21 +207,21 @@ public class PersistentBeanHandlerResolver {
    * @result result != null ? result.getDao() != null;
    * @except RobustCurrent.resolve(handlerVariableNameFor(pbType));
    * @throws FatalFacesException
-   *         ! getHandlerDefaultClass().isAssignableFrom(RobustCurrent.
+   *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      resolve(handlerVariableNameFor(pbType)));
    */
-  private AbstractPersistentBeanHandler managedHandlerForDirect(Class pbType, AsyncCrudDao dao)
+  private PersistentBeanHandler managedHandlerForDirect(Class pbType, AsyncCrudDao dao)
       throws FatalFacesException {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
-    assert AbstractPersistentBeanHandler.class.isAssignableFrom(getHandlerDefaultClass());
+    assert PersistentBeanHandler.class.isAssignableFrom(getDefaultHandlerClass());
     String varName = handlerVariableNameFor(pbType);
     Object result = RobustCurrent.resolve(varName);
     return initHandler(pbType, dao, varName, result);
   }
 
   /**
-   * <p>Retrieve the managed bean {@link AbstractPersistentBeanHandler} for
+   * <p>Retrieve the managed bean {@link PersistentBeanHandler} for
    *   {@link PersistentBean PersistentBeans} of type <code>pbType</code>
    *   with name {@link #handlerVariableNameFor(Class) handlerVariableNameFor(pbType)}.</p>
    * <p>If no direct handler can be found for type <code>pbType</code>, look for
@@ -202,18 +242,18 @@ public class PersistentBeanHandlerResolver {
    *                  managedHandler(pbType.getSuperClass()));
    * @except RobustCurrent.resolve(handlerVariableNameFor(pbType));
    * @throws FatalFacesException
-   *         ! getHandlerDefaultClass().isAssignableFrom(RobustCurrent.
+   *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      resolve(handlerVariableNameFor(pbType)));
    * @except managedHandler(pbType.getSuperClass());
    */
-  public final AbstractPersistentBeanHandler managedHandlerFor(Class pbType, AsyncCrudDao dao)
+  public final PersistentBeanHandler managedHandlerFor(Class pbType, AsyncCrudDao dao)
       throws FatalFacesException {
     assert pbType != null;
     if (! PersistentBean.class.isAssignableFrom(pbType)) {
       return null;
     }
     else {
-      AbstractPersistentBeanHandler result = managedHandlerForDirect(pbType, dao);
+      PersistentBeanHandler result = managedHandlerForDirect(pbType, dao);
       if (result != null) {
         return result;
       }
@@ -224,7 +264,7 @@ public class PersistentBeanHandlerResolver {
   }
 
   /**
-   * <p>Create a fresh managed bean {@link AbstractPersistentBeanHandler} for
+   * <p>Create a fresh managed bean {@link PersistentBeanHandler} for
    *   {@link PersistentBean PersistentBeans} of type <code>pbType</code>
    *   with name {@link #variableName(Class) variableName(pbType)}.
    *   This bean will not be in any scope.</p>
@@ -240,21 +280,21 @@ public class PersistentBeanHandlerResolver {
    * @result result != null ? result.getDao() != null;
    * @except RobustCurrent.freshManagedBean(handlerVariableNameFor(pbType));
    * @throws FatalFacesException
-   *         ! getHandlerDefaultClass().isAssignableFrom(RobustCurrent.
+   *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      freshManagedBean(handlerVariableNameFor(pbType));
    */
-  private AbstractPersistentBeanHandler freshManagedHandlerForDirect(Class pbType, AsyncCrudDao dao)
+  private PersistentBeanHandler freshManagedHandlerForDirect(Class pbType, AsyncCrudDao dao)
       throws FatalFacesException {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
-    assert AbstractPersistentBeanHandler.class.isAssignableFrom(getHandlerDefaultClass());
+    assert PersistentBeanHandler.class.isAssignableFrom(getDefaultHandlerClass());
     String varName = handlerVariableNameFor(pbType);
     Object result = RobustCurrent.freshManagedBean(varName);
     return initHandler(pbType, dao, varName, result);
   }
 
   /**
-   * <p>Retrieve a fresh managed bean {@link AbstractPersistentBeanHandler} for
+   * <p>Retrieve a fresh managed bean {@link PersistentBeanHandler} for
    *   {@link PersistentBean PersistentBeans} of type <code>pbType</code>
    *   with name {@link #handlerVariableNameFor(Class) handlerVariableNameFor(pbType)}.
    *   This bean is not stored in any scope.</p>
@@ -276,18 +316,18 @@ public class PersistentBeanHandlerResolver {
    *                  freshManagedHandler(pbType.getSuperClass()));
    * @except RobustCurrent.freshManagedBean(handlerVariableNameFor(pbType));
    * @throws FatalFacesException
-   *         ! getHandlerDefaultClass().isAssignableFrom(RobustCurrent.
+   *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      freshManagedBean(handlerVariableNameFor(pbType)));
    * @except freshManagedHandler(pbType.getSuperClass());
    */
-  public final AbstractPersistentBeanHandler freshManagedHandlerFor(Class pbType, AsyncCrudDao dao)
+  public final PersistentBeanHandler freshManagedHandlerFor(Class pbType, AsyncCrudDao dao)
       throws FatalFacesException {
     assert pbType != null;
     if (! PersistentBean.class.isAssignableFrom(pbType)) {
       return null;
     }
     else {
-      AbstractPersistentBeanHandler result = freshManagedHandlerForDirect(pbType, dao);
+      PersistentBeanHandler result = freshManagedHandlerForDirect(pbType, dao);
       if (result != null) {
         return result;
       }
@@ -298,8 +338,8 @@ public class PersistentBeanHandlerResolver {
   }
 
   /**
-   * Create a default {@link AbstractPersistentBeanHandler} for <code>pbType</code>,
-   * of type {@link #getHandlerDefaultClass()}.
+   * Create a default {@link PersistentBeanHandler} for <code>pbType</code>,
+   * of type {@link #getDefaultHandlerClass()}.
    * We set the type of this new instance to <code>pbType</code>, and the dao <code>dao</code>.
    * The handler is not stored in any scope.
    *
@@ -308,12 +348,12 @@ public class PersistentBeanHandlerResolver {
    * @result result.getType() == pbType;
    * @result result.getDao() == dao;
    */
-  public final AbstractPersistentBeanHandler createDefaultHandlerFor(Class pbType, AsyncCrudDao dao) {
+  public final PersistentBeanHandler createDefaultHandlerFor(Class pbType, AsyncCrudDao dao) {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
-    AbstractPersistentBeanHandler handler = null;
+    PersistentBeanHandler handler = null;
     try {
-      handler = (AbstractPersistentBeanHandler)getHandlerDefaultClass().newInstance(); // Exc
+      handler = (PersistentBeanHandler)getDefaultHandlerClass().newInstance(); // Exc
       handler.setType(pbType);
       handler.setDao(dao);
       LOG.debug("created new default handler for PersistentBean type \"" +
@@ -331,16 +371,16 @@ public class PersistentBeanHandlerResolver {
   }
 
   /**
-   * <p>Return a fitting {@link AbstractPersistentBeanHandler} for <code>pbType</code>. This is
+   * <p>Return a fitting {@link PersistentBeanHandler} for <code>pbType</code>. This is
    *   {@link #managedHandlerFor(Class, AsyncCrudDao) managedHandlerFor(pbType, dao)},
    *   or, if no such handler exist,
    *   {@link #createDefaultHandlerFor(Class, AsyncCrudDao) createDefaultHandlerFor(pbType, dao)}.
    *   If so, this new default handler is stored in request scope with name
    *   {@link #handlerVariableNameFor(Class) handlerVariableNameFor(pbType)}.</p>
    */
-  public final AbstractPersistentBeanHandler handlerFor(Class pbType, AsyncCrudDao dao)
+  public final PersistentBeanHandler handlerFor(Class pbType, AsyncCrudDao dao)
       throws FatalFacesException {
-    AbstractPersistentBeanHandler result = managedHandlerFor(pbType, dao);
+    PersistentBeanHandler result = managedHandlerFor(pbType, dao);
     if (result == null) {
       result = createDefaultHandlerFor(pbType, dao);
       RobustCurrent.requestMap().put(handlerVariableNameFor(pbType), result);
@@ -349,15 +389,15 @@ public class PersistentBeanHandlerResolver {
   }
 
   /**
-   * <p>Return a fitting {@link AbstractPersistentBeanHandler} for <code>pbType</code>. This is
+   * <p>Return a fitting {@link PersistentBeanHandler} for <code>pbType</code>. This is
    *   {@link #freshManagedHandlerFor(Class, AsyncCrudDao) freshManagedHandlerFor(pbType, dao)},
    *   or, if no such handler exist,
    *   {@link #createDefaultHandlerFor(Class, AsyncCrudDao) createDefaultHandlerFor(pbType, dao)}.
    *   The resulting handler is not stored in any scope.</p>
    */
-  public final AbstractPersistentBeanHandler freshHandlerFor(Class pbType, AsyncCrudDao dao)
+  public final PersistentBeanHandler freshHandlerFor(Class pbType, AsyncCrudDao dao)
       throws FatalFacesException {
-    AbstractPersistentBeanHandler result = freshManagedHandlerFor(pbType, dao);
+    PersistentBeanHandler result = freshManagedHandlerFor(pbType, dao);
     if (result == null) {
       result = createDefaultHandlerFor(pbType, dao);
     }
@@ -369,12 +409,12 @@ public class PersistentBeanHandlerResolver {
    * with name {@link #handlerVariableNameFor(Class) handlerVariableNameFor(handler.getType())}.
    *
    * @pre handler != null;
-   * @pre getHandlerDefaultClass().isAssignableFrom(handler.getType());
+   * @pre getMinimalHandlerClass().isAssignableFrom(handler.getType());
    * @post RobustCurrent.variable(handlerVariableNameFor(handler.getType()));
    */
-  public final void putInRequestScope(AbstractPersistentBeanHandler handler) {
+  public final void putInRequestScope(PersistentBeanHandler handler) {
     assert handler != null;
-    assert getHandlerDefaultClass().isAssignableFrom(handler.getType());
+    assert getMinimalHandlerClass().isAssignableFrom(handler.getType());
     String varName = handlerVariableNameFor(handler.getType());
     RobustCurrent.requestMap().put(varName, handler);
     LOG.debug("handler " + handler + " put in request scope with name \"" +

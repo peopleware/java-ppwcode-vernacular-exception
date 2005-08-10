@@ -140,7 +140,7 @@ public class PersistentBeanConverter implements Converter {
 
   // MUDO (jand) we need the type; better get it from the request too!
   //   (if only we could)
-  // same problem as in be.peopleware.jsf_II.persistence.AbstractPersistentBeanListHandler navigateToDetail
+  // same problem as in be.peopleware.jsf_II.persistence.CollectionHandler navigateToDetail
 
   /**
    * The type of the object (subclass of PersistentBean) that will

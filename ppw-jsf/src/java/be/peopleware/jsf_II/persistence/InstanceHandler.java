@@ -64,7 +64,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * </ul>
  *
  * <h2>States &amp; Transitions</h2>
- * <p>An <code>PersistentBeanCrudHandler</code> has 4 states and
+ * <p>An <code>InstanceHandler</code> has 4 states and
  *  a number of state transitions. The states are actually <dfn>view modes</dfn>
  *  for the JSF page.</p>
  * <img src="doc-files/persistence.gif" style="width: 100%;" />
@@ -332,7 +332,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * @idea (jand) gather viewmode in separate class
  * @mudo (jand) security
  */
-public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
+public class InstanceHandler extends PersistentBeanHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -347,11 +347,11 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
   /*</section>*/
 
 
-  private static final Log LOG = LogFactory.getLog(PersistentBeanCrudHandler.class);
+  private static final Log LOG = LogFactory.getLog(InstanceHandler.class);
 
 
-  public PersistentBeanCrudHandler() {
-    LOG.debug("constructor of PersistentBeanCrudHandler");
+  public InstanceHandler() {
+    LOG.debug("constructor of InstanceHandler");
   }
 
   /*<property name="id">*/
@@ -655,7 +655,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    */
   public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
     assert getType() != null : "type cannot be null";
-    LOG.debug("PersistentBeanCrudHandler.navigate called; id = " + getId() +
+    LOG.debug("InstanceHandler.navigate called; id = " + getId() +
               ", instance = " + getInstance());
     if (getInstance() == null) {
       LOG.warn("no instance in " + this +
@@ -742,7 +742,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * @mudo (jand) security
    */
   public final String edit() {
-    LOG.debug("PersistentBeanCrudHandler.edit called; showing bean for edit");
+    LOG.debug("InstanceHandler.edit called; showing bean for edit");
     LOG.debug("persistentBean: " + getInstance());
     try {
       checkConditions(VIEWMODE_DISPLAY); // ConditionException
@@ -795,7 +795,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *          {@link AsyncCrudDao#cancelTransaction()}
    */
   public String update() throws FatalFacesException {
-    LOG.debug("PersistentBeanCrudHandler.update called; the bean is already partially updated");
+    LOG.debug("InstanceHandler.update called; the bean is already partially updated");
     LOG.debug("persistentBean: " + getInstance());
     try {
       AsyncCrudDao dao = getDao();
@@ -911,7 +911,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *          !getType().isInstance(instance);
    */
   public final void editNew(PersistentBean instance) throws InvalidBeanException {
-    LOG.debug("PersistentBeanCrudHandler.editNew called; a new instance is stored in the handler");
+    LOG.debug("InstanceHandler.editNew called; a new instance is stored in the handler");
     if (instance == null || instance.getId() != null || !getType().isInstance(instance)) {
       throw new InvalidBeanException(instance, getType());
     }
@@ -984,7 +984,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *          {@link AsyncCrudDao#cancelTransaction()}
    */
   public final String create() throws FatalFacesException {
-    LOG.debug("PersistentBeanCrudHandler.create called; a new bean is created and is "+
+    LOG.debug("InstanceHandler.create called; a new bean is created and is "+
         "already partially updated");
     LOG.debug("persistentBean: " + getInstance());
     try {
@@ -1066,7 +1066,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *          {@link AsyncCrudDao#cancelTransaction()}
    */
   public final String delete() throws FatalFacesException {
-    LOG.debug("PersistentBeanCrudHandler.delete() called");
+    LOG.debug("InstanceHandler.delete() called");
     LOG.debug("persistentBean: " + getInstance());
     AsyncCrudDao dao = getDao();
     try {
@@ -1220,7 +1220,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *            : true;
    */
   public final String cancelEdit() {
-    LOG.debug("PersistentBeanCrudHandler.cancelEdit called; showing bean");
+    LOG.debug("InstanceHandler.cancelEdit called; showing bean");
     LOG.debug("persistentBean: " + getInstance());
     try {
       checkConditions(VIEWMODE_EDIT); // ConditionException
@@ -1254,7 +1254,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    *            : true;
    */
   public final String cancelEditNew() {
-    LOG.debug("PersistentBeanCrudHandler.cancelEditNew called; returning to previous page");
+    LOG.debug("InstanceHandler.cancelEditNew called; returning to previous page");
     LOG.debug("persistentBean: " + getInstance());
     if (getInstance() == null) {
       return goBack(NO_INSTANCE);
@@ -1275,12 +1275,12 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
    * <p>For the to-many associations, there is a property in the {@link PersistentBean instance}
    *   that returns a {@link Collection} of other {@link PersistentBean PersistentBeans}.
    *   We often want to show this collection in one way, and interact with it, via
-   *   the web interface. This is handled by an {@link AbstractPersistentBeanListHandler}.
+   *   the web interface. This is handled by an {@link CollectionHandler}.
    *   In the handler that wraps around the original instance (an object of this class),
    *   we need a way to create and access such a
-   *   {@link AbstractPersistentBeanListHandler list handler}. Below you will find code
+   *   {@link CollectionHandler list handler}. Below you will find code
    *   to do this via reflection, automatically. Different
-   *   {@link AbstractPersistentBeanListHandler list handlers} can be accessed through
+   *   {@link CollectionHandler list handlers} can be accessed through
    *   a (fake) {@link Map}, where the key is the property name of the JavaBean
    *   property that returns the collection of associated {@link PersistentBean PersistentBeans}
    *   from the instance this handler works for.</p>
@@ -1341,7 +1341,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
                   }
                   else if (propertyValue instanceof Collection) {
                     Class associatedType = (Class)getAssociationMetaMap().get(propertyName);
-                    result = freshPersistentBeanCollectionDataModelHandlerFor(associatedType, (Collection)propertyValue);
+                    result = freshCollectionHandlerFor(associatedType, (Collection)propertyValue);
                   }
                   else {
                     LOG.warn("Property \"" + propertyName + "\" is not a PersistentBean or a " +
@@ -1375,20 +1375,19 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
               return result;
             }
 
-            private PersistentBeanCrudHandler freshPersistentBeanInstanceHandlerFor(PersistentBean pb) throws FatalFacesException, IllegalArgumentException {
-              PersistentBeanCrudHandler pbch = (PersistentBeanCrudHandler)PersistentBeanCrudHandler.
+            private InstanceHandler freshPersistentBeanInstanceHandlerFor(PersistentBean pb) throws FatalFacesException, IllegalArgumentException {
+              InstanceHandler pbch = (InstanceHandler)InstanceHandler.
                     RESOLVER.freshHandlerFor(pb.getClass(), getDao());
               pbch.setInstance(pb);
               return pbch;
             }
 
-            private DataModelPersistentBeanCollectionHandler freshPersistentBeanCollectionDataModelHandlerFor(Class associatedType, Collection c)
+            private CollectionHandler freshCollectionHandlerFor(Class associatedType, Collection c)
                 throws FatalFacesException {
-              DataModelPersistentBeanCollectionHandler dmpbch =
-                  (DataModelPersistentBeanCollectionHandler)DataModelPersistentBeanCollectionHandler.
-                    RESOLVER.freshHandlerFor(associatedType, getDao());
-              dmpbch.setInstances(c);
-              return dmpbch;
+              CollectionHandler ch =
+                  (CollectionHandler)CollectionHandler.RESOLVER.freshHandlerFor(associatedType, getDao());
+              ch.setInstances(c);
+              return ch;
             }
 
           };
@@ -1472,10 +1471,10 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
   /*</section>*/
 
   /**
-   * @invar RESOLVER.getHandlerDefaultClass() == PersistentBeanCrudHandler.class;
+   * @invar RESOLVER.getHandlerDefaultClass() == InstanceHandler.class;
    * @invar RESOLVER.getHandlerVarNameSuffix().equals(EMPTY);
    */
   public final static PersistentBeanHandlerResolver RESOLVER =
-      new PersistentBeanHandlerResolver(PersistentBeanCrudHandler.class, "");
+      new PersistentBeanHandlerResolver(InstanceHandler.class, "");
 
 }

@@ -24,6 +24,8 @@ import be.peopleware.persistence_I.dao.Dao;
  * {@link Dao} and a {@link CrudSecurityStrategy}.
  * These are stateful instances, that should be stored in request scope.
  *
+ * @note There is no reason for now to make this an interface.
+ *
  * @author    Jan Dockx
  * @author    Peopleware n.v.
  *
@@ -31,7 +33,7 @@ import be.peopleware.persistence_I.dao.Dao;
  *            ? PersistentBean.class.isAssignableFrom(getType())
  *            : true;
  */
-public abstract class AbstractPersistentBeanHandler {
+public abstract class PersistentBeanHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -47,7 +49,7 @@ public abstract class AbstractPersistentBeanHandler {
 
 
 
-  private static final Log LOG = LogFactory.getLog(AbstractPersistentBeanHandler.class);
+  private static final Log LOG = LogFactory.getLog(PersistentBeanHandler.class);
 
 
 
@@ -353,11 +355,11 @@ public abstract class AbstractPersistentBeanHandler {
   private final static String DOT = ".";
 
   /**
-   * <strong>= AbstractPersistentBeanHandler.class.getPackage().getName() +
+   * <strong>= PersistentBeanHandler.class.getPackage().getName() +
    *   DOT + BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME;</strong>
    */
   private final static String BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME =
-    AbstractPersistentBeanHandler.class.getPackage().getName() +
+    PersistentBeanHandler.class.getPackage().getName() +
     DOT + BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME;
 
   /**

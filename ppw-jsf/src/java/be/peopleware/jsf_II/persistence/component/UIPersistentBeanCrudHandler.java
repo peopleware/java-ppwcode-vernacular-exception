@@ -15,20 +15,20 @@ import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
-import be.peopleware.jsf_II.persistence.PersistentBeanCrudHandler;
+import be.peopleware.jsf_II.persistence.InstanceHandler;
 
 
 /**
- * This {@link UIComponent} is used in JSF pages to initialize {@link PersistentBeanCrudHandler}
+ * This {@link UIComponent} is used in JSF pages to initialize {@link InstanceHandler}
  * instances early in the JSF request / response lifecycle. In this mode of use,
- * the {@link PersistentBeanCrudHandler} is a managed bean in request scope. The
- * {@link PersistentBeanCrudHandler#getType()} is set in <kbd>faces-config.xml</kbd> as a managed
- * property. The required {@link PersistentBeanCrudHandler#getId()} and
- * {@link PersistentBeanCrudHandler#getViewMode()} comes with the request as request parameters.
- * They need to be set in the {@link PersistentBeanCrudHandler} early, to
+ * the {@link InstanceHandler} is a managed bean in request scope. The
+ * {@link InstanceHandler#getType()} is set in <kbd>faces-config.xml</kbd> as a managed
+ * property. The required {@link InstanceHandler#getId()} and
+ * {@link InstanceHandler#getViewMode()} comes with the request as request parameters.
+ * They need to be set in the {@link InstanceHandler} early, to
  * be able to retrieve the instance from persistent storage before it is accessed by
- * value bindings. This {@link UIComponent} renders the {@link PersistentBeanCrudHandler#getId()} and
- * {@link PersistentBeanCrudHandler#getViewMode()} as hidden fields, and reads them from
+ * value bindings. This {@link UIComponent} renders the {@link InstanceHandler#getId()} and
+ * {@link InstanceHandler#getViewMode()} as hidden fields, and reads them from
  * the HTTP request, validates them, converts them, and sets them in the handler during
  * the Apply Request Values phase.
  *
@@ -70,7 +70,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
    * @throws FatalFacesException
    *         ; could not locate a handler through the value binding
    */
-  public PersistentBeanCrudHandler getHandler(FacesContext context)
+  public InstanceHandler getHandler(FacesContext context)
       throws FatalFacesException {
     ValueBinding vb = getValueBinding(HANDLER_VALUE_BINDING_NAME);
     if (vb == null) {
@@ -78,10 +78,10 @@ public class UIPersistentBeanCrudHandler extends UIInput {
     }
     Object result = vb.getValue(context);
     if ((result == null) ||
-        (! (result instanceof PersistentBeanCrudHandler))) {
+        (! (result instanceof InstanceHandler))) {
       RobustCurrent.fatalProblem("Could not locate handler", LOG);
     }
-    return (PersistentBeanCrudHandler)result;
+    return (InstanceHandler)result;
   }
 
   /*</property>*/
@@ -180,7 +180,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
    */
   public void decode(FacesContext context) throws FatalFacesException {
     assert context != null;
-    PersistentBeanCrudHandler handler = getHandler(context); // FatalFacesException
+    InstanceHandler handler = getHandler(context); // FatalFacesException
     setValid(true);
     Map requestParameters = context.getExternalContext().getRequestParameterMap();
     assert requestParameters != null;
@@ -212,14 +212,14 @@ public class UIPersistentBeanCrudHandler extends UIInput {
       }
       { // viewMode
         viewMode = (String)requestParameters.get(viewModeTagName(context));
-        if (! PersistentBeanCrudHandler.isViewMode(viewMode)) {
+        if (! InstanceHandler.isViewMode(viewMode)) {
           // if there is no correct view mode in the request, treat it as a display mode
-          viewMode = PersistentBeanCrudHandler.VIEWMODE_DISPLAY;
+          viewMode = InstanceHandler.VIEWMODE_DISPLAY;
         }
       }
     }
     assert id != null;
-    assert PersistentBeanCrudHandler.isViewMode(viewMode);
+    assert InstanceHandler.isViewMode(viewMode);
     // fill id and viewmode in handler
     handler.setInstance(null); // be sure
     handler.setId(id);

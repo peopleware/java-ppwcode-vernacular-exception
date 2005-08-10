@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @MUDO (jand): AANPASSEN
  *
- * Security strategy API for {@link PersistentBeanCrudHandler AsyncCrudHandlers}.
+ * Security strategy API for {@link PersistentBeanHandler PersistentBeanHandlers}.
  * AsyncCrudHandlers enable the user to
  * get a page for a new object, to get a page to create an object,
  * and to view, edit, update, delete an existing object, and to

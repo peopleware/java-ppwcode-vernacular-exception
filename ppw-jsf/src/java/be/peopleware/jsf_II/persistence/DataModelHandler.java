@@ -2,7 +2,6 @@ package be.peopleware.jsf_II.persistence;
 
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
@@ -11,18 +10,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.jsf_II.FatalFacesException;
-import be.peopleware.persistence_I.PersistentBean;
 
 
 /**
- * JSF action that retrieves all instances of a given subtype of {@link PersistentBean}
- * from persistent storage and makes them available in the associatied Handlers in the
- * form of a {@link DataModel}
+ * Handler that presents {@link #getInstances()} as a {@link DataModel}
+ * for the JSF <code>dataTable</code> tag.
  *
  * @author     David Van Keer
+ * @author     Jan Dockx
  * @author     Peopleware n.v.
  */
-public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistentBeanHandler {
+public class DataModelHandler extends CollectionHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -38,33 +36,33 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
 
 
 
-  private static final Log LOG = LogFactory.getLog(DataModelAllOfTypePersistentBeanHandler.class);
+  private static final Log LOG = LogFactory.getLog(DataModelHandler.class);
 
 
-  /*<property name="comparator">*/
-  //------------------------------------------------------------------
-
-  /**
-   * Return the comparator which is/can be used for sorting the
-   * retrieved {@link PersistentBean}'s
-   */
-  public Comparator getComparator() {
-    return $comparator;
-  }
-
-  /**
-   * Set a comparator for sorting the retrieved {@link PersistentBean}'s
-   *
-   * @param     comparator
-   *            The new Comparator to use for sorting
-   */
-  public void setComparator(final Comparator comparator) {
-    $comparator = comparator;
-  }
-
-  private Comparator $comparator;
-
-  /*</property>*/
+//  /*<property name="comparator">*/
+//  //------------------------------------------------------------------
+//
+//  /**
+//   * Return the comparator which is/can be used for sorting the
+//   * retrieved {@link PersistentBean}'s
+//   */
+//  public Comparator getComparator() {
+//    return $comparator;
+//  }
+//
+//  /**
+//   * Set a comparator for sorting the retrieved {@link PersistentBean}'s
+//   *
+//   * @param     comparator
+//   *            The new Comparator to use for sorting
+//   */
+//  public void setComparator(final Comparator comparator) {
+//    $comparator = comparator;
+//  }
+//
+//  private Comparator $comparator;
+//
+//  /*</property>*/
 
 
 
@@ -101,25 +99,12 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
    * @post    (getDataModel().getRowcount() > 0) ? getDataModel().getRowData()
    *                                             : null
    */
-  public PersistentBeanCrudHandler getSelected() {
-    PersistentBeanCrudHandler result = null;
+  public InstanceHandler getSelected() {
+    InstanceHandler result = null;
     if (getDataModel().getRowCount() > 0) {
-      result = (PersistentBeanCrudHandler)getDataModel().getRowData();
+      result = (InstanceHandler)getDataModel().getRowData();
     }
     return result;
   }
-
-  /**
-   * <strong>= {@value}</strong>
-   */
-  public static final String HANDLER_VARNAME_SUFFIX = "_datamodel_all";
-
-  /**
-   * @invar RESOLVER.getHandlerDefaultClass() == DataModelAllOfTypePersistentBeanHandler.class;
-   * @invar RESOLVER.getHandlerVarNameSuffix().equals(DATAMODEL_HANDLER_VARNAME_SUFFIX);
-   */
-  public final static PersistentBeanHandlerResolver RESOLVER =
-      new PersistentBeanHandlerResolver(DataModelAllOfTypePersistentBeanHandler.class,
-                                        HANDLER_VARNAME_SUFFIX);
 
 }
