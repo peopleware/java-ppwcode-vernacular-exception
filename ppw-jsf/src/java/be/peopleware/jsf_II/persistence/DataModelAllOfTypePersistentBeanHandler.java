@@ -2,14 +2,14 @@ package be.peopleware.jsf_II.persistence;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.persistence_I.PersistentBean;
 
@@ -81,29 +81,7 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
     LOG.debug("request for datamodel");
     if ($dataModel == null) {
       LOG.debug("no datamodel cached; creating new datamodel");
-
-
-
-      List handlers = new ArrayList();
-      List beans = new ArrayList(getInstances());
-      LOG.debug("retrieved instances");
-      if (getComparator() != null) {
-        Collections.sort(beans, getComparator());
-      }
-      LOG.debug("creating handler for each instance");
-      Iterator iter = beans.iterator();
-      while (iter.hasNext()) {
-        PersistentBean bean = (PersistentBean)iter.next();
-        LOG.debug("    instance is " + simpleString(bean));
-        PersistentBeanCrudHandler handler = createInstanceHandler(bean);
-        handler.setViewMode(PersistentBeanCrudHandler.VIEWMODE_DISPLAY);
-        LOG.debug("    handler is " + handler);
-        handlers.add(handler);
-      }
-      $dataModel = new ListDataModel(handlers);
-
-
-
+      $dataModel = new ListDataModel(new ArrayList(getInstanceHandlers()));
       LOG.debug("datamodel created and cached");
     }
     else {
@@ -130,5 +108,18 @@ public class DataModelAllOfTypePersistentBeanHandler extends AllOfTypePersistent
     }
     return result;
   }
+
+  /**
+   * <strong>= {@value}</strong>
+   */
+  public static final String HANDLER_VARNAME_SUFFIX = "_datamodel_all";
+
+  /**
+   * @invar RESOLVER.getHandlerDefaultClass() == DataModelAllOfTypePersistentBeanHandler.class;
+   * @invar RESOLVER.getHandlerVarNameSuffix().equals(DATAMODEL_HANDLER_VARNAME_SUFFIX);
+   */
+  public final static PersistentBeanHandlerResolver RESOLVER =
+      new PersistentBeanHandlerResolver(DataModelAllOfTypePersistentBeanHandler.class,
+                                        HANDLER_VARNAME_SUFFIX);
 
 }

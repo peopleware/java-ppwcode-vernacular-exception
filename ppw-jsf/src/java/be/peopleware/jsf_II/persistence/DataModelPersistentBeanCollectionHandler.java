@@ -74,6 +74,7 @@ public class DataModelPersistentBeanCollectionHandler extends PersistentBeanColl
    *            A datamodel with PersistentBeanHandlers.
    */
   public DataModel getDataModel() throws FatalFacesException {
+    LOG.debug("request for datamodel");
     if ($dataModel == null) {
       LOG.debug("no datamodel cached; creating new datamodel");
       $dataModel = new ListDataModel(new ArrayList(getInstanceHandlers()));
@@ -88,13 +89,13 @@ public class DataModelPersistentBeanCollectionHandler extends PersistentBeanColl
   private DataModel $dataModel;
 
   /*</property>*/
-  
+
   /**
    * Return the currently selected row of the DataModel or null if no row is selected or
    * available.
-   * 
+   *
    * @post    (getDataModel().getRowcount() > 0) ? getDataModel().getRowData()
-   *                                             : null 
+   *                                             : null
    */
   public PersistentBeanCrudHandler getSelected() {
     PersistentBeanCrudHandler result = null;
@@ -103,5 +104,18 @@ public class DataModelPersistentBeanCollectionHandler extends PersistentBeanColl
     }
     return result;
   }
+
+  /**
+   * <strong>= {@value}</strong>
+   */
+  public static final String HANDLER_VARNAME_SUFFIX = "_datamodel";
+
+  /**
+   * @invar RESOLVER.getHandlerDefaultClass() == DataModelPersistentBeanCollectionHandler.class;
+   * @invar RESOLVER.getHandlerVarNameSuffix().equals(HANDLER_VARNAME_SUFFIX);
+   */
+  public final static PersistentBeanHandlerResolver RESOLVER =
+      new PersistentBeanHandlerResolver(DataModelPersistentBeanCollectionHandler.class,
+                                        HANDLER_VARNAME_SUFFIX);
 
 }

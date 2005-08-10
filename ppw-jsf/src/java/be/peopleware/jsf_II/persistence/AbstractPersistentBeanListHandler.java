@@ -1,7 +1,12 @@
 package be.peopleware.jsf_II.persistence;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import javax.faces.event.ActionEvent;
 
@@ -87,20 +92,52 @@ public abstract class AbstractPersistentBeanListHandler extends AbstractPersiste
 
   public static final String ID_REQUEST_PARAMETER_NAME = "pbId";
 
-  public void navigateToDetail(ActionEvent event) throws FatalFacesException {
-    // MUDO (jand) remove superfluous debug logging
-    LOG.debug("Event: " + event);
-    LOG.debug("Event source: " + event.getSource());
-    LOG.debug("Event component: " + event.getComponent());
-    LOG.debug("Event component ID: " + event.getComponent().getId());
-    LOG.debug("Event component attributes: " + event.getComponent().getAttributes());
-    LOG.debug("Request map: " + RobustCurrent.requestMap());
+  /**
+   * Returns a Set containing all peristentBeans wrapped in the associated Handler.
+   *
+   * @return    Set
+   *            A Set with PersistentBeanHandlers based on the instances of this Handler..
+   */
+  public final Set getInstanceHandlers() {
+    if ($handlers == null) {
+      LOG.debug("no handlers cached; creating new handlers");
+      List handlers = new ArrayList();
+      List beans = new ArrayList(getInstances());
+      LOG.debug("retrieved instances");
+      LOG.debug("creating handler for each instance");
+      Iterator iter = beans.iterator();
+      while (iter.hasNext()) {
+        PersistentBean bean = (PersistentBean)iter.next();
+        LOG.debug("    instance is " + bean);
+        PersistentBeanCrudHandler handler = (PersistentBeanCrudHandler)PersistentBeanCrudHandler.
+            RESOLVER.freshHandlerFor(bean.getClass(), getDao());
+        handler.setViewMode(PersistentBeanCrudHandler.VIEWMODE_DISPLAY);
+        LOG.debug("    handler is " + handler);
+        handlers.add(handler);
+      }
+      $handlers = new HashSet(handlers);
+      LOG.debug("handlers created and cached");
+    }
+    else {
+      LOG.debug("returning cached handlers");
+    }
+    return $handlers;
+  }
+
+  private Set $handlers;
+
+  public final void navigateToDetail(ActionEvent event) throws FatalFacesException {
+    LOG.debug("request to navigate to detail");
     String idString = null;
     try {
       idString = RobustCurrent.requestParameterValues(ID_REQUEST_PARAMETER_NAME)[0];
       LOG.debug("request parameter " + ID_REQUEST_PARAMETER_NAME + " = " + idString);
       Long id = Long.valueOf(idString);
-      PersistentBeanCrudHandler handler = createInstanceHandler(getType());
+      PersistentBeanCrudHandler handler = (PersistentBeanCrudHandler)PersistentBeanCrudHandler.
+          RESOLVER.handlerFor(getType(), getDao());
+      // MUDO (jand) this type does not allow for polymorphic navigation!
+      // solution: put the type in the HTML page too!
+      // same problem as in PersistentBeanConverter!
       LOG.debug("Created handler for id = " + id +
                 "and type " + getType() + ": " + handler);
       handler.setId(id);

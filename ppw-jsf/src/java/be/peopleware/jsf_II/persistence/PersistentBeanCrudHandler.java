@@ -10,13 +10,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletRequestListener;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
@@ -346,6 +349,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
 
   private static final Log LOG = LogFactory.getLog(PersistentBeanCrudHandler.class);
 
+
   public PersistentBeanCrudHandler() {
     LOG.debug("constructor of PersistentBeanCrudHandler");
   }
@@ -634,87 +638,72 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
 
 
   /**
-   * This method should be called from within another handler when navigating
-   * to this JSF page. A proper initialisation of this handler happens
-   * to be able to show the {@link PersistentBean} whose id is given
-   * in display mode.
+   * <p>This method should be called from within another handler when navigating
+   *   to this JSF page. A proper initialisation of this handler happens
+   *   to be able to show the {@link #getInstance()}
+   *   in display mode.</p>
+   * <p>This handler is made available to the JSP/JSF page in request scope,
+   *   as a variable with name
+   *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
+   *   And we navigate to {@link #getDetailViewId()}.</p>
+   * <p>If {@link #getInstance()} is <code>null</code>, we do nothing.</p>
    *
-   * To initialise the handler properly, the following three steps are taken:
-   * 1. Store the given id in {@link #getId()}.
-   * 2. Load the {@link PersistentBean} with the given id, whose type is equal
-   *    to {@link #getType()} from persistent storage and store this bean in
-   *    {@link #getInstance()}. If no such bean is found in persistent storage,
-   *    or when some technical exception occurs, this is signalled to the user
-   *    by throwing an IdNotFoundException.
-   * 3. We go to display mode.
-   *
-   * Navigate to {@link #getDetailViewId()}.
-   *
-   * This handler is made available to the JSP/JSF page in request scope,
-   * as a variable with name {@link #getDetailHandlerName()}.
-   *
-   * @post    new.getId().equals(id);
-   * @post    (new.getInstance() != null)
-   *            ? new.getInstance().getId().equals(id)
-   *            : true;
-   * @post    (new.getInstance() != null)
-   *            ? getType().isInstance(new.getInstance())
-   *            : true;
    * @post    new.getViewMode().equals(VIEWMODE_DISPLAY);
+   * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
    *
    * @mudo (jand) security
    */
   public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
     assert getType() != null : "type cannot be null";
-    LOG.debug("PersistentBeanCrudHandler.navigate called; initialising id and bean");
+    LOG.debug("PersistentBeanCrudHandler.navigate called; id = " + getId() +
+              ", instance = " + getInstance().toShortString());
     if (getInstance() == null) {
-      LOG.debug("no instance in " + this +
+      LOG.warn("no instance in " + this +
                 "; cannot navigate; staying where we are");
-//      String componentId = aEv.getComponent().getId();
-      // MUDO (jand) add i18n message!!!!
+      return;
     }
     setViewMode(VIEWMODE_DISPLAY);
     // put this handler in request scope, under an agreed name, create new view & navigate
-    RobustCurrent.requestMap().put(getDetailHandlerName(), this);
+    RESOLVER.putInRequestScope(this);
     FacesContext context = RobustCurrent.facesContext();
     UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getDetailViewId());
     context.setViewRoot(viewRoot);
     context.renderResponse();
   }
 
-  /**
-   * <strong>= {@value}</strong>
-   */
-  public final static String DETAIL_HANDLER_NAME_SUFFIX = "H";
-
-  /**
-   * The name under which this handler is stored in request scope when
-   * {@link #navigateHere(ActionEvent)} is called.
-   * This name is the simple type name of {@link #getType()}, with the suffix
-   * {@link #DETAIL_HANDLER_NAME_SUFFIX}.
-   *
-   * @idea (jand) make this parameterizable
-   */
-  public String getDetailHandlerName() {
-    return getSimpleTypeName() + "H";
-  }
-
-  private final static String DOT_GREP = "\\.";
-
-  /**
-   * The simple type name of the type {@link #getType()}.
-   *
-   * @throws FatalFacesException
-   *         getType() == null;
-   */
-  private String getSimpleTypeName() {
-    if (getType() == null) {
-      RobustCurrent.fatalProblem("cannot get simple type name when type is null", LOG);
-    }
-    String fqcn = getType().getName();
-    String[] parts = fqcn.split(DOT_GREP);
-    return parts[parts.length - 1];
-  }
+//  /**
+//   * <strong>= {@value}</strong>
+//   */
+//  public final static String DETAIL_HANDLER_NAME_SUFFIX = "H";
+//
+//  /**
+//   * The name under which this handler is stored in request scope when
+//   * {@link #navigateHere(ActionEvent)} is called.
+//   * This name is the simple type name of {@link #getType()}, with the suffix
+//   * {@link #DETAIL_HANDLER_NAME_SUFFIX}.
+//   *
+//   * @idea (jand) make this parameterizable
+//   */
+//  public String getDetailHandlerName() {
+//    return getSimpleTypeName() + "H";
+//  }
+//
+//  private final static String DOT_GREP = "\\.";
+//
+//  /**
+//   * The simple type name of the type {@link #getType()}.
+//   *
+//   * @throws FatalFacesException
+//   *         getType() == null;
+//   */
+//  private String getSimpleTypeName() {
+//    if (getType() == null) {
+//      RobustCurrent.fatalProblem("cannot get simple type name when type is null", LOG);
+//    }
+//    String fqcn = getType().getName();
+//    String[] parts = fqcn.split(DOT_GREP);
+//    return parts[parts.length - 1];
+//  }
 
   public final static String DETAIL_VIEW_ID_PREFIX = "/jsf/";
 
@@ -1334,7 +1323,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
 
             private HashSet $keySet;
 
-            Map $backingMap = new HashMap();
+            private Map $backingMap = new HashMap();
 
             public Object get(Object key) throws FatalFacesException {
               if (! keySet().contains(key)) {
@@ -1347,13 +1336,17 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
                 String propertyName = (String)key;
                 try {
                   Object propertyValue = PropertyUtils.getProperty(getInstance(), propertyName);
-                  if (PersistentBean.class.isAssignableFrom((propertyValue.getClass()))) {
-                    PersistentBean pb = (PersistentBean)PropertyUtils.getProperty(getInstance(), propertyName);
-                    PropertyDescriptor pd = PropertyUtils.getPropertyDescriptor(getType(), propertyName);
-                    result = createInstanceHandler(pb, pd.getPropertyType());
+                  if (propertyValue instanceof PersistentBean) {
+                    result = freshPersistentBeanInstanceHandlerFor((PersistentBean)propertyValue);
+                  }
+                  else if (propertyValue instanceof Collection) {
+                    Class associatedType = (Class)getAssociationMetaMap().get(propertyName);
+                    result = freshPersistentBeanCollectionDataModelHandlerFor(associatedType, (Collection)propertyValue);
                   }
                   else {
-                    result = createListHandlerFor((Class)getAssociationMetaMap().get(key), (String)key);
+                    LOG.warn("Property \"" + propertyName + "\" is not a PersistentBean or a " +
+                             "Collection; returning null");
+                    return null;
                   }
                   $backingMap.put(key, result);
                 }
@@ -1361,26 +1354,43 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
                   RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", ccExc, LOG);
                 }
                 catch (IllegalArgumentException iaExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", iaExc, LOG);
+                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", iaExc, LOG);
                 }
                 catch (IllegalAccessException iaExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", iaExc, LOG);
+                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", iaExc, LOG);
                 }
                 catch (InvocationTargetException itExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", itExc, LOG);
+                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", itExc, LOG);
                 }
                 catch (NullPointerException npExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", npExc, LOG);
+                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", npExc, LOG);
                 }
                 catch (ExceptionInInitializerError eiiErr) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", eiiErr, LOG);
+                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", eiiErr, LOG);
                 }
                 catch (NoSuchMethodException nsmExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", nsmExc, LOG);
+                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", nsmExc, LOG);
                 }
               }
               return result;
             }
+
+            private PersistentBeanCrudHandler freshPersistentBeanInstanceHandlerFor(PersistentBean pb) throws FatalFacesException, IllegalArgumentException {
+              PersistentBeanCrudHandler pbch = (PersistentBeanCrudHandler)PersistentBeanCrudHandler.
+                    RESOLVER.freshHandlerFor(pb.getClass(), getDao());
+              pbch.setInstance(pb);
+              return pbch;
+            }
+
+            private DataModelPersistentBeanCollectionHandler freshPersistentBeanCollectionDataModelHandlerFor(Class associatedType, Collection c)
+                throws FatalFacesException {
+              DataModelPersistentBeanCollectionHandler dmpbch =
+                  (DataModelPersistentBeanCollectionHandler)DataModelPersistentBeanCollectionHandler.
+                    RESOLVER.freshHandlerFor(associatedType, getDao());
+              dmpbch.setInstances(c);
+              return dmpbch;
+            }
+
           };
 
   /**
@@ -1418,47 +1428,54 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     return Collections.EMPTY_MAP;
   }
 
-  private DataModelPersistentBeanCollectionHandler createListHandlerFor(Class associatedType, String propertyName)
-      throws FatalFacesException {
-    DataModelPersistentBeanCollectionHandler lh = null;
-    try {
-      lh = new DataModelPersistentBeanCollectionHandler();
-      lh.setType(associatedType);
-      lh.setDao(getDao());
-      Collection c = (Collection)PropertyUtils.getProperty(getInstance(), propertyName);
-      lh.setInstances(c);
-    }
-    catch (ClassCastException ccExc) {
-      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-                                 " for property " + propertyName + "\"", ccExc, LOG);
-    }
-    catch (IllegalArgumentException iaExc) {
-      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-                                 " for property " + propertyName + "\"", iaExc, LOG);
-    }
-    catch (IllegalAccessException iaExc) {
-      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-                                 " for property " + propertyName + "\"", iaExc, LOG);
-    }
-    catch (InvocationTargetException itExc) {
-      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-                                 " for property " + propertyName + "\"", itExc, LOG);
-    }
-    catch (NullPointerException npExc) {
-      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-                                 " for property " + propertyName + "\"", npExc, LOG);
-    }
-    catch (ExceptionInInitializerError eiiErr) {
-      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-                                 " for property " + propertyName + "\"", eiiErr, LOG);
-    }
-    catch (NoSuchMethodException nsmExc) {
-      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-                                 " for property " + propertyName + "\"", nsmExc, LOG);
-    }
-    return lh;
-  }
+//  private DataModelPersistentBeanCollectionHandler createDataModelPersistentBeanHandlerFor(Class associatedType,
+//                                                                                           Collection collection)
+//      throws FatalFacesException {
+//    DataModelPersistentBeanCollectionHandler lh = null;
+//    try {
+//      lh = (DataModelPersistentBeanCollectionHandler)DataModelPersistentBeanCollectionHandler.
+//              RESOLVER.freshHandlerFor(associatedType, getDao());
+//      Collection c = (Collection)PropertyUtils.getProperty(getInstance(), propertyName);
+//      lh.setInstances(collection);
+//    }
+//    catch (ClassCastException ccExc) {
+//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+//                                 " for property " + propertyName + "\"", ccExc, LOG);
+//    }
+//    catch (IllegalArgumentException iaExc) {
+//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+//                                 " for property " + propertyName + "\"", iaExc, LOG);
+//    }
+//    catch (IllegalAccessException iaExc) {
+//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+//                                 " for property " + propertyName + "\"", iaExc, LOG);
+//    }
+//    catch (InvocationTargetException itExc) {
+//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+//                                 " for property " + propertyName + "\"", itExc, LOG);
+//    }
+//    catch (NullPointerException npExc) {
+//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+//                                 " for property " + propertyName + "\"", npExc, LOG);
+//    }
+//    catch (ExceptionInInitializerError eiiErr) {
+//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+//                                 " for property " + propertyName + "\"", eiiErr, LOG);
+//    }
+//    catch (NoSuchMethodException nsmExc) {
+//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
+//                                 " for property " + propertyName + "\"", nsmExc, LOG);
+//    }
+//    return lh;
+//  }
 
   /*</section>*/
+
+  /**
+   * @invar RESOLVER.getHandlerDefaultClass() == PersistentBeanCrudHandler.class;
+   * @invar RESOLVER.getHandlerVarNameSuffix().equals(EMPTY);
+   */
+  public final static PersistentBeanHandlerResolver RESOLVER =
+      new PersistentBeanHandlerResolver(PersistentBeanCrudHandler.class, "");
 
 }
