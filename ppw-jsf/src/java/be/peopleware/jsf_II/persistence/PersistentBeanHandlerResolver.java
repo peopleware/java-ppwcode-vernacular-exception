@@ -380,11 +380,18 @@ public class PersistentBeanHandlerResolver {
    */
   public final PersistentBeanHandler handlerFor(Class pbType, AsyncCrudDao dao)
       throws FatalFacesException {
+    LOG.debug("request for handler for type " + pbType);
     PersistentBeanHandler result = managedHandlerFor(pbType, dao);
     if (result == null) {
+      LOG.debug("Could not find handler for type " + pbType +
+                "; will create default handler and put it in request scope");
       result = createDefaultHandlerFor(pbType, dao);
       RobustCurrent.requestMap().put(handlerVariableNameFor(pbType), result);
     }
+    else {
+      LOG.debug("handler found in some scope, or created as managed bean: " + result);
+    }
+    LOG.debug("handler is " + result);
     return result;
   }
 
@@ -397,10 +404,17 @@ public class PersistentBeanHandlerResolver {
    */
   public final PersistentBeanHandler freshHandlerFor(Class pbType, AsyncCrudDao dao)
       throws FatalFacesException {
+    LOG.debug("request for fresh handler for type " + pbType);
     PersistentBeanHandler result = freshManagedHandlerFor(pbType, dao);
     if (result == null) {
+      LOG.debug("Could not create fresh managed handler for type " + pbType +
+                "; will create default handler");
       result = createDefaultHandlerFor(pbType, dao);
     }
+    else {
+      LOG.debug("fresh handler created according to managed bean definition: " + result);
+    }
+    LOG.debug("fresh handler is " + result);
     return result;
   }
 
@@ -409,12 +423,12 @@ public class PersistentBeanHandlerResolver {
    * with name {@link #handlerVariableNameFor(Class) handlerVariableNameFor(handler.getType())}.
    *
    * @pre handler != null;
-   * @pre getMinimalHandlerClass().isAssignableFrom(handler.getType());
+   * @pre getMinimalHandlerClass().isInstance(handler);
    * @post RobustCurrent.variable(handlerVariableNameFor(handler.getType()));
    */
   public final void putInRequestScope(PersistentBeanHandler handler) {
     assert handler != null;
-    assert getMinimalHandlerClass().isAssignableFrom(handler.getType());
+    assert getMinimalHandlerClass().isInstance(handler);
     String varName = handlerVariableNameFor(handler.getType());
     RobustCurrent.requestMap().put(varName, handler);
     LOG.debug("handler " + handler + " put in request scope with name \"" +

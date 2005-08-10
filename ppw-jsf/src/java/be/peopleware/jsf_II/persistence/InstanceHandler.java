@@ -526,6 +526,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    *         (instance != null) && ! getType().isAssignableFrom(instance.getClass());
    */
   public final void setInstance(PersistentBean instance) throws IllegalArgumentException {
+    LOG.debug("setting instance to " + instance);
     if ((instance != null) && (! getType().isAssignableFrom(instance.getClass()))) {
       throw new IllegalArgumentException("instance " + instance +
                                          " is not a subtype of " +
@@ -535,7 +536,10 @@ public class InstanceHandler extends PersistentBeanHandler {
     if (instance != null) {
       setId(instance.getId());
     }
-    // else, we do NOT set the ID to null
+    else {
+      // else, we do NOT set the ID to null
+      LOG.debug("instance set to null; id is left untouched (" + getId() + ")");
+    }
   }
 
   /**

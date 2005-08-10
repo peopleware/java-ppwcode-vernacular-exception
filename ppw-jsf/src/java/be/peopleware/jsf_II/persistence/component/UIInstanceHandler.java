@@ -36,7 +36,7 @@ import be.peopleware.jsf_II.persistence.InstanceHandler;
  * @author    Peopleware n.v.
  *
  */
-public class UIPersistentBeanCrudHandler extends UIInput {
+public class UIInstanceHandler extends UIInput {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -51,7 +51,7 @@ public class UIPersistentBeanCrudHandler extends UIInput {
   /*</section>*/
 
 
-  private static final Log LOG = LogFactory.getLog(UIPersistentBeanCrudHandler.class);
+  private static final Log LOG = LogFactory.getLog(UIInstanceHandler.class);
 
 
 

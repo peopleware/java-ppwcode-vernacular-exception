@@ -13,13 +13,13 @@ import be.peopleware.jsf_II.persistence.InstanceHandler;
 
 
 /**
- * Tag for {@link UIPersistentBeanCrudHandler}.
+ * Tag for {@link UIInstanceHandler}.
  *
  * @author    Jan Dockx
  * @author    Peopleware n.v.
  *
  */
-public class PersistentBeanCrudHandlerTag extends UIComponentTag {
+public class InstanceHandlerTag extends UIComponentTag {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -34,7 +34,7 @@ public class PersistentBeanCrudHandlerTag extends UIComponentTag {
   /*</section>*/
 
 
-  private static final Log LOG = LogFactory.getLog(PersistentBeanCrudHandlerTag.class);
+  private static final Log LOG = LogFactory.getLog(InstanceHandlerTag.class);
 
  
   public String getComponentType() {
@@ -59,7 +59,7 @@ public class PersistentBeanCrudHandlerTag extends UIComponentTag {
   protected final void setProperties(UIComponent component) throws FatalFacesException {
     super.setProperties(component);
     RobustCurrent.creatValueBinding(component,
-                                    UIPersistentBeanCrudHandler.HANDLER_VALUE_BINDING_NAME,
+                                    UIInstanceHandler.HANDLER_VALUE_BINDING_NAME,
                                     $handler);
   }
   

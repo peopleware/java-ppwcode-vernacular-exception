@@ -867,7 +867,7 @@ public class RobustCurrent {
    *        {@link VariableResolverImpl#resolveVariable(FacesContext, String)}.
    */
   public static Object freshManagedBean(String name) throws FatalFacesException {
-    LOG.debug("request for managed bean with name \"" + name + "\"");
+    LOG.debug("request for fresh managed bean with name \"" + name + "\"");
     RuntimeConfig rtcfg = RuntimeConfig.getCurrentInstance(externalContext());
     ManagedBean mbc = rtcfg.getManagedBean(name);
     if (mbc == null) {
@@ -882,6 +882,7 @@ public class RobustCurrent {
       fatalProblem("error building managed bean with name \"" +
                    name + "\"", exc);
     }
+    LOG.debug("created new managed bean: " + result);
     return result;
     /* MyFaces independent implementation
     ScopeEntry alreadyExisting = lookup(name);
