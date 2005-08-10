@@ -300,7 +300,7 @@ public abstract class AbstractPersistentBeanHandler {
 
   /**
    * Return the type label of this PeristentBean.
-   * 
+   *
    * @basic
    */
   public String getTypeLabel() {
@@ -317,17 +317,17 @@ public abstract class AbstractPersistentBeanHandler {
 
   /**
    * Return the plural type label of this PeristentBean.
-   * 
+   *
    * @basic
    */
   public String getPluralTypeLabel() {
     return Properties.i18nTypeLabel(getType(),
-                                    true, 
+                                    true,
                                     RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY);
   }
 
   /*</property>*/
-  
+
   /*<property name="buttonLabels">*/
   //------------------------------------------------------------------
 
@@ -399,10 +399,5 @@ public abstract class AbstractPersistentBeanHandler {
   private String $navigationString;
 
   /*</property>*/
-
-
-  protected String simpleString(PersistentBean bean) {
-    return ((bean == null) ? "null" : bean.toShortString());
-  }
 
 }

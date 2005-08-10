@@ -515,7 +515,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
     else {
       LOG.debug("returning instance from cache");
     }
-    LOG.debug("returning instance: " + simpleString($instance));
+    LOG.debug("returning instance: " + $instance);
     return $instance;
   }
 
@@ -656,7 +656,7 @@ public class PersistentBeanCrudHandler extends AbstractPersistentBeanHandler {
   public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
     assert getType() != null : "type cannot be null";
     LOG.debug("PersistentBeanCrudHandler.navigate called; id = " + getId() +
-              ", instance = " + getInstance().toShortString());
+              ", instance = " + getInstance());
     if (getInstance() == null) {
       LOG.warn("no instance in " + this +
                 "; cannot navigate; staying where we are");
