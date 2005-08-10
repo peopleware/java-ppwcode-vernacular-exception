@@ -90,7 +90,7 @@
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-persistence-I</artifactId>
-      <version>SNAPSHOT</version>
+      <version>3.0.0-2.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
