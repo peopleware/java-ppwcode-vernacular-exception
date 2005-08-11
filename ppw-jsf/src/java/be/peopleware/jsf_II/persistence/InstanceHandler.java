@@ -674,6 +674,31 @@ public class InstanceHandler extends PersistentBeanHandler {
     context.setViewRoot(viewRoot);
     context.renderResponse();
   }
+  
+  /**
+   * <p>This method can be called from within this handler to navigate back
+   *   to list overview of the type given by {@link #getType()}.</p>
+   * <p>This handler is made available to the JSP/JSF page in request scope,
+   *   as a variable with name
+   *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
+   *   And we navigate to {@link #getListViewId()}.</p>
+   *
+   * @post    new.getViewMode().equals(VIEWMODE_DISPLAY);
+   * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
+   *
+   * @mudo (jand) security
+   */
+  public final void navigateToList(ActionEvent aEv) throws FatalFacesException {
+    assert getType() != null : "type cannot be null";
+    LOG.debug("PersistentBeanCrudHandler.navigateToList called");
+    setViewMode(VIEWMODE_DISPLAY);
+    // put this handler in request scope, under an agreed name, create new view & navigate
+    RESOLVER.putInRequestScope(this);
+    FacesContext context = RobustCurrent.facesContext();
+    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getListViewId());
+    context.setViewRoot(viewRoot);
+    context.renderResponse();
+  }
 
 //  /**
 //   * <strong>= {@value}</strong>
@@ -709,21 +734,34 @@ public class InstanceHandler extends PersistentBeanHandler {
 //    return parts[parts.length - 1];
 //  }
 
-  public final static String DETAIL_VIEW_ID_PREFIX = "/jsf/";
+  public final static String VIEW_ID_PREFIX = "/jsf/";
 
   public final static String DETAIL_VIEW_ID_SUFFIX = ".jspx";
+  
+  public final static String LIST_VIEW_ID_SUFFIX = "_list" + DETAIL_VIEW_ID_SUFFIX;
 
   /**
    * @pre getType() != null;
-   * @return DETAIL_VIEW_ID_PREFIX + s/\./\//(getType().getName()) + DETAIL_VIEW_ID_SUFFIX;
+   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + DETAIL_VIEW_ID_SUFFIX;
    */
   public String getDetailViewId() {
     assert getType() != null : "type cannot be null";
     String typeName = getType().getName();
     typeName = typeName.replace('.', '/');
-    return DETAIL_VIEW_ID_PREFIX + typeName + DETAIL_VIEW_ID_SUFFIX;
+    return VIEW_ID_PREFIX + typeName + DETAIL_VIEW_ID_SUFFIX;
   }
 
+  /**
+   * @pre getType() != null;
+   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + LIST_VIEW_ID_SUFFIX;
+   */
+  public String getListViewId() {
+    assert getType() != null : "type cannot be null";
+    String typeName = getType().getName();
+    typeName = typeName.replace('.', '/');
+    return VIEW_ID_PREFIX + typeName + LIST_VIEW_ID_SUFFIX;
+  }
+  
   /**
    * This is an action method that should be called by a button in the JSF
    * page to go to edit mode.
