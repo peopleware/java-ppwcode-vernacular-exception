@@ -65,6 +65,11 @@ import org.apache.commons.logging.LogFactory;
  *      &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;
  *      &lt;map-entries&gt;
  *        &lt;map-entry&gt;
+ *          &lt;key&gt;<samp>lastName</samp>&lt;/key&gt;
+ *          &lt;null-value /&gt;
+ *        &lt;/map-entry&gt;
+ *        ...
+ *        &lt;map-entry&gt;
  *          &lt;key&gt;<samp>roles</samp>.size&lt;/key&gt;
  *          &lt;null-value /&gt;
  *        &lt;/map-entry&gt;
@@ -73,14 +78,10 @@ import org.apache.commons.logging.LogFactory;
  *          &lt;key&gt;<samp>address.street</samp>&lt;/key&gt;
  *          &lt;null-value /&gt;
  *        &lt;/map-entry&gt;
- *        &lt;map-entry&gt;
- *          &lt;key&gt;<samp>lastName</samp>&lt;/key&gt;
- *          &lt;null-value /&gt;
- *        &lt;/map-entry&gt;
  *      &lt;/map-entries&gt;
  *    &lt;/managed-bean&gt;
  * </pre>
- * <p>Note that the comparator sorts on the last entry first.</p>
+ * <p>Note that the comparator sorts on the top entry first.</p>
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
