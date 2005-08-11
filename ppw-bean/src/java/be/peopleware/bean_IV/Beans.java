@@ -19,7 +19,7 @@ import org.apache.taglibs.standard.lang.jstl.Logger;
 
 /**
  * Convenience methods for working with JavaBeans.
- * 
+ *
  * @mudo (jand) most methods are also in Toryt.support.Reflection; consolidate
  *
  * @author    Jan Dockx
@@ -139,7 +139,7 @@ public class Beans {
    * property or such an inspector does not exist, an exception is thrown.
    * This method only finds implemented methods,
    * thus not methods in interfaces or abstract methods.
-   * 
+   *
    * @todo check that This method only finds implemented methods,
    * thus not methods in interfaces or abstract methods, and fix.
    *
@@ -172,10 +172,10 @@ public class Beans {
    * Check whether <code>beanClass</code> has a no-arguments getter for
    * <code>propertyName</code>. This method only finds implemented methods,
    * thus not methods in interfaces or abstract methods.
-   * 
+   *
    * @todo check that This method only finds implemented methods,
    * thus not methods in interfaces or abstract methods, and fix.
-   * 
+   *
    * @param     beanClass
    *            The bean class to get the property read method of
    * @param     propertyName
@@ -191,7 +191,7 @@ public class Beans {
     assert beanClass != null;
     return getPropertyDescriptor(beanClass, propertyName).getReadMethod() != null;
   }
-  
+
   /**
    * Returns the method object of the mutator of the property with
    * name <code>propertyName</code> of <code>beanClass</code>. If such a
@@ -245,6 +245,9 @@ public class Beans {
    * @throws    InvocationTargetException
    *            The read method of the property <code>propertyName</code>,
    *            applied to <code>bean</code>, has thrown an exception.
+   *
+   * @deprecated Use <a href="http://jakarta.apache.org/commons/beanutils/api/org/apache/commons/beanutils/PropertyUtils.html"
+   *               target="extern">Apache Jakarta Commons beanutils PropertyUtil.getProperty()</a> instead.
    */
   public static Object getNavigatedPropertyValue(final Object bean,
                                         final String propertyExpression)
@@ -253,12 +256,12 @@ public class Beans {
              NoSuchMethodException,
              IllegalAccessException,
              InvocationTargetException {
-  	String[] parts = propertyExpression.split("\\.");
-  	Object cursor = bean;
-  	for (int lcv = 0; lcv < parts.length; lcv++) {
-  		cursor = getPropertyValue(cursor, parts[lcv]);
-  	}
-  	return cursor;
+    String[] parts = propertyExpression.split("\\.");
+    Object cursor = bean;
+    for (int lcv = 0; lcv < parts.length; lcv++) {
+      cursor = getPropertyValue(cursor, parts[lcv]);
+    }
+    return cursor;
   }
 
   /**
@@ -410,16 +413,16 @@ public class Beans {
   }
 
   private final static String PREFIXED_FQCN_PATTERN = "\\."; //$NON-NLS-1$
-  
+
   private final static String EMPTY = ""; //$NON-NLS-1$
-  
+
   private final static String DOT = "."; //$NON-NLS-1$
-  
+
   /**
    * Return a fully qualified class name that is in the same package
    * as <code>fqcn</code>, and has as class name
    * <code>prefix + <var>ClassName</var></code>.
-   * 
+   *
    * @param prefix
    *        The prefix to add before the class name.
    * @param fqcn
@@ -440,7 +443,7 @@ public class Beans {
   /**
    * Load the class with name
    * <code>prefixedFqcn(prefix, fqcn)</code>.
-   * 
+   *
    * @param prefix
    *        The prefix to add before the class name.
    * @param fqcn
@@ -453,13 +456,13 @@ public class Beans {
       throws ClassNotFoundException {
     return Class.forName(prefixedFqcn(prefix, fqcn));
   }
-  
+
   /**
    * Instantiate an object of a type
    * <code>prefixedFqcn(prefix, fqcn)</code>.
-   * 
+   *
    * @param cl
-   *        The class-loader from which we should create 
+   *        The class-loader from which we should create
    *        the bean. If this is null, then the system class-loader
    *        is used.
    * @param prefix
@@ -476,7 +479,7 @@ public class Beans {
       throws IOException, ClassNotFoundException {
     return java.beans.Beans.instantiate(cl, prefixedFqcn(prefix, fqcn));
   }
-  
+
   /**
    * Returns the constant(public final static) with the given fully qualified
    * name.
