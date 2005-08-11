@@ -54,7 +54,30 @@ import org.apache.commons.beanutils.PropertyUtils;
  *   <code>length</code>, and it is called on a {@link Collection} or
  *   {@link Map}, resp. an array, this returns the size of that instance.</p>
  * <p>This class also offers a Map interface, so that it can be configured, e.g.,
- *   as a managed map in JSF.</p>
+ *   as a managed map in JSF, as follows:</p>
+ * <pre>
+ *    &lt;managed-bean&gt;
+ *      &lt;managed-bean-name&gt;<samp>my$semantic$class$Fqcn_collection_comparator&lt;/managed-bean-name&gt;
+ *      &lt;managed-bean-class&gt;be.peopleware.jsf_II.util.DynamicComparatorChain&lt;/managed-bean-class&gt;
+ *      &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;
+ *      &lt;map-entries&gt;
+ *        &lt;map-entry&gt;
+ *          &lt;key&gt;<samp>roles</samp>.size&lt;/key&gt;
+ *          &lt;null-value /&gt;
+ *        &lt;/map-entry&gt;
+ *        ...
+ *        &lt;map-entry&gt;
+ *          &lt;key&gt;<samp>address.street</samp>&lt;/key&gt;
+ *          &lt;null-value /&gt;
+ *        &lt;/map-entry&gt;
+ *        &lt;map-entry&gt;
+ *          &lt;key&gt;<samp>lastName</samp>&lt;/key&gt;
+ *          &lt;null-value /&gt;
+ *        &lt;/map-entry&gt;
+ *      &lt;/map-entries&gt;
+ *    &lt;/managed-bean&gt;
+ * </pre>
+ * <p>Note that the comparator sorts on the last entry first.</p>
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
