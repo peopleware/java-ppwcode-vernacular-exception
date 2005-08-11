@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
+import be.peopleware.jsf_II.util.DynamicComparatorChain;
 import be.peopleware.persistence_I.PersistentBean;
 
 
@@ -43,6 +44,20 @@ import be.peopleware.persistence_I.PersistentBean;
  *   {@link #navigateToEditNew() action method}
  *   is offered that creates a fresh instance of type {@link #getType()} with the
  *   default constructor.</p>
+ * <h3>Sorting</h3>
+ * <p>{@link #getInstanceHandlers()} are sorted with the {@link #getComparator() comparator},
+ *   if there is one. This is a {@link DynamicComparatorChain}. The action listener method
+ *   {@link #sort(ActionEvent)} calls {@link DynamicComparatorChain#bringToFront(String)}
+ *   the value of request parameter {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME} as argument. Since this
+ *   handler is intended to be used in request scope, the previous order needs to be communicated
+ *   too. This is done by coupling {@link #getSortOrder()} to the request parameter
+ *   <code>sortOrder</code>.
+ *   This action listener method should be called with a <code>commandLink</code> as follows:</p>
+ * <pre>
+ *   <h:commandLink value="<var>label</var>" action="#{handler.sort}" immediate="true" />
+ *     <f:param name="sortProperty" value="<var>property name</var>" />
+ *     <f:param name="sortOrder" value="#(handler.sortOrder}" />
+ *   </h:commandLink>
  *
  * @author     David Van Keer
  * @author     Peopleware n.v.
@@ -214,6 +229,136 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   /*</property>*/
 
+
+
+  /*<section name="sorting">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Return the comparator which is/can be used for sorting the
+   * retrieved {@link PersistentBean}'s
+   */
+  public DynamicComparatorChain getComparator() {
+    return $comparator;
+  }
+
+  /**
+   * Set a comparator for sorting the retrieved {@link PersistentBean}'s
+   *
+   * @param     comparator
+   *            The new Comparator to use for sorting
+   */
+  public void setComparator(final DynamicComparatorChain comparator) {
+    $comparator = comparator;
+  }
+
+  /**
+   * @return (getComparator() == null) ? EMPTY :
+   *                stringArrayToConcatString(getComparator().getSortOrder());
+   */
+  public final String getSortOrder() {
+    return (getComparator() == null) ?
+               EMPTY :
+               stringArrayToConcatString(getComparator().getSortOrder());
+  }
+
+  /**
+   * <strong>= {@value}</strong>
+   */
+  public final static String SORT_PROPERTY_REQUEST_PARAMETER_NAME = "sortProperty";
+
+  /**
+   * <strong>= {@value}</strong>
+   */
+  public final static String SORT_ORDER_REQUEST_PARAMETER_NAME = "sortOrder";
+
+  /**
+   * <strong>= {@value}</strong>
+   */
+  public final static String EMPTY = "";
+
+  /**
+   * <p>Action listener method that calls {@link DynamicComparatorChain#bringToFront(String)}
+   *   with the value of HTTP request parameter {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}
+   *   as argument.
+   *   Since this handler is intended to be used in request scope, the previous order needs to be
+   *   communicated too. This is done with the value of the HTTP request parameter
+   *   {@link #SORT_ORDER_REQUEST_PARAMETER_NAME}.</p>
+   *   This action listener method could be called with a <code>commandLink</code> as follows:</p>
+   * <pre>
+   *   <h:commandLink value="<var>label</var>" action="#{handler.sort}" immediate="true" />
+   *     <f:param name="<var>{@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}</var>" value="<var>property name</var>" />
+   *     <f:param name="<var>{@link #SORT_ORDER_REQUEST_PARAMETER_NAME}</var>" value="#(handler.sortOrder}" />
+   *   </h:commandLink>
+   * </pre>
+   * <p>If there is no {@link #getComparator()}, or there is no {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}
+   *   HTTP request parameter, nothing happens. If there is no {@link #SORT_ORDER_REQUEST_PARAMETER_NAME}
+   *   HTTP request parameter, sorting starts after the default order is set on the comparator.</p>
+   */
+  public final void sort(ActionEvent ae) {
+    LOG.debug("call to sort");
+    if (getComparator() == null) {
+      LOG.warn("call to sort, but no comparator found");
+      return;
+    }
+    String sortPropertyName = RobustCurrent.requestParameterValues(SORT_PROPERTY_REQUEST_PARAMETER_NAME)[0];
+    if ((sortPropertyName != null) && (! sortPropertyName.equals(EMPTY))) {
+      LOG.warn("call to sort, but no sort property name found in HTTP request");
+      return;
+    }
+    else {
+      LOG.debug("sort property is " + sortPropertyName);
+    }
+    String sortOrderString = RobustCurrent.requestParameterValues(SORT_ORDER_REQUEST_PARAMETER_NAME)[0];
+    if (LOG.isWarnEnabled() && (sortOrderString != null) && (! sortOrderString.equals(EMPTY))) {
+      LOG.warn("no previous sort order given; starting from comparator default");
+    }
+    else {
+      LOG.debug("sort order is " + sortOrderString);
+      String[] sortOrder = concatStringToStringArray(sortOrderString);
+      getComparator().setSortOrder(sortOrder);
+    }
+    getComparator().bringToFront(sortPropertyName);
+  }
+
+  private final static String SORT_ORDER_SEPARATOR = ",";
+
+  /**
+   * @pre Strings in strings do not contain ','
+   * @idea (jand) move to util
+   */
+  public static String stringArrayToConcatString(String[] strings) {
+    if (strings == null) {
+      return EMPTY;
+    }
+    else {
+      StringBuffer result = new StringBuffer(strings.length * 20);
+      for (int i = 0; i < strings.length; i++) {
+        result.append(strings[i]);
+        if (i < strings.length - 1) {
+          result.append(SORT_ORDER_SEPARATOR);
+        }
+      }
+      return result.toString();
+    }
+  }
+
+  /**
+   * @pre Strings in strings do not contain ','
+   * @idea (jand) move to util
+   */
+  public static String[] concatStringToStringArray(String concatString) {
+    if (concatString == null) {
+      return new String[0];
+    }
+    else {
+      return concatString.split(SORT_ORDER_SEPARATOR);
+    }
+  }
+
+  private DynamicComparatorChain $comparator;
+
+  /*</section>*/
 
 
   public static final String ID_REQUEST_PARAMETER_NAME = "pbId";

@@ -39,32 +39,6 @@ public class DataModelHandler extends CollectionHandler {
   private static final Log LOG = LogFactory.getLog(DataModelHandler.class);
 
 
-//  /*<property name="comparator">*/
-//  //------------------------------------------------------------------
-//
-//  /**
-//   * Return the comparator which is/can be used for sorting the
-//   * retrieved {@link PersistentBean}'s
-//   */
-//  public Comparator getComparator() {
-//    return $comparator;
-//  }
-//
-//  /**
-//   * Set a comparator for sorting the retrieved {@link PersistentBean}'s
-//   *
-//   * @param     comparator
-//   *            The new Comparator to use for sorting
-//   */
-//  public void setComparator(final Comparator comparator) {
-//    $comparator = comparator;
-//  }
-//
-//  private Comparator $comparator;
-//
-//  /*</property>*/
-
-
 
   /*<property name="dataModel">*/
   //------------------------------------------------------------------

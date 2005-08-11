@@ -78,7 +78,7 @@ public final class DynamicComparatorChain implements Comparator {
    * Add the comparator at the front of the chain.
    */
   public void addComparator(String propertyName, Comparator comp, boolean ascending) {
-    ChainComparatorEntry cce = new ChainComparatorEntry(propertyName, comp, ascending);
+    Entry cce = new Entry(propertyName, comp, ascending);
     $chain.add(cce);
   }
 
@@ -91,7 +91,7 @@ public final class DynamicComparatorChain implements Comparator {
   public void bringToFront(String propertyName) {
     ListIterator iter = $chain.listIterator();
     while (iter.hasNext()) {
-      ChainComparatorEntry cce = (ChainComparatorEntry)iter.next();
+      Entry cce = (Entry)iter.next();
       if (cce.getPropertyName().equals(propertyName)) {
         if (iter.previousIndex() == 0) {
           cce.toggleAscending();
@@ -105,10 +105,28 @@ public final class DynamicComparatorChain implements Comparator {
     }
   }
 
+  public final String[] getSortOrder() {
+    String[] result = new String[$chain.size()];
+    Iterator iter = $chain.iterator();
+    int index = 0;
+    while (iter.hasNext()) {
+      Entry entry = (Entry)iter.next();
+      result[0] = entry.getPropertyName();
+      index++;
+    }
+    return result;
+  }
+
+  public final void setSortOrder(String[] sortOrder) {
+    for(int i = sortOrder.length - 1; i >= 0; i--) {
+      bringToFront(sortOrder[i]);
+    }
+  }
+
   /**
    * @invar $chain != null;
    * @invar ! $chain.contains(null);
-   * @invar (forall Object o; $chain.contains(o); o instanceof ChainComparatorEntry);
+   * @invar (forall Object o; $chain.contains(o); o instanceof Entry);
    */
   private List $chain = new LinkedList();
 
@@ -117,9 +135,9 @@ public final class DynamicComparatorChain implements Comparator {
    * of the compared objects must be of a {@link Comparable} type.
    * If the propertyName is <code>null</code>, the objects themselves are compared.
    */
-  public class ChainComparatorEntry implements Comparator {
+  private class Entry implements Comparator {
 
-    public ChainComparatorEntry(String propertyName, Comparator comp, boolean ascending) {
+    public Entry(String propertyName, Comparator comp, boolean ascending) {
       $propertyName = propertyName;
       $comparator = comp;
       $ascending = ascending;
@@ -240,7 +258,7 @@ public final class DynamicComparatorChain implements Comparator {
     Iterator iter = $chain.iterator();
     int result = 0;
     while ((result == 0) && iter.hasNext()) {
-      ChainComparatorEntry cce = (ChainComparatorEntry)iter.next();
+      Entry cce = (Entry)iter.next();
       result = cce.compare(o1, o2);
     }
     return result;
