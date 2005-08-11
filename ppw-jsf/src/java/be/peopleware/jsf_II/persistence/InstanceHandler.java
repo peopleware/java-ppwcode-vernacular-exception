@@ -734,34 +734,6 @@ public class InstanceHandler extends PersistentBeanHandler {
 //    return parts[parts.length - 1];
 //  }
 
-  public final static String VIEW_ID_PREFIX = "/jsf/";
-
-  public final static String DETAIL_VIEW_ID_SUFFIX = ".jspx";
-  
-  public final static String LIST_VIEW_ID_SUFFIX = "_list" + DETAIL_VIEW_ID_SUFFIX;
-
-  /**
-   * @pre getType() != null;
-   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + DETAIL_VIEW_ID_SUFFIX;
-   */
-  public String getDetailViewId() {
-    assert getType() != null : "type cannot be null";
-    String typeName = getType().getName();
-    typeName = typeName.replace('.', '/');
-    return VIEW_ID_PREFIX + typeName + DETAIL_VIEW_ID_SUFFIX;
-  }
-
-  /**
-   * @pre getType() != null;
-   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + LIST_VIEW_ID_SUFFIX;
-   */
-  public String getListViewId() {
-    assert getType() != null : "type cannot be null";
-    String typeName = getType().getName();
-    typeName = typeName.replace('.', '/');
-    return VIEW_ID_PREFIX + typeName + LIST_VIEW_ID_SUFFIX;
-  }
-  
   /**
    * This is an action method that should be called by a button in the JSF
    * page to go to edit mode.

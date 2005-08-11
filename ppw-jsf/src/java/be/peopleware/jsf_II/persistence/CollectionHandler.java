@@ -8,12 +8,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
@@ -236,6 +235,11 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   private Set $handlers;
 
+  /**
+   * 
+   * @param event
+   * @throws FatalFacesException
+   */
   public final void navigateToDetail(ActionEvent event) throws FatalFacesException {
     LOG.debug("request to navigate to detail");
     String idString = null;
@@ -261,6 +265,23 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       RobustCurrent.fatalProblem("HTTP request parameter " + ID_REQUEST_PARAMETER_NAME +
                                  " (" + idString + ") is not a Long", nfExc, LOG);
     }
+  }
+  
+  /**
+   * 
+   * @param aEv
+   * @throws FatalFacesException
+   */
+  public final void navigateToNew(ActionEvent aEv) throws FatalFacesException {
+    assert getType() != null : "type cannot be null";
+    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.handlerFor(getType(), getDao());
+    handler.setViewMode(InstanceHandler.VIEWMODE_EDITNEW);
+    // put this handler in request scope, under an agreed name, create new view & navigate
+    InstanceHandler.RESOLVER.putInRequestScope(handler);
+    FacesContext context = RobustCurrent.facesContext();
+    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getDetailViewId());
+    context.setViewRoot(viewRoot);
+    context.renderResponse();
   }
 
   /**

@@ -187,7 +187,16 @@ public class UIInstanceHandler extends UIInput {
     Long id = null;
     String viewMode = null;
     { // get parameters from request
-      { // id
+      
+      { // viewMode
+        viewMode = (String)requestParameters.get(viewModeTagName(context));
+        if (! InstanceHandler.isViewMode(viewMode)) {
+          // if there is no correct view mode in the request, treat it as a display mode
+          viewMode = InstanceHandler.VIEWMODE_DISPLAY;
+        }
+      }
+      if (!viewMode.equals(InstanceHandler.VIEWMODE_EDITNEW)) {
+        // id
         String idString = (String)requestParameters.get(idTagName(context));
         if (idString == null) {
           setValid(false);
@@ -210,15 +219,9 @@ public class UIInstanceHandler extends UIInput {
           // IDEA (jand) this is not fatal; do goback()
         }
       }
-      { // viewMode
-        viewMode = (String)requestParameters.get(viewModeTagName(context));
-        if (! InstanceHandler.isViewMode(viewMode)) {
-          // if there is no correct view mode in the request, treat it as a display mode
-          viewMode = InstanceHandler.VIEWMODE_DISPLAY;
-        }
-      }
+
     }
-    assert id != null;
+    //assert id != null;
     assert InstanceHandler.isViewMode(viewMode);
     // fill id and viewmode in handler
     handler.setInstance(null); // be sure

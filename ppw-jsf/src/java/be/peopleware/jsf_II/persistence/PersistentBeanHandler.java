@@ -399,7 +399,42 @@ public abstract class PersistentBeanHandler {
    * The navigation string used in faces-config.xml to come to this page.
    */
   private String $navigationString;
-
+  
   /*</property>*/
+
+
+
+  /*<section name="viewId's">*/
+  //------------------------------------------------------------------
+
+  public static final String VIEW_ID_PREFIX = "/jsf/";
+  public static final String DETAIL_VIEW_ID_SUFFIX = ".jspx";
+  public static final String LIST_VIEW_ID_SUFFIX = "_list" + DETAIL_VIEW_ID_SUFFIX;
+
+
+
+  /**
+   * @pre getType() != null;
+   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + DETAIL_VIEW_ID_SUFFIX;
+   */
+  public String getDetailViewId() {
+    assert getType() != null : "type cannot be null";
+    String typeName = getType().getName();
+    typeName = typeName.replace('.', '/');
+    return VIEW_ID_PREFIX + typeName + DETAIL_VIEW_ID_SUFFIX;
+  }
+
+  /**
+   * @pre getType() != null;
+   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + LIST_VIEW_ID_SUFFIX;
+   */
+  public String getListViewId() {
+    assert getType() != null : "type cannot be null";
+    String typeName = getType().getName();
+    typeName = typeName.replace('.', '/');
+    return VIEW_ID_PREFIX + typeName + LIST_VIEW_ID_SUFFIX;
+  }
+
+  /*</section>*/
 
 }
