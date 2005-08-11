@@ -8,11 +8,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
@@ -45,19 +50,10 @@ import be.peopleware.persistence_I.PersistentBean;
  *   is offered that creates a fresh instance of type {@link #getType()} with the
  *   default constructor.</p>
  * <h3>Sorting</h3>
- * <p>{@link #getInstanceHandlers()} are sorted with the {@link #getComparator() comparator},
- *   if there is one. This is a {@link DynamicComparatorChain}. The action listener method
- *   {@link #sort(ActionEvent)} calls {@link DynamicComparatorChain#bringToFront(String)}
- *   the value of request parameter {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME} as argument. Since this
- *   handler is intended to be used in request scope, the previous order needs to be communicated
- *   too. This is done by coupling {@link #getSortOrder()} to the request parameter
- *   <code>sortOrder</code>.
- *   This action listener method should be called with a <code>commandLink</code> as follows:</p>
- * <pre>
- *   <h:commandLink value="<var>label</var>" action="#{handler.sort}" immediate="true" />
- *     <f:param name="sortProperty" value="<var>property name</var>" />
- *     <f:param name="sortOrder" value="#(handler.sortOrder}" />
- *   </h:commandLink>
+ * <p>{@link #getInstances() Instances} are sorted with the {@link #getComparator() comparator}.
+     The action listener method {@link #sort(ActionEvent)} is available
+ *   for end users to control the sort order. The default {@link #getComparator()} sorts on
+ *   {@link PersistentBean#getId()}, which is not very end-user friendly.</p>
  *
  * @author     David Van Keer
  * @author     Peopleware n.v.
@@ -97,12 +93,14 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * of type {@link #getType()} from persistent storage, using
    * {@link #getDao()}. Only in this case, {@link #isSubtypesIncluded()}
    * is used.
+   * The returned collection is sorted by {@link #getComparator()}.
    *
+   * @return a sorted version of {@link #getStoredInstances()}
    * @throw FatalFacesException
    *        (getStoredInstances() != null) &&
    *            ((getType() == null) || (getDoa() == null));
    */
-  public final Collection getInstances() throws FatalFacesException {
+  public final SortedSet getInstances() throws FatalFacesException {
     LOG.debug("request for instances collection");
     if ($storedInstances == null) {
       $storedInstances = Collections.unmodifiableCollection(loadAllInstances());
@@ -110,7 +108,14 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     else {
       LOG.debug("returing stored instances");
     }
-    return getStoredInstances();
+    SortedSet result = new TreeSet(getComparator());
+    try {
+      result.addAll($storedInstances); // ClassCastException from sorting
+    }
+    catch (ClassCastException ccExc) {
+      RobustCurrent.fatalProblem("problem sorting instances", ccExc, LOG);
+    }
+    return Collections.unmodifiableSortedSet(result);
   }
 
   private Collection loadAllInstances() throws FatalFacesException {
@@ -356,7 +361,11 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     }
   }
 
-  private DynamicComparatorChain $comparator;
+  private DynamicComparatorChain $comparator = new DynamicComparatorChain();
+
+  {
+    $comparator.addComparator("id", null, true); // Long is Comparable
+  }
 
   /*</section>*/
 

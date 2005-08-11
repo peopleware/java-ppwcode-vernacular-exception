@@ -75,7 +75,11 @@ public final class DynamicComparatorChain implements Comparator {
 
 
   /**
-   * Add the comparator at the front of the chain.
+   * Add the comparator at the front of the chain. If <code>comp</code>
+   * is <code>null</code>, we will try to use natural ordering. This will
+   * work if the value to which the <code>propertyName</code> evaluates
+   * turns out to be {@link Comparable}. If not, a {@link ClassCastException}
+   * will be thrown.
    */
   public void addComparator(String propertyName, Comparator comp, boolean ascending) {
     Entry cce = new Entry(propertyName, comp, ascending);
