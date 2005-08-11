@@ -642,31 +642,48 @@ public class InstanceHandler extends PersistentBeanHandler {
 
 
   /**
-   * <p>This method should be called from within another handler when navigating
-   *   to this JSF page. A proper initialisation of this handler happens
-   *   to be able to show the {@link #getInstance()}
-   *   in display mode.</p>
+   * @pre getType() != null;
+   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + VIEW_ID_SUFFIX;
+   */
+  public String getDetailViewId() {
+    assert getType() != null : "type cannot be null";
+    String typeName = getType().getName();
+    typeName = typeName.replace('.', '/');
+    return VIEW_ID_PREFIX + typeName + VIEW_ID_SUFFIX;
+  }
+
+  /**
+   * <p>This method should be called to navigate to detail page
+   *   for this {@link #getInstance()} in <code>viewMode</code>.</p>
    * <p>This handler is made available to the JSP/JSF page in request scope,
    *   as a variable with name
    *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
    *   And we navigate to {@link #getDetailViewId()}.</p>
-   * <p>If {@link #getInstance()} is <code>null</code>, we do nothing.</p>
+   * <p>The {@link #getType() type} and an {@link #getInstance()} should
+   *   be set before this method is called.</p>
    *
-   * @post    new.getViewMode().equals(VIEWMODE_DISPLAY);
+   * @post    isViewMode(viewMode) ? new.getViewMode().equals(viewMode)
+   *                             : new.getViewMode().equals(VIEWMODE_DISPLAY);
    * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
+   * @throws  FatalFacesException
+   *          getType() == null;
+   * @throws  FatalFacesException
+   *          getInstance() == null;
    *
    * @mudo (jand) security
    */
-  public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
-    assert getType() != null : "type cannot be null";
+  public final void navigateHere(String viewMode) throws FatalFacesException {
     LOG.debug("InstanceHandler.navigate called; id = " + getId() +
               ", instance = " + getInstance());
-    if (getInstance() == null) {
-      LOG.warn("no instance in " + this +
-                "; cannot navigate; staying where we are");
-      return;
+    if (getType() == null) {
+      LOG.fatal("cannot navigate to detail, because no type is set (" +
+                this);
     }
-    setViewMode(VIEWMODE_DISPLAY);
+    if (getInstance() == null) {
+      LOG.fatal("cannot navigate to detail, because no instance is set (" +
+                this);
+    }
+    setViewMode(isViewMode(viewMode) ? viewMode : VIEWMODE_DISPLAY);
     // put this handler in request scope, under an agreed name, create new view & navigate
     RESOLVER.putInRequestScope(this);
     FacesContext context = RobustCurrent.facesContext();
@@ -674,30 +691,45 @@ public class InstanceHandler extends PersistentBeanHandler {
     context.setViewRoot(viewRoot);
     context.renderResponse();
   }
-  
+
   /**
-   * <p>This method can be called from within this handler to navigate back
-   *   to list overview of the type given by {@link #getType()}.</p>
+   * <p>Action listener method to navigate to detail page
+   *   for this {@link #getInstance()} in {@link #VIEWMODE_DISPLAY},
+   *   via a call to {@link #navigateHere(String)}.</p>
    * <p>This handler is made available to the JSP/JSF page in request scope,
    *   as a variable with name
    *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
-   *   And we navigate to {@link #getListViewId()}.</p>
+   *   And we navigate to {@link #getDetailViewId()}.</p>
+   * <p>The {@link #getType() type} and an {@link #getInstance()} should
+   *   be set before this method is called.</p>
    *
    * @post    new.getViewMode().equals(VIEWMODE_DISPLAY);
    * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
+   * @throws  FatalFacesException
+   *          getType() == null;
+   * @throws  FatalFacesException
+   *          getInstance() == null;
+   */
+  public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
+    navigateHere(VIEWMODE_DISPLAY);
+  }
+
+  /**
+   * <p>Action method to navigate to collection page for this
+   *   {@link #getType()} via a call to {@link CollectionHandler#navigateHere()}.</p>
+   * <p>The collection handler handler is made available to the JSP/JSF page in request scope,
+   *   as a variable with the appropiate name (see {@link CollectionHandler#navigateHere()}.
+   *   And we navigate to {@link CollectionHandler#getCollectionViewId()}.</p>
    *
-   * @mudo (jand) security
+   * @post    (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDao()).navigateHere();
+   * @except  (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDao()).navigateHere();
    */
   public final void navigateToList(ActionEvent aEv) throws FatalFacesException {
-    assert getType() != null : "type cannot be null";
-    LOG.debug("PersistentBeanCrudHandler.navigateToList called");
-    setViewMode(VIEWMODE_DISPLAY);
-    // put this handler in request scope, under an agreed name, create new view & navigate
-    RESOLVER.putInRequestScope(this);
-    FacesContext context = RobustCurrent.facesContext();
-    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getListViewId());
-    context.setViewRoot(viewRoot);
-    context.renderResponse();
+    LOG.debug("InstanceHandler.navigateToList called");
+    CollectionHandler handler = (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDao());
+    LOG.debug("created collectionhandler for type " + getType() +
+              ": " + handler);
+    handler.navigateHere();
   }
 
 //  /**

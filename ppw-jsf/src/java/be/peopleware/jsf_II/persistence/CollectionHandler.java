@@ -235,8 +235,21 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   private Set $handlers;
 
+  public static final String LIST_VIEW_ID_SUFFIX = "_list" + VIEW_ID_SUFFIX;
+
   /**
-   * 
+   * @pre getType() != null;
+   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + LIST_VIEW_ID_SUFFIX;
+   */
+  public String getCollectionViewId() {
+    assert getType() != null : "type cannot be null";
+    String typeName = getType().getName();
+    typeName = typeName.replace('.', '/');
+    return VIEW_ID_PREFIX + typeName + LIST_VIEW_ID_SUFFIX;
+  }
+
+  /**
+   *
    * @param event
    * @throws FatalFacesException
    */
@@ -266,20 +279,46 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
                                  " (" + idString + ") is not a Long", nfExc, LOG);
     }
   }
-  
+
   /**
-   * 
+   *
    * @param aEv
    * @throws FatalFacesException
    */
   public final void navigateToNew(ActionEvent aEv) throws FatalFacesException {
     assert getType() != null : "type cannot be null";
     InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.handlerFor(getType(), getDao());
-    handler.setViewMode(InstanceHandler.VIEWMODE_EDITNEW);
+// MUDO (jand) put the new instance in the handler
+    handler.navigateHere(InstanceHandler.VIEWMODE_EDITNEW);
+  }
+
+  /**
+   * <p>This method should be called to navigate to the collection page
+   *   for this {@link #getType()}.</p>
+   * <p>This handler is made available to the JSP/JSF page in request scope,
+   *   as a variable with name
+   *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
+   *   And we navigate to {@link #getCollectionViewId()}.</p>
+   * <p>The {@link #getType() type} should
+   *   be set before this method is called. If {@link #getInstances()}
+   *   is not <code>null</code>, that collection is shown. If it is
+   *   <code>null</code>, all objects of type {@link #getType()} are
+   *   retrieved from the database and shown.</p>
+   *
+   * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
+   * @throws  FatalFacesException
+   *          getType() == null;
+   */
+  public final void navigateHere() throws FatalFacesException {
+    LOG.debug("CollectionHandler.navigateHere called");
+    if (getType() == null) {
+      LOG.fatal("cannot navigate to collection, because no type is set (" +
+                this);
+    }
     // put this handler in request scope, under an agreed name, create new view & navigate
-    InstanceHandler.RESOLVER.putInRequestScope(handler);
+    RESOLVER.putInRequestScope(this);
     FacesContext context = RobustCurrent.facesContext();
-    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getDetailViewId());
+    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getCollectionViewId());
     context.setViewRoot(viewRoot);
     context.renderResponse();
   }
