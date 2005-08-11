@@ -1,8 +1,6 @@
 package be.peopleware.jsf_II.persistence;
 
 
-import java.util.ArrayList;
-
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
@@ -53,7 +51,7 @@ public class DataModelHandler extends CollectionHandler {
     LOG.debug("request for datamodel");
     if ($dataModel == null) {
       LOG.debug("no datamodel cached; creating new datamodel");
-      $dataModel = new ListDataModel(new ArrayList(getInstanceHandlers()));
+      $dataModel = new ListDataModel(getInstanceHandlers());
       LOG.debug("datamodel created and cached");
     }
     else {

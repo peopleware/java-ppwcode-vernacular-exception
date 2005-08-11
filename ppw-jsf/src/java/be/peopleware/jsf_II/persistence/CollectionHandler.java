@@ -4,12 +4,10 @@ package be.peopleware.jsf_II.persistence;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -100,25 +98,18 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *        (getStoredInstances() != null) &&
    *            ((getType() == null) || (getDoa() == null));
    */
-  public final SortedSet getInstances() throws FatalFacesException {
+  public final Collection getInstances() throws FatalFacesException {
     LOG.debug("request for instances collection");
     if ($storedInstances == null) {
-      $storedInstances = Collections.unmodifiableCollection(loadAllInstances());
+      $storedInstances = loadAllInstances();
     }
     else {
       LOG.debug("returing stored instances");
     }
-    SortedSet result = new TreeSet(getComparator());
-    try {
-      result.addAll($storedInstances); // ClassCastException from sorting
-    }
-    catch (ClassCastException ccExc) {
-      RobustCurrent.fatalProblem("problem sorting instances", ccExc, LOG);
-    }
-    return Collections.unmodifiableSortedSet(result);
+    return getStoredInstances();
   }
 
-  private Collection loadAllInstances() throws FatalFacesException {
+  private Set loadAllInstances() throws FatalFacesException {
     LOG.debug("no instances collection set; will try to retrieve data from storage");
     if (getType() == null) {
       RobustCurrent.fatalProblem("type is unknown", LOG);
@@ -128,7 +119,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     }
     LOG.debug("will try to load all instances of type \"" + getType() +
               "\" with dao " + getDao());
-    Collection result = Collections.EMPTY_SET;
+    Set result = Collections.EMPTY_SET;
     try {
       // we are not doing this in a transaction, deliberately
       result = getDao().retrieveAllPersistentBeans(getType(), isSubtypesIncluded());
@@ -148,7 +139,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * @init null;
    */
   public final Collection getStoredInstances() {
-    return $storedInstances;
+    return Collections.unmodifiableCollection($storedInstances);
   }
 
   /**
@@ -162,8 +153,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   public final void setInstances(final Collection instances) {
     LOG.debug("Setting " + instances + " as instances");
     assert getType() != null;
-    $storedInstances = (instances == null) ? null
-                         : Collections.unmodifiableCollection(instances);
+    $storedInstances = (instances == null) ? null : new ArrayList(instances);
   }
 
   private Collection $storedInstances;
@@ -289,9 +279,9 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *   is best implemented as a managed bean in session scope.</p>
    * <p>This action listener method could be called with a <code>commandLink</code> as follows:</p>
    * <pre>
-   *   <h:commandLink value="<var>label</var>" action="#{handler.sort}" immediate="true" />
-   *     <f:param name="<var>{@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}</var>" value="<var>property name</var>" />
-   *   </h:commandLink>
+   *   &lt;h:commandLink value=&quot;<var>label</var>&quot; actionListener=&quot;#{handler.sort}&quot; immediate=&quot;true&quot;&gt;
+   *     &lt;f:param name=&quot;<var>{@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}</var>&quot; value=&quot;<var>property name</var>&quot; /&gt;
+   *   &lt;/h:commandLink&gt;
    * </pre>
    * <p>If there is no {@link #getComparator()}, or there is no {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}
    *   HTTP request parameter, nothing happens.</p>
@@ -303,7 +293,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       return;
     }
     String sortPropertyName = RobustCurrent.requestParameterValues(SORT_PROPERTY_REQUEST_PARAMETER_NAME)[0];
-    if ((sortPropertyName != null) && (! sortPropertyName.equals(EMPTY))) {
+    if ((sortPropertyName == null) || (sortPropertyName.equals(EMPTY))) {
       LOG.warn("call to sort, but no sort property name found in HTTP request");
       return;
     }
@@ -320,6 +310,9 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 //      getComparator().setSortOrder(sortOrder);
 //    }
     getComparator().bringToFront(sortPropertyName);
+    if ($handlers != null) {
+      Collections.sort($handlers, $handlerComparator);
+    }
   }
 
 //  private final static String SORT_ORDER_SEPARATOR = ",";
@@ -374,33 +367,48 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * @return    Set
    *            A Set with PersistentBeanHandlers based on the instances of this Handler..
    */
-  public final Set getInstanceHandlers() {
+  public final List getInstanceHandlers() {
     if ($handlers == null) {
       LOG.debug("no handlers cached; creating new handlers");
       List handlers = new ArrayList();
-      List beans = new ArrayList(getInstances());
-      LOG.debug("retrieved instances");
+      Iterator iter = getInstances().iterator();
+      LOG.debug("got instances");
       LOG.debug("creating handler for each instance");
-      Iterator iter = beans.iterator();
       while (iter.hasNext()) {
         PersistentBean bean = (PersistentBean)iter.next();
-        LOG.debug("    instance is " + bean);
+        LOG.debug("    instance is " + bean + "; RESOLVER is " + InstanceHandler.RESOLVER);
         InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(bean.getClass(), getDao());
         handler.setInstance(bean);
         handler.setViewMode(InstanceHandler.VIEWMODE_DISPLAY);
         LOG.debug("    handler is " + handler);
         handlers.add(handler);
       }
-      $handlers = new HashSet(handlers);
+      $handlers = handlers;
+      Collections.sort($handlers, $handlerComparator);
       LOG.debug("handlers created and cached");
     }
     else {
       LOG.debug("returning cached handlers");
     }
-    return $handlers;
+    return Collections.unmodifiableList($handlers);
   }
 
-  private Set $handlers;
+  /**
+   * A comparator that wraps aroun the {@link #getComparator()}, to
+   * pass comparison through the hanler to the instance.
+   */
+  private final Comparator $handlerComparator =
+      new Comparator() {
+
+            public int compare(Object o1, Object o2) {
+              InstanceHandler h1 = (InstanceHandler)o1;
+              InstanceHandler h2 = (InstanceHandler)o2;
+              return getComparator().compare(h1.getInstance(), h2.getInstance());
+            }
+
+          };
+
+  private List $handlers;
 
   public static final String LIST_VIEW_ID_SUFFIX = "_list" + VIEW_ID_SUFFIX;
 

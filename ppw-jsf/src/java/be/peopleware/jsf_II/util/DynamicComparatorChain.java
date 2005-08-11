@@ -19,7 +19,10 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -97,6 +100,9 @@ public final class DynamicComparatorChain implements Comparator, Map {
   /*</section>*/
 
 
+  static private final Log LOG = LogFactory.getLog(DynamicComparatorChain.class);
+
+
 
   /*<construction>*/
   //------------------------------------------------------------------
@@ -125,14 +131,22 @@ public final class DynamicComparatorChain implements Comparator, Map {
    * under that name, nothing happens.
    */
   public void bringToFront(String propertyName) {
+    LOG.debug("call to bringToFront; propertyName = " + propertyName);
     ListIterator iter = $chain.listIterator();
+    LOG.debug("looking for entry with propertyName = " + propertyName);
     while (iter.hasNext()) {
       Entry cce = (Entry)iter.next();
+      LOG.debug("entry: propertyName = " + cce.getPropertyName() +
+                ", comparator = " + cce.getComparator() +
+                ", ascending = " + cce.isAscending());
       if (cce.getPropertyName().equals(propertyName)) {
+        LOG.debug("match found");
         if (iter.previousIndex() == 0) {
+          LOG.debug("is in front, toggleAscending");
           cce.toggleAscending();
         }
         else {
+          LOG.debug("not in front; bringing to front");
           iter.remove();
           $chain.add(0, cce);
         }
@@ -272,7 +286,7 @@ public final class DynamicComparatorChain implements Comparator, Map {
         // else, normal handling; result is null
         return PropertyUtils.getProperty(bean, propertyName);
       }
-      catch (NullPointerException e) {
+      catch (NestedNullException nnExc) {
         /* there is a null somewhere in the path of the $propertyName;
          * we will compare as if the property is null */
        return null;
@@ -332,12 +346,14 @@ public final class DynamicComparatorChain implements Comparator, Map {
   }
 
   public final int compare(Object o1, Object o2) {
+    LOG.debug("compare called: o1 = " + o1 + ", o2 = " + o2);
     Iterator iter = $chain.iterator();
     int result = 0;
     while ((result == 0) && iter.hasNext()) {
       Entry cce = (Entry)iter.next();
       result = cce.compare(o1, o2);
     }
+    LOG.debug("comparison result = " + result);
     return result;
   }
 
