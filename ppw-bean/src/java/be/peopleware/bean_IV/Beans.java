@@ -58,6 +58,9 @@ public class Beans {
    *            cannot find a property descriptor.
    *
    * @pre       beanClass != null;
+   *
+   * @deprecated Use <a href="http://jakarta.apache.org/commons/beanutils/api/org/apache/commons/beanutils/PropertyUtils.html"
+   *               target="extern">Apache Jakarta Commons beanutils PropertyUtil.getProperty()</a> instead.
    */
   public static PropertyDescriptor
       getPropertyDescriptor(final Class beanClass, final String propertyName)
@@ -285,6 +288,9 @@ public class Beans {
    * @throws    InvocationTargetException
    *            The read method of the property <code>propertyName</code>,
    *            applied to <code>bean</code>, has thrown an exception.
+   *
+   * @deprecated Use <a href="http://jakarta.apache.org/commons/beanutils/api/org/apache/commons/beanutils/PropertyUtils.html"
+   *               target="extern">Apache Jakarta Commons beanutils PropertyUtil.getProperty()</a> instead.
    */
   public static Object getPropertyValue(final Object bean,
                                         final String propertyName)
