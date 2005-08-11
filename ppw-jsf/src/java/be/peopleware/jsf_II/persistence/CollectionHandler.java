@@ -26,6 +26,23 @@ import be.peopleware.persistence_I.PersistentBean;
  *   that collection is used. If {@link #getStoredInstances()} returns <code>null</code>
  *   during operation, all instances of type {@link #getType()} are retrieved
  *   from persistent storage using {@link #getDao()} to work with.</p>
+ * <h3>Creation of New Instances</h3>
+ * <p>From a collection view, fresh instances for a given type can be created.
+ *   This means that an {@link InstanceHandler} for the appropriate type
+ *   is created, and that we navigate there in {@link InstanceHandler#VIEWMODE_EDITNEW}.
+ *   The user then gets the change to fill out the fields for the fresh instance.
+ *   This new handler needs to be provided with a fresh instance, where some
+ *   fields can already be set by us. This functionality is offered to programmers
+ *   with {@link #navigateToEditNew(PersistentBean)}.</p>
+ * <p>End users call this functionality through an action method. How the fresh
+ *   instance this action method offers to {@link #navigateToEditNew(PersistentBean)}
+ *   is configured, differs from case to case. Thus, programmers will have to write
+ *   a distinct action method for each case that calls {@link #navigateToEditNew(PersistentBean)}.</p>
+ * <p>A special case is the creation of a fresh unrelated instance. This happens often
+ *   from a page that shows all instances of a type. For this case, an
+ *   {@link #navigateToEditNew() action method}
+ *   is offered that creates a fresh instance of type {@link #getType()} with the
+ *   default constructor.</p>
  *
  * @author     David Van Keer
  * @author     Peopleware n.v.
@@ -281,14 +298,64 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
+   * Create a new instance of type {@link #getType()}.
    *
-   * @param aEv
-   * @throws FatalFacesException
+   * @post new.getInstance() isfresh
+   * @post new.getInstance() == getType().newInstance();
    */
-  public final void navigateToNew(ActionEvent aEv) throws FatalFacesException {
-    assert getType() != null : "type cannot be null";
-    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.handlerFor(getType(), getDao());
-// MUDO (jand) put the new instance in the handler
+  private PersistentBean createInstance() throws FatalFacesException {
+    LOG.debug("creating new instance of type \"" + getType() + "\"");
+    PersistentBean result = null;
+    try {
+      result = (PersistentBean)getType().newInstance();
+      LOG.debug("fresh instance: " + result);
+    }
+    // all exceptions are programmatic errors here, in subclass, in config or in JSF
+    catch (InstantiationException iExc) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), iExc, LOG);
+    }
+    catch (IllegalAccessException iaExc) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), iaExc, LOG);
+    }
+    catch (ExceptionInInitializerError eiiErr) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), eiiErr, LOG);
+    }
+    catch (SecurityException sExc) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), sExc, LOG);
+    }
+    catch (ClassCastException ccExc) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), ccExc, LOG);
+    }
+    return result;
+  }
+
+  /**
+   * <p>Action method that creates a fresh instances of {@link #getType()} with
+   *   the default instructor, and then calls {@link #navigateToEditNew(PersistentBean)}
+   *   with it.</p>
+   * <p>The fresh instance handler is made available to the JSP/JSF page in request scope,
+   *   as a variable with the appropriate name, and we navigate to
+   *   {@link InstanceHandler#getDetailViewId()}.</p>
+   */
+  public final void navigateToEditNew() throws FatalFacesException {
+    PersistentBean fresh = createInstance();
+    navigateToEditNew(fresh);
+  }
+
+  /**
+   * <p>Create a fresh handler, most approproate for <code>fresh.getClass()</code>,
+   *   and navigate there in {@link InstanceHandler#VIEWMODE_EDITNEW} using
+   *   {@link InstanceHandler#navigateHere(String)}.</p>
+   * <p>Although this is not obligatory, <code>fresh</code> should be an instance of
+   *   {@link #getType()} or one of its subtypes.</p>
+   * <p>The fresh handler is made available to the JSP/JSF page in request scope,
+   *   as a variable with the appropriate name, and we navigate to
+   *   {@link InstanceHandler#getDetailViewId()}.</p>
+   */
+  public final void navigateToEditNew(PersistentBean fresh) throws FatalFacesException {
+    assert fresh != null;
+    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.handlerFor(fresh.getClass(), getDao());
+    handler.setInstance(fresh);
     handler.navigateHere(InstanceHandler.VIEWMODE_EDITNEW);
   }
 
