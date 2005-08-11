@@ -332,7 +332,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * @idea (jand) gather viewmode in separate class
  * @mudo (jand) security
  */
-public class InstanceHandler extends PersistentBeanHandler {
+public abstract class InstanceHandler extends PersistentBeanHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -510,6 +510,7 @@ public class InstanceHandler extends PersistentBeanHandler {
       }
       else {
         createInstance();
+        postCreateInstance();
       }
     }
     else {
@@ -621,6 +622,13 @@ public class InstanceHandler extends PersistentBeanHandler {
       assert false : "exception while creating new instance of type " + getType() + ccExc;
     }
   }
+  
+  /**
+   * Method directly called after {@link #createInstance()}. This methods
+   * should be used to do additional proccessing needed after creation
+   * of a new instance.
+   */
+  protected abstract void postCreateInstance();
 
   /**
    * Method to be called after Render Response phase, to clear
