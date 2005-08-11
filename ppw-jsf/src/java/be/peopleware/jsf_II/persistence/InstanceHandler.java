@@ -332,7 +332,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * @idea (jand) gather viewmode in separate class
  * @mudo (jand) security
  */
-public abstract class InstanceHandler extends PersistentBeanHandler {
+public class InstanceHandler extends PersistentBeanHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -497,31 +497,52 @@ public abstract class InstanceHandler extends PersistentBeanHandler {
 
   /**
    * The {@link PersistentBean} that is handled in the requests.
+   * If {@link #getStoredInstance()} is not <code>null</code>,
+   * it is returned. If it is <code>null</code>, an instance
+   * is loaded from persistent storage with {@link #getDao()},
+   * with type {@link #getType()} and id {@link #getId()}.
+   * If in this case either of those properties are
+   * <code>null</code>, we have a problem.
    *
-   * @basic
-   * @init null;
+   * @return getStoredInstance();
+   * @post (getStoredInstance() == null) ?
+   *            new.getStoredInstance() == getDao().retrievePersistentBean(getId(), getType());
+   * @throws FatalFacesException
+   *         (getStoredInstance() == null) && (getType() == null);
+   * @throws FatalFacesException
+   *         (getStoredInstance() == null) && (getInstance() == null);
+   * @throws FatalFacesException
+   *         (getStoredInstance() == null) && problems loading bean from DB;
    */
-  public final PersistentBean getInstance() {
+  public final PersistentBean getInstance() throws FatalFacesException {
     LOG.debug("instance requested; id = " + getId());
     if ($instance == null) {
-      LOG.debug("instance is not cached");
-      if (getId() != null) {
-        loadInstance();
+      LOG.debug("instance is not cached; loading from DB");
+      if (getType() == null) {
+        RobustCurrent.fatalProblem("should load instance from db, but type is null", LOG);
       }
-      else {
-        createInstance();
-        postCreateInstance();
+      if (getId() == null) {
+        RobustCurrent.fatalProblem("should load instance from db, but id is null", LOG);
       }
+      loadInstance();
+      LOG.debug("instance loaded from DB: " + $instance);
     }
     else {
-      LOG.debug("returning instance from cache");
+      LOG.debug("returning instance from cache: " + $instance);
     }
-    LOG.debug("returning instance: " + $instance);
     return $instance;
   }
 
   /**
-   * @post new.getInstance() == instance;
+   * @basic
+   * @init null;
+   */
+  public final PersistentBean getStoredInstance() {
+    return $instance;
+  }
+
+  /**
+   * @post new.getStoredInstance() == instance;
    * @post (instance != null) ? new.getId().equals(instance.getId());
    * @throws IllegalArgumentException
    *         (instance != null) && ! getType().isAssignableFrom(instance.getClass());
@@ -590,45 +611,6 @@ public abstract class InstanceHandler extends PersistentBeanHandler {
                                  getType(), tExc, LOG);
     }
   }
-
-
-  /**
-   * Create a new instance of type {@link #getType()} and store
-   * it in {@link #getInstance()}.
-   *
-   * @post new.getInstance() isfresh
-   * @post new.getInstance() == getType().newInstance();
-   */
-  private void createInstance() {
-    LOG.debug("creating new instance of type \"" + getType() + "\"");
-    try {
-      $instance = (PersistentBean)getType().newInstance();
-      LOG.debug("fresh instance: " + $instance);
-    }
-    // all exceptions are programmatic errors here, in subclass, in config or in JSF
-    catch (InstantiationException iExc) {
-      assert false : "exception while creating new instance of type " + getType() + iExc;
-    }
-    catch (IllegalAccessException iaExc) {
-      assert false : "exception while creating new instance of type " + getType() + iaExc;
-    }
-    catch (ExceptionInInitializerError eiiErr) {
-      assert false : "exception while creating new instance of type " + getType() + eiiErr;
-    }
-    catch (SecurityException sExc) {
-      assert false : "exception while creating new instance of type " + getType() + sExc;
-    }
-    catch (ClassCastException ccExc) {
-      assert false : "exception while creating new instance of type " + getType() + ccExc;
-    }
-  }
-  
-  /**
-   * Method directly called after {@link #createInstance()}. This methods
-   * should be used to do additional proccessing needed after creation
-   * of a new instance.
-   */
-  protected abstract void postCreateInstance();
 
   /**
    * Method to be called after Render Response phase, to clear
