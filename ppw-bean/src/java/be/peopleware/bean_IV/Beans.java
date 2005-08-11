@@ -60,7 +60,7 @@ public class Beans {
    * @pre       beanClass != null;
    *
    * @deprecated Use <a href="http://jakarta.apache.org/commons/beanutils/api/org/apache/commons/beanutils/PropertyUtils.html"
-   *               target="extern">Apache Jakarta Commons beanutils PropertyUtil.getProperty()</a> instead.
+   *               target="extern">Apache Jakarta Commons beanutils PropertyUtil.getPropertyDescriptor()</a> instead.
    */
   public static PropertyDescriptor
       getPropertyDescriptor(final Class beanClass, final String propertyName)
@@ -340,6 +340,9 @@ public class Beans {
    * @throws    IllegalArgumentException
    *            <code>value</code> cannot be coerced in an value of the type
    *            expected by the property write method.
+   *
+   * @deprecated Use <a href="http://jakarta.apache.org/commons/beanutils/api/org/apache/commons/beanutils/PropertyUtils.html"
+   *               target="extern">Apache Jakarta Commons beanutils PropertyUtil.setProperty()</a> instead.
    */
   public static void setPropertyValue(final Object bean,
                                       final String propertyName,
