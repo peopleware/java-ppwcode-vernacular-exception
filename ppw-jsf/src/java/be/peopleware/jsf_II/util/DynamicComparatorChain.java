@@ -9,11 +9,15 @@ package be.peopleware.jsf_II.util;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -46,11 +50,13 @@ import org.apache.commons.beanutils.PropertyUtils;
  *   of the property names, see
  *   <a href="http://jakarta.apache.org/commons/beanutils/api/index.html" target="extern">the
  *   Apache Jakarta Commons beanutil Javadoc</a>.</p>
+ * <p>This class also offers a Map interface, so that it can be configured, e.g.,
+ *   as a managed map in JSF.</p>
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public final class DynamicComparatorChain implements Comparator {
+public final class DynamicComparatorChain implements Comparator, Map {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -142,6 +148,9 @@ public final class DynamicComparatorChain implements Comparator {
   private class Entry implements Comparator {
 
     public Entry(String propertyName, Comparator comp, boolean ascending) {
+      if (propertyName == null) {
+        throw new NullPointerException();
+      }
       $propertyName = propertyName;
       $comparator = comp;
       $ascending = ascending;
@@ -156,6 +165,10 @@ public final class DynamicComparatorChain implements Comparator {
 
     public final Comparator getComparator() {
       return $comparator;
+    }
+
+    public final void setComparator(Comparator comp) {
+      $comparator = comp;
     }
 
     private Comparator $comparator;
@@ -266,6 +279,143 @@ public final class DynamicComparatorChain implements Comparator {
       result = cce.compare(o1, o2);
     }
     return result;
+  }
+
+  // Map methods
+
+  public final int size() {
+    return $chain.size();
+  }
+
+  public final boolean isEmpty() {
+    return $chain.isEmpty();
+  }
+
+  public boolean containsKey(Object key) {
+    Iterator iter = $chain.iterator();
+    while (iter.hasNext()) {
+      Entry entry = (Entry)iter.next();
+      if (entry.getPropertyName().equals(key)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean containsValue(Object value) {
+    Iterator iter = $chain.iterator();
+    while (iter.hasNext()) {
+      Entry entry = (Entry)iter.next();
+      if (entry.getComparator().equals(value)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public Object get(Object key) {
+    Iterator iter = $chain.iterator();
+    while (iter.hasNext()) {
+      Entry entry = (Entry)iter.next();
+      if (entry.getPropertyName().equals(key)) {
+        return entry.getComparator();
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @post addComparator(propertyName, comp, true);
+   * @throws NullPointerException
+   *         propertyName == null;
+   * @throws ClassCastException
+   *         ! propertyName instanceof String;
+   * @throws ClassCastException
+   *         ! comp instanceof Comparator;
+   */
+  public Object put(Object propertyName, Object comp) {
+    Object previousValue = remove(propertyName);
+    addComparator((String)propertyName, (Comparator)comp, true);
+    return previousValue;
+  }
+
+  public Object remove(Object key) {
+    ListIterator iter = $chain.listIterator();
+    while (iter.hasNext()) {
+      Entry entry = (Entry)iter.next();
+      if (entry.getPropertyName().equals(key)) {
+        iter.remove();
+        return entry.getComparator();
+      }
+    }
+    return null;
+  }
+
+  public void putAll(Map t) {
+    Iterator iter = t.entrySet().iterator();
+    while (iter.hasNext()) {
+      Map.Entry tEntry = (Map.Entry)iter.next();
+      put(tEntry.getKey(), tEntry.getValue());
+    }
+  }
+
+  public void clear() {
+    $chain.clear();
+  }
+
+  public Set keySet() {
+    Set result = new HashSet();
+    Iterator iter = $chain.iterator();
+    while (iter.hasNext()) {
+      Entry entry = (Entry)iter.next();
+      result.add(entry.getPropertyName());
+    }
+    return result;
+  }
+
+  public Collection values() {
+    List result = new LinkedList();
+    Iterator iter = $chain.iterator();
+    while (iter.hasNext()) {
+      Entry entry = (Entry)iter.next();
+      result.add(entry.getComparator());
+    }
+    return result;
+  }
+
+  public Set entrySet() {
+    Set result = new HashSet();
+    Iterator iter = $chain.iterator();
+    while (iter.hasNext()) {
+      Entry entry = (Entry)iter.next();
+      Map.Entry mEntry = new MapEntry(entry);
+      result.add(mEntry);
+    }
+    return result;
+  }
+
+  private class MapEntry implements Map.Entry {
+
+    public MapEntry(Entry entry) {
+      $entry = entry;
+    }
+
+    public Object getKey() {
+      return $entry.getPropertyName();
+    }
+
+    public Object getValue() {
+      return $entry.getComparator();
+    }
+
+    public Object setValue(Object value) {
+      Comparator previousValue = $entry.getComparator();
+      $entry.setComparator((Comparator)value);
+      return previousValue;
+    }
+
+    private Entry $entry;
+
   }
 
 }

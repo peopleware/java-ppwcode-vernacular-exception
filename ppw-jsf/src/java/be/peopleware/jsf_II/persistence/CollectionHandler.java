@@ -257,25 +257,25 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     $comparator = comparator;
   }
 
-  /**
-   * @return (getComparator() == null) ? EMPTY :
-   *                stringArrayToConcatString(getComparator().getSortOrder());
-   */
-  public final String getSortOrder() {
-    return (getComparator() == null) ?
-               EMPTY :
-               stringArrayToConcatString(getComparator().getSortOrder());
-  }
+//  /**
+//   * @return (getComparator() == null) ? EMPTY :
+//   *                stringArrayToConcatString(getComparator().getSortOrder());
+//   */
+//  public final String getSortOrder() {
+//    return (getComparator() == null) ?
+//               EMPTY :
+//               stringArrayToConcatString(getComparator().getSortOrder());
+//  }
 
   /**
    * <strong>= {@value}</strong>
    */
   public final static String SORT_PROPERTY_REQUEST_PARAMETER_NAME = "sortProperty";
 
-  /**
-   * <strong>= {@value}</strong>
-   */
-  public final static String SORT_ORDER_REQUEST_PARAMETER_NAME = "sortOrder";
+//  /**
+//   * <strong>= {@value}</strong>
+//   */
+//  public final static String SORT_ORDER_REQUEST_PARAMETER_NAME = "sortOrder";
 
   /**
    * <strong>= {@value}</strong>
@@ -285,20 +285,16 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   /**
    * <p>Action listener method that calls {@link DynamicComparatorChain#bringToFront(String)}
    *   with the value of HTTP request parameter {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}
-   *   as argument.
-   *   Since this handler is intended to be used in request scope, the previous order needs to be
-   *   communicated too. This is done with the value of the HTTP request parameter
-   *   {@link #SORT_ORDER_REQUEST_PARAMETER_NAME}.</p>
-   *   This action listener method could be called with a <code>commandLink</code> as follows:</p>
+   *   as argument. Since the previous order needs to be remembered, the {@link #getComparator()}
+   *   is best implemented as a managed bean in session scope.</p>
+   * <p>This action listener method could be called with a <code>commandLink</code> as follows:</p>
    * <pre>
    *   <h:commandLink value="<var>label</var>" action="#{handler.sort}" immediate="true" />
    *     <f:param name="<var>{@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}</var>" value="<var>property name</var>" />
-   *     <f:param name="<var>{@link #SORT_ORDER_REQUEST_PARAMETER_NAME}</var>" value="#(handler.sortOrder}" />
    *   </h:commandLink>
    * </pre>
    * <p>If there is no {@link #getComparator()}, or there is no {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}
-   *   HTTP request parameter, nothing happens. If there is no {@link #SORT_ORDER_REQUEST_PARAMETER_NAME}
-   *   HTTP request parameter, sorting starts after the default order is set on the comparator.</p>
+   *   HTTP request parameter, nothing happens.</p>
    */
   public final void sort(ActionEvent ae) {
     LOG.debug("call to sort");
@@ -314,52 +310,52 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     else {
       LOG.debug("sort property is " + sortPropertyName);
     }
-    String sortOrderString = RobustCurrent.requestParameterValues(SORT_ORDER_REQUEST_PARAMETER_NAME)[0];
-    if (LOG.isWarnEnabled() && (sortOrderString != null) && (! sortOrderString.equals(EMPTY))) {
-      LOG.warn("no previous sort order given; starting from comparator default");
-    }
-    else {
-      LOG.debug("sort order is " + sortOrderString);
-      String[] sortOrder = concatStringToStringArray(sortOrderString);
-      getComparator().setSortOrder(sortOrder);
-    }
+//    String sortOrderString = RobustCurrent.requestParameterValues(SORT_ORDER_REQUEST_PARAMETER_NAME)[0];
+//    if (LOG.isWarnEnabled() && (sortOrderString != null) && (! sortOrderString.equals(EMPTY))) {
+//      LOG.warn("no previous sort order given; starting from comparator default");
+//    }
+//    else {
+//      LOG.debug("sort order is " + sortOrderString);
+//      String[] sortOrder = concatStringToStringArray(sortOrderString);
+//      getComparator().setSortOrder(sortOrder);
+//    }
     getComparator().bringToFront(sortPropertyName);
   }
 
-  private final static String SORT_ORDER_SEPARATOR = ",";
-
-  /**
-   * @pre Strings in strings do not contain ','
-   * @idea (jand) move to util
-   */
-  public static String stringArrayToConcatString(String[] strings) {
-    if (strings == null) {
-      return EMPTY;
-    }
-    else {
-      StringBuffer result = new StringBuffer(strings.length * 20);
-      for (int i = 0; i < strings.length; i++) {
-        result.append(strings[i]);
-        if (i < strings.length - 1) {
-          result.append(SORT_ORDER_SEPARATOR);
-        }
-      }
-      return result.toString();
-    }
-  }
-
-  /**
-   * @pre Strings in strings do not contain ','
-   * @idea (jand) move to util
-   */
-  public static String[] concatStringToStringArray(String concatString) {
-    if (concatString == null) {
-      return new String[0];
-    }
-    else {
-      return concatString.split(SORT_ORDER_SEPARATOR);
-    }
-  }
+//  private final static String SORT_ORDER_SEPARATOR = ",";
+//
+//  /**
+//   * @pre Strings in strings do not contain ','
+//   * @idea (jand) move to util
+//   */
+//  public static String stringArrayToConcatString(String[] strings) {
+//    if (strings == null) {
+//      return EMPTY;
+//    }
+//    else {
+//      StringBuffer result = new StringBuffer(strings.length * 20);
+//      for (int i = 0; i < strings.length; i++) {
+//        result.append(strings[i]);
+//        if (i < strings.length - 1) {
+//          result.append(SORT_ORDER_SEPARATOR);
+//        }
+//      }
+//      return result.toString();
+//    }
+//  }
+//
+//  /**
+//   * @pre Strings in strings do not contain ','
+//   * @idea (jand) move to util
+//   */
+//  public static String[] concatStringToStringArray(String concatString) {
+//    if (concatString == null) {
+//      return new String[0];
+//    }
+//    else {
+//      return concatString.split(SORT_ORDER_SEPARATOR);
+//    }
+//  }
 
   private DynamicComparatorChain $comparator = new DynamicComparatorChain();
 
