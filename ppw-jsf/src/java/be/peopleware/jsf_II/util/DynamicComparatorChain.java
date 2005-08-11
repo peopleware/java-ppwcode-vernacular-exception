@@ -49,7 +49,10 @@ import org.apache.commons.beanutils.PropertyUtils;
  *   <code>address.street</code> is a nested name). For information about the format
  *   of the property names, see
  *   <a href="http://jakarta.apache.org/commons/beanutils/api/index.html" target="extern">the
- *   Apache Jakarta Commons beanutil Javadoc</a>.</p>
+ *   Apache Jakarta Commons beanutil Javadoc</a>. Furthmore, if
+ *   the last element in a nested expression is <code>size</code> or
+ *   <code>length</code>, and it is called on a {@link Collection} or
+ *   {@link Map}, resp. an array, this returns the size of that instance.</p>
  * <p>This class also offers a Map interface, so that it can be configured, e.g.,
  *   as a managed map in JSF.</p>
  *
@@ -207,10 +210,44 @@ public final class DynamicComparatorChain implements Comparator, Map {
       }
     }
 
+    private final static String COLLECTION_SIZE = "size";
+
+    private final static String ARRAY_LENGTH = "length";
+
     private Object getNavigatedProperyValueOrNull(Object bean, String propertyName) {
-      Object result = null;
       try {
-        result = PropertyUtils.getProperty(bean, propertyName);
+        int sizeOfNameEnd = propertyName.lastIndexOf(COLLECTION_SIZE);
+        if (sizeOfNameEnd < 0) {
+          sizeOfNameEnd = propertyName.lastIndexOf(ARRAY_LENGTH);
+        }
+        if (sizeOfNameEnd >= 0) {
+          Object sizeOf = null;
+          if (sizeOfNameEnd == 0) { // size of bean
+            sizeOf = bean;
+          }
+          else if (propertyName.charAt(sizeOfNameEnd - 1) == '.') {
+            // it is a call
+            String sizeOfName = propertyName.substring(0, sizeOfNameEnd - 1);
+            // -1 to get rid of the '.'
+            sizeOf = PropertyUtils.getProperty(bean, sizeOfName);
+          }
+          /* else no call, sizeOf stays null: normal handling;
+             probably size is by accident the final part of a longer property name */
+          if (sizeOf != null) {
+            if (sizeOf instanceof Collection) {
+              return new Integer(((Collection)sizeOf).size());
+            }
+            else if (sizeOf instanceof Map) {
+              return new Integer(((Map)sizeOf).size());
+            }
+            else if (sizeOf.getClass().isArray()) {
+              return new Integer(((Object[])sizeOf).length);
+            }
+            // else, normal handling
+          }
+        }
+        // else, normal handling; result is null
+        return PropertyUtils.getProperty(bean, propertyName);
       }
       catch (NullPointerException e) {
         /* there is a null somewhere in the path of the $propertyName;
@@ -229,7 +266,7 @@ public final class DynamicComparatorChain implements Comparator, Map {
       catch (InvocationTargetException e) {
         assert false : "InvocationTargetExceptionshould not happen: " + e;
       }
-      return result;
+      return null; // make compiler happy
     }
 
     private int compareProperty(Object o1, Object o2) throws ClassCastException {
