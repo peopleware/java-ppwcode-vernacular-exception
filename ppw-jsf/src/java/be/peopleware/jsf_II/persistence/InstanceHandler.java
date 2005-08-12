@@ -732,40 +732,6 @@ public class InstanceHandler extends PersistentBeanHandler {
     handler.navigateHere();
   }
 
-//  /**
-//   * <strong>= {@value}</strong>
-//   */
-//  public final static String DETAIL_HANDLER_NAME_SUFFIX = "H";
-//
-//  /**
-//   * The name under which this handler is stored in request scope when
-//   * {@link #navigateHere(ActionEvent)} is called.
-//   * This name is the simple type name of {@link #getType()}, with the suffix
-//   * {@link #DETAIL_HANDLER_NAME_SUFFIX}.
-//   *
-//   * @idea (jand) make this parameterizable
-//   */
-//  public String getDetailHandlerName() {
-//    return getSimpleTypeName() + "H";
-//  }
-//
-//  private final static String DOT_GREP = "\\.";
-//
-//  /**
-//   * The simple type name of the type {@link #getType()}.
-//   *
-//   * @throws FatalFacesException
-//   *         getType() == null;
-//   */
-//  private String getSimpleTypeName() {
-//    if (getType() == null) {
-//      RobustCurrent.fatalProblem("cannot get simple type name when type is null", LOG);
-//    }
-//    String fqcn = getType().getName();
-//    String[] parts = fqcn.split(DOT_GREP);
-//    return parts[parts.length - 1];
-//  }
-
   /**
    * This is an action method that should be called by a button in the JSF
    * page to go to edit mode.
@@ -1382,6 +1348,10 @@ public class InstanceHandler extends PersistentBeanHandler {
                 String propertyName = (String)key;
                 try {
                   Object propertyValue = PropertyUtils.getProperty(getInstance(), propertyName);
+                  if (propertyValue == null) {
+                    LOG.debug("propertyValue is null; cannot create handler, returning null");
+                    return null;
+                  }
                   if (propertyValue instanceof PersistentBean) {
                     result = freshPersistentBeanInstanceHandlerFor((PersistentBean)propertyValue);
                   }
@@ -1472,47 +1442,6 @@ public class InstanceHandler extends PersistentBeanHandler {
   protected Map getAssociationMetaMap() {
     return Collections.EMPTY_MAP;
   }
-
-//  private DataModelPersistentBeanCollectionHandler createDataModelPersistentBeanHandlerFor(Class associatedType,
-//                                                                                           Collection collection)
-//      throws FatalFacesException {
-//    DataModelPersistentBeanCollectionHandler lh = null;
-//    try {
-//      lh = (DataModelPersistentBeanCollectionHandler)DataModelPersistentBeanCollectionHandler.
-//              RESOLVER.freshHandlerFor(associatedType, getDao());
-//      Collection c = (Collection)PropertyUtils.getProperty(getInstance(), propertyName);
-//      lh.setInstances(collection);
-//    }
-//    catch (ClassCastException ccExc) {
-//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-//                                 " for property " + propertyName + "\"", ccExc, LOG);
-//    }
-//    catch (IllegalArgumentException iaExc) {
-//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-//                                 " for property " + propertyName + "\"", iaExc, LOG);
-//    }
-//    catch (IllegalAccessException iaExc) {
-//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-//                                 " for property " + propertyName + "\"", iaExc, LOG);
-//    }
-//    catch (InvocationTargetException itExc) {
-//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-//                                 " for property " + propertyName + "\"", itExc, LOG);
-//    }
-//    catch (NullPointerException npExc) {
-//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-//                                 " for property " + propertyName + "\"", npExc, LOG);
-//    }
-//    catch (ExceptionInInitializerError eiiErr) {
-//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-//                                 " for property " + propertyName + "\"", eiiErr, LOG);
-//    }
-//    catch (NoSuchMethodException nsmExc) {
-//      RobustCurrent.fatalProblem("could not get collection of instance " + getInstance() +
-//                                 " for property " + propertyName + "\"", nsmExc, LOG);
-//    }
-//    return lh;
-//  }
 
   /*</section>*/
 

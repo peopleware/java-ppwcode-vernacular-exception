@@ -367,7 +367,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * @return    Set
    *            A Set with PersistentBeanHandlers based on the instances of this Handler..
    */
-  public final List getInstanceHandlers() {
+  public final List getInstanceHandlers() throws FatalFacesException {
     if ($handlers == null) {
       LOG.debug("no handlers cached; creating new handlers");
       List handlers = new ArrayList();
@@ -376,12 +376,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       LOG.debug("creating handler for each instance");
       while (iter.hasNext()) {
         PersistentBean bean = (PersistentBean)iter.next();
-        LOG.debug("    instance is " + bean + "; RESOLVER is " + InstanceHandler.RESOLVER);
-        InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(bean.getClass(), getDao());
-        handler.setInstance(bean);
-        handler.setViewMode(InstanceHandler.VIEWMODE_DISPLAY);
-        LOG.debug("    handler is " + handler);
-        handlers.add(handler);
+        handlers.add(freshInstanceHandlerFor(bean));
       }
       $handlers = handlers;
       Collections.sort($handlers, $handlerComparator);
@@ -391,6 +386,20 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       LOG.debug("returning cached handlers");
     }
     return Collections.unmodifiableList($handlers);
+  }
+
+  /**
+   * Create a fresh instance handler for <code>bean</code>.
+   *
+   * @throws FatalFacesException
+   */
+  protected InstanceHandler freshInstanceHandlerFor(PersistentBean bean) throws FatalFacesException {
+    LOG.debug("    instance is " + bean + "; RESOLVER is " + InstanceHandler.RESOLVER);
+    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(bean.getClass(), getDao());
+    handler.setInstance(bean);
+    handler.setViewMode(InstanceHandler.VIEWMODE_DISPLAY);
+    LOG.debug("    handler is " + handler);
+    return handler;
   }
 
   /**

@@ -47,7 +47,7 @@ public class DataModelHandler extends CollectionHandler {
    * @return    DataModel
    *            A datamodel with PersistentBeanHandlers.
    */
-  public DataModel getDataModel() throws FatalFacesException {
+  public final DataModel getDataModel() throws FatalFacesException {
     LOG.debug("request for datamodel");
     if ($dataModel == null) {
       LOG.debug("no datamodel cached; creating new datamodel");
@@ -71,7 +71,7 @@ public class DataModelHandler extends CollectionHandler {
    * @post    (getDataModel().getRowcount() > 0) ? getDataModel().getRowData()
    *                                             : null
    */
-  public InstanceHandler getSelected() {
+  public final InstanceHandler getSelected() {
     InstanceHandler result = null;
     if (getDataModel().getRowCount() > 0) {
       result = (InstanceHandler)getDataModel().getRowData();
