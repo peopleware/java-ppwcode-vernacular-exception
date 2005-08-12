@@ -416,7 +416,8 @@ public abstract class PersistentBeanHandler {
 
   /**
    * Create a new instance of type {@link #getType()} with the default
-   * constructor.
+   * constructor. {@link #createInstance()} is called on the fresh
+   * bean to do whatever configuration necessary.
    *
    * @post new.getInstance() isfresh
    * @post new.getInstance() == getType().newInstance();
@@ -427,6 +428,9 @@ public abstract class PersistentBeanHandler {
     try {
       result = (PersistentBean)getType().newInstance();
       LOG.debug("fresh instance: " + result);
+      LOG.debug("Calling postCreateInstance");
+      postCreateInstance(result);
+      LOG.debug("fresh instance after postCreateInstance: " + result);
     }
     // all exceptions are programmatic errors here, in subclass, in config or in JSF
     catch (InstantiationException iExc) {
@@ -445,6 +449,20 @@ public abstract class PersistentBeanHandler {
       RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), ccExc, LOG);
     }
     return result;
+  }
+
+  /**
+   * Method called by {@link #createInstance()},
+   * to do additional configuration of fresh beans of type
+   * {@link #getType()}.
+   * This default does nothing, but subclasses should overwrite
+   * when needed.
+   *
+   * @pre pb != null;
+   * @pre pb.getClass() == getType()
+   */
+  protected void postCreateInstance(PersistentBean pb) {
+    // NOP
   }
 
 }
