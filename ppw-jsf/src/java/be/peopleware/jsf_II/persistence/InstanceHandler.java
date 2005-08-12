@@ -602,7 +602,7 @@ public class InstanceHandler extends PersistentBeanHandler {
       assert getType().isInstance(result);
       if (LOG.isDebugEnabled()) {
         // if makes that there really is lazy loading if not in debug
-        LOG.debug("retrieved persistent bean is " + getInstance());
+        LOG.debug("retrieved persistent bean is " + result);
       }
     }
     catch (IdNotFoundException infExc) {
