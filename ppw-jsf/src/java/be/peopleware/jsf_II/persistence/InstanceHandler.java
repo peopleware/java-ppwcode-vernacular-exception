@@ -599,7 +599,7 @@ public class InstanceHandler extends PersistentBeanHandler {
       result = getDao().retrievePersistentBean(getId(), getType()); // IdNotFoundException, TechnicalException
       assert result != null;
       assert result.getId().equals(getId());
-      assert getType().isInstance(getInstance());
+      assert getType().isInstance(result);
       if (LOG.isDebugEnabled()) {
         // if makes that there really is lazy loading if not in debug
         LOG.debug("retrieved persistent bean is " + getInstance());
