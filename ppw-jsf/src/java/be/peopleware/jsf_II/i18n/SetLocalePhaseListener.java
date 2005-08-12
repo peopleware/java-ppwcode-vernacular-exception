@@ -8,6 +8,7 @@
 package be.peopleware.jsf_II.i18n;
 
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import javax.faces.FacesException;
@@ -33,7 +34,7 @@ import be.peopleware.jsf_II.RobustCurrent;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public final class SetLocalePhaseListener implements PhaseListener {
+public final class SetLocalePhaseListener implements PhaseListener, Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -48,11 +49,11 @@ public final class SetLocalePhaseListener implements PhaseListener {
   /*</section>*/
 
 
-  
+
   private static final Log LOG = LogFactory.getLog(SetLocalePhaseListener.class);
 
-  
-  
+
+
   /*<construction>*/
   //------------------------------------------------------------------
 
@@ -63,7 +64,7 @@ public final class SetLocalePhaseListener implements PhaseListener {
   /**
    * <p>Where JSTL stores it's locale setting. This is
    *   <code>javax.servlet.jsp.jstl.core.Config.FMT_LOCATE</code>.</p>
-   * 
+   *
    * <p><strong>{@value}</strong></p>
    */
   public static final String FMT_LOCALE = "javax.servlet.jsp.jstl.fmt.locale";
@@ -81,11 +82,11 @@ public final class SetLocalePhaseListener implements PhaseListener {
       LOG.debug("locale of UIViewRoot set to " + locale);
     }
   }
-  
+
   public final void afterPhase(PhaseEvent event) {
     // NOP
   }
-  
+
   public final PhaseId getPhaseId() {
     return PhaseId.RENDER_RESPONSE;
   }

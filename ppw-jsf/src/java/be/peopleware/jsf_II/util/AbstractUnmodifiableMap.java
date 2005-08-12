@@ -7,6 +7,7 @@ TO SELECTED PARTIES.
 package be.peopleware.jsf_II.util;
 
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,7 +24,7 @@ import java.util.Set;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public abstract class AbstractUnmodifiableMap implements Map {
+public abstract class AbstractUnmodifiableMap implements Map, Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -113,7 +114,7 @@ public abstract class AbstractUnmodifiableMap implements Map {
     return Collections.unmodifiableSet(result);
   }
 
-  protected abstract class EntrySetEntry implements Map.Entry, Comparable {
+  protected abstract class EntrySetEntry implements Map.Entry, Comparable, Serializable {
 
     public final Object setValue(Object value) throws UnsupportedOperationException {
       throw new UnsupportedOperationException();

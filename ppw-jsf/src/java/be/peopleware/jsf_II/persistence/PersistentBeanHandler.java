@@ -1,6 +1,7 @@
 package be.peopleware.jsf_II.persistence;
 
 
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.faces.FacesException;
@@ -34,7 +35,7 @@ import be.peopleware.persistence_I.dao.Dao;
  *            ? PersistentBean.class.isAssignableFrom(getType())
  *            : true;
  */
-public abstract class PersistentBeanHandler {
+public abstract class PersistentBeanHandler implements Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

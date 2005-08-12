@@ -1,6 +1,8 @@
 package be.peopleware.jsf_II.persistence;
 
 
+import java.io.Serializable;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,7 +37,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * @invar getMinimalHandlerClass.isAssignableFrom(getDefaultHandlerClass());
  * @invar handlerVarNameSuffix() != null;
  */
-public class PersistentBeanHandlerResolver {
+public class PersistentBeanHandlerResolver implements Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

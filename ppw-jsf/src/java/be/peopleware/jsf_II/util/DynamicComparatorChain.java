@@ -8,6 +8,7 @@
 package be.peopleware.jsf_II.util;
 
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Comparator;
@@ -86,7 +87,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public final class DynamicComparatorChain implements Comparator, Map {
+public final class DynamicComparatorChain implements Comparator, Map, Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -186,7 +187,7 @@ public final class DynamicComparatorChain implements Comparator, Map {
    * of the compared objects must be of a {@link Comparable} type.
    * If the propertyName is <code>null</code>, the objects themselves are compared.
    */
-  private class Entry implements Comparator {
+  private class Entry implements Comparator, Serializable {
 
     public Entry(String propertyName, Comparator comp, boolean ascending) {
       if (propertyName == null) {

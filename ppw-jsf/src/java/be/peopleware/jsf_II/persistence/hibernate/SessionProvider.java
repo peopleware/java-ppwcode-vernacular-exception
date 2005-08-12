@@ -7,6 +7,8 @@
 package be.peopleware.jsf_II.persistence.hibernate;
 
 
+import java.io.Serializable;
+
 import javax.servlet.ServletRequest;
 import net.sf.hibernate.Session;
 
@@ -36,8 +38,8 @@ import be.peopleware.servlet_I.hibernate.SessionInView;
  * @author Jan Dockx
  * @author Peopleware n.v.
  */
-public class SessionProvider {
-  
+public class SessionProvider implements Serializable {
+
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
   /** {@value} */
@@ -50,13 +52,13 @@ public class SessionProvider {
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /*</section>*/
 
-  
+
   private static final Log LOG = LogFactory.getLog(SessionProvider.class);
 
-  
+
   /**
    * Return the Hibernate {@link Session} from {@link SessionInView}.
-   * 
+   *
    * @return    SessionInView.getSession(RobustCurrent.httpServletRequest());
    * @throws    FatalFacesException
    *            RobustCurrent.httpServletRequest();

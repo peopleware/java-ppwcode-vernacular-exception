@@ -8,6 +8,7 @@
 package be.peopleware.jsf_II.i18n;
 
 
+import java.io.Serializable;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -22,7 +23,7 @@ import be.peopleware.jsf_II.RobustCurrent;
  * @author    René Clerckx
  * @author    PeopleWare n.v.
  */
-public class JsfResourceBundleLoadStrategy implements ResourceBundleLoadStrategy {
+public class JsfResourceBundleLoadStrategy implements ResourceBundleLoadStrategy, Serializable {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

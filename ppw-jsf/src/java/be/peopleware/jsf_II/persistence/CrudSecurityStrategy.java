@@ -1,6 +1,8 @@
 package be.peopleware.jsf_II.persistence;
 
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -20,11 +22,11 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author    Jan Dockx
  * @author    Peopleware n.v.
- * 
+ *
  * @mudo (jand) not clear what is the best parameter; bidir binding?
  * @mudo (jand) not in the handler, in the Dao!
  */
-public class CrudSecurityStrategy {
+public class CrudSecurityStrategy implements Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

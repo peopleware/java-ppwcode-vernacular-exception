@@ -2,6 +2,7 @@ package be.peopleware.jsf_II.persistence.component;
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -36,7 +37,7 @@ import be.peopleware.jsf_II.persistence.InstanceHandler;
  * @author    Peopleware n.v.
  *
  */
-public class UIInstanceHandler extends UIInput {
+public class UIInstanceHandler extends UIInput implements Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -187,7 +188,7 @@ public class UIInstanceHandler extends UIInput {
     Long id = null;
     String viewMode = null;
     { // get parameters from request
-      
+
       { // viewMode
         viewMode = (String)requestParameters.get(viewModeTagName(context));
         if (! InstanceHandler.isViewMode(viewMode)) {

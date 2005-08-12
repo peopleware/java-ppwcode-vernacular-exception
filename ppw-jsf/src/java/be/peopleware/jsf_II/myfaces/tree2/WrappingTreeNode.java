@@ -1,6 +1,7 @@
 package be.peopleware.jsf_II.myfaces.tree2;
 
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.myfaces.custom.tree2.TreeNode;
@@ -18,7 +19,7 @@ import org.apache.myfaces.custom.tree2.TreeNode;
  *
  * @invar getInstance() != null;
  */
-public abstract class WrappingTreeNode implements TreeNode {
+public abstract class WrappingTreeNode implements TreeNode, Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
