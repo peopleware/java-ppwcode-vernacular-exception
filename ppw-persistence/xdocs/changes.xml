@@ -6,8 +6,22 @@
   </properties>
   <body>
 
+    <release version="I v3.1.0/2.0" date="2005-08-12" description="dao implements Serializable">
+      <action dev="jand" type="fix">
+        Dao's are now Serializable. This was required, via via, for x:tree2 in JSF.
+        But it actually makes sense in Tomcat, so …
+      </action>
+      <action dev="jand" type="remove">
+        toShortString() and unclosedProperties() methods deprecated
+      </action>
+      <action dev="jand" type="add">
+        Added methods to produce full String representation of bean,
+        automatically, also for subclasses.
+      </action>
+    </release>
+
     <release version="I v3.0.0/2.0" date="2005-08-10" description="toString issue solved">
-      <action dev="dvankeer" type="fix">
+      <action dev="jand" type="fix">
           Fixed longstanding toString() issue. toString returned a full description
           of the bean, effectively (especially during debugging) taking shitloads
           of time. Now, we just return the standard toString plus the id.

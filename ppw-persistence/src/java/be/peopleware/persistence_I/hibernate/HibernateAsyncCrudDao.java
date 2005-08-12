@@ -73,14 +73,14 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
   private static final String WRONG_SUBTYPE
       = " not a subtype of PersistentBean";
 
-  
+
   /*<property name="session">*/
   //------------------------------------------------------------------
-  
+
   public Session getSession() {
     return $session;
   }
-  
+
   /**
    * @param     session
    *            The hibernate session to use for database manipulations.
@@ -91,7 +91,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
    */
   public final void setSession(final Session session) throws IllegalStateException {
     if (isInTransaction()) {
-      throw new IllegalStateException("Cannot set session now, " 
+      throw new IllegalStateException("Cannot set session now, "
                                       + "transaction still in use");
     }
     $session = session;
@@ -100,11 +100,11 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
   protected Session $session;
 
   /*</property>*/
-  
+
   /**
    * @invar     isInTransaction() == (tx != null);
    */
-  private Transaction $tx;
+  private transient Transaction $tx;
 
   /**
    * @throws    TechnicalException
@@ -292,7 +292,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
         LOG.debug("Incorrect record found (Wrong type");
         throw new IdNotFoundException(id, null, null, persistentObjectType);
       }
-      
+
     }
     catch (ClassCastException ccExc) {
       throw new TechnicalException("retrieved object was not a PersistentBean",
@@ -466,7 +466,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     if (sqlExc != null) {
       if (sqlExc.getMessage()
                 .indexOf("Duplicate key or integrity constraint violation,  "
-                         + "message from server: \"Duplicate entry") >= 0 
+                         + "message from server: \"Duplicate entry") >= 0
           || sqlExc.getMessage().indexOf("Duplicate entry") >= 0 ) {
         // WATCH OUT: SQL Error message contains 'dual space' after ','.
         assert pb != null;

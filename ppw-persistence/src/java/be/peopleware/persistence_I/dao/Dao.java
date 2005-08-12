@@ -6,6 +6,8 @@
 
 package be.peopleware.persistence_I.dao;
 
+import java.io.Serializable;
+
 
 /**
  * Data Access Object. This interface is mainly used for documentation
@@ -18,16 +20,16 @@ package be.peopleware.persistence_I.dao;
  * in different technologies. Those classes can extend a technology
  * specific superclass that offers support for that technology (e.g.,
  * JDBC, Hibernate, JDO, EJB, RMI, &hellip;).
- * 
+ *
  * DAO instances are almost always stateful, because of the underlying
  * persistence technology.
- * 
+ *
  * Implementations should be JavaBeans,
  * with a default constructor. Further dependencies should be filled
  * out using setters, and DAO methods should be allowed to throw a
  * {@link be.peopleware.exception_I.TechnicalException} if the dependencies
  * are not fulfilled when the DAO method is called.
- * 
+ *
  * Subtypes may depend on the fact that the objects in persistent storage are
  * {@link be.peopleware.persistence_I.PersistentBean PersistentBeans},
  * although this will not always be necessary.
@@ -35,7 +37,7 @@ package be.peopleware.persistence_I.dao;
  * @author Jan Dockx
  * @author Peopleware n.v.
  */
-public interface Dao {
+public interface Dao extends Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
