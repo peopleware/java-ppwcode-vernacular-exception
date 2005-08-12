@@ -10,7 +10,7 @@
   <description>Support for servlets. Main support is currenlty the construction
     of a Hibernate session factory at the beginning of a servlet his lifecycle.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.0-1.1</currentVersion>
+  <currentVersion>1.1.0-1.1</currentVersion>
   <package>be.peopleware.servlet_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>

@@ -1,6 +1,8 @@
 package be.peopleware.servlet_I.hibernate;
 
 
+import java.io.Serializable;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -26,7 +28,7 @@ import be.peopleware.exception_I.TechnicalException;
  * @author    PeopleWare n.v.
  */
 public class SessionFactoryController
-    implements ServletContextListener {
+    implements ServletContextListener, Serializable {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

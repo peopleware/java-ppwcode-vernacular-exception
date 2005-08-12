@@ -1,6 +1,8 @@
 package be.peopleware.servlet_I.hibernate;
 
 
+import java.io.Serializable;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
@@ -30,7 +32,7 @@ import be.peopleware.exception_I.TechnicalException;
  * @author    David Van Keer
  * @author    PeopleWare n.v.
  */
-public class SessionInView implements ServletRequestListener {
+public class SessionInView implements ServletRequestListener, Serializable {
 
   /* <section name="Meta Information"> */
   //------------------------------------------------------------------

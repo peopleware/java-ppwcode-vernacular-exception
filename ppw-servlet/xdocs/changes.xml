@@ -6,17 +6,23 @@
   </properties>
   <body>
 
+    <release version="I v1.1.0/1.1" date="2005-04-11" description="Fix">
+      <action dev="jand" type="add">
+        All classes are now Serializable.
+      </action>
+    </release>
+
     <release version="I v1.0.0/1.1" date="2005-04-11" description="Fix">
       <action dev="jand" type="fix">
-      	Fix for NullPointerException in closing web app, when there was no chance to create
-      	a session factory
-      </action>              
+        Fix for NullPointerException in closing web app, when there was no chance to create
+        a session factory
+      </action>
     </release>
 
     <release version="I v1.0.0/1.0" date="2005-01-04" description="First release">
       <action dev="dvankeer" type="add">
-      	First release with this version number scheme.
-      </action>              
+        First release with this version number scheme.
+      </action>
     </release>
 
   </body>
