@@ -20,10 +20,26 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
- * Support for converters based on {@link PropertyEditor PropertyEditors}.
- * Derive from this class and implement {@link #getPropertyEditor(FacesContext, UIComponent)}.
- * Then add an entry in <kbd>faces-config.xml</kbd> to map the target types
- * to the correct converter class descendant.
+ * <p>Support for converters based on {@link PropertyEditor PropertyEditors}.
+ *   Derive from this class and implement {@link #getPropertyEditor(FacesContext, UIComponent)}.
+ *   Then add an entry in <kbd>faces-config.xml</kbd> to map the target types
+ *   to the correct converter class descendant.</p>
+ * <p>Often, there are 2 String representations of value objects:</p>
+ * <ul>
+ *   <li>a programmatic representation, e.g., to be used as values in a HTML
+ *      select option tag; and</li>
+ *   <li>a label, or display name, to be presented to end users.</li>
+ * </ul>
+ * <p>When {@link #isLabelRepresentation()} is <code>true</code>, this convertor's
+ *   {@link #getAsString(FacesContext, UIComponent, Object)} method returns the
+ *   label. If {@link #isLabelRepresentation()} is <code>false</code>
+ *   (the default), the {@link #getAsString(FacesContext, UIComponent, Object)}
+ *   method returns the programmatic representation. This only works if the
+ *   property editor found for the type of the value to be converted</p>
+ * <p><strong>Note that the {@link #getAsObject(FacesContext, UIComponent, String)}
+ *   method only works when {@link #isLabelRepresentation()} is <code>false</code>:
+ *   it is often impossible to convert a human-readable label to an
+ *   object.</strong></p>
  *
  * @author Wim Lambrechts
  * @author Jan Dockx
@@ -65,14 +81,20 @@ public abstract class AbstractPropertyEditorConverter implements Converter {
    *         getPropertyEditor(context, component);
    * @throws ConverterException
    *         getPropertyEditor(context, component).getValue()#IllegalArgumentException;
+   * @throws ConverterException
+   *         isLabelRepresenation();
    */
   public final Object getAsObject(FacesContext context, UIComponent component, String value)
       throws ConverterException {
     assert context != null;
     assert component != null;
+    LOG.debug("request to convert \"" + value + "\" to object for " +
+              component + "(id = " + component.getClientId(context) + ")");
+    if (isLabelRepresentation()) {
+      LOG.debug("Cannot convert from String to Object in label-representation-mode");
+      throw new ConverterException("Cannot convert from String to Object in label-representation-mode");
+    }
     try {
-      LOG.debug("request to convert \"" + value + "\" to object for " +
-                component + "(id = " + component.getClientId(context) + ")");
       PropertyEditor editor = getPropertyEditor(context, component); // ConverterException
       LOG.debug("retrieved PropertyEditor: " + editor);
       editor.setAsText(value);
@@ -111,6 +133,23 @@ public abstract class AbstractPropertyEditorConverter implements Converter {
     LOG.debug("convertion result: " + result);
     return result;
   }
+
+  /**
+   * @basic
+   * @init false;
+   */
+  public final boolean isLabelRepresentation() {
+    return $labelRepresentation;
+  }
+
+  /**
+   * @post new.isLabelRepresentation() == labelRepresentation;
+   */
+  public final void setLabelRepresentation(boolean labelRepresentation) {
+    $labelRepresentation = labelRepresentation;
+  }
+
+  private boolean $labelRepresentation;
 
   /**
    * Subclasses need to implement this method. Return a {@link PropertyEditor}

@@ -1,6 +1,8 @@
 package be.peopleware.value_I;
 
 
+import java.io.Serializable;
+
 import be.peopleware.bean_IV.Delegate;
 
 
@@ -16,7 +18,7 @@ import be.peopleware.bean_IV.Delegate;
  * @invar     getConstrainedString().length() <= getMaxLength()
  * @invar     getConstrainedString() <> null
  */
-public class ConstrainedString extends Delegate {
+public class ConstrainedString extends Delegate implements Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

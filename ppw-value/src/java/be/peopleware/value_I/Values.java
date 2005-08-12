@@ -1,5 +1,8 @@
 package be.peopleware.value_I;
 
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorManager;
+
 
 /**
  * This class contains static convenience methods for working
@@ -58,7 +61,7 @@ public abstract class Values {
   /**
    * Assert that <code>p</code> is needed at least to make
    * <code>result</code> <code>true</code>.
-   * 
+   *
    * @param p
    *        A boolean expression that has to be <code>true</code> at least
    *        to make <code>result</code> <code>true</code>.
@@ -68,6 +71,20 @@ public abstract class Values {
    */
   public static boolean assertAtLeast(boolean p, boolean result) {
     return p || (! result);
+  }
+
+  /**
+   * Register packages from this library as
+   * path for {@link PropertyEditor PropertyEditors} with
+   * the {@link PropertyEditorManager}.
+   */
+  public static void registerPropertyEditors() {
+    String[] oldPath = PropertyEditorManager.getEditorSearchPath();
+    String[] newPath = new String[oldPath.length + 1];
+    System.arraycopy(oldPath, 0, newPath, 0, oldPath.length);
+    String currentPackageName = Values.class.getPackage().getName();
+    newPath[newPath.length - 1] = currentPackageName;
+    PropertyEditorManager.setEditorSearchPath(newPath);
   }
 
 }
