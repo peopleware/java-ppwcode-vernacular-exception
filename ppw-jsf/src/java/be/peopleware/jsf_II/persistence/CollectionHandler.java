@@ -78,7 +78,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   /*</section>*/
 
 
-  static private final Log LOG = LogFactory.getLog(CollectionHandler.class);
+  private static final Log LOG = LogFactory.getLog(CollectionHandler.class);
 
 
 
@@ -453,38 +453,6 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       RobustCurrent.fatalProblem("HTTP request parameter " + ID_REQUEST_PARAMETER_NAME +
                                  " (" + idString + ") is not a Long", nfExc, LOG);
     }
-  }
-
-  /**
-   * Create a new instance of type {@link #getType()}.
-   *
-   * @post new.getInstance() isfresh
-   * @post new.getInstance() == getType().newInstance();
-   */
-  private PersistentBean createInstance() throws FatalFacesException {
-    LOG.debug("creating new instance of type \"" + getType() + "\"");
-    PersistentBean result = null;
-    try {
-      result = (PersistentBean)getType().newInstance();
-      LOG.debug("fresh instance: " + result);
-    }
-    // all exceptions are programmatic errors here, in subclass, in config or in JSF
-    catch (InstantiationException iExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), iExc, LOG);
-    }
-    catch (IllegalAccessException iaExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), iaExc, LOG);
-    }
-    catch (ExceptionInInitializerError eiiErr) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), eiiErr, LOG);
-    }
-    catch (SecurityException sExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), sExc, LOG);
-    }
-    catch (ClassCastException ccExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), ccExc, LOG);
-    }
-    return result;
   }
 
   /**

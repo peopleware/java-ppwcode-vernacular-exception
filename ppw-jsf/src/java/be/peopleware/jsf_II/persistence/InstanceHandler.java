@@ -501,31 +501,40 @@ public class InstanceHandler extends PersistentBeanHandler {
    * it is returned. If it is <code>null</code>, an instance
    * is loaded from persistent storage with {@link #getDao()},
    * with type {@link #getType()} and id {@link #getId()}.
-   * If in this case either of those properties are
-   * <code>null</code>, we have a problem.
+   * If {@link #getStoredInstance()} and {@link #getId()} are
+   * both <code>null</code>, a fresh instance of {@link #getType()}
+   * will be created using the default constructor. If
+   * {@link #getType()} is <code>null</code> when
+   * {@link #getStoredInstance()} is <code>null</code>,
+   * we cannot procede.
    *
-   * @return getStoredInstance();
-   * @post (getStoredInstance() == null) ?
+   * @return new.getStoredInstance();
+   * @post ((getStoredInstance() == null) && (getId() != null)) ?
    *            new.getStoredInstance() == getDao().retrievePersistentBean(getId(), getType());
+   * @post ((getStoredInstance() == null) && (getId() == null)) ?
+   *            new.getStoredInstance() == getType().fresh;
    * @throws FatalFacesException
    *         (getStoredInstance() == null) && (getType() == null);
    * @throws FatalFacesException
-   *         (getStoredInstance() == null) && (getInstance() == null);
-   * @throws FatalFacesException
-   *         (getStoredInstance() == null) && problems loading bean from DB;
+   *         (getStoredInstance() == null) && (getId() != null) && problems loading bean from DB;
    */
   public final PersistentBean getInstance() throws FatalFacesException {
     LOG.debug("instance requested; id = " + getId());
     if ($instance == null) {
-      LOG.debug("instance is not cached; loading from DB");
+      LOG.debug("instance is not cached");
       if (getType() == null) {
-        RobustCurrent.fatalProblem("should load instance from db, but type is null", LOG);
+        RobustCurrent.fatalProblem("should load instance from db or create fresh instance, " +
+                                   "but type is null", LOG);
       }
-      if (getId() == null) {
-        RobustCurrent.fatalProblem("should load instance from db, but id is null", LOG);
+      if (getId() != null) {
+        LOG.debug("id = " + getId() + "; loading from DB");
+        $instance = loadInstance();
       }
-      loadInstance();
-      LOG.debug("instance loaded from DB: " + $instance);
+      else {
+        LOG.debug("id is null; creating fresh");
+        $instance = createInstance();
+      }
+      LOG.debug("instance = " + $instance);
     }
     else {
       LOG.debug("returning instance from cache: " + $instance);
@@ -571,10 +580,11 @@ public class InstanceHandler extends PersistentBeanHandler {
    * @throws FatalFacesException
    *         MUDO (jand) other occurences must be replaced by goBack()
    */
-  private void loadInstance() throws FatalFacesException {
+  private PersistentBean loadInstance() throws FatalFacesException {
     LOG.debug("loading instance with id = " + getId() +
               " and type = " + getType());
     assert getDao() != null;
+    PersistentBean result = null;
     try {
       if (getId() == null) {
         RobustCurrent.fatalProblem("id is null", LOG);
@@ -586,7 +596,7 @@ public class InstanceHandler extends PersistentBeanHandler {
       }
       LOG.debug("retrieving persistent bean with id "
                   + getId() + " and type " + getType() + "...");
-      $instance = getDao().retrievePersistentBean(getId(), getType()); // IdNotFoundException, TechnicalException
+      result = getDao().retrievePersistentBean(getId(), getType()); // IdNotFoundException, TechnicalException
       assert getInstance() != null;
       assert getInstance().getId().equals(getId());
       assert getType().isInstance(getInstance());
@@ -599,7 +609,6 @@ public class InstanceHandler extends PersistentBeanHandler {
       // this will force $instance null
       LOG.info("could not find instance of type " + getType() +
                " with id " + getId(), infExc);
-      $instance = null;
       // MUDO goback() instead of exception
       RobustCurrent.fatalProblem("could not find persistent bean with id " +
                                  getId() + " of type " +
@@ -610,6 +619,7 @@ public class InstanceHandler extends PersistentBeanHandler {
                                  getId() + " of type " +
                                  getType(), tExc, LOG);
     }
+    return result;
   }
 
   /**

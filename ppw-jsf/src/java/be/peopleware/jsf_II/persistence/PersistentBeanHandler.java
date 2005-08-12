@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
+import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.i18n.BasenameResourceBundleMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
@@ -410,7 +411,40 @@ public abstract class PersistentBeanHandler {
   public static final String VIEW_ID_PREFIX = "/jsf/";
   public static final String VIEW_ID_SUFFIX = ".jspx";
 
-
   /*</section>*/
+
+
+  /**
+   * Create a new instance of type {@link #getType()} with the default
+   * constructor.
+   *
+   * @post new.getInstance() isfresh
+   * @post new.getInstance() == getType().newInstance();
+   */
+  protected PersistentBean createInstance() throws FatalFacesException {
+    LOG.debug("creating new instance of type \"" + getType() + "\"");
+    PersistentBean result = null;
+    try {
+      result = (PersistentBean)getType().newInstance();
+      LOG.debug("fresh instance: " + result);
+    }
+    // all exceptions are programmatic errors here, in subclass, in config or in JSF
+    catch (InstantiationException iExc) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), iExc, LOG);
+    }
+    catch (IllegalAccessException iaExc) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), iaExc, LOG);
+    }
+    catch (ExceptionInInitializerError eiiErr) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), eiiErr, LOG);
+    }
+    catch (SecurityException sExc) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), sExc, LOG);
+    }
+    catch (ClassCastException ccExc) {
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), ccExc, LOG);
+    }
+    return result;
+  }
 
 }
