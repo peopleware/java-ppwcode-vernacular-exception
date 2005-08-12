@@ -104,7 +104,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
   /**
    * @invar     isInTransaction() == (tx != null);
    */
-  private transient Transaction $tx;
+  private Transaction $tx;
 
   /**
    * @throws    TechnicalException

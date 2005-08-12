@@ -6,7 +6,6 @@
 
 package be.peopleware.persistence_I.dao;
 
-import java.io.Serializable;
 
 
 /**
@@ -34,10 +33,16 @@ import java.io.Serializable;
  * {@link be.peopleware.persistence_I.PersistentBean PersistentBeans},
  * although this will not always be necessary.
  *
+ * A Dao cannot be made {@link java.io.Serializable} (we tried). Hibernate dao's
+ * probably keep a reference to a Hibernate Session, and, although Hibernate
+ * Sessions are Serializable, they cannot be serialized while they are connected.
+ * So, we state as part of the contract that Dao's are <strong>not
+ * {@link java.io.Serializable}</strong>.
+ *
  * @author Jan Dockx
  * @author Peopleware n.v.
  */
-public interface Dao extends Serializable {
+public interface Dao {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
