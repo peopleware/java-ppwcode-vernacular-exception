@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v3.1.1/3.0" date="2005-08-14" description="Dependencies">
+      <action dev="jand" type="update">
+        Update of dependencies.
+      </action>
+    </release>
+
     <release version="I v3.1.1/2.0" date="2005-08-12" description="dao implements Serializable">
       <action dev="jand" type="fix">
         Making dao's Serializable was a mistake. This release fixes that mistake.
