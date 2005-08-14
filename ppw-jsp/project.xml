@@ -3,13 +3,13 @@
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>1</pomVersion>
-  <name>Java Server Pages Library</name>
+  <name>PeopleWare JavaServer Pages Library I</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-jsp-I</artifactId>
   <shortDescription>Support for Java Server Pages.</shortDescription>
   <description>Support for Java Server Pages.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.1.0-1.1</currentVersion>
+  <currentVersion>1.1.0-2.0</currentVersion>
   <package>be.peopleware.jsp_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
@@ -72,25 +72,25 @@
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-bean-IV</artifactId>
-      <version>1.0.1-1.0</version>
+      <version>1.1.0-2.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-exception-I</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.0-2.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-i18n-I</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.2-2.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-persistence-I</artifactId>
-      <version>3.0.0-2.0</version>
+      <version>3.1.1-3.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
