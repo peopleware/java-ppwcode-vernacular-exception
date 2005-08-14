@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.1.0/2.0" date="2005-08-14" description="Dependencies">
+      <action dev="jand" type="update">
+        Update of dependencies.
+      </action>
+    </release>
+
     <release version="I v1.1.0/1.1" date="2005-04-11" description="Fix">
       <action dev="jand" type="add">
         All classes are now Serializable.
