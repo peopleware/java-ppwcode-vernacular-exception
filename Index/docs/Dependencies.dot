@@ -1,120 +1,245 @@
-digraph PeopleWare_Libraries_Dependencies {
 
-  graph [	fontname = "Helvetica-Oblique",
-		fontsize = 36,
-		label = "PeopleWare Libraries Dependencies, 2005-01-06",
-		size = "10,50"];
+    digraph PeopleWare_Libraries_Dependencies {
 
-  nslimit=10.0;
-  mclimit=10.0;
+      graph [	fontname = "Helvetica-Oblique",
+        fontsize = 36,
+        label = "PeopleWare Libraries Dependencies, 2005-08-15"];
 
-  node [shape = rectangle, fillcolor=aquamarine2,
-        fontname = "Helvetica", fontsize = 11];
-  
-  edge [];
-  /* optional = blue
-     only needed for the tests = chocolate */
-
-
-  subgraph cluster_PPW_Libraries {
-  
-    color = aquamarine4;
-    fontcolor = aquamarine4;
-    label = "Peopleware Java Libraries";
-                          
-    node [style=filled, fillcolor=aquamarine2];
-    edge [style=bold];
-  
-    ppw_test_I          [label="ppw-test I\nv1.0.1/1.0"];
-    ppw_i18n_I          [label="ppw-i18n I\nv1.0.0/1.0"];
-    ppw_exc_I           [label="ppw-exception I\nv1.0.0/1.0"];
-    ppw_bean_I          [label="ppw-bean I\nv1.0.0/1.0"];
-    ppw_value_I         [label="ppw-value I\nv1.1.0/2.0"];
-    ppw_servlet_I       [label="ppw-servlet I\nv1.0.0/1.0"];
-    ppw_jsp_I           [label="ppw-jsp I\nv1.0.0/1.0"];
-    ppw_struts_I        [label="ppw-struts I\nv1.0.1/1.0"];
-    ppw_persistence_I   [label="ppw-persistence I\nv1.0.1/1.0"];
-    ppw_jsf_I           [label="ppw-jsf I\nv1.0.1/1.0"];
-  
-    ppw_i18n_I        -> ppw_test_I [color=chocolate];
+      concentrate = false
+      rankdir = LR;
+      ranksep = 2;
+      nslimit=1000.0;
+      mclimit=1000.0;
     
-    ppw_exc_I         -> {ppw_i18n_I};
-    ppw_exc_I         -> ppw_test_I [color=chocolate];
-    
-    ppw_bean_I        -> ppw_exc_I;
-    ppw_bean_I        -> {ppw_test_I; ppw_i18n_I} [color=chocolate];
-    
-    ppw_value_I       -> {ppw_exc_I};
-    ppw_value_I       -> ppw_bean_I [color=blue];
-    ppw_value_I       -> {ppw_test_I; ppw_i18n_I} [color=chocolate];
-    
-    ppw_servlet_I     -> {ppw_exc_I};
-    
-    ppw_jsp_I         -> {ppw_i18n_I; ppw_exc_I; ppw_bean_I};
-    
-    ppw_struts_I      -> {ppw_i18n_I; ppw_exc_I; ppw_bean_I; ppw_value_I;
-                          ppw_servlet_I; ppw_jsp_I};
 
-    ppw_persistence_I -> {ppw_bean_I};
-    ppw_jsf_I         -> {ppw_bean_I, ppw_persistence_I};
-  }
+      node [shape = rectangle, fontname = "Helvetica", fontsize = 11];
+
+      // edge [len=4.2];
+      /* optional = blue
+      only needed for the tests = chocolate */
+      
+      subgraph cluster_PPW_Libraries {
+    
+        ordering = in;
+        label = "Peopleware Java Libraries";
+        
+        node [style=filled, fillcolor=aquamarine2];
+    
+        ppw_libraries_ppw_bean_IV_1_1_0_2_0
+    [label="PeopleWare JavaBeans Library IV\nv 1.1.0-2.0"];
+  ppw_libraries_ppw_exception_I_1_0_0_2_0
+    [label="PeopleWare Exceptions Library I\nv 1.0.0-2.0"];
+  ppw_libraries_ppw_i18n_I_1_0_2_2_0
+    [label="PeopleWare Internationalization Library I\nv 1.0.2-2.0"];
+  ppw_libraries_ppw_jsf_II_SNAPSHOT
+    [label="PeopleWare JavaServer Faces Library II\nv SNAPSHOT"];
+  ppw_libraries_ppw_jsp_I_1_1_0_2_0
+    [label="PeopleWare JavaServer Pages Library I\nv 1.1.0-2.0"];
+  ppw_libraries_ppw_persistence_I_3_1_1_3_0
+    [label="PeopleWare Persistence Library I\nv 3.1.1-3.0"];
+  ppw_libraries_ppw_servlet_I_1_1_0_2_0
+    [label="PeopleWare Servlet Library I\nv 1.1.0-2.0"];
+  ppw_libraries_ppw_struts_III_1_1_0_2_0
+    [label="PeopleWare Struts Library III\nv 1.1.0-2.0"];
+  ppw_libraries_ppw_test_I_1_0_2_1_0
+    [label="Unit Test Library\nv 1.0.2-1.0"];
+  ppw_libraries_ppw_value_I_2_0_0_6_0
+    [label="PeopleWare Value Type Library I\nv 2.0.0-6.0"];
   
-  subgraph cluster_web_apis {
-  
-    label = "Standard Web API's";
+      }
 
-    servlet_api       [label="servletapi\nv2.4"];
-    jsp_api           [label="jsp-api\nv2.0"];
-    jstl_api          [label="jstl\nv1.1.2"];
-    mail_api          [label="mailapi\nv1.3.2"];
 
-  }
-
-  subgraph cluster_Apache_jakarta {
-  
-    label = "Apache Jakarta";
-
-    jstl_apache       [label="standard\n(Apache JSTL Impl.)\nv1.1.2"];
-    struts            [label="struts\nv1.2.4"];
-
-    subgraph cluster_commons {
     
-      label = "Apache Jakarta Commons";
+      subgraph cluster_web_apis {
+    
+        label = "Standard Web API's";
+    
+        servletapi_servletapi_2_4_20040521  [label="Servlet API\nv 2.4"];
+        jspapi_jsp_api_2_0_20040521         [label="JSP API\nv 2.0"];
+        jstl_jstl_1_1_2            [label="JSTL\nv 1.1.2"];
+        javamail_mailapi_1_3_2     [label="Mail API\nv 1.3.2"];
+        jsf_jsf_api_1_1_01         [label="JavaServer Faces API\nv 1.1.01"];
+    
+      }
+    
+        
+      subgraph cluster_Apache_jakarta {
+    
+        label = "Apache Jakarta";
+      
+        subgraph cluster_Apache_jakarta_taglibs {
+    
+          label = "Apache JSTL Impl.";
+    
+          taglibs_standard_1_1_2       [label="standard\n v 1.1.2"];
+          taglibs_standard_1_1_1       [label="standard\n v 1.1.1"];
+    
+        }
+    
+        struts_struts_1_2_4     [label="Struts\nv 1.2.4"];
+        tomcat_catalina_4_1_9   [label="Tomcat Catalina\nv 4.1.9"];
+    
+        subgraph cluster_Apache_MyFaces {
+    
+          label = "Apache MyFaces";
+
+          myfaces_myfaces_1_0_9   [label="MyFaces\nv 1.0.9"];
+          myfaces_myfaces_api_20050804   [label="MyFaces JSF API\nnightly build 2005-08-04"];
+          myfaces_myfaces_impl_20050804   [label="MyFaces JSF Impl.\nnightly build 2005-08-04"];
+          myfaces_tomahawk_20050804   [label="MyFaces Tomahawk\nnightly build 2005-08-04"];
+    
+        }
+    
+        subgraph cluster_Apache_jakarta_commons {
+      
+          label = "Apache Jakarta Commons";
+      
+          commons_logging_commons_logging_1_0_4         [label="Commons logging\nv 1.0.4"];
+          commons_beanutils_commons_beanutils_1_7_0     [label="Commons beanutils\nv 1.7.0"];
+          commons_collections_commons_collections_3_1   [label="Commons collections\nv 3.1"];
+          commons_digester_commons_digester_1_5         [label="Commons digester\nv 1.5"];
+          commons_fileupload_commons_fileupload_1_0     [label="Commons fileupload\nv 1.0"];
+          commons_betwixt_commons_betwixt_0_6           [label="Commons betwixt\nv 0.6"];
+          commons_digester_commons_digester_1_5         [label="Commons digester\nv 1.5"];
+          commons_dbcp_commons_dbcp_1_2_1               [label="Commons dbcp\nv 1.2.1"];
+          commons_lang_commons_lang_2_0                 [label="Commons lang\nv 2.0"];
+          commons_codec_commons_codec_1_3               [label="Commons codec\nv 1.3"];
+    
+        }
+      
+      }
+    
+      subgraph cluster_JBoss {
   
-      commons_logging   [label="commons-logging\nv1.0.4"];
-      commons_beanutils [label="commons-beanutils\nv1.7.0"];
+        label = "JBoss";
   
+        subgraph cluster_Hibernate {
+      
+          label = "Hibernate";
+
+          hibernate_hibernate_2_1_6 [label="Hibernate\nv 2.1.6"];
+          hibernate_hibernate_2_1_8 [label="Hibernate\nv 2.1.8"];
+    
+        }
+    
+      }
+    
+      displaytag_displaytag_1_0_rc1     [label="displaytag\nv 1.0 rc1"];
+
+      subgraph cluster_Toryt {
+      
+        label = "Toryt";
+      
+        toryt_toryt_I_1_0_0_1_0           [label="Toryt I\nv 1.0.0-1.0"];
+        toryt_toryt_I_1_2_0_2_0           [label="Toryt I\nv 1.2.0-2.0"];
+      
+      }
+      
+      junit_junit_3_8_1                 [label="JUnit\nv 3.8.1"];
+      log4j_log4j_1_2_8                 [label="log4j\nv 1.2.8"];
+      
+      /* dependencies */
+      edge [weight=1];
+    
+      ppw_libraries_ppw_bean_IV_1_1_0_2_0
+    -> {
+    commons_logging_commons_logging_1_0_4;
+    hibernate_hibernate_2_1_8;
+    ppw_libraries_ppw_test_I_1_0_2_1_0;
+    ppw_libraries_ppw_i18n_I_1_0_2_2_0;
+    taglibs_standard_1_1_2;
+    ppw_libraries_ppw_exception_I_1_0_0_2_0;
+             };
+  ppw_libraries_ppw_exception_I_1_0_0_2_0
+    -> {
+    ppw_libraries_ppw_test_I_1_0_2_1_0;
+    ppw_libraries_ppw_i18n_I_1_0_2_2_0;
+    jspapi_jsp_api_2_0_20040521;
+             };
+  ppw_libraries_ppw_i18n_I_1_0_2_2_0
+    -> {
+    ppw_libraries_ppw_test_I_1_0_2_1_0;
+             };
+  ppw_libraries_ppw_jsf_II_SNAPSHOT
+    -> {
+    commons_logging_commons_logging_1_0_4;
+    hibernate_hibernate_2_1_8;
+    servletapi_servletapi_2_4_20040521;
+    ppw_libraries_ppw_exception_I_1_0_0_2_0;
+    ppw_libraries_ppw_bean_IV_1_1_0_2_0;
+    myfaces_myfaces_api_20050804;
+    myfaces_myfaces_impl_20050804;
+    myfaces_tomahawk_20050804;
+    ppw_libraries_ppw_servlet_I_1_1_0_2_0;
+    ppw_libraries_ppw_persistence_I_3_1_1_3_0;
+    ppw_libraries_ppw_i18n_I_1_0_2_2_0;
+    commons_beanutils_commons_beanutils_1_7_0;
+    jspapi_jsp_api_2_0_20040521;
+
+             };
+  ppw_libraries_ppw_jsp_I_1_1_0_2_0
+    -> {
+    servletapi_servletapi_2_4_20040521;
+    jstl_jstl_1_1_2;
+    displaytag_displaytag_1_0_rc1;
+    jspapi_jsp_api_2_0_20040521;
+    taglibs_standard_1_1_2;
+    ppw_libraries_ppw_bean_IV_1_1_0_2_0;
+    ppw_libraries_ppw_exception_I_1_0_0_2_0;
+    ppw_libraries_ppw_i18n_I_1_0_2_2_0;
+    ppw_libraries_ppw_persistence_I_3_1_1_3_0;
+    maven_taglib_maven_taglib_plugin_1_2_2;
+             };
+  ppw_libraries_ppw_persistence_I_3_1_1_3_0
+    -> {
+    commons_logging_commons_logging_1_0_4;
+    hibernate_hibernate_2_1_8;
+    ppw_libraries_ppw_exception_I_1_0_0_2_0;
+    ppw_libraries_ppw_bean_IV_1_1_0_2_0;
+    commons_beanutils_commons_beanutils_1_7_0;
+    ppw_libraries_ppw_test_I_1_0_2_1_0;
+             };
+  ppw_libraries_ppw_servlet_I_1_1_0_2_0
+    -> {
+    commons_logging_commons_logging_1_0_4;
+    servletapi_servletapi_2_4_20040521;
+    hibernate_hibernate_2_1_8;
+    ppw_libraries_ppw_exception_I_1_0_0_2_0;
+             };
+  ppw_libraries_ppw_struts_III_1_1_0_2_0
+    -> {
+    commons_logging_commons_logging_1_0_4;
+    struts_struts_1_2_4;
+    commons_beanutils_commons_beanutils_1_7_0;
+    servletapi_servletapi_2_4_20040521;
+    jstl_jstl_1_1_2;
+    hibernate_hibernate_2_1_8;
+    ppw_libraries_ppw_value_I_2_0_0_6_0;
+    ppw_libraries_ppw_bean_IV_1_1_0_2_0;
+    ppw_libraries_ppw_exception_I_1_0_0_2_0;
+    ppw_libraries_ppw_i18n_I_1_0_2_2_0;
+    ppw_libraries_ppw_persistence_I_3_1_1_3_0;
+    jspapi_jsp_api_2_0_20040521;
+    javamail_mailapi_1_3_2;
+    ppw_libraries_ppw_servlet_I_1_1_0_2_0;
+    ppw_libraries_ppw_jsp_I_1_1_0_2_0;
+    maven_taglib_maven_taglib_plugin_1_2_2;
+             };
+  ppw_libraries_ppw_test_I_1_0_2_1_0
+    -> {           };
+  ppw_libraries_ppw_value_I_2_0_0_6_0
+    -> {
+    toryt_toryt_I_1_2_0_2_0;
+    hibernate_hibernate_2_1_8;
+    ppw_libraries_ppw_test_I_1_0_2_1_0;
+    ppw_libraries_ppw_i18n_I_1_0_2_2_0;
+    ppw_libraries_ppw_bean_IV_1_1_0_2_0;
+    ppw_libraries_ppw_exception_I_1_0_0_2_0;
+    jsf_jsf_api_1_1_01;
+    servletapi_servletapi_2_4_20040521;
+    commons_logging_commons_logging_1_0_4;
+             };
+  
+
     }
-
-  }
   
-  
-  subgraph cluster_JBoss {
-  
-    label = "JBoss";
-    
-    hibernate2        [label="hibernate\nv2.1.6"];
-    
-  }
-
-  displaytag        [label="displaytag\nv1.0rc1"];
-
-  ppw_exc_I         -> {servlet_api; jsp_api};
-  
-  ppw_bean_I        -> {commons_logging};
-  ppw_bean_I        -> {hibernate2; jstl_apache} [color=blue];
-  
-  ppw_value_I       -> hibernate2 [color=blue];
-  
-  ppw_servlet_I     -> {commons_logging; servlet_api};
-  ppw_servlet_I     -> hibernate2 [color=blue];
-  
-  ppw_jsp_I         -> {servlet_api; jsp_api; jstl_api; jstl_apache};
-  ppw_jsp_I         -> displaytag [color=blue];
-  
-  ppw_struts_I      -> {commons_logging; commons_beanutils;
-                        servlet_api; jsp_api; jstl_api; mail_api;
-                        struts};
-  ppw_struts_I      -> hibernate2 [color=blue];
-
-}
