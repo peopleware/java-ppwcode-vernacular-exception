@@ -21,7 +21,7 @@ import be.peopleware.persistence_I.PersistentBean;
  *
  * @author Jan Dockx
  * @author Peopleware n.v.
- * @toryt:cC toryt.contract.Collections;
+ * @toryt-cC toryt.contract.Collections;
  * @invar getType() != null;
  * @invar (forall long l; find(l) != null; getType().isInstance(find(l)));
  */
