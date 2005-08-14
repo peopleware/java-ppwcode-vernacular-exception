@@ -45,38 +45,41 @@
     <dependency>
       <groupId>toryt</groupId>
       <artifactId>toryt</artifactId>
-      <version>I-1.0.0-1.0</version>
+      <version>I-1.2.0-2.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>hibernate</groupId>
       <artifactId>hibernate</artifactId>
-      <version>2.1.6</version>
+      <version>2.1.8</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-test-I</artifactId>
-      <version>1.0.1-1.0</version>
+      <version>1.0.2-1.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-i18n-I</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.2-2.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-bean-IV</artifactId>
-      <version>1.0.1-1.0</version>
+      <!-- MUDO (jand) this is a bad dependency;
+           it means that PropertyException needs to be moved down to a common
+           dependecy -->
+      <version>1.1.0-1.2</version>
       <type>jar</type>
-      <url>http://cvs.peopleware.be/projects/JavaLibraries/ppw-bean-II/</url>
+      <url>http://cvs.peopleware.be/projects/JavaLibraries/ppw-bean-IV/</url>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-exception-I</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.0-2.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
