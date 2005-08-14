@@ -1,15 +1,21 @@
 <document>
   <properties>
-    <title>Page title</title>
+    <title>PeopleWare Struts II Library</title>
     <author email="dvankeer@peopleware.be">David Van Keer</author>
     <author email="jand@peopleware.be">Jan Dockx</author>
   </properties>
   <body>
-  
+
+    <release version="III v1.1.0/2.0" date="2005-08-15" description="Dependencies">
+      <action dev="jand" type="update">
+        Update of dependencies.
+      </action>
+    </release>
+
     <release version="II v1.0.1/1.0" date="2005-01-17" description="Bugfix release">
       <action dev="dvankeer" type="add">
-      	Forms now contain a new functionallity isSubmitable() for blocking submit
-      	of forms when invars cannot be obtained.
+        Forms now contain a new functionallity isSubmitable() for blocking submit
+        of forms when invars cannot be obtained.
       </action>
       <action dev="dvankeer" type="fix">
         Tag files still contained old class dependencies, replaced with new ones.
@@ -26,13 +32,13 @@
       <action dev="dvankeer" type="add">
         Due to incompatible changes we increased the mark of the project. Use of Mark
         I is discouraged.
-      </action>              
+      </action>
     </release>
-          
+
     <release version="I v1.0.0/1.0" date="2005-01-05" description="First release">
       <action dev="dvankeer" type="add">
-      	First public release.
-      </action>              
+        First public release.
+      </action>
     </release>
 
   </body>
