@@ -3,7 +3,7 @@
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
-  <name>Internationalization Library</name>
+  <name>PeopleWare Internationalization Library I</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-i18n-I</artifactId>
   <shortDescription>Support for i18n.</shortDescription>

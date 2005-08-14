@@ -3,7 +3,7 @@
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>4</pomVersion>
-  <name>Exceptions Library</name>
+  <name>PeopleWare Exceptions Library I</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-exception-I</artifactId>
   <shortDescription>Support for Exceptions, including i18n.</shortDescription>
