@@ -3,14 +3,14 @@
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>1</pomVersion>
-  <name>JavaBeans Library</name>
+  <name>PeopleWare JavaBeans Library IV</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-bean-IV</artifactId>
   <shortDescription>Support for JavaBeans.</shortDescription>
   <description>Support for JavaBeans. General superclasses and utility
-  	classes that etch a number of idioms and design patterns in code.</description>
+    classes that etch a number of idioms and design patterns in code.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.1.0-1.2</currentVersion>
+  <currentVersion>1.1.0-2.0</currentVersion>
   <package>be.peopleware.bean_IV</package>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
@@ -54,19 +54,19 @@
     <dependency>
       <groupId>hibernate</groupId>
       <artifactId>hibernate</artifactId>
-      <version>2.1.6</version>
+      <version>2.1.8</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-test-I</artifactId>
-      <version>1.0.1-1.0</version>
+      <version>1.0.2-1.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-i18n-I</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.2-2.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-exception-I</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.0-2.0</version>
       <type>jar</type>
     </dependency>
   </dependencies>
