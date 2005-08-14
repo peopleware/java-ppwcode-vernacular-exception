@@ -46,12 +46,12 @@
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-test-I</artifactId>
-      <version>1.0.1-1.0</version>
+      <version>1.0.2-1.0</version>
     </dependency>
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-i18n-I</artifactId>
-      <version>1.0.0-1.0</version>
+      <version>1.0.2-2.0</version>
     </dependency>
     <dependency>
       <groupId>jspapi</groupId>
