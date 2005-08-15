@@ -60,7 +60,7 @@ public class DataModelHandler extends CollectionHandler {
     return $dataModel;
   }
 
-  private DataModel $dataModel;
+  private transient DataModel $dataModel;
 
   /*</property>*/
 
