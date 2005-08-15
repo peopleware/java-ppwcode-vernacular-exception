@@ -49,7 +49,7 @@ public abstract class AsyncCrudDaoHandler extends DaoHandler {
    *    </code>{@link #DEFAULT_DAO_VARIABLE_NAME_SUFFIX}</strong>
    */
   public static final String DEFAULT_DAO_VARIABLE_NAME =
-      AsyncCrudDaoHandler.class.getName() + DEFAULT_DAO_VARIABLE_NAME_SUFFIX;
+      fqcnVarName() + DEFAULT_DAO_VARIABLE_NAME_SUFFIX;
 
   /**
    * FQCN, with all "." replaced by "$";
