@@ -61,12 +61,6 @@ public class PersistentBeanConverter implements Converter {
 
 
   /**
-   * @param     context
-   *            The facesContext to work with
-   * @param     component
-   *            TODO
-   * @param     value
-   *            TODO
    * @return    (value != null)
    *              ? result.getId().equals((Long)value))
    *              : null;
@@ -107,12 +101,6 @@ public class PersistentBeanConverter implements Converter {
   public final static String EMPTY = "";
 
   /**
-   * @param     context
-   *            The facesContext to work with
-   * @param     component
-   *            TODO
-   * @param     value
-   *            TODO
    * @return    (value != null)
    *                ? (((PersistentBean)value).getId() != null)
    *                      ? ((PersistentBean)value).getId().toString
