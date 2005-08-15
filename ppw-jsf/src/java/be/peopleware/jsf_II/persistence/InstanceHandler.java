@@ -34,7 +34,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * <p>Handler for {@link PersistentBean} detail CRUD pages.</p>
  * <p>This handler can be used in a number of circumstances. The main use
  *   is as the backing bean for a detail CRUD page of an instance of semantics.
- *   For this to work, the handler needs a {@link #getDao()} the
+ *   For this to work, the handler needs a {@link #getAsyncCrudDao()} the
  *   {@link #getType()} filled out,
  *   needs to know the previous {@link #getViewMode()},
  *   and it needs an {@link #getInstance() instance}.</p>
@@ -55,7 +55,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  *       <li>an {@link #setInstance(PersistentBean) instance},</li>
  *       <li>or
  *         <ul>
- *           <li>a {@link #setDao(AsyncCrudDao) dao}, and</li>
+ *           <li>a {@link #setDaoVariableName(String) dao variable name}, and</li>
  *           <li>an {@link #setId(Long) id}.</li>
  *         </ul>
  *       </li>
@@ -499,7 +499,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    * The {@link PersistentBean} that is handled in the requests.
    * If {@link #getStoredInstance()} is not <code>null</code>,
    * it is returned. If it is <code>null</code>, an instance
-   * is loaded from persistent storage with {@link #getDao()},
+   * is loaded from persistent storage with {@link #getAsyncCrudDao()},
    * with type {@link #getType()} and id {@link #getId()}.
    * If {@link #getStoredInstance()} and {@link #getId()} are
    * both <code>null</code>, a fresh instance of {@link #getType()}
@@ -583,7 +583,7 @@ public class InstanceHandler extends PersistentBeanHandler {
   private PersistentBean loadInstance() throws FatalFacesException {
     LOG.debug("loading instance with id = " + getId() +
               " and type = " + getType());
-    assert getDao() != null;
+    assert getAsyncCrudDao() != null;
     PersistentBean result = null;
     try {
       if (getId() == null) {
@@ -596,7 +596,7 @@ public class InstanceHandler extends PersistentBeanHandler {
       }
       LOG.debug("retrieving persistent bean with id "
                   + getId() + " and type " + getType() + "...");
-      result = getDao().retrievePersistentBean(getId(), getType()); // IdNotFoundException, TechnicalException
+      result = getAsyncCrudDao().retrievePersistentBean(getId(), getType()); // IdNotFoundException, TechnicalException
       assert result != null;
       assert result.getId().equals(getId());
       assert getType().isInstance(result);
@@ -726,7 +726,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   public final void navigateToList(ActionEvent aEv) throws FatalFacesException {
     LOG.debug("InstanceHandler.navigateToList called");
-    CollectionHandler handler = (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDao());
+    CollectionHandler handler = (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDaoVariableName());
     LOG.debug("created collectionhandler for type " + getType() +
               ": " + handler);
     handler.navigateHere();
@@ -810,7 +810,7 @@ public class InstanceHandler extends PersistentBeanHandler {
     LOG.debug("InstanceHandler.update called; the bean is already partially updated");
     LOG.debug("persistentBean: " + getInstance());
     try {
-      AsyncCrudDao dao = getDao();
+      AsyncCrudDao dao = getAsyncCrudDao();
       try {
         checkConditions(VIEWMODE_EDIT); // ConditionException
         updateValues();
@@ -1000,7 +1000,7 @@ public class InstanceHandler extends PersistentBeanHandler {
         "already partially updated");
     LOG.debug("persistentBean: " + getInstance());
     try {
-      AsyncCrudDao dao = getDao();
+      AsyncCrudDao dao = getAsyncCrudDao();
       try {
         if (getInstance() == null) {
           return goBack(NO_INSTANCE);
@@ -1080,7 +1080,7 @@ public class InstanceHandler extends PersistentBeanHandler {
   public final String delete() throws FatalFacesException {
     LOG.debug("InstanceHandler.delete() called");
     LOG.debug("persistentBean: " + getInstance());
-    AsyncCrudDao dao = getDao();
+    AsyncCrudDao dao = getAsyncCrudDao();
     try {
       try {
         checkConditions(VIEWMODE_DISPLAY); // ConditionException
@@ -1296,9 +1296,6 @@ public class InstanceHandler extends PersistentBeanHandler {
    *   a (fake) {@link Map}, where the key is the property name of the JavaBean
    *   property that returns the collection of associated {@link PersistentBean PersistentBeans}
    *   from the instance this handler works for.</p>
-   *
-   *   @mudo (jand) now ok for to-many relationships; add stuff for to-one relationships
-   *                (but we don't need the meta inf there)
    */
   public final Map getAssociationHandlers() {
     return $associationHandlers;
@@ -1393,7 +1390,7 @@ public class InstanceHandler extends PersistentBeanHandler {
 
             private InstanceHandler freshPersistentBeanInstanceHandlerFor(PersistentBean pb) throws FatalFacesException, IllegalArgumentException {
               InstanceHandler pbch = (InstanceHandler)InstanceHandler.
-                    RESOLVER.freshHandlerFor(pb.getClass(), getDao());
+                    RESOLVER.freshHandlerFor(pb.getClass(), getDaoVariableName());
               pbch.setInstance(pb);
               return pbch;
             }
@@ -1401,7 +1398,7 @@ public class InstanceHandler extends PersistentBeanHandler {
             private CollectionHandler freshCollectionHandlerFor(Class associatedType, Collection c)
                 throws FatalFacesException {
               CollectionHandler ch =
-                  (CollectionHandler)CollectionHandler.RESOLVER.freshHandlerFor(associatedType, getDao());
+                  (CollectionHandler)CollectionHandler.RESOLVER.freshHandlerFor(associatedType, getDaoVariableName());
               ch.setInstances(c);
               return ch;
             }

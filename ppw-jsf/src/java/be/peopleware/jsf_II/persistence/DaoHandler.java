@@ -50,6 +50,12 @@ import be.peopleware.persistence_I.dao.Dao;
  *   thus set in the super constructor call. Subclasses may add
  *   a <code>public final <var>DaoType</var> get<var>DaoType</var>Dao()</code>
  *   to return the {@link #getDao()} with the expected static type.</p>
+ * <p>Because the configuration of a DAO instance that is needed for
+ *   a handler is most often rather dependent on the handler type, and
+ *   not on the handler instance, we make it possible to define a
+ *   {@link #getDefaultDaoVariableName() default dao variable name}
+ *   in the handler. This name will be used when {@link #getDaoVariableName()}
+ *   is <code>null</code> or <code>EMPTY</code> to resolve the DAO.</p>
  *
  * @note There is no reason for now to make this an interface.
  *
@@ -88,12 +94,14 @@ public abstract class DaoHandler implements Serializable {
    * @pre Dao.class.isAssignableFrom(daoType);
    * @post new.getDaoType() == daoType;
    * @post new.getDaoVariableName() == null;
+   * @post new.getDefaultVariableName().equals(defaultDaoVariableName);
    */
-  protected DaoHandler(Class daoType) {
+  protected DaoHandler(Class daoType, String defaultDaoVariableName) {
     assert daoType != null : "daoType cannot be null";
     assert Dao.class.isAssignableFrom(daoType) :
             daoType.getName() + " is not a subtype of " + Dao.class.getName();
     $daoType = daoType;
+    $defaultDaoVariableName = defaultDaoVariableName;
   }
 
   /*</construction>*/
@@ -133,6 +141,14 @@ public abstract class DaoHandler implements Serializable {
     return $daoVariableName;
   }
 
+  /**
+   * @return (getDaoVariableName() == null) ||
+   *               getDoaVariableName().equals(EMPTY);
+   */
+  public final boolean isDaoVariableNameEmpty() {
+    return ($daoVariableName == null) ||
+                $daoVariableName.equals(EMPTY);
+  }
 
   /**
    * @post new.getDaoVariableName().equals(daoVariableName);
@@ -143,6 +159,36 @@ public abstract class DaoHandler implements Serializable {
   }
 
   private String $daoVariableName;
+
+  /*</property>*/
+
+
+
+  /*<property name="defaultDaoVariableName">*/
+  //------------------------------------------------------------------
+
+  /**
+   * The default variable name under which we will look for the
+   * dao using the JSF application's {@link VariableResolver} if
+   * {@link #getDaoVariableName()} is <code>null</code> or
+   * <code>EMPTY</code>.
+   *
+   * @basic
+   */
+  public final String getDefaultDaoVariableName() {
+    return $defaultDaoVariableName;
+  }
+
+  /**
+   * @return (getDefaultDaoVariableName() == null) ||
+   *               getDefaultDoaVariableName().equals(EMPTY);
+   */
+  public final boolean isDefaultDaoVariableNameEmpty() {
+    return ($defaultDaoVariableName== null) ||
+                  $defaultDaoVariableName.equals(EMPTY);
+  }
+
+  private String $defaultDaoVariableName;
 
   /*</property>*/
 
@@ -159,29 +205,47 @@ public abstract class DaoHandler implements Serializable {
   /**
    * The Data Access Object that will fulfill the request.
    *
-   * @return RobustCurrent.resolve(getDaoVariableName());
+   * @return RobustCurrent.resolve(isDaoVariableNameEmpty() ?
+   *                                    getDefaultDaoVariableName() :
+   *                                    getDaoVariableName());
    * @throws FatalFacesException
-   *         (getDaoVariableName() == null) ||
-   *            (getDaoVariableName().equals(EMPTY));
+   *         ! hasDaoVariableName();
    * @throws FatalFacesException
-   *         RobustCurrent.resolve(getDaoVariableName());
+   *         RobustCurrent.resolve(isDaoVariableNameEmpty() ?
+   *                                    getDefaultDaoVariableName() :
+   *                                    getDaoVariableName());
    * @throws FatalFacesException
-   *         ! getDaoType().isInstance(dao);
+   *         ! getDaoType().isInstance(RobustCurrent.resolve(isDaoVariableNameEmpty() ?
+   *                                    getDefaultDaoVariableName() :
+   *                                    getDaoVariableName()));
    */
   public final Dao getDao() throws FatalFacesException {
     LOG.debug("request for dao (dao variable name = " + getDaoVariableName() + ")");
-    if ((getDaoVariableName() == null) ||
-           (getDaoVariableName().equals(EMPTY))) {
-      RobustCurrent.fatalProblem("dao variable is null or the empty String", LOG);
+    if (! hasDaoVariableName()) {
+      RobustCurrent.fatalProblem("dao variable is null or the empty String " +
+                                 "and no default set", LOG);
     }
-    Object dao = (Dao)RobustCurrent.resolve(getDaoVariableName());
-    LOG.debug("resolved object with name \"" + getDaoVariableName() + "\" to " +
+    Object dao = (Dao)RobustCurrent.resolve(isDaoVariableNameEmpty() ?
+                                              getDefaultDaoVariableName() :
+                                              getDaoVariableName());
+    LOG.debug("resolved object with name \"" + (isDaoVariableNameEmpty() ?
+                                                   getDefaultDaoVariableName() :
+                                                   getDaoVariableName()) + "\" to " +
               dao);
     if (! getDaoType().isInstance(dao)) {
       RobustCurrent.fatalProblem("dao is not of the expected type (" +
                                  getDaoType() + ")", LOG);
     }
     return (Dao)dao;
+  }
+
+  /**
+   * @return (! isDaoVariableNameEmpty()) &&
+   *          (! isDefaultDaoVariableNameEmpty());
+   */
+  public final boolean hasDaoVariableName() {
+    return (! isDaoVariableNameEmpty()) &&
+              (! isDefaultDaoVariableNameEmpty());
   }
 
   /*</property>*/

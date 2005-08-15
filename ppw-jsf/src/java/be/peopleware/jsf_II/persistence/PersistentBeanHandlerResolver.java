@@ -161,12 +161,11 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *
    * @result result == handler;
    * @result result != null ? result.getType() != null;
-   * @result result != null ? result.getDao() != null;
    * @throws FatalFacesException
    *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      resolve(handlerVariableNameFor(pbType)));
    */
-  private PersistentBeanHandler initHandler(Class pbType, AsyncCrudDao dao, String varName, Object handler)
+  private PersistentBeanHandler initHandler(Class pbType, String varName, Object handler)
       throws FatalFacesException {
     if (handler == null) {
       return null;
@@ -183,11 +182,6 @@ public class PersistentBeanHandlerResolver implements Serializable {
                   "\"; now set to " + pbType);
         pbh.setType(pbType);
       }
-      if (pbh.getDao() == null) {
-        LOG.debug("dao was not set in managed bean with name \"" + varName +
-                  "\"; now set to " + dao);
-        pbh.setDao(dao);
-      }
       return pbh;
     }
   }
@@ -198,28 +192,31 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *   with name {@link #variableName(Class) variableName(pbType)} from
    *   request, session or application scope.</p>
    * <p>If no such handler can be found, return <code>null</code>.</p>
-   * <p>The dao and type of this instance should be set in
-   *   <code>faces-config.xml</code>. If they are not set, they are set to
-   *   <code>pbType</code> and <code>dao</code>.</p>
+   * <p>The type of this instance should be set in
+   *   <code>faces-config.xml</code>. If it is not set, it is set to
+   *   <code>pbType</code>.</p>
+   * <p>The dao variable name can be set in
+   *   <code>faces-config.xml</code>. If it is not set, the
+   *   {@link DaoHandler#getDefaultDaoVariableName()} is used to retrieve
+   *   {@link DaoHandler#getDao() a dao when requested}.</p>
    *
    * @pre pbType != null;
    * @pre PersistentBean.class.isAssignableFrom(pbType);
    * @result RobustCurrent.resolve(handlerVariableNameFor(pbType));
    * @result result != null ? result.getType() != null;
-   * @result result != null ? result.getDao() != null;
    * @except RobustCurrent.resolve(handlerVariableNameFor(pbType));
    * @throws FatalFacesException
    *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      resolve(handlerVariableNameFor(pbType)));
    */
-  private PersistentBeanHandler managedHandlerForDirect(Class pbType, AsyncCrudDao dao)
+  private PersistentBeanHandler managedHandlerForDirect(Class pbType)
       throws FatalFacesException {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
     assert PersistentBeanHandler.class.isAssignableFrom(getDefaultHandlerClass());
     String varName = handlerVariableNameFor(pbType);
     Object result = RobustCurrent.resolve(varName);
-    return initHandler(pbType, dao, varName, result);
+    return initHandler(pbType, varName, result);
   }
 
   /**
@@ -229,14 +226,17 @@ public class PersistentBeanHandlerResolver implements Serializable {
    * <p>If no direct handler can be found for type <code>pbType</code>, look for
    *   a handler for the super class of <code>pbType</code>, unless  we pass beyond
    *   {@link PersistentBean} itself. In that case, return <code>null</code>.</p>
-   * <p>The dao and type of this instance should be set in
-   *   <code>faces-config.xml</code>. If they are not set, they are set to
-   *   <code>pbType</code> and <code>dao</code>.</p>
+   * <p>The type of this instance should be set in
+   *   <code>faces-config.xml</code>. If it is not set, it is set to
+   *   <code>pbType</code>.</p>
+   * <p>The dao variable name can be set in
+   *   <code>faces-config.xml</code>. If it is not set, the
+   *   {@link DaoHandler#getDefaultDaoVariableName()} is used to retrieve
+   *   {@link DaoHandler#getDao() a dao when requested}.</p>
    *
    * @pre pbType != null;
    * @pre PersistentBean.class.isAssignableFrom(pbType);
    * @result result != null ? result.getType() != null;
-   * @result result != null ? result.getDao() != null;
    * @return (! PersistentBean.class.isAssignableFrom(pbType)) ?
    *              null :
    *              ((RobustCurrent.resolve(handlerVariableNameFor(pbType) != null)) ?
@@ -248,19 +248,19 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *                      resolve(handlerVariableNameFor(pbType)));
    * @except managedHandler(pbType.getSuperClass());
    */
-  public final PersistentBeanHandler managedHandlerFor(Class pbType, AsyncCrudDao dao)
+  public final PersistentBeanHandler managedHandlerFor(Class pbType)
       throws FatalFacesException {
     assert pbType != null;
     if (! PersistentBean.class.isAssignableFrom(pbType)) {
       return null;
     }
     else {
-      PersistentBeanHandler result = managedHandlerForDirect(pbType, dao);
+      PersistentBeanHandler result = managedHandlerForDirect(pbType);
       if (result != null) {
         return result;
       }
       else {
-        return managedHandlerFor(pbType.getSuperclass(), dao);
+        return managedHandlerFor(pbType.getSuperclass());
       }
     }
   }
@@ -271,28 +271,31 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *   with name {@link #variableName(Class) variableName(pbType)}.
    *   This bean will not be in any scope.</p>
    * <p>If no such definition can be found, return <code>null</code>.</p>
-   * <p>The dao and type of this instance should be set in
-   *   <code>faces-config.xml</code>. If they are not set, they are set to
-   *   <code>pbType</code> and <code>dao</code>.</p>
+   * <p>The type of this instance should be set in
+   *   <code>faces-config.xml</code>. If it is not set, it is set to
+   *   <code>pbType</code>.</p>
+   * <p>The dao variable name can be set in
+   *   <code>faces-config.xml</code>. If it is not set, the
+   *   {@link DaoHandler#getDefaultDaoVariableName()} is used to retrieve
+   *   {@link DaoHandler#getDao() a dao when requested}.</p>
    *
    * @pre pbType != null;
    * @pre PersistentBean.class.isAssignableFrom(pbType);
    * @result RobustCurrent.freshManagedBean(handlerVariableNameFor(pbType));
    * @result result != null ? result.getType() != null;
-   * @result result != null ? result.getDao() != null;
    * @except RobustCurrent.freshManagedBean(handlerVariableNameFor(pbType));
    * @throws FatalFacesException
    *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      freshManagedBean(handlerVariableNameFor(pbType));
    */
-  private PersistentBeanHandler freshManagedHandlerForDirect(Class pbType, AsyncCrudDao dao)
+  private PersistentBeanHandler freshManagedHandlerForDirect(Class pbType)
       throws FatalFacesException {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
     assert PersistentBeanHandler.class.isAssignableFrom(getDefaultHandlerClass());
     String varName = handlerVariableNameFor(pbType);
     Object result = RobustCurrent.freshManagedBean(varName);
-    return initHandler(pbType, dao, varName, result);
+    return initHandler(pbType, varName, result);
   }
 
   /**
@@ -301,16 +304,19 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *   with name {@link #handlerVariableNameFor(Class) handlerVariableNameFor(pbType)}.
    *   This bean is not stored in any scope.</p>
    * <p>If no direct handler can be found for type <code>pbType</code>, look for
-   *   a handler for the super class of <code>pbType</code>, unless  we pass beyond
+   *   a handler for the super class of <code>pbType</code>, unless we pass beyond
    *   {@link PersistentBean} itself. In that case, return <code>null</code>.</p>
-   * <p>The dao and type of this instance should be set in
-   *   <code>faces-config.xml</code>. If they are not set, they are set to
-   *   <code>pbType</code> and <code>dao</code>.</p>
+   * <p>The type of this instance should be set in
+   *   <code>faces-config.xml</code>. If it is not set, it is set to
+   *   <code>pbType</code>.</p>
+   * <p>The dao variable name can be set in
+   *   <code>faces-config.xml</code>. If it is not set, the
+   *   {@link DaoHandler#getDefaultDaoVariableName()} is used to retrieve
+   *   {@link DaoHandler#getDao() a dao when requested}.</p>
    *
    * @pre pbType != null;
    * @pre PersistentBean.class.isAssignableFrom(pbType);
    * @result result != null ? result.getType() != null;
-   * @result result != null ? result.getDao() != null;
    * @return (! PersistentBean.class.isAssignableFrom(pbType)) ?
    *              null :
    *              ((RobustCurrent.freshManagedBean(handlerVariableNameFor(pbType) != null)) ?
@@ -322,19 +328,19 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *                      freshManagedBean(handlerVariableNameFor(pbType)));
    * @except freshManagedHandler(pbType.getSuperClass());
    */
-  public final PersistentBeanHandler freshManagedHandlerFor(Class pbType, AsyncCrudDao dao)
+  public final PersistentBeanHandler freshManagedHandlerFor(Class pbType)
       throws FatalFacesException {
     assert pbType != null;
     if (! PersistentBean.class.isAssignableFrom(pbType)) {
       return null;
     }
     else {
-      PersistentBeanHandler result = freshManagedHandlerForDirect(pbType, dao);
+      PersistentBeanHandler result = freshManagedHandlerForDirect(pbType);
       if (result != null) {
         return result;
       }
       else {
-        return freshManagedHandlerFor(pbType.getSuperclass(), dao);
+        return freshManagedHandlerFor(pbType.getSuperclass());
       }
     }
   }
@@ -342,22 +348,24 @@ public class PersistentBeanHandlerResolver implements Serializable {
   /**
    * Create a default {@link PersistentBeanHandler} for <code>pbType</code>,
    * of type {@link #getDefaultHandlerClass()}.
-   * We set the type of this new instance to <code>pbType</code>, and the dao <code>dao</code>.
+   * We set the type of this new instance to <code>pbType</code>, and the dao variable name
+   * to <code>daoVariableName</code> (which can be <code>null</code> or <code>EMPTY</code>,
+   * so that the new handler will use the {@link DaoHandler#getDefaultDaoVariableName()}).
    * The handler is not stored in any scope.
    *
    * @pre pbType != null;
    * @pre PersistentBean.class.isAssignableFrom(pbType);
    * @result result.getType() == pbType;
-   * @result result.getDao() == dao;
+   * @result result.getDaoVariableName().equals(daoVariableName);
    */
-  public final PersistentBeanHandler createDefaultHandlerFor(Class pbType, AsyncCrudDao dao) {
+  public final PersistentBeanHandler createDefaultHandlerFor(Class pbType, String daoVariableName) {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
     PersistentBeanHandler handler = null;
     try {
       handler = (PersistentBeanHandler)getDefaultHandlerClass().newInstance(); // Exc
       handler.setType(pbType);
-      handler.setDao(dao);
+      handler.setDaoVariableName(daoVariableName);
       LOG.debug("created new default handler for PersistentBean type \"" +
                 pbType + "\": " + handler);
     }
@@ -374,20 +382,20 @@ public class PersistentBeanHandlerResolver implements Serializable {
 
   /**
    * <p>Return a fitting {@link PersistentBeanHandler} for <code>pbType</code>. This is
-   *   {@link #managedHandlerFor(Class, AsyncCrudDao) managedHandlerFor(pbType, dao)},
+   *   {@link #managedHandlerFor(Class) managedHandlerFor(pbType)},
    *   or, if no such handler exist,
-   *   {@link #createDefaultHandlerFor(Class, AsyncCrudDao) createDefaultHandlerFor(pbType, dao)}.
+   *   {@link #createDefaultHandlerFor(Class, String) createDefaultHandlerFor(pbType, daoVariableName)}.
    *   If so, this new default handler is stored in request scope with name
    *   {@link #handlerVariableNameFor(Class) handlerVariableNameFor(pbType)}.</p>
    */
-  public final PersistentBeanHandler handlerFor(Class pbType, AsyncCrudDao dao)
+  public final PersistentBeanHandler handlerFor(Class pbType, String daoVariableName)
       throws FatalFacesException {
     LOG.debug("request for handler for type " + pbType);
-    PersistentBeanHandler result = managedHandlerFor(pbType, dao);
+    PersistentBeanHandler result = managedHandlerFor(pbType);
     if (result == null) {
       LOG.debug("Could not find handler for type " + pbType +
                 "; will create default handler and put it in request scope");
-      result = createDefaultHandlerFor(pbType, dao);
+      result = createDefaultHandlerFor(pbType, daoVariableName);
       RobustCurrent.requestMap().put(handlerVariableNameFor(pbType), result);
     }
     else {
@@ -399,19 +407,19 @@ public class PersistentBeanHandlerResolver implements Serializable {
 
   /**
    * <p>Return a fitting {@link PersistentBeanHandler} for <code>pbType</code>. This is
-   *   {@link #freshManagedHandlerFor(Class, AsyncCrudDao) freshManagedHandlerFor(pbType, dao)},
+   *   {@link #freshManagedHandlerFor(Class) freshManagedHandlerFor(pbType)},
    *   or, if no such handler exist,
-   *   {@link #createDefaultHandlerFor(Class, AsyncCrudDao) createDefaultHandlerFor(pbType, dao)}.
+   *   {@link #createDefaultHandlerFor(Class, String) createDefaultHandlerFor(pbType, daoVariableName)}.
    *   The resulting handler is not stored in any scope.</p>
    */
-  public final PersistentBeanHandler freshHandlerFor(Class pbType, AsyncCrudDao dao)
+  public final PersistentBeanHandler freshHandlerFor(Class pbType, String daoVariableName)
       throws FatalFacesException {
     LOG.debug("request for fresh handler for type " + pbType);
-    PersistentBeanHandler result = freshManagedHandlerFor(pbType, dao);
+    PersistentBeanHandler result = freshManagedHandlerFor(pbType);
     if (result == null) {
       LOG.debug("Could not create fresh managed handler for type " + pbType +
                 "; will create default handler");
-      result = createDefaultHandlerFor(pbType, dao);
+      result = createDefaultHandlerFor(pbType, daoVariableName);
     }
     else {
       LOG.debug("fresh handler created according to managed bean definition: " + result);

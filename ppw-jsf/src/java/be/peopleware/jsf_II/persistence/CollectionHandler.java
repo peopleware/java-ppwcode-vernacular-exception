@@ -29,7 +29,7 @@ import be.peopleware.persistence_I.PersistentBean;
  * <p>If the collection is {@link #setInstances(Collection) set},
  *   that collection is used. If {@link #getStoredInstances()} returns <code>null</code>
  *   during operation, all instances of type {@link #getType()} are retrieved
- *   from persistent storage using {@link #getDao()} to work with.</p>
+ *   from persistent storage using {@link #getAsyncCrudDao()} to work with.</p>
  * <h3>Creation of New Instances</h3>
  * <p>From a collection view, fresh instances for a given type can be created.
  *   This means that an {@link InstanceHandler} for the appropriate type
@@ -89,7 +89,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * If {@link #getStoredInstances()} is not <code>null</code>,
    * return that Collection. Otherwise, retrieve all instances
    * of type {@link #getType()} from persistent storage, using
-   * {@link #getDao()}. Only in this case, {@link #isSubtypesIncluded()}
+   * {@link #getAsyncCrudDao()}. Only in this case, {@link #isSubtypesIncluded()}
    * is used.
    * The returned collection is sorted by {@link #getComparator()}.
    *
@@ -114,19 +114,19 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     if (getType() == null) {
       RobustCurrent.fatalProblem("type is unknown", LOG);
     }
-    if (getDao() == null) {
+    if (getAsyncCrudDao() == null) {
       RobustCurrent.fatalProblem("dao is unknown", LOG);
     }
     LOG.debug("will try to load all instances of type \"" + getType() +
-              "\" with dao " + getDao());
+              "\" with dao " + getAsyncCrudDao());
     Set result = Collections.EMPTY_SET;
     try {
       // we are not doing this in a transaction, deliberately
-      result = getDao().retrieveAllPersistentBeans(getType(), isSubtypesIncluded());
+      result = getAsyncCrudDao().retrieveAllPersistentBeans(getType(), isSubtypesIncluded());
     }
     catch (TechnicalException tExc) {
       RobustCurrent.fatalProblem("Failed to retrieve all PersistenBeans of type \"" +
-                                 getType() + "\" with dao " + getDao(), tExc, LOG);
+                                 getType() + "\" with dao " + getAsyncCrudDao(), tExc, LOG);
     }
     return result;
   }
@@ -395,7 +395,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    */
   protected InstanceHandler freshInstanceHandlerFor(PersistentBean bean) throws FatalFacesException {
     LOG.debug("    instance is " + bean + "; RESOLVER is " + InstanceHandler.RESOLVER);
-    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(bean.getClass(), getDao());
+    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(bean.getClass(), getDaoVariableName());
     handler.setInstance(bean);
     handler.setViewMode(InstanceHandler.VIEWMODE_DISPLAY);
     LOG.debug("    handler is " + handler);
@@ -445,7 +445,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       LOG.debug("request parameter " + ID_REQUEST_PARAMETER_NAME + " = " + idString);
       Long id = Long.valueOf(idString);
       InstanceHandler handler = (InstanceHandler)InstanceHandler.
-          RESOLVER.handlerFor(getType(), getDao());
+          RESOLVER.handlerFor(getType(), getDaoVariableName());
       // MUDO (jand) this type does not allow for polymorphic navigation!
       // solution: put the type in the HTML page too!
       // same problem as in PersistentBeanConverter!
@@ -489,7 +489,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    */
   public final void navigateToEditNew(PersistentBean fresh) throws FatalFacesException {
     assert fresh != null;
-    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.handlerFor(fresh.getClass(), getDao());
+    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.handlerFor(fresh.getClass(), getDaoVariableName());
     handler.setInstance(fresh);
     handler.navigateHere(InstanceHandler.VIEWMODE_EDITNEW);
   }

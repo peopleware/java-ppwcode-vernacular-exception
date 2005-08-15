@@ -1,7 +1,6 @@
 package be.peopleware.jsf_II.persistence;
 
 
-import java.io.Serializable;
 import java.util.Map;
 
 import javax.faces.FacesException;
@@ -16,7 +15,6 @@ import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.i18n.BasenameResourceBundleMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
 import be.peopleware.persistence_I.PersistentBean;
-import be.peopleware.persistence_I.dao.AsyncCrudDao;
 import be.peopleware.persistence_I.dao.Dao;
 
 
@@ -35,7 +33,7 @@ import be.peopleware.persistence_I.dao.Dao;
  *            ? PersistentBean.class.isAssignableFrom(getType())
  *            : true;
  */
-public abstract class PersistentBeanHandler implements Serializable {
+public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -52,37 +50,6 @@ public abstract class PersistentBeanHandler implements Serializable {
 
 
   private static final Log LOG = LogFactory.getLog(PersistentBeanHandler.class);
-
-
-
-  /*<property name="dao">*/
-  //------------------------------------------------------------------
-
-  /**
-   * The Data Access Object that will fulfill the request.
-   *
-   * @basic
-   */
-  public final AsyncCrudDao getDao() {
-    return $dao;
-  }
-
-  /**
-   * Set the Data Access Object that will fulfill the request.
-   *
-   * @post getDao() == dao;
-   */
-  public void setDao(AsyncCrudDao dao) {
-    LOG.debug("Dao set: " + this + ".setDao(" + dao + ")");
-    $dao = dao;
-  }
-
-  /**
-   * The DAO that will fullfil this request.
-   */
-  private AsyncCrudDao $dao;
-
-  /*</property>*/
 
 
 
@@ -191,7 +158,7 @@ public abstract class PersistentBeanHandler implements Serializable {
    * @pre (type != null) ? PersistentBean.class.isAssignableFrom(type);
    * @post   getType() == type;
    *
-   * @mudo (jand) doc: and set the label maps
+   * @todo (jand) doc: and set the label maps
    */
   public final void setType(Class type) {
     // pre and not exception, because this is a programmatic error
@@ -336,7 +303,7 @@ public abstract class PersistentBeanHandler implements Serializable {
   //------------------------------------------------------------------
 
   /**
-   * TODO
+   * @todo (jand) doc
    */
   public Map getButtonLabels() {
     if ($buttonLabels == null) {
