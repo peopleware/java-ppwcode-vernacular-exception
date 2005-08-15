@@ -45,11 +45,20 @@ public abstract class AsyncCrudDaoHandler extends DaoHandler {
    * JSF application {@link javax.faces.el.VariableResolver}
    * when a {@link #getDao() dao is requested}.
    *
-   * <strong><code>= AsyncCrudDaoHandler.class.getName() +
+   * <strong><code>= </code>{@link #fqcnVarName()}<code> +
    *    </code>{@link #DEFAULT_DAO_VARIABLE_NAME_SUFFIX}</strong>
    */
   public static final String DEFAULT_DAO_VARIABLE_NAME =
       AsyncCrudDaoHandler.class.getName() + DEFAULT_DAO_VARIABLE_NAME_SUFFIX;
+
+  /**
+   * FQCN, with all "." replaced by "$";
+   *
+   * @return AsyncCrudDaoHandler.class.getName().replace('.', '$');
+   */
+  public static String fqcnVarName() {
+    return AsyncCrudDaoHandler.class.getName().replace('.', '$');
+  }
 
 
   /*<construction>*/
