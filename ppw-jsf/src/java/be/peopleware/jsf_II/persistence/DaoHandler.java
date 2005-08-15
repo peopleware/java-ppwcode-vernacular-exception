@@ -244,8 +244,7 @@ public abstract class DaoHandler implements Serializable {
    *          (! isDefaultDaoVariableNameEmpty());
    */
   public final boolean hasDaoVariableName() {
-    return (! isDaoVariableNameEmpty()) &&
-              (! isDefaultDaoVariableNameEmpty());
+    return ! (isDaoVariableNameEmpty() && isDefaultDaoVariableNameEmpty());
   }
 
   /*</property>*/
