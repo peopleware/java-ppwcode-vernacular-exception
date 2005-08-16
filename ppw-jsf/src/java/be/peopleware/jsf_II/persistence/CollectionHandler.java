@@ -404,7 +404,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   /**
    * A comparator that wraps around the {@link #getComparator()}, to
-   * pass comparison through the hanler to the instance.
+   * pass comparison through the handler to the instance.
    */
   private final transient Comparator $handlerComparator =
       new Comparator() {
