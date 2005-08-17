@@ -35,20 +35,20 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * <p>This handler can be used in a number of circumstances. The main use
  *   is as the backing bean for a detail CRUD page of an instance of semantics.
  *   For this to work, the handler needs a {@link #getAsyncCrudDao()} the
- *   {@link #getType()} filled out,
+ *   {@link #getPersistentBeanType()} filled out,
  *   needs to know the previous {@link #getViewMode()},
  *   and it needs an {@link #getInstance() instance}.</p>
  * <p>The instance can be set explicitly with {@link #setInstance(PersistentBean)}.
  *   This immediately also sets the {@link #getId()}. If the
  *   {@link #getInstance() instance} is <code>null</code> when it is requested,
  *   we will retrieve the instance with id {@link #getId()} and type
- *   {@link #getType()} from persistent storage, and cache it. If at this time
- *   {@link #getId()} is <code>null</code>, a new instance of {@link #getType()}
+ *   {@link #getPersistentBeanType()} from persistent storage, and cache it. If at this time
+ *   {@link #getId()} is <code>null</code>, a new instance of {@link #getPersistentBeanType()}
  *   will be created.</p>
  * <p>In conclusion this means that, before an instance of this class can be used,
  *   you need to set the<p>
  * <ul>
- *   <li>the {@link #setType(Class) type} and</li>
+ *   <li>the {@link #setPersistentBeanType(Class) type} and</li>
  *   <li>the {@link #setViewMode(String) previous view mode}, and</li>
  *   <li>either
  *     <ul>
@@ -79,11 +79,11 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  *  {@link #getId()} property. Before
  *  the Update Model Values phase is reached, we need to load the
  *  {@link be.peopleware.persistence_I.PersistentBean} with
- *  {@link #getId() this id} and type {@link #getType()} from
+ *  {@link #getId() this id} and type {@link #getPersistentBeanType()} from
  *  persistent storage. This instance will be stored in the
  *  {@link #getInstance() instance handler property}.</p>
  * <p>It is always possible that no instance with {@link
- *  #getId() this id} and  {@link #getType() type} can be found
+ *  #getId() this id} and  {@link #getPersistentBeanType() type} can be found
  *  in persistent storage, because it never existed, or because such instance
  *  was removed in-between user requests from persistent storage. Whenever this
  *  occurs, the user will be directed back to the page he originally came from,
@@ -205,7 +205,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * <h3>Edit New</h3>
  * <p>In view mode <code>editNew</code>, the user is shown a page, with empty,
  *  editable fields for him to fill in. These fields represent a new bean of type
- *  {@link #getType()}. It is
+ *  {@link #getPersistentBeanType()}. It is
  *  possible that some data is filled out when this page is shown, e.g., default
  *  data, or good guesses.</p>
  * <h4>cancel</h4>
@@ -500,11 +500,11 @@ public class InstanceHandler extends PersistentBeanHandler {
    * If {@link #getStoredInstance()} is not <code>null</code>,
    * it is returned. If it is <code>null</code>, an instance
    * is loaded from persistent storage with {@link #getAsyncCrudDao()},
-   * with type {@link #getType()} and id {@link #getId()}.
+   * with type {@link #getPersistentBeanType()} and id {@link #getId()}.
    * If {@link #getStoredInstance()} and {@link #getId()} are
-   * both <code>null</code>, a fresh instance of {@link #getType()}
+   * both <code>null</code>, a fresh instance of {@link #getPersistentBeanType()}
    * will be created using the default constructor. If
-   * {@link #getType()} is <code>null</code> when
+   * {@link #getPersistentBeanType()} is <code>null</code> when
    * {@link #getStoredInstance()} is <code>null</code>,
    * we cannot procede.
    *
@@ -522,7 +522,7 @@ public class InstanceHandler extends PersistentBeanHandler {
     LOG.debug("instance requested; id = " + getId());
     if ($instance == null) {
       LOG.debug("instance is not cached");
-      if (getType() == null) {
+      if (getPersistentBeanType() == null) {
         RobustCurrent.fatalProblem("should load instance from db or create fresh instance, " +
                                    "but type is null", LOG);
       }
@@ -558,10 +558,10 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   public final void setInstance(PersistentBean instance) throws IllegalArgumentException {
     LOG.debug("setting instance to " + instance);
-    if ((instance != null) && (! getType().isAssignableFrom(instance.getClass()))) {
+    if ((instance != null) && (! getPersistentBeanType().isAssignableFrom(instance.getClass()))) {
       throw new IllegalArgumentException("instance " + instance +
                                          " is not a subtype of " +
-                                         getType());
+                                         getPersistentBeanType());
     }
     $instance = instance;
     if (instance != null) {
@@ -582,7 +582,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   private PersistentBean loadInstance() throws FatalFacesException {
     LOG.debug("loading instance with id = " + getId() +
-              " and type = " + getType());
+              " and type = " + getPersistentBeanType());
     assert getAsyncCrudDao() != null;
     PersistentBean result = null;
     try {
@@ -590,16 +590,16 @@ public class InstanceHandler extends PersistentBeanHandler {
         RobustCurrent.fatalProblem("id is null", LOG);
         // MUDO (jand) replace with goback?
       }
-      if (getType() == null) {
+      if (getPersistentBeanType() == null) {
         RobustCurrent.fatalProblem("type is null", LOG);
         // MUDO (jand) replace with goback?
       }
       LOG.debug("retrieving persistent bean with id "
-                  + getId() + " and type " + getType() + "...");
-      result = getAsyncCrudDao().retrievePersistentBean(getId(), getType()); // IdNotFoundException, TechnicalException
+                  + getId() + " and type " + getPersistentBeanType() + "...");
+      result = getAsyncCrudDao().retrievePersistentBean(getId(), getPersistentBeanType()); // IdNotFoundException, TechnicalException
       assert result != null;
       assert result.getId().equals(getId());
-      assert getType().isInstance(result);
+      assert getPersistentBeanType().isInstance(result);
       if (LOG.isDebugEnabled()) {
         // if makes that there really is lazy loading if not in debug
         LOG.debug("retrieved persistent bean is " + result);
@@ -607,17 +607,17 @@ public class InstanceHandler extends PersistentBeanHandler {
     }
     catch (IdNotFoundException infExc) {
       // this will force $instance null
-      LOG.info("could not find instance of type " + getType() +
+      LOG.info("could not find instance of type " + getPersistentBeanType() +
                " with id " + getId(), infExc);
       // MUDO goback() instead of exception
       RobustCurrent.fatalProblem("could not find persistent bean with id " +
                                  getId() + " of type " +
-                                 getType(), infExc, LOG);
+                                 getPersistentBeanType(), infExc, LOG);
     }
     catch (TechnicalException tExc) {
       RobustCurrent.fatalProblem("could not retrieve persistent bean with id " +
                                  getId() + " of type " +
-                                 getType(), tExc, LOG);
+                                 getPersistentBeanType(), tExc, LOG);
     }
     return result;
   }
@@ -646,8 +646,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + VIEW_ID_SUFFIX;
    */
   public String getDetailViewId() {
-    assert getType() != null : "type cannot be null";
-    String typeName = getType().getName();
+    assert getPersistentBeanType() != null : "type cannot be null";
+    String typeName = getPersistentBeanType().getName();
     typeName = typeName.replace('.', '/');
     return VIEW_ID_PREFIX + typeName + VIEW_ID_SUFFIX;
   }
@@ -659,7 +659,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    *   as a variable with name
    *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
    *   And we navigate to {@link #getDetailViewId()}.</p>
-   * <p>The {@link #getType() type} and an {@link #getInstance()} should
+   * <p>The {@link #getPersistentBeanType() type} and an {@link #getInstance()} should
    *   be set before this method is called.</p>
    *
    * @post    isViewMode(viewMode) ? new.getViewMode().equals(viewMode)
@@ -675,7 +675,7 @@ public class InstanceHandler extends PersistentBeanHandler {
   public final void navigateHere(String viewMode) throws FatalFacesException {
     LOG.debug("InstanceHandler.navigate called; id = " + getId() +
               ", instance = " + getInstance());
-    if (getType() == null) {
+    if (getPersistentBeanType() == null) {
       LOG.fatal("cannot navigate to detail, because no type is set (" +
                 this);
     }
@@ -700,7 +700,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    *   as a variable with name
    *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
    *   And we navigate to {@link #getDetailViewId()}.</p>
-   * <p>The {@link #getType() type} and an {@link #getInstance()} should
+   * <p>The {@link #getPersistentBeanType() type} and an {@link #getInstance()} should
    *   be set before this method is called.</p>
    *
    * @post    new.getViewMode().equals(VIEWMODE_DISPLAY);
@@ -716,7 +716,7 @@ public class InstanceHandler extends PersistentBeanHandler {
 
   /**
    * <p>Action method to navigate to collection page for this
-   *   {@link #getType()} via a call to {@link CollectionHandler#navigateHere()}.</p>
+   *   {@link #getPersistentBeanType()} via a call to {@link CollectionHandler#navigateHere()}.</p>
    * <p>The collection handler handler is made available to the JSP/JSF page in request scope,
    *   as a variable with the appropiate name (see {@link CollectionHandler#navigateHere()}.
    *   And we navigate to {@link CollectionHandler#getCollectionViewId()}.</p>
@@ -726,8 +726,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   public final void navigateToList(ActionEvent aEv) throws FatalFacesException {
     LOG.debug("InstanceHandler.navigateToList called");
-    CollectionHandler handler = (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDaoVariableName());
-    LOG.debug("created collectionhandler for type " + getType() +
+    CollectionHandler handler = (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getPersistentBeanType(), getDaoVariableName());
+    LOG.debug("created collectionhandler for type " + getPersistentBeanType() +
               ": " + handler);
     handler.navigateHere();
   }
@@ -899,7 +899,7 @@ public class InstanceHandler extends PersistentBeanHandler {
 
   /**
    * This method should be called from within another handler to pass
-   * a newly created persistent bean of type {@link #getType()} and show this
+   * a newly created persistent bean of type {@link #getPersistentBeanType()} and show this
    * bean in editNew mode. To do this, the handler should be properly
    * initialised.
    *
@@ -909,7 +909,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    * To initialise the handler properly, the following two steps are taken:
    * 1. The given {@link PersistentBean} is stored in {@link #getInstance()}.
    *    If the given bean is not effective, has an effective id (i.e. is not
-   *    newly created), or is not of type {@link #getType()}, this is signalled
+   *    newly created), or is not of type {@link #getPersistentBeanType()}, this is signalled
    *    to the user by throwing an InvalidBeanException.
    * 2. We go to editNew mode.
    *
@@ -924,13 +924,13 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   public final void editNew(PersistentBean instance) throws InvalidBeanException {
     LOG.debug("InstanceHandler.editNew called; a new instance is stored in the handler");
-    if (instance == null || instance.getId() != null || !getType().isInstance(instance)) {
-      throw new InvalidBeanException(instance, getType());
+    if (instance == null || instance.getId() != null || !getPersistentBeanType().isInstance(instance)) {
+      throw new InvalidBeanException(instance, getPersistentBeanType());
     }
     $instance = instance;
     assert getInstance() != null;
     assert getInstance().getId() == null;
-    assert getType().isInstance(instance);
+    assert getPersistentBeanType().isInstance(instance);
     setViewMode(VIEWMODE_EDITNEW);
     LOG.debug("Stored new persistent bean successfully");
   }
@@ -1321,7 +1321,7 @@ public class InstanceHandler extends PersistentBeanHandler {
             private void initKeySet() {
               $keySet = new HashSet();
               $keySet.addAll(getAssociationMetaMap().keySet());
-              PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(getType());
+              PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(getPersistentBeanType());
               for (int i = 0; i < descriptors.length; i++) {
                 PropertyDescriptor pd = descriptors[i];
                 if (PersistentBean.class.isAssignableFrom(pd.getPropertyType())) {
@@ -1407,7 +1407,7 @@ public class InstanceHandler extends PersistentBeanHandler {
 
   /**
    * <p>The automated {@link #getAssociationHandlers() association handlers map} requires
-   *   some meta information about the relations that instances of {@link #getType()}
+   *   some meta information about the relations that instances of {@link #getPersistentBeanType()}
    *   are involved in. This map should list entries with the property name
    *   that represents the association as key, and the type of the related elements
    *   as value.</p>

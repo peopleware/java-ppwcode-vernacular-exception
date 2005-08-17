@@ -23,7 +23,7 @@ import be.peopleware.jsf_II.persistence.InstanceHandler;
  * This {@link UIComponent} is used in JSF pages to initialize {@link InstanceHandler}
  * instances early in the JSF request / response lifecycle. In this mode of use,
  * the {@link InstanceHandler} is a managed bean in request scope. The
- * {@link InstanceHandler#getType()} is set in <kbd>faces-config.xml</kbd> as a managed
+ * {@link InstanceHandler#getPersistentBeanType()} is set in <kbd>faces-config.xml</kbd> as a managed
  * property. The required {@link InstanceHandler#getId()} and
  * {@link InstanceHandler#getViewMode()} comes with the request as request parameters.
  * They need to be set in the {@link InstanceHandler} early, to

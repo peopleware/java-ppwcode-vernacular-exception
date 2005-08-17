@@ -145,8 +145,8 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    * @basic
    * @init null;
    */
-  public final Class getType() {
-    return $type;
+  public final Class getPersistentBeanType() {
+    return $persistentBeanType;
   }
 
   /**
@@ -160,12 +160,12 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    *
    * @todo (jand) doc: and set the label maps
    */
-  public final void setType(Class type) {
+  public final void setPersistentBeanType(Class type) {
     // pre and not exception, because this is a programmatic error
     assert ((type != null) ? PersistentBean.class.isAssignableFrom(type) : true)
             : "Type must be a subtype of " + PersistentBean.class +
               " (and " + type + " isn't).";
-    $type = type;
+    $persistentBeanType = type;
     LOG.debug("type of " + this + " set to Class " + type.getName());
     LOG.debug("loading label properties");
     $labels = new I18nPropertyLabelMap(type, false);
@@ -179,7 +179,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    *
    * @todo This method is here for the faces-config managed bean stuff. Apparently,
    *       converters are not used during creation and property setting of managed
-   *       beans. So, with the {@link #setType(Class)} method, we would be trying
+   *       beans. So, with the {@link #setPersistentBeanType(Class)} method, we would be trying
    *       to push a String into a Class type parameter (actually, it seems, but
    *       we are not sure, that JSF attempts to <em>instantiate</em> the class
    *       for which the name is given, which is pretty weird). When this gets
@@ -203,14 +203,14 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
     catch (ClassNotFoundException cnfExc) {
       throw new FacesException("cannot convert String to Class", cnfExc);
     }
-    setType(type);
+    setPersistentBeanType(type);
   }
 
   /**
    * The type of the {@link PersistentBean} that will be handled
    * by the requests.
    */
-  private Class $type;
+  private Class $persistentBeanType;
 
   /*</property>*/
 
@@ -220,7 +220,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
   //------------------------------------------------------------------
 
   /**
-   * The i18n short labels for the properties of {@link #getType()}
+   * The i18n short labels for the properties of {@link #getPersistentBeanType()}
    * according to the rules in
    * {@link Properties#i18nPropertyLabel(java.lang.String, java.lang.Class, boolean, ResourceBundleLoadStrategy)},
    * as a map. This property makes it easy to use this i18n strategy in JSF
@@ -245,7 +245,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
   //------------------------------------------------------------------
 
   /**
-   * The i18n short labels for the properties of {@link #getType()}
+   * The i18n short labels for the properties of {@link #getPersistentBeanType()}
    * according to the rules in
    * {@link Properties#i18nPropertyLabel(java.lang.String, java.lang.Class, boolean, ResourceBundleLoadStrategy)},
    * as a map. This property makes it easy to use this i18n strategy in JSF
@@ -275,7 +275,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    * @basic
    */
   public String getTypeLabel() {
-    return Properties.i18nTypeLabel(getType(),
+    return Properties.i18nTypeLabel(getPersistentBeanType(),
                                     false,
                                     RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY);
   }
@@ -292,7 +292,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    * @basic
    */
   public String getPluralTypeLabel() {
-    return Properties.i18nTypeLabel(getType(),
+    return Properties.i18nTypeLabel(getPersistentBeanType(),
                                     true,
                                     RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY);
   }
@@ -383,7 +383,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
 
 
   /**
-   * Create a new instance of type {@link #getType()} with the default
+   * Create a new instance of type {@link #getPersistentBeanType()} with the default
    * constructor. {@link #createInstance()} is called on the fresh
    * bean to do whatever configuration necessary.
    *
@@ -391,10 +391,10 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    * @post new.getInstance() == getType().newInstance();
    */
   protected PersistentBean createInstance() throws FatalFacesException {
-    LOG.debug("creating new instance of type \"" + getType() + "\"");
+    LOG.debug("creating new instance of type \"" + getPersistentBeanType() + "\"");
     PersistentBean result = null;
     try {
-      result = (PersistentBean)getType().newInstance();
+      result = (PersistentBean)getPersistentBeanType().newInstance();
       LOG.debug("fresh instance: " + result);
       LOG.debug("Calling postCreateInstance");
       postCreateInstance(result);
@@ -402,19 +402,19 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
     }
     // all exceptions are programmatic errors here, in subclass, in config or in JSF
     catch (InstantiationException iExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), iExc, LOG);
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), iExc, LOG);
     }
     catch (IllegalAccessException iaExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), iaExc, LOG);
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), iaExc, LOG);
     }
     catch (ExceptionInInitializerError eiiErr) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), eiiErr, LOG);
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), eiiErr, LOG);
     }
     catch (SecurityException sExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), sExc, LOG);
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), sExc, LOG);
     }
     catch (ClassCastException ccExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getType(), ccExc, LOG);
+      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), ccExc, LOG);
     }
     return result;
   }
@@ -422,7 +422,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
   /**
    * Method called by {@link #createInstance()},
    * to do additional configuration of fresh beans of type
-   * {@link #getType()}.
+   * {@link #getPersistentBeanType()}.
    * This default does nothing, but subclasses should overwrite
    * when needed.
    *

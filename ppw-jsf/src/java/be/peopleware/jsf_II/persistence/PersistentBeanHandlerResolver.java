@@ -177,10 +177,10 @@ public class PersistentBeanHandlerResolver implements Serializable {
                                    getDefaultHandlerClass() + ": " + handler, LOG);
       }
       PersistentBeanHandler pbh = (PersistentBeanHandler)handler;
-      if (pbh.getType() == null) {
+      if (pbh.getPersistentBeanType() == null) {
         LOG.debug("type was not set in managed bean with name \"" + varName +
                   "\"; now set to " + pbType);
-        pbh.setType(pbType);
+        pbh.setPersistentBeanType(pbType);
       }
       return pbh;
     }
@@ -364,7 +364,7 @@ public class PersistentBeanHandlerResolver implements Serializable {
     PersistentBeanHandler handler = null;
     try {
       handler = (PersistentBeanHandler)getDefaultHandlerClass().newInstance(); // Exc
-      handler.setType(pbType);
+      handler.setPersistentBeanType(pbType);
       handler.setDaoVariableName(daoVariableName);
       LOG.debug("created new default handler for PersistentBean type \"" +
                 pbType + "\": " + handler);
@@ -439,7 +439,7 @@ public class PersistentBeanHandlerResolver implements Serializable {
   public final void putInRequestScope(PersistentBeanHandler handler) {
     assert handler != null;
     assert getMinimalHandlerClass().isInstance(handler);
-    String varName = handlerVariableNameFor(handler.getType());
+    String varName = handlerVariableNameFor(handler.getPersistentBeanType());
     RobustCurrent.requestMap().put(varName, handler);
     LOG.debug("handler " + handler + " put in request scope with name \"" +
               varName + "\"");

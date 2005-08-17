@@ -28,7 +28,7 @@ import be.peopleware.persistence_I.PersistentBean;
  *   for a collection of {@link PersistentBean PersistentBeans}.</p>
  * <p>If the collection is {@link #setInstances(Collection) set},
  *   that collection is used. If {@link #getStoredInstances()} returns <code>null</code>
- *   during operation, all instances of type {@link #getType()} are retrieved
+ *   during operation, all instances of type {@link #getPersistentBeanType()} are retrieved
  *   from persistent storage using {@link #getAsyncCrudDao()} to work with.</p>
  * <h3>Creation of New Instances</h3>
  * <p>From a collection view, fresh instances for a given type can be created.
@@ -45,7 +45,7 @@ import be.peopleware.persistence_I.PersistentBean;
  * <p>A special case is the creation of a fresh unrelated instance. This happens often
  *   from a page that shows all instances of a type. For this case, an
  *   {@link #navigateToEditNew() action method}
- *   is offered that creates a fresh instance of type {@link #getType()} with the
+ *   is offered that creates a fresh instance of type {@link #getPersistentBeanType()} with the
  *   default constructor.</p>
  * <h3>Sorting</h3>
  * <p>{@link #getInstances() Instances} are sorted with the {@link #getComparator() comparator}.
@@ -88,7 +88,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   /**
    * If {@link #getStoredInstances()} is not <code>null</code>,
    * return that Collection. Otherwise, retrieve all instances
-   * of type {@link #getType()} from persistent storage, using
+   * of type {@link #getPersistentBeanType()} from persistent storage, using
    * {@link #getAsyncCrudDao()}. Only in this case, {@link #isSubtypesIncluded()}
    * is used.
    * The returned collection is sorted by {@link #getComparator()}.
@@ -111,22 +111,22 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   private Set loadAllInstances() throws FatalFacesException {
     LOG.debug("no instances collection set; will try to retrieve data from storage");
-    if (getType() == null) {
+    if (getPersistentBeanType() == null) {
       RobustCurrent.fatalProblem("type is unknown", LOG);
     }
     if (getAsyncCrudDao() == null) {
       RobustCurrent.fatalProblem("dao is unknown", LOG);
     }
-    LOG.debug("will try to load all instances of type \"" + getType() +
+    LOG.debug("will try to load all instances of type \"" + getPersistentBeanType() +
               "\" with dao " + getAsyncCrudDao());
     Set result = Collections.EMPTY_SET;
     try {
       // we are not doing this in a transaction, deliberately
-      result = getAsyncCrudDao().retrieveAllPersistentBeans(getType(), isSubtypesIncluded());
+      result = getAsyncCrudDao().retrieveAllPersistentBeans(getPersistentBeanType(), isSubtypesIncluded());
     }
     catch (TechnicalException tExc) {
       RobustCurrent.fatalProblem("Failed to retrieve all PersistenBeans of type \"" +
-                                 getType() + "\" with dao " + getAsyncCrudDao(), tExc, LOG);
+                                 getPersistentBeanType() + "\" with dao " + getAsyncCrudDao(), tExc, LOG);
     }
     return result;
   }
@@ -152,7 +152,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    */
   public final void setInstances(final Collection instances) {
     LOG.debug("Setting " + instances + " as instances");
-    assert getType() != null;
+    assert getPersistentBeanType() != null;
     $storedInstances = (instances == null) ? null : new ArrayList(instances);
   }
 
@@ -166,8 +166,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   //------------------------------------------------------------------
 
   /**
-   * Whether we will retrieve instances of only {@link #getType()},
-   * or also of all subtypes of {@link #getType()}.
+   * Whether we will retrieve instances of only {@link #getPersistentBeanType()},
+   * or also of all subtypes of {@link #getPersistentBeanType()}.
    * <strong>Note that the default value is <code>true</code></strong>
    * (where it is <code>false</code> for most boolean properties).
    *
@@ -179,8 +179,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
-   * Set whether we will retrieve instances of only {@link #getType()},
-   * or also of all subtypes of {@link #getType()}.
+   * Set whether we will retrieve instances of only {@link #getPersistentBeanType()},
+   * or also of all subtypes of {@link #getPersistentBeanType()}.
    *
    * @post getType() == type;
    */
@@ -189,8 +189,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
-   * Whether we will retrieve instances of only {@link #getType()},
-   * or also of all subtypes of {@link #getType()}.
+   * Whether we will retrieve instances of only {@link #getPersistentBeanType()},
+   * or also of all subtypes of {@link #getPersistentBeanType()}.
    */
   private boolean $subtypesIncluded = true;
 
@@ -426,8 +426,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + LIST_VIEW_ID_SUFFIX;
    */
   public String getCollectionViewId() {
-    assert getType() != null : "type cannot be null";
-    String typeName = getType().getName();
+    assert getPersistentBeanType() != null : "type cannot be null";
+    String typeName = getPersistentBeanType().getName();
     typeName = typeName.replace('.', '/');
     return VIEW_ID_PREFIX + typeName + LIST_VIEW_ID_SUFFIX;
   }
@@ -445,12 +445,12 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       LOG.debug("request parameter " + ID_REQUEST_PARAMETER_NAME + " = " + idString);
       Long id = Long.valueOf(idString);
       InstanceHandler handler = (InstanceHandler)InstanceHandler.
-          RESOLVER.handlerFor(getType(), getDaoVariableName());
+          RESOLVER.handlerFor(getPersistentBeanType(), getDaoVariableName());
       // MUDO (jand) this type does not allow for polymorphic navigation!
       // solution: put the type in the HTML page too!
       // same problem as in PersistentBeanConverter!
       LOG.debug("Created handler for id = " + id +
-                "and type " + getType() + ": " + handler);
+                "and type " + getPersistentBeanType() + ": " + handler);
       handler.setId(id);
       handler.navigateHere(event);
     }
@@ -465,7 +465,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
-   * <p>Action method that creates a fresh instances of {@link #getType()} with
+   * <p>Action method that creates a fresh instances of {@link #getPersistentBeanType()} with
    *   the default instructor, and then calls {@link #navigateToEditNew(PersistentBean)}
    *   with it.</p>
    * <p>The fresh instance handler is made available to the JSP/JSF page in request scope,
@@ -482,7 +482,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *   and navigate there in {@link InstanceHandler#VIEWMODE_EDITNEW} using
    *   {@link InstanceHandler#navigateHere(String)}.</p>
    * <p>Although this is not obligatory, <code>fresh</code> should be an instance of
-   *   {@link #getType()} or one of its subtypes.</p>
+   *   {@link #getPersistentBeanType()} or one of its subtypes.</p>
    * <p>The fresh handler is made available to the JSP/JSF page in request scope,
    *   as a variable with the appropriate name, and we navigate to
    *   {@link InstanceHandler#getDetailViewId()}.</p>
@@ -496,15 +496,15 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   /**
    * <p>This method should be called to navigate to the collection page
-   *   for this {@link #getType()}.</p>
+   *   for this {@link #getPersistentBeanType()}.</p>
    * <p>This handler is made available to the JSP/JSF page in request scope,
    *   as a variable with name
    *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
    *   And we navigate to {@link #getCollectionViewId()}.</p>
-   * <p>The {@link #getType() type} should
+   * <p>The {@link #getPersistentBeanType() type} should
    *   be set before this method is called. If {@link #getInstances()}
    *   is not <code>null</code>, that collection is shown. If it is
-   *   <code>null</code>, all objects of type {@link #getType()} are
+   *   <code>null</code>, all objects of type {@link #getPersistentBeanType()} are
    *   retrieved from the database and shown.</p>
    *
    * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
@@ -513,7 +513,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    */
   public final void navigateHere() throws FatalFacesException {
     LOG.debug("CollectionHandler.navigateHere called");
-    if (getType() == null) {
+    if (getPersistentBeanType() == null) {
       LOG.fatal("cannot navigate to collection, because no type is set (" +
                 this);
     }
