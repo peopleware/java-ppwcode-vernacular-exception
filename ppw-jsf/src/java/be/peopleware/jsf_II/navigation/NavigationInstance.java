@@ -10,6 +10,8 @@ package be.peopleware.jsf_II.navigation;
 
 import java.util.Date;
 
+import javax.faces.FacesException;
+
 
 /**
  * <p>Keep the information about a step in the navigation through a
@@ -68,13 +70,14 @@ public interface NavigationInstance {
    * <code>null</code>, return <code>null</code>.
    *
    * @result (ni == null) ? (result == null);
+   * @post getTime().equals(NOW);
    */
   NavigationInstance absorb(NavigationInstance ni);
 
   /**
    * Navigate back to this navigation instance.
    */
-  void goBack();
+  void goBack() throws FacesException;
 
 
 //  /**

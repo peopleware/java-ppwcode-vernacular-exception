@@ -17,7 +17,7 @@ import java.util.Date;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public class AbstractNavigationInstance {
+public abstract class AbstractNavigationInstance implements NavigationInstance {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------

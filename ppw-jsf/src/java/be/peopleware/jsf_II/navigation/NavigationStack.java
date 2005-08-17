@@ -91,7 +91,7 @@ import be.peopleware.jsf_II.persistence.PersistentBeanHandler;
  *   web application, or even plain HTML pages. For regular JSP pages, also a
  *   custom tag, or a scriptlet, could be used to record navigation. For regular
  *   HTML pages, we would need to use, e.g., a {@link javax.servlet.Filter}.</p>
- * <p>In the subpackage {@link be.pepleware.jsf_II.navigation.persistence}, we
+ * <p>In the subpackage <code>be.pepleware.jsf_II.navigation.persistence</code>, we
  *   offer support for the default navigation offered in
  *   {@link be.peopleware.jsf_II.persistence}.</p>
  *

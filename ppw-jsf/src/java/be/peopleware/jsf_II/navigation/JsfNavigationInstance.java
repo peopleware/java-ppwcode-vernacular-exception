@@ -23,20 +23,18 @@ import be.peopleware.jsf_II.persistence.InstanceHandler;
  * <p>Common code for {@link NavigationInstance} implementations that use
  *   JSF navigation.</p>
  * <p>The common part is that such instances navigate using a view id,
- *   which is used to prepare the new {@link UIView} tree, the code
+ *   which is used to prepare the new <code>uiView</code> tree, the code
  *   to actually navigate.</p>
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
  *
- * @invar getTime() != null;
- * @invar ! getTime().after(NOW);
  * @invar getFromViewId() != null;
  * @invar getFromHandler() != null;
  * @invar getFromPersistentBeanId() != null;
  * @invar getOutcome() != null; in-page navigation is not interesting
  */
-public class JsfNavigationInstance {
+public abstract class JsfNavigationInstance extends AbstractNavigationInstance {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -82,26 +80,6 @@ public class JsfNavigationInstance {
   }
 
   /*</construction>*/
-
-
-
-  /*<property name="time">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   * @init NOW;
-   */
-  public final Date getTime() {
-    return $endTime;
-  }
-
-  /**
-   * @invar $endTime != null;
-   */
-  private Date $endTime = new Date();
-
-  /*</property>*/
 
 
 
