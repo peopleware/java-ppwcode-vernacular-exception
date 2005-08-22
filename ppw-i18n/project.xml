@@ -14,7 +14,7 @@
     resource bundle load strategies, which are different in different deployment environments
     (application, webapp, ...).</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.0.2-2.0</currentVersion>
+  <currentVersion>1.1.0-2.0</currentVersion>
   <package>be.peopleware.i18n_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
@@ -55,6 +55,12 @@
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-test-I</artifactId>
       <version>1.0.2-1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
+      <type>jar</type>
     </dependency>
   </dependencies>
   <properties />

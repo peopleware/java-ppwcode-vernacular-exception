@@ -1,10 +1,13 @@
 package be.peopleware.i18n_I;
 
 
+import java.beans.PropertyDescriptor;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 
 /**
@@ -142,6 +145,8 @@ public abstract class Properties {
    */
   public static final String PROPERTY_SEPARATOR_TOKEN = "#"; //$NON-NLS-1$
 
+  private final static char DOT = '.';
+
   /**
    * <p>Return a label for a property with name <code>property</code>
    *   of a type <code>type</code>.</p>
@@ -155,6 +160,12 @@ public abstract class Properties {
    *   If the short label does not exist in a given properties file,
    *   we look for the normal label, and vice versa, before
    *   we try the next type.</p>
+   * <p>Property names can be nested, as described in
+   *   <a href="http://jakarta.apache.org/commons/beanutils/commons-beanutils-1.7.0/docs/api/"><code>org.apache.commons.beanutils.PropertyUtilsBean</code></a>.
+   *   This means that, if <code>property</code> contains '.' separators, we
+   *   look up the type of the portion before the dot, and then call
+   *   <code>findKeyInTypePropertoes(<var>beforeDotType</var>, <var>propertyAfterDot</var>, shortLabel, strategy)</code>.
+   *   If one of the properties in this path does not exist, we return <code>null</code>.</p>
    *
    * @param property
    *        The name of the property to return an i18n'ed label for.
@@ -176,11 +187,24 @@ public abstract class Properties {
       final String property,
       final Class type,
       final boolean shortLabel,
-      final ResourceBundleLoadStrategy strategy) {
+      final ResourceBundleLoadStrategy strategy)
+      throws IllegalArgumentException {
     if ((property == null)
           || (property.length() <= 0)
           || (type == null)) {
       throw new IllegalArgumentException("parameters must be effective"); //$NON-NLS-1$
+    }
+    int dotPosition = property.indexOf(DOT);
+    if (dotPosition >= 0) {
+      String preDot = property.substring(0, dotPosition);
+      String postDot = property.substring(dotPosition + 1);
+      try {
+        Class preType = getPropertyType(type, preDot);
+        return i18nPropertyLabel(postDot, preType, shortLabel, strategy);
+      }
+      catch (NoSuchMethodException nsmExc) {
+        return null;
+      }
     }
     String result = findKeyInTypeProperties(type,
                                             i18nPropertyLabel_keys(property, shortLabel),
@@ -188,6 +212,49 @@ public abstract class Properties {
     return (result != null)
             ? result
             : keyNotFound(property + PROPERTY_SEPARATOR_TOKEN + type.getName());
+  }
+
+  /**
+   * Return the {@link PropertyDescriptor} for the property with
+   * name <code>propertyName</code> of type <code>type</code>.
+   *
+   * @pre (type != null) && (propertyName != null) &&
+   *        (! propertyName.equals(""));
+   * @throws NoSuchMethodException
+   *         Type <code>type</code> has no property with name
+   *         <code>propertyName</code>.
+   *
+   * @idea (jand) should have existed in commons beanutils; move to ppw-utils
+   */
+  private static PropertyDescriptor getPropertyDescriptor(Class type, String propertyName)
+      throws NoSuchMethodException {
+    assert (type != null) && (propertyName != null) &&
+            (! propertyName.equals("")) :
+              "type and propertyName cannot be null or empty";
+    PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(type);
+    for (int i =0; i < pds.length; i++) {
+      if (pds[i].getName().equals(propertyName)) {
+        return pds[i];
+      }
+    }
+    throw new NoSuchMethodException("property \"" + propertyName + "\" not found in type " + type);
+  }
+
+  /**
+   * Return the type of the property with name <code>propertyName</code>
+   * of type <code>type</code>.
+   *
+   * @pre (type != null) && (propertyName != null) &&
+   *        (! propertyName.equals(""));
+   * @throws NoSuchMethodException
+   *         Type <code>type</code> has no property with name
+   *         <code>propertyName</code>.
+   *
+   * @idea (jand) should have existed in commons beanutils; move to ppw-utils
+   */
+  private static Class getPropertyType(Class type, String propertyName)
+      throws NoSuchMethodException {
+    return getPropertyDescriptor(type, propertyName).getPropertyType();
   }
 
   /**
@@ -231,9 +298,9 @@ public abstract class Properties {
    *   found, or no such properties file exists, we try again with
    *   the super types, in the order they are presented by the reflection
    *   functionality. We look in interfaces first, the superclass if
-   *   no match is found in the super interfaces. We search breath-first</p>.
+   *   no match is found in the super interfaces. We search breath-first.</p>
    * <p>If this entire process does not return a valid result, we return
-   *   <code>null</code></p>
+   *   <code>null</code>.</p>
    *
    * @param type
    *        The type to use as starting point for the lookup in associated

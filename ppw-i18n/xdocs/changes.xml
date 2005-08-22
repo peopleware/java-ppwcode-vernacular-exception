@@ -7,6 +7,12 @@
   <body>
 
 
+    <release version="I v1.1.0/2.0" date="2005-08-22" description="Labels for nested properties">
+      <action dev="jand" type="add">
+        i18nPropertyLabel now also handles nested property names.
+      </action>
+    </release>
+
     <release version="I v1.0.2/2.0" date="2005-08-14" description="Dependecy">
       <action dev="jand" type="update">
         Updated to use latest dependencies.
