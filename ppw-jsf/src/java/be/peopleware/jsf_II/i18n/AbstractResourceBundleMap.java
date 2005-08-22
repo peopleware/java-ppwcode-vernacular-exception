@@ -111,6 +111,10 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
    * If the <code>key</code> is
    * @todo description, contract
    *
+   * If the key is not in the set, we try the key as a nested property
+   * name nevertheless. If nothing found, we return
+   * "???".
+   *
    * @throws FatalFacesException
    */
   public final Object get(Object key) throws FatalFacesException {
@@ -123,12 +127,14 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
       LOG.warn("key \"" + key + "\" is not a String; returning null");
       return null;
     }
-    if (! containsKey(key)) {
-      LOG.warn("key \"" + key + "\" is not in the keySet (" +
-               keySet() + "); returning null");
-      return null;
+    String keyString = (String)key;
+    String label = getLabel(keyString);
+    if (label == null) {
+      return "??? " + keyString + " ???";
     }
-    return getLabel((String)key);
+    else {
+      return label;
+    }
   }
 
   /**
