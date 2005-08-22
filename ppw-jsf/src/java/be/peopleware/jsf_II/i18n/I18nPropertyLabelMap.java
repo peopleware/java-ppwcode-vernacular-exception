@@ -150,7 +150,6 @@ public class I18nPropertyLabelMap extends AbstractResourceBundleMap {
 
 
   protected final String getLabel(String propertyName) {
-    assert containsKey(propertyName);
     String result = Properties.i18nPropertyLabel(propertyName, getType(),
                                                  isShortLabel(),
                                                  RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY);
