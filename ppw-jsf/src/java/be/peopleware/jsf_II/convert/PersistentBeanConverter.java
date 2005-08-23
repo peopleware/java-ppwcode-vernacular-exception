@@ -73,25 +73,41 @@ public class PersistentBeanConverter implements Converter {
                             final UIComponent component,
                             final String value)
       throws ConverterException {
+    // First determine which type we are using. The jsf page designer, will
+    // have to pass a attribute with name 'typeName' with a a fqClassName
+    // of the type to retrieve.
+    String typeName = (String)component.getAttributes().get("typeName");
+    Class type = PersistentBean.class;
+    if (typeName != null || typeName.equals(EMPTY)) {
+      try {
+        type = Class.forName(typeName);
+      }
+      catch (LinkageError lErr) {
+        throw new FacesException("Cannot convert String to Class", lErr);
+      }
+      catch (ClassNotFoundException cnfExc) {
+        throw new FacesException("Cannot convert String to Class", cnfExc);
+      }
+    }
+    
     Object result = null;
-    // FatalFacesException if Type is null...
     if (value != null && !value.equals(EMPTY)) {
       Long id = Long.valueOf(value);
-      LOG.debug("Recieving a request for a \"" + getType() + "\" with id \"" + id + "\".");
+      LOG.debug("Recieving a request for a \"" + type + "\" with id \"" + id + "\".");
       HibernateDaoFactory daoFactory = new HibernateDaoFactory();
       HibernateAsyncCrudDao dao = (HibernateAsyncCrudDao)daoFactory.getDao(DaoFactory.ASYNC_CRUD);
       try {
         Session session = SessionInView.getSession(RobustCurrent.httpServletRequest());
         dao.setSession(session);
-        result = dao.retrievePersistentBean(id, getType());
-        LOG.debug("\"" + getType() + "\" retrieved with id \"" + id + "\"");
+        result = dao.retrievePersistentBean(id, type);
+        LOG.debug("\"" + type + "\" retrieved with id \"" + id + "\"");
       }
       catch (IdNotFoundException infExc) {
-        LOG.error("No \"" + getType() + "\" found with id \"" + id + "\"");
+        LOG.error("No \"" + type + "\" found with id \"" + id + "\"");
         throw new ConverterException("No PersistentBean bean found with id " + id);
       }
       catch (TechnicalException tExc) {
-        LOG.error("Failed to retrieve \"" + getType() + "\" due to technical problems", tExc);
+        LOG.error("Failed to retrieve \"" + type + "\" due to technical problems", tExc);
         throw new ConverterException("Unable to retrieve PersistentBean due to technical problems.");
       }
     }
@@ -122,66 +138,5 @@ public class PersistentBeanConverter implements Converter {
     PersistentBean persistentBean = ((PersistentBean)value);
     return (persistentBean.getId() != null) ? persistentBean.getId().toString() : EMPTY;
   }
-
-  /*<property name="type">*/
-  //------------------------------------------------------------------
-
-  // MUDO (jand) we need the type; better get it from the request too!
-  //   (if only we could)
-  // same problem as in be.peopleware.jsf_II.persistence.CollectionHandler navigateToDetail
-
-  /**
-   * The type of the object (subclass of PersistentBean) that will
-   * be used as retrieval type.
-   *
-   * @basic
-   * @init null;
-   */
-  public final Class getType() {
-    return $type;
-  }
-
-  public final String getTypeName() {
-    return $type.getName();
-  }
-
-  /**
-   * Set the type of the object (subclass of PersistentBean) that will
-   * be used as retrieval type.
-   *
-   * @param   typeName
-   *          The fully qualified name of the type to be set.
-   * @pre     (Class.forName(typeName) != null)
-   *              ? PersistentBean.class.isAssignableFrom(Class.forName(typeName));
-   * @post    getType() == Class.forName(type);
-   * @throws  FacesException
-   *          {@link Class#forName(String)}
-   */
-  public void setTypeName(final String typeName) throws FacesException {
-    Class type;
-    try {
-      type = Class.forName(typeName);
-    }
-    catch (LinkageError lErr) {
-      throw new FacesException("cannot convert String to Class", lErr);
-    }
-    catch (ClassNotFoundException cnfExc) {
-      throw new FacesException("cannot convert String to Class", cnfExc);
-    }
-    assert ((type != null)
-        ? PersistentBean.class.isAssignableFrom(type) : true)
-        : "Type must be a subtype of " + PersistentBean.class +
-            " (and " + type + " isn't).";
-    $type = type;
-    LOG.debug("type of " + this + " set to Class " + type.getName());
-  }
-
-  /**
-   * The type of the {@link PersistentBean} that will be handled
-   * by the requests.
-   */
-  private Class $type;
-
-  /*</property>*/
 
 }
