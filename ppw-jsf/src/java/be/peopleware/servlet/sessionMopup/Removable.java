@@ -5,7 +5,7 @@
 </license>*/
 
 
-package be.peopleware.jsf_II.servlet;
+package be.peopleware.servlet.sessionMopup;
 
 
 /**

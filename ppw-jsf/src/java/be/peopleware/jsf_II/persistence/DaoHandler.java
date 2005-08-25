@@ -10,9 +10,9 @@ import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
-import be.peopleware.jsf_II.servlet.Removable;
-import be.peopleware.jsf_II.servlet.Skimmable;
 import be.peopleware.persistence_I.dao.Dao;
+import be.peopleware.servlet.sessionMopup.Removable;
+import be.peopleware.servlet.sessionMopup.Skimmable;
 
 
 /**

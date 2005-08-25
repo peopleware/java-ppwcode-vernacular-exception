@@ -27,12 +27,12 @@ import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.navigation.NavigationInstance;
 import be.peopleware.jsf_II.navigation.NavigationStack;
-import be.peopleware.jsf_II.servlet.Removable;
-import be.peopleware.jsf_II.servlet.Skimmable;
 import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
 import be.peopleware.persistence_I.IdNotFoundException;
 import be.peopleware.persistence_I.PersistentBean;
 import be.peopleware.persistence_I.dao.AsyncCrudDao;
+import be.peopleware.servlet.sessionMopup.Removable;
+import be.peopleware.servlet.sessionMopup.Skimmable;
 
 
 /**
