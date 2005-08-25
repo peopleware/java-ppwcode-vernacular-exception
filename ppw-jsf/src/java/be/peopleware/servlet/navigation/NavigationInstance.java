@@ -5,7 +5,7 @@
 </license>*/
 
 
-package be.peopleware.jsf_II.navigation;
+package be.peopleware.servlet.navigation;
 
 
 import java.util.Date;

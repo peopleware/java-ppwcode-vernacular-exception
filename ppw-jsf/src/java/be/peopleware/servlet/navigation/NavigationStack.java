@@ -5,7 +5,7 @@
 </license>*/
 
 
-package be.peopleware.jsf_II.navigation;
+package be.peopleware.servlet.navigation;
 
 
 import java.util.LinkedList;
@@ -28,7 +28,7 @@ import be.peopleware.jsf_II.persistence.PersistentBeanHandler;
  * <pre>
  *   &lt;managed-bean&gt;
  *     &lt;managed-bean-name&gt;navigationStack&lt;/managed-bean-name&gt;
- *     &lt;managed-bean-class&gt;be.peopleware.jsf_II.navigation.NavigationStack&lt;/managed-bean-class&gt;
+ *     &lt;managed-bean-class&gt;be.peopleware.servlet.navigation.NavigationStack&lt;/managed-bean-class&gt;
  *     &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;
  *   &lt;/managed-bean&gt;
  * </pre>
