@@ -95,13 +95,19 @@ public class MopupListener implements ServletRequestListener, Serializable {
             String attrName = (String)iter.next();
             Object value = session.getAttribute(attrName);
               // IllegalStateException if session is invalidated
+            LOG.debug("looking at attribute \"" + attrName + "\" = " + value);
             if (value != null) {
               if ((value instanceof Removable) && ((Removable)value).isToBeRemoved()) {
+                LOG.debug("attribute \"" + attrName + "\" is to be removed");
                 session.removeAttribute(attrName);
                   // IllegalStateException if session is invalidated
               }
               else if (value instanceof Skimmable) {
+                LOG.debug("attribute \"" + attrName + "\" is to be skimmed");
                 ((Skimmable)value).skim();
+              }
+              else {
+                LOG.debug("attribute \"" + attrName + "\" is not to be removed nor skimmed");
               }
             }
           }
