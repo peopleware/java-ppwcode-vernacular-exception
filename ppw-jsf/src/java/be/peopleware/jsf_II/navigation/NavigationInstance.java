@@ -53,7 +53,7 @@ public interface NavigationInstance {
    * @basic
    * @init NOW;
    */
-  Date getTime();
+  Date getLastRenderedTime();
 
   /*</property>*/
 
@@ -70,59 +70,14 @@ public interface NavigationInstance {
    * <code>null</code>, return <code>null</code>.
    *
    * @result (ni == null) ? (result == null);
-   * @post getTime().equals(NOW);
+   * @result (result != null) ?result.getTime().equals(NOW);
    */
   NavigationInstance absorb(NavigationInstance ni);
 
   /**
    * Navigate back to this navigation instance.
    */
-  void goBack() throws FacesException;
-
-
-//  /**
-//   * <p>Set the {@link InstanceHandler#setId(Long) id} of
-//   * {@link #getFromHandler()} to {@link #getFromPersistentBeanId()}, tell it to
-//   * {@link InstanceHandler#reset() reset}, and <strong>HTTP redirect</strong> to
-//   * {@link #getFromLink()}.</p>
-//   *
-//   * <p>This should should result in the browser requesting the
-//   * {@link #getFromViewId() from JSF page} from the web app. This page should use
-//   * {@link #getFromHandler()} as its handler, which was just prepared
-//   * for such a request.</p>
-//   *
-//   * <p>This method should be used as an <dfn>action method</dfn> like</p>
-//   * <pre>
-//   * &lt;h:commandButton id=&quot;<var>backButtonId</var>&quot;
-//   *        value=&quot;#{<var>buttonBundle</var>.<var>backButtonLabel</var>}&quot;
-//   *        action=&quot;#{<var>navigationStack</var>.pop.go}&quot;
-//   *        immediate=&quot;true&quot;
-//   *        disabled=&quot;#{not <var>currentHandler</var>.displayView}&quot; /&gt;
-//   * </pre>
-//   *
-//   * @pre getOutcomeViewId.equals(CUrrentVIewID); <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-//   * KAN WEL; ZELFDE PAGINA VOOR ANDERE ID
-//   * @post getFromHandler().getPersistentBeanId().equals(getFromPersistentBeanId());
-//   * @post getFromHandler().reset();
-//   * @throws FacesException
-//   *         RobustCurrent.facesContext();
-//   * @throws FacesException
-//   *         RobustCurrent.redirect();
-//   */
-//  public final void go() throws FacesException {
-//    if (LOG.isDebugEnabled()) {
-//      String currentViewId = RobustCurrent.uiViewRoot().getViewId();
-//      LOG.debug("go called from " + currentViewId);
-//    }
-//    getFromHandler().setId(getFromPersistentBeanId());
-//    // TODO getFromPersistentBeanId() cannot be null
-//    LOG.debug("handler id set and handler reset: " + getFromHandler()
-//              + " (id: " + getFromPersistentBeanId() + ")");
-//    String fromLink = getFromLink();
-//    RobustCurrent.redirect(fromLink);
-//    RobustCurrent.facesContext().responseComplete();
-//    LOG.debug("redirected to from link: " + fromLink);
-//  }
+  void navigateHere() throws FacesException;
 
 }
 

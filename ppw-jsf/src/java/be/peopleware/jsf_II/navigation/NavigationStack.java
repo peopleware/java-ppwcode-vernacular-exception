@@ -240,7 +240,7 @@ public class NavigationStack {
     NavigationInstance previous = getTop();
     pop();
     LOG.debug("navigating back to previous state (" + previous + ")");
-    previous.goBack();
+    previous.navigateHere();
   }
 
 }

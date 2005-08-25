@@ -33,24 +33,24 @@ public abstract class AbstractNavigationInstance implements NavigationInstance {
 
 
 
-  /*<property name="time">*/
+  /*<property name="LastRenderedTime">*/
   //------------------------------------------------------------------
 
-  public final Date getTime() {
-    return $endTime;
+  public final Date getLastRenderedTime() {
+    return $lastRenderedTime;
   }
 
   /**
    * @post new.getTime().equals(NOW);
    */
-  protected void resetTime() {
-    $endTime = new Date();
+  protected void resetLastRenderedTime() {
+    $lastRenderedTime = new Date();
   }
 
   /**
-   * @invar $endTime != null;
+   * @invar $lastRenderedTime != null;
    */
-  private Date $endTime = new Date();
+  private Date $lastRenderedTime = new Date();
 
   /*</property>*/
 

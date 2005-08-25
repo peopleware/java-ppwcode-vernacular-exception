@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,6 +25,8 @@ import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
+import be.peopleware.jsf_II.navigation.NavigationInstance;
+import be.peopleware.jsf_II.navigation.NavigationStack;
 import be.peopleware.jsf_II.servlet.Removable;
 import be.peopleware.jsf_II.servlet.Skimmable;
 import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
@@ -334,7 +337,7 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  * @idea (jand) gather viewmode in separate class
  * @mudo (jand) security
  */
-public class InstanceHandler extends PersistentBeanHandler {
+public class InstanceHandler extends PersistentBeanHandler implements NavigationInstance {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -1478,5 +1481,106 @@ public class InstanceHandler extends PersistentBeanHandler {
 
   /*</section>*/
 
+
+
+  /*<section name="removable">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @return getViewMode().equals(VIEWMODE_DISPLAY) ||
+   *              getViewMode().equals(VIEWMODE_DELETED);
+   */
+  public boolean isToBeRemoved() {
+    return getViewMode().equals(VIEWMODE_DISPLAY) ||
+              getViewMode().equals(VIEWMODE_DELETED);
+  }
+
+  /*</section>*/
+
+
+
+  /*<section name="navigationInstance">*/
+  //------------------------------------------------------------------
+
+
+  /*<property name="LastRenderedTime">*/
+  //------------------------------------------------------------------
+
+  public final Date getLastRenderedTime() {
+    return $lastRenderedTime;
+  }
+
+  /**
+   * @post new.getTime().equals(NOW);
+   */
+  protected void resetLastRenderedTime() {
+    $lastRenderedTime = new Date();
+  }
+
+  /**
+   * @invar $lastRenderedTime != null;
+   */
+  private Date $lastRenderedTime = new Date();
+
+  /*</property>*/
+
+  /**
+   * Join the state of this <code>NavigationInstance</code> and <code>ni</code>
+   * into <code>result</code>. This is typically called on an instance
+   * on top of the {@link NavigationStack}, with a next <code>NavigationInstance</code>.
+   * If this succeeds, the current top of the stack is replaced with the result
+   * of this operation, and <code>ni</code> is not placed on the stack. This
+   * method may return <code>this</code>, possibly
+   * with changed state to take into account the <code>ni</code> navigation.
+   * If absorption is not possible, return <code>null</code>. When <code>ni</code> is
+   * <code>null</code>, return <code>null</code>.
+   *
+   * @result (ni == null) ? (result == null);
+   * @result (result != null) ? (result == this);
+   * @return ((getClass() == ni.getClass()) &&
+   *              (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType()) &&
+   *              equalsWithNull(getId(), ((InstanceHandler)ni).getId())) ?
+   *           this : null;
+   * @result (result != null) ? getTime().equals(NOW);
+   */
+  public NavigationInstance absorb(NavigationInstance ni) {
+    if (ni == null) {
+      return null;
+    }
+    else if ((getClass() == ni.getClass()) &&
+              (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType()) &&
+              equalsWithNull(getId(), ((InstanceHandler)ni).getId())) {
+      // yes, we will absorb
+      resetLastRenderedTime();
+      return this;
+    }
+    else {
+      // no, we will not absorb
+      return null;
+    }
+  }
+
+  /**
+   * Is one value {@link Object#equals(java.lang.Object) equal}
+   * to another, if <code>null</code> is also allowed as value
+   * for a property.
+   *
+   * @return    (one == null)
+   *                ? (other == null)
+   *                : one.equals(other);
+   *
+   * @idea (jand) move to ppw-util or toryt
+   */
+  private static boolean equalsWithNull(final Object one, final Object other) {
+    return (one == null)
+              ? (other == null)
+              : one.equals(other);
+  }
+
+  public void navigateHere() throws FatalFacesException {
+    navigateHere(VIEWMODE_DISPLAY);
+  }
+
+  /*</section>*/
 
 }
