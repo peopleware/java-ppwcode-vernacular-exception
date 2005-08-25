@@ -10,6 +10,8 @@ import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
+import be.peopleware.jsf_II.servlet.Removable;
+import be.peopleware.jsf_II.servlet.Skimmable;
 import be.peopleware.persistence_I.dao.Dao;
 
 
@@ -65,7 +67,7 @@ import be.peopleware.persistence_I.dao.Dao;
  * @invar getDaoType() != null;
  * @invar Dao.class.isAssignableFrom(getDaoType());
  */
-public abstract class DaoHandler implements Serializable {
+public abstract class DaoHandler implements Serializable, Removable, Skimmable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -248,5 +250,47 @@ public abstract class DaoHandler implements Serializable {
   }
 
   /*</property>*/
+
+
+
+  /*<section name="removable">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @protected
+   * By default, objects are to be removed at the end of an HTTP request.
+   * This means that <code>DaoHandlers</code> in session scope behave by
+   * default actually as if they are in request scope. Subclasses should
+   * overwrite this method as needed.
+   */
+  public boolean isToBeRemoved() {
+    return true;
+  }
+
+  /*</section>*/
+
+
+
+  /*<section name="skimmable">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @protected
+   * Nothing to skim on this level. Subclasses should overwrite this
+   * method as appropriate.
+   */
+  public void skim() {
+    // NOP
+  }
+
+  /*</section>*/
+
+
+  /**
+   * Navigation string that says we want to stay on this page.
+   *
+   * @mudo (jand) probably remove
+   */
+  public final static String NAVIGATION_STRING_STAY_HERE = "success";
 
 }

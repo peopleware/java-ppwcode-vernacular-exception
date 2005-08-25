@@ -24,6 +24,8 @@ import be.peopleware.bean_IV.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
+import be.peopleware.jsf_II.servlet.Removable;
+import be.peopleware.jsf_II.servlet.Skimmable;
 import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
 import be.peopleware.persistence_I.IdNotFoundException;
 import be.peopleware.persistence_I.PersistentBean;
@@ -359,6 +361,7 @@ public class InstanceHandler extends PersistentBeanHandler {
 
   /**
    * The id of the {@link PersistentBean} that is handled by the requests.
+   * The id is not changed by {@link #skim()}.
    *
    * @basic
    * @init null;
@@ -408,6 +411,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   public final static String[] VIEWMODES
       = {VIEWMODE_DISPLAY, VIEWMODE_EDIT, VIEWMODE_EDITNEW, VIEWMODE_DELETED};
+
 
   /**
    * Does <code>viewMode</code> represent a valid view mode?
@@ -496,17 +500,19 @@ public class InstanceHandler extends PersistentBeanHandler {
   //------------------------------------------------------------------
 
   /**
-   * The {@link PersistentBean} that is handled in the requests.
-   * If {@link #getStoredInstance()} is not <code>null</code>,
-   * it is returned. If it is <code>null</code>, an instance
-   * is loaded from persistent storage with {@link #getAsyncCrudDao()},
-   * with type {@link #getPersistentBeanType()} and id {@link #getId()}.
-   * If {@link #getStoredInstance()} and {@link #getId()} are
-   * both <code>null</code>, a fresh instance of {@link #getPersistentBeanType()}
-   * will be created using the default constructor. If
-   * {@link #getPersistentBeanType()} is <code>null</code> when
-   * {@link #getStoredInstance()} is <code>null</code>,
-   * we cannot procede.
+   * <p>The {@link PersistentBean} that is handled in the requests.
+   *   If {@link #getStoredInstance()} is not <code>null</code>,
+   *   it is returned. If it is <code>null</code>, an instance
+   *   is loaded from persistent storage with {@link #getAsyncCrudDao()},
+   *   with type {@link #getPersistentBeanType()} and id {@link #getId()}.
+   *   If {@link #getStoredInstance()} and {@link #getId()} are
+   *   both <code>null</code>, a fresh instance of {@link #getPersistentBeanType()}
+   *   will be created using the default constructor. If
+   *   {@link #getPersistentBeanType()} is <code>null</code> when
+   *   {@link #getStoredInstance()} is <code>null</code>,
+   *   we cannot procede.</p>
+   * <p>In the default implementation, {@link #skim()} removes the instances if
+   *   {@link #getId()} is not <code>null</code>.
    *
    * @return new.getStoredInstance();
    * @post ((getStoredInstance() == null) && (getId() != null)) ?
@@ -810,35 +816,35 @@ public class InstanceHandler extends PersistentBeanHandler {
     LOG.debug("InstanceHandler.update called; the bean is already partially updated");
     LOG.debug("persistentBean: " + getInstance());
     try {
-      AsyncCrudDao dao = getAsyncCrudDao();
-      try {
+    AsyncCrudDao dao = getAsyncCrudDao();
+    try {
         checkConditions(VIEWMODE_EDIT); // ConditionException
-        updateValues();
-        LOG.debug("The bean is now fully updated");
-        LOG.debug("persistentBean: " + getInstance());
-        if (RobustCurrent.hasMessages()) {
-          // updateValues can create FacesMessages that signal semantic errors
+      updateValues();
+      LOG.debug("The bean is now fully updated");
+      LOG.debug("persistentBean: " + getInstance());
+      if (RobustCurrent.hasMessages()) {
+        // updateValues can create FacesMessages that signal semantic errors
           return null;
-        }
-        else {
-          dao.startTransaction(); // TechnicalException
-          dao.updatePersistentBean(getInstance()); // TechnicalException, CompoundPropertyException
-          dao.commitTransaction(getInstance()); // TechnicalException, CompoundPropertyException
-          setViewMode(VIEWMODE_DISPLAY);
-          return null;
-        }
       }
-      catch(CompoundPropertyException cpExc) {
-        LOG.debug("update action failed; cancelling ...", cpExc);
-        dao.cancelTransaction(); // TechnicalException
-        LOG.debug("update action cancelled; using exception as faces message");
-        RobustCurrent.showCompoundPropertyException(cpExc);
-        setViewMode(VIEWMODE_EDIT);
+      else {
+        dao.startTransaction(); // TechnicalException
+        dao.updatePersistentBean(getInstance()); // TechnicalException, CompoundPropertyException
+        dao.commitTransaction(getInstance()); // TechnicalException, CompoundPropertyException
+        setViewMode(VIEWMODE_DISPLAY);
         return null;
       }
+    }
+    catch(CompoundPropertyException cpExc) {
+      LOG.debug("update action failed; cancelling ...", cpExc);
+      dao.cancelTransaction(); // TechnicalException
+      LOG.debug("update action cancelled; using exception as faces message");
+      RobustCurrent.showCompoundPropertyException(cpExc);
+      setViewMode(VIEWMODE_EDIT);
+      return null;
+    }
       catch(ConditionException exc) {
         return exc.getNavigationString();
-      }
+  }
     }
     catch(TechnicalException exc) {
       RobustCurrent.fatalProblem("Could not update " + getInstance(), exc, LOG);
@@ -1448,5 +1454,29 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   public final static PersistentBeanHandlerResolver RESOLVER =
       new PersistentBeanHandlerResolver(InstanceHandler.class, "");
+
+
+
+  /*<section name="skimmable">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Sets the {@link #getStoredInstance() stored instance} to <code>null</code>
+   * if the {@link #getId() id} is not <code>null</code>.
+   * The {@link #getAssociationHandlers() associations handlers} are checked.
+   * If they are {@link Removable}, and they {@link Removable#isToBeRemoved()
+   * want to be removed}, they are removed from the backing cache of
+   * association handlers. If they are not removed, and are {@link Skimmable},
+   * they are {@link Skimmable#skim() skimmed}.
+   */
+  public void skim() {
+    if (getId() != null) {
+      releaseInstance();
+    }
+    // cached assoc handlers
+  }
+
+  /*</section>*/
+
 
 }

@@ -32,6 +32,8 @@ import be.peopleware.persistence_I.dao.Dao;
  * @invar (getType() != null)
  *            ? PersistentBean.class.isAssignableFrom(getType())
  *            : true;
+ * @idea to save memory, cache and share labels for the same type and
+ *       locale on a higher level
  */
 public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
 
@@ -140,7 +142,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
 
   /**
    * The type of the {@link PersistentBean} that will be handled
-   * by the requests.
+   * by the requests. The type is never {@link #skim() skimmed}.
    *
    * @basic
    * @init null;
@@ -433,4 +435,5 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
     // NOP
   }
 
-}
+  }
+
