@@ -264,6 +264,7 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
    * overwrite this method as needed.
    */
   public boolean isToBeRemoved() {
+    LOG.debug("request to be removed (" + this + "); giving default answer true");
     return true;
   }
 
@@ -280,6 +281,7 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
    * method as appropriate.
    */
   public void skim() {
+    LOG.debug("request to skim this (" + this + ")");
     // NOP
   }
 

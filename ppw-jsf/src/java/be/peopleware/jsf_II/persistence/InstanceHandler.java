@@ -1414,13 +1414,19 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
       return ch;
     }
 
+    /**
+     * All cached association handlers are to be removed.
+     */
     public boolean isToBeRemoved() {
       Iterator iter = $backingMap.values().iterator();
       while (iter.hasNext()) {
-        if (! ((PersistentBeanHandler)iter.next()).isToBeRemoved()) {
+        PersistentBeanHandler pbH = (PersistentBeanHandler)iter.next();
+        if (! pbH.isToBeRemoved()) {
+          LOG.debug("cached association handler " + pbH + " is not to be removed");
           return false;
         }
       }
+      LOG.debug("all cached association handlers are to be removed");
       return true;
     }
 
@@ -1432,9 +1438,11 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
         Map.Entry entry = (Map.Entry)iter.next();
         PersistentBeanHandler pbH = (PersistentBeanHandler)entry.getValue();
         if (pbH.isToBeRemoved()) {
+          LOG.debug("    cached association handler " + pbH + " is to be removed");
           $backingMap.remove(entry.getKey());
         }
         else {
+          LOG.debug("    cached assocation handler " + pbH + " will be skimmed");
           pbH.skim();
         }
       }
@@ -1505,8 +1513,10 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
   public void skim() {
     super.skim();
     if (getId() != null) {
+      LOG.debug("skimming instance");
       releaseInstance();
     }
+    LOG.debug("skimming cached association handlers");
     $associationHandlers.skim();
   }
 
@@ -1523,9 +1533,11 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    *            getAssociationHandler().isToBeRemoved();
    */
   public boolean isToBeRemoved() {
-    return (getViewMode().equals(VIEWMODE_DISPLAY) ||
-              getViewMode().equals(VIEWMODE_DELETED)) &&
-           $associationHandlers.isToBeRemoved();
+    boolean result = (getViewMode().equals(VIEWMODE_DISPLAY) ||
+                          getViewMode().equals(VIEWMODE_DELETED)) &&
+                        $associationHandlers.isToBeRemoved();
+    LOG.debug(this.toString() + ".isToBeRemoved() = " + result);
+    return result;
   }
 
   /*</section>*/
@@ -1577,18 +1589,19 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    * @result (result != null) ? getTime().equals(NOW);
    */
   public NavigationInstance absorb(NavigationInstance ni) {
+    LOG.debug("request to absorb " + ni + " by " + this);
     if (ni == null) {
       return null;
     }
     else if ((getClass() == ni.getClass()) &&
               (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType()) &&
               equalsWithNull(getId(), ((InstanceHandler)ni).getId())) {
-      // yes, we will absorb
+      LOG.debug("absorbing");
       resetLastRenderedTime();
       return this;
     }
     else {
-      // no, we will not absorb
+      LOG.debug("not absorbing");
       return null;
     }
   }
@@ -1611,6 +1624,8 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
   }
 
   public void navigateHere() throws FatalFacesException {
+    LOG.debug("request to navigate back to this handler instance (" +
+              getPersistentBeanType() + ", " + getId() + ")");
     navigateHere(VIEWMODE_DISPLAY);
   }
 

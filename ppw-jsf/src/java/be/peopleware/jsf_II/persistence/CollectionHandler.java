@@ -486,6 +486,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    */
   public void skim() {
     super.skim();
+    LOG.debug("instances and handlers are skimmed");
     $handlers = null;
     releaseInstances();
   }

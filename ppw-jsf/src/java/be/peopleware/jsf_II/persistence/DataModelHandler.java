@@ -82,6 +82,7 @@ public class DataModelHandler extends CollectionHandler {
 
   public void skim() {
     super.skim();
+    LOG.debug("datamodel is skimmed");
     $dataModel = null;
   }
 
