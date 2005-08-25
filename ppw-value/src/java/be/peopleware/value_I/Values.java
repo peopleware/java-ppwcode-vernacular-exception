@@ -50,6 +50,8 @@ public abstract class Values {
    * @return    (one == null)
    *                ? (other == null)
    *                : one.equals(other);
+   *
+   * @idea (jand) move to ppw-util or toryt
    */
   public static boolean equalsWithNull(final Object one, final Object other) {
     return (one == null)
