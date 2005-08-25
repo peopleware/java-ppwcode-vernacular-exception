@@ -435,5 +435,18 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
     // NOP
   }
 
-  }
+
+
+  /*<section name="skimmable">*/
+  //------------------------------------------------------------------
+
+  /* no code here;
+   * security issues are not used yet.
+   * persistent bean type is not to be skimmed
+   * i18n label maps should be cached at a higher level
+   */
+
+  /*</section>*/
+
+}
 

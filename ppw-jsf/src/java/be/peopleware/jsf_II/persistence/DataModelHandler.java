@@ -43,6 +43,7 @@ public class DataModelHandler extends CollectionHandler {
 
   /**
    * Returns a DataModel containing all peristentBeans wrapped in the associated Handler.
+   * This is skimmed when {@link #skim()} is called.
    *
    * @return    DataModel
    *            A datamodel with PersistentBeanHandlers.
@@ -77,6 +78,11 @@ public class DataModelHandler extends CollectionHandler {
       result = (InstanceHandler)getDataModel().getRowData();
     }
     return result;
+  }
+
+  public void skim() {
+    super.skim();
+    $dataModel = null;
   }
 
 }

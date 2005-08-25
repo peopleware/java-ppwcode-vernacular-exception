@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -1317,102 +1320,129 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
     return getAssociationHandlers();
   }
 
-  private final Map $associationHandlers =
-      new AbstractUnmodifiableMap() {
+  private final class AutomaticAssociationHandlersMap extends AbstractUnmodifiableMap
+      implements Removable, Skimmable {
 
-            public final Set keySet() {
-              if ($keySet == null) {
-                initKeySet();
-              }
-              return $keySet;
-            }
+    public final Set keySet() {
+      if ($keySet == null) {
+        initKeySet();
+      }
+      return $keySet;
+    }
 
-            private void initKeySet() {
-              $keySet = new HashSet();
-              $keySet.addAll(getAssociationMetaMap().keySet());
-              PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(getPersistentBeanType());
-              for (int i = 0; i < descriptors.length; i++) {
-                PropertyDescriptor pd = descriptors[i];
-                if (PersistentBean.class.isAssignableFrom(pd.getPropertyType())) {
-                  $keySet.add(pd.getDisplayName());
-                }
-              }
-            }
+    private void initKeySet() {
+      $keySet = new HashSet();
+      $keySet.addAll(getAssociationMetaMap().keySet());
+      PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(getPersistentBeanType());
+      for (int i = 0; i < descriptors.length; i++) {
+        PropertyDescriptor pd = descriptors[i];
+        if (PersistentBean.class.isAssignableFrom(pd.getPropertyType())) {
+          $keySet.add(pd.getDisplayName());
+        }
+      }
+    }
 
-            private HashSet $keySet;
+    private HashSet $keySet;
 
-            private Map $backingMap = new HashMap();
+    private Map $backingMap = new HashMap();
 
-            public Object get(Object key) throws FatalFacesException {
-              if (! keySet().contains(key)) {
-                LOG.warn("request for associations handler with unknown key (property name) \"" +
-                         key + "\"; returning null");
-                return null;
-              }
-              Object result = $backingMap.get(key);
-              if (result == null) {
-                String propertyName = (String)key;
-                try {
-                  Object propertyValue = PropertyUtils.getProperty(getInstance(), propertyName);
-                  if (propertyValue == null) {
-                    LOG.debug("propertyValue is null; cannot create handler, returning null");
-                    return null;
-                  }
-                  if (propertyValue instanceof PersistentBean) {
-                    result = freshPersistentBeanInstanceHandlerFor((PersistentBean)propertyValue);
-                  }
-                  else if (propertyValue instanceof Collection) {
-                    Class associatedType = (Class)getAssociationMetaMap().get(propertyName);
-                    result = freshCollectionHandlerFor(associatedType, (Collection)propertyValue);
-                  }
-                  else {
-                    LOG.warn("Property \"" + propertyName + "\" is not a PersistentBean or a " +
-                             "Collection; returning null");
-                    return null;
-                  }
-                  $backingMap.put(key, result);
-                }
-                catch (ClassCastException ccExc) {
-                  RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", ccExc, LOG);
-                }
-                catch (IllegalArgumentException iaExc) {
-                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", iaExc, LOG);
-                }
-                catch (IllegalAccessException iaExc) {
-                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", iaExc, LOG);
-                }
-                catch (InvocationTargetException itExc) {
-                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", itExc, LOG);
-                }
-                catch (NullPointerException npExc) {
-                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", npExc, LOG);
-                }
-                catch (ExceptionInInitializerError eiiErr) {
-                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", eiiErr, LOG);
-                }
-                catch (NoSuchMethodException nsmExc) {
-                  RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", nsmExc, LOG);
-                }
-              }
-              return result;
-            }
+    public Object get(Object key) throws FatalFacesException {
+      if (! keySet().contains(key)) {
+        LOG.warn("request for associations handler with unknown key (property name) \"" +
+                 key + "\"; returning null");
+        return null;
+      }
+      Object result = $backingMap.get(key);
+      if (result == null) {
+        String propertyName = (String)key;
+        try {
+          Object propertyValue = PropertyUtils.getProperty(getInstance(), propertyName);
+          if (propertyValue == null) {
+            LOG.debug("propertyValue is null; cannot create handler, returning null");
+            return null;
+          }
+          if (propertyValue instanceof PersistentBean) {
+            result = freshPersistentBeanInstanceHandlerFor((PersistentBean)propertyValue);
+          }
+          else if (propertyValue instanceof Collection) {
+            Class associatedType = (Class)getAssociationMetaMap().get(propertyName);
+            result = freshCollectionHandlerFor(associatedType, (Collection)propertyValue);
+          }
+          else {
+            LOG.warn("Property \"" + propertyName + "\" is not a PersistentBean or a " +
+                     "Collection; returning null");
+            return null;
+          }
+          $backingMap.put(key, result);
+        }
+        catch (ClassCastException ccExc) {
+          RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", ccExc, LOG);
+        }
+        catch (IllegalArgumentException iaExc) {
+          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", iaExc, LOG);
+        }
+        catch (IllegalAccessException iaExc) {
+          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", iaExc, LOG);
+        }
+        catch (InvocationTargetException itExc) {
+          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", itExc, LOG);
+        }
+        catch (NullPointerException npExc) {
+          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", npExc, LOG);
+        }
+        catch (ExceptionInInitializerError eiiErr) {
+          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", eiiErr, LOG);
+        }
+        catch (NoSuchMethodException nsmExc) {
+          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", nsmExc, LOG);
+        }
+      }
+      return result;
+    }
 
-            private InstanceHandler freshPersistentBeanInstanceHandlerFor(PersistentBean pb) throws FatalFacesException, IllegalArgumentException {
-              InstanceHandler pbch = (InstanceHandler)InstanceHandler.
-                    RESOLVER.freshHandlerFor(pb.getClass(), getDaoVariableName());
-              pbch.setInstance(pb);
-              return pbch;
-            }
+    private InstanceHandler freshPersistentBeanInstanceHandlerFor(PersistentBean pb) throws FatalFacesException, IllegalArgumentException {
+      InstanceHandler pbch = (InstanceHandler)RESOLVER.freshHandlerFor(pb.getClass(), getDaoVariableName());
+      pbch.setInstance(pb);
+      return pbch;
+    }
 
-            private CollectionHandler freshCollectionHandlerFor(Class associatedType, Collection c)
-                throws FatalFacesException {
-              CollectionHandler ch =
-                  (CollectionHandler)CollectionHandler.RESOLVER.freshHandlerFor(associatedType, getDaoVariableName());
-              ch.setInstances(c);
-              return ch;
-            }
+    private CollectionHandler freshCollectionHandlerFor(Class associatedType, Collection c)
+        throws FatalFacesException {
+      CollectionHandler ch =
+          (CollectionHandler)CollectionHandler.RESOLVER.freshHandlerFor(associatedType, getDaoVariableName());
+      ch.setInstances(c);
+      return ch;
+    }
 
-          };
+    public boolean isToBeRemoved() {
+      Iterator iter = $backingMap.values().iterator();
+      while (iter.hasNext()) {
+        if (! ((PersistentBeanHandler)iter.next()).isToBeRemoved()) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    public void skim() {
+      $keySet = null;
+      List $cachedEntries = new LinkedList($backingMap.entrySet());
+      Iterator iter = $cachedEntries.iterator();
+      while (iter.hasNext()) {
+        Map.Entry entry = (Map.Entry)iter.next();
+        PersistentBeanHandler pbH = (PersistentBeanHandler)entry.getValue();
+        if (pbH.isToBeRemoved()) {
+          $backingMap.remove(entry.getKey());
+        }
+        else {
+          pbH.skim();
+        }
+      }
+    }
+
+  }
+
+  private final AutomaticAssociationHandlersMap $associationHandlers = new AutomaticAssociationHandlersMap();
 
   /**
    * <p>The automated {@link #getAssociationHandlers() association handlers map} requires
@@ -1473,10 +1503,11 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    * they are {@link Skimmable#skim() skimmed}.
    */
   public void skim() {
+    super.skim();
     if (getId() != null) {
       releaseInstance();
     }
-    // cached assoc handlers
+    $associationHandlers.skim();
   }
 
   /*</section>*/
@@ -1487,12 +1518,14 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
   //------------------------------------------------------------------
 
   /**
-   * @return getViewMode().equals(VIEWMODE_DISPLAY) ||
-   *              getViewMode().equals(VIEWMODE_DELETED);
+   * @return (getViewMode().equals(VIEWMODE_DISPLAY) ||
+   *              getViewMode().equals(VIEWMODE_DELETED)) &&
+   *            getAssociationHandler().isToBeRemoved();
    */
   public boolean isToBeRemoved() {
-    return getViewMode().equals(VIEWMODE_DISPLAY) ||
-              getViewMode().equals(VIEWMODE_DELETED);
+    return (getViewMode().equals(VIEWMODE_DISPLAY) ||
+              getViewMode().equals(VIEWMODE_DELETED)) &&
+           $associationHandlers.isToBeRemoved();
   }
 
   /*</section>*/

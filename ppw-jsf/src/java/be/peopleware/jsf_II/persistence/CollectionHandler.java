@@ -92,6 +92,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * {@link #getAsyncCrudDao()}. Only in this case, {@link #isSubtypesIncluded()}
    * is used.
    * The returned collection is sorted by {@link #getComparator()}.
+   * Instances are {@link #skim() skimmed} always.
+   * @mudo (jand) this skimming is probably not ok
    *
    * @return a sorted version of {@link #getStoredInstances()}
    * @throw FatalFacesException
@@ -154,6 +156,11 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     LOG.debug("Setting " + instances + " as instances");
     assert getPersistentBeanType() != null;
     $storedInstances = (instances == null) ? null : new ArrayList(instances);
+  }
+
+  // MUDO (jand) we probably need to retain the collection of id's sometimes
+  private void releaseInstances() {
+    $storedInstances = null;
   }
 
   private Collection $storedInstances;
@@ -231,7 +238,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   /**
    * Return the comparator which is/can be used for sorting the
-   * retrieved {@link PersistentBean}'s
+   * retrieved {@link PersistentBean}'s. This is never
+   * {@link #skim() skimmed}.
    */
   public DynamicComparatorChain getComparator() {
     return $comparator;
@@ -247,25 +255,11 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     $comparator = comparator;
   }
 
-//  /**
-//   * @return (getComparator() == null) ? EMPTY :
-//   *                stringArrayToConcatString(getComparator().getSortOrder());
-//   */
-//  public final String getSortOrder() {
-//    return (getComparator() == null) ?
-//               EMPTY :
-//               stringArrayToConcatString(getComparator().getSortOrder());
-//  }
-
   /**
    * <strong>= {@value}</strong>
    */
   public final static String SORT_PROPERTY_REQUEST_PARAMETER_NAME = "sortProperty";
 
-//  /**
-//   * <strong>= {@value}</strong>
-//   */
-//  public final static String SORT_ORDER_REQUEST_PARAMETER_NAME = "sortOrder";
 
   /**
    * <strong>= {@value}</strong>
@@ -300,55 +294,11 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     else {
       LOG.debug("sort property is " + sortPropertyName);
     }
-//    String sortOrderString = RobustCurrent.requestParameterValues(SORT_ORDER_REQUEST_PARAMETER_NAME)[0];
-//    if (LOG.isWarnEnabled() && (sortOrderString != null) && (! sortOrderString.equals(EMPTY))) {
-//      LOG.warn("no previous sort order given; starting from comparator default");
-//    }
-//    else {
-//      LOG.debug("sort order is " + sortOrderString);
-//      String[] sortOrder = concatStringToStringArray(sortOrderString);
-//      getComparator().setSortOrder(sortOrder);
-//    }
     getComparator().bringToFront(sortPropertyName);
     if ($handlers != null) {
       Collections.sort($handlers, $handlerComparator);
     }
   }
-
-//  private final static String SORT_ORDER_SEPARATOR = ",";
-//
-//  /**
-//   * @pre Strings in strings do not contain ','
-//   * @idea (jand) move to util
-//   */
-//  public static String stringArrayToConcatString(String[] strings) {
-//    if (strings == null) {
-//      return EMPTY;
-//    }
-//    else {
-//      StringBuffer result = new StringBuffer(strings.length * 20);
-//      for (int i = 0; i < strings.length; i++) {
-//        result.append(strings[i]);
-//        if (i < strings.length - 1) {
-//          result.append(SORT_ORDER_SEPARATOR);
-//        }
-//      }
-//      return result.toString();
-//    }
-//  }
-//
-//  /**
-//   * @pre Strings in strings do not contain ','
-//   * @idea (jand) move to util
-//   */
-//  public static String[] concatStringToStringArray(String concatString) {
-//    if (concatString == null) {
-//      return new String[0];
-//    }
-//    else {
-//      return concatString.split(SORT_ORDER_SEPARATOR);
-//    }
-//  }
 
   private DynamicComparatorChain $comparator = new DynamicComparatorChain();
 
@@ -363,6 +313,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   /**
    * Returns a Set containing all peristentBeans wrapped in the associated Handler.
+   * During {@link #skim() skimming}, the cache is removed.
+   * @mudo (jand) This is probably wrong once we have modes.
    *
    * @return    Set
    *            A Set with PersistentBeanHandlers based on the instances of this Handler..
@@ -524,6 +476,31 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     context.setViewRoot(viewRoot);
     context.renderResponse();
   }
+
+  /*<section name="skimmable">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Sets the {@link #getStoredInstances() stored instances} to <code>null</code>.
+   * Sets the cached instance handlers to <code>null</code>.
+   */
+  public void skim() {
+    super.skim();
+    $handlers = null;
+    releaseInstances();
+  }
+
+  /*</section>*/
+
+
+
+  /*<section name="removable">*/
+  //------------------------------------------------------------------
+
+  // yep, for now
+
+  /*</section>*/
+
 
   /**
    * <strong>= {@value}</strong>
