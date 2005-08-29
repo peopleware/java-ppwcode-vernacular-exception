@@ -31,17 +31,18 @@ import be.peopleware.persistence_I.PersistentBean;
  *   during operation, all instances of type {@link #getPersistentBeanType()} are retrieved
  *   from persistent storage using {@link #getAsyncCrudDao()} to work with.</p>
  * <h3>Creation of New Instances</h3>
- * <p>From a collection view, fresh instances for a given type can be created.
- *   This means that an {@link InstanceHandler} for the appropriate type
+ * <p>From a collection view, fresh instances for the corresponding type can be
+ *   created. This means that an {@link InstanceHandler} for the appropriate type
  *   is created, and that we navigate there in {@link InstanceHandler#VIEWMODE_EDITNEW}.
- *   The user then gets the change to fill out the fields for the fresh instance.
+ *   The user then gets the chance to fill out the fields for the fresh instance.
  *   This new handler needs to be provided with a fresh instance, where some
  *   fields can already be set by us. This functionality is offered to programmers
- *   with {@link #navigateToEditNew(PersistentBean)}.</p>
- * <p>End users call this functionality through an action method. How the fresh
- *   instance this action method offers to {@link #navigateToEditNew(PersistentBean)}
- *   is configured, differs from case to case. Thus, programmers will have to write
- *   a distinct action method for each case that calls {@link #navigateToEditNew(PersistentBean)}.</p>
+ *   by the method {@link #navigateToEditNew(PersistentBean)}.</p>
+ * <p>End users call this functionality through an action method. This action method
+ *   offers a fresh instance to {@link #navigateToEditNew(PersistentBean)}.
+ *   How this new instance is configured, differs from case to case. Thus,
+ *   programmers will have to write a distinct action method for each case that
+ *   calls {@link #navigateToEditNew(PersistentBean)}.</p>
  * <p>A special case is the creation of a fresh unrelated instance. This happens often
  *   from a page that shows all instances of a type. For this case, an
  *   {@link #navigateToEditNew() action method}
@@ -49,7 +50,7 @@ import be.peopleware.persistence_I.PersistentBean;
  *   default constructor.</p>
  * <h3>Sorting</h3>
  * <p>{@link #getInstances() Instances} are sorted with the {@link #getComparator() comparator}.
-     The action listener method {@link #sort(ActionEvent)} is available
+ *   The action listener method {@link #sort(ActionEvent)} is available
  *   for end users to control the sort order. The default {@link #getComparator()} sorts on
  *   {@link PersistentBean#getId()}, which is not very end-user friendly.</p>
  *
@@ -58,10 +59,10 @@ import be.peopleware.persistence_I.PersistentBean;
  *
  * @toryt cC:org.toryt.contract.Collections
  * @invar getInstances() != null;
- * @invar cC:instanceOf(getInstances(), getType());
+ * @invar cC:instanceOf(getInstances(), getPersistentBeanType());
  * @invar cC:noNull(getInstances());
  *
- * @mudo (jand) this must be adapted to be more then display; also edit-in-grid
+ * @mudo (jand) this must be adapted to be more than display; also edit-in-grid
  */
 public abstract class CollectionHandler extends PersistentBeanHandler {
 
@@ -87,7 +88,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   /**
    * If {@link #getStoredInstances()} is not <code>null</code>,
-   * return that Collection. Otherwise, retrieve all instances
+   * return that Collection; otherwise, retrieve all instances
    * of type {@link #getPersistentBeanType()} from persistent storage, using
    * {@link #getAsyncCrudDao()}. Only in this case, {@link #isSubtypesIncluded()}
    * is used.
@@ -237,8 +238,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   //------------------------------------------------------------------
 
   /**
-   * Return the comparator which is/can be used for sorting the
-   * retrieved {@link PersistentBean}'s. This is never
+   * Return the comparator chain which is/can be used for sorting the
+   * retrieved {@link PersistentBean}s. This is never
    * {@link #skim() skimmed}.
    */
   public DynamicComparatorChain getComparator() {
@@ -246,7 +247,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
-   * Set a comparator for sorting the retrieved {@link PersistentBean}'s
+   * Set a comparator for sorting the retrieved {@link PersistentBean}s.
    *
    * @param     comparator
    *            The new Comparator to use for sorting
@@ -312,7 +313,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   public static final String ID_REQUEST_PARAMETER_NAME = "pbId";
 
   /**
-   * Returns a Set containing all peristentBeans wrapped in the associated Handler.
+   * Returns a {@link List} containing all persistent beans in {@link #getInstances()}
+   * wrapped in a corresponding {@link InstanceHandler}.
    * During {@link #skim() skimming}, the cache is removed.
    * @mudo (jand) This is probably wrong once we have modes.
    *
@@ -417,8 +419,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
-   * <p>Action method that creates a fresh instances of {@link #getPersistentBeanType()} with
-   *   the default instructor, and then calls {@link #navigateToEditNew(PersistentBean)}
+   * <p>Action method that creates a fresh instance of {@link #getPersistentBeanType()} with
+   *   the default constructor, and then calls {@link #navigateToEditNew(PersistentBean)}
    *   with it.</p>
    * <p>The fresh instance handler is made available to the JSP/JSF page in request scope,
    *   as a variable with the appropriate name, and we navigate to
@@ -430,7 +432,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
-   * <p>Create a fresh handler, most approproate for <code>fresh.getClass()</code>,
+   * <p>Create a fresh handler, most appropriate for the type of the given
+   *   persistent bean <code>fresh.getClass()</code>,
    *   and navigate there in {@link InstanceHandler#VIEWMODE_EDITNEW} using
    *   {@link InstanceHandler#navigateHere(String)}.</p>
    * <p>Although this is not obligatory, <code>fresh</code> should be an instance of

@@ -42,7 +42,8 @@ public class DataModelHandler extends CollectionHandler {
   //------------------------------------------------------------------
 
   /**
-   * Returns a DataModel containing all peristentBeans wrapped in the associated Handler.
+   * Returns a {@link DataModel} containing all persistent beans in
+   * {@link #getInstances()} wrapped in a corresponding {@link InstanceHandler}.
    * This is skimmed when {@link #skim()} is called.
    *
    * @return    DataModel

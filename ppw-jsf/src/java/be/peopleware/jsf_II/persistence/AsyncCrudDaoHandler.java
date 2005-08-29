@@ -16,6 +16,8 @@ import be.peopleware.persistence_I.dao.AsyncCrudDao;
  *
  * @invar getDaoType() == AsyncCrudDao.class;
  * @invar getDefaultDaoVariableName().equals(
+ *          DEFAULT_DAO_VARIABLE_NAME
+ *        );
  */
 public abstract class AsyncCrudDaoHandler extends DaoHandler {
 

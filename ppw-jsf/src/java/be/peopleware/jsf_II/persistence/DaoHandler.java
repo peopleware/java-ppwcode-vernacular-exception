@@ -19,33 +19,33 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  * <p>Common functionality for JavaServer Faces backing beans (handlers)
  *  that use a {@link Dao}.</p>
  * <p>Handlers should be {@link Serializable}.
- *   This makes it an possible to use them in session scope efficiently.
- *   The container might save memory by writing user sesssion to disk,
+ *   This makes it possible to use them in session scope efficiently.
+ *   The container might save memory by writing user sessions to disk,
  *   and this mechanism also makes fail-over and load balancing between
  *   different servers possible. Often, handlers will not be used in
  *   session scope, but it should be possible.</p>
  * <p>A {@link Dao} cannot be serialized (see the JavaDoc). This also
- *   doesn't make much sense in a web application. Dao's often involve
+ *   doesn't make much sense in a web application. Daos often involve
  *   a database or application server connection. Such a connection
- *   should not be kept open inbetween HTTP requests. Thus, it makes
- *   no sense whatsoever to serialize a {@link Dao} in any way inbetween
- *   HTTP requests. A fresh {@link Dao} should be rebuild for every HTTP
- *   request. It would be possible to only rebuild the backend connection
+ *   should not be kept open in-between HTTP requests. Thus, it makes
+ *   no sense whatsoever to serialize a {@link Dao} in any way in-between
+ *   HTTP requests. A fresh {@link Dao} should be rebuilt for every HTTP
+ *   request. It would be possible to only rebuild the back-end connection
  *   for a DAO, and keep the {@link Dao} itself, but this only moves the
  *   issue one layer. We decide that the {@link Dao} is the correct layer
  *   to make this separation. In fact, this is part of the definition
  *   of what a {@link Dao} is.</p>
  * <p>To make it possible to keep a <code>DaoHandler</code> in session
- *   scope, while a fresh {@link Dao} is provided each HTTP session,
- *   instances of this type will lookup the necessary {@link Dao}
+ *   scope, while a fresh {@link Dao} is provided for every HTTP request,
+ *   instances of this type will look up the necessary {@link Dao}
  *   whenever they need it. <strong>Instances of this type will
  *   never store a reference to the {@link Dao} themselves, but
- *   lookup the necessary {@link Dao} each time it is requested.<br />
+ *   look up the necessary {@link Dao} each time it is requested.</strong><br />
  *   The lookup happens by resolving a {@link #getDaoVariableName()}
  *   using the {@link RobustCurrent#variableResolver() current JSF
  *   application VariableResolver}. The {@link #getDaoVariableName()}
- *   property implements IoC for the DAO.</p>
- * <p>Each time the {@link #getDao() DAO is requested}, we check that
+ *   property implements IoC (Inversion of Control) for the DAO.</p>
+ * <p>Each time the {@link #getDao() DAO} is requested, we check that
  *   the instance to which the {@link #getDaoVariableName()} resolves
  *   is of the {@link #getDaoType() expected type}. The
  *   {@link #getDaoType()} is usually fixed for a given subclass, and
@@ -224,7 +224,7 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
   public final Dao getDao() throws FatalFacesException {
     LOG.debug("request for dao (dao variable name = " + getDaoVariableName() + ")");
     if (! hasDaoVariableName()) {
-      RobustCurrent.fatalProblem("dao variable is null or the empty String " +
+      RobustCurrent.fatalProblem("dao variable name is null or the empty String " +
                                  "and no default set", LOG);
     }
     Object dao = (Dao)RobustCurrent.resolve(isDaoVariableNameEmpty() ?

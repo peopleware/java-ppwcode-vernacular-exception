@@ -30,7 +30,7 @@ import be.peopleware.jsf_II.RobustCurrent;
  *   during construction, based on the properties file that is found
  *   with the {@link JsfResourceBundleLoadStrategy}
  *   with the {@link Locale} that is in the {@link UIViewRoot}
- *   at that time. Later request for an actual entry will use the Locale that
+ *   at that time. Later requests for an actual entry will use the Locale that
  *   is in the {@link UIViewRoot} then. If there are entries in the properties
  *   file for 1 {@link Locale} that are not in the properties file for another
  *   {@link Locale}, strange behavior is to be expected.</p>

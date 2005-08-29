@@ -40,7 +40,7 @@ public abstract class WrappingTreeNode implements TreeNode, Serializable {
 
 
   /**
-   * After construction, {@link #getWrapped()} <code>== instance</code>.
+   * After construction, {@link #getWrapped()} <code>== wrapped</code>.
    *
    * @param wrapped
    *        The business object this is a wrapper for.
@@ -87,7 +87,7 @@ public abstract class WrappingTreeNode implements TreeNode, Serializable {
   }
 
   /**
-   * As a default implementation, we offer the FQCN if
+   * As a default implementation, we offer the FQCN of
    * the wrapped business object. Subclasses can override this method.
    *
    * @return-protected getInstance().getClass().getName(); the FQCN of {@link #getWrapped()}.
@@ -102,7 +102,7 @@ public abstract class WrappingTreeNode implements TreeNode, Serializable {
 
   /**
    * As a default implementation, we offer the {@link List#size()}
-   * of {link #getChildren()}. Subclasses can override this method.
+   * of {@link #getChildren()}. Subclasses can override this method.
    *
    * @return-protected getChildren().size();
    */

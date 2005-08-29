@@ -1298,8 +1298,8 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    *   association). These relations need to be navigatable and editable.</p>
    * <p>For the to-many associations, there is a property in the {@link PersistentBean instance}
    *   that returns a {@link Collection} of other {@link PersistentBean PersistentBeans}.
-   *   We often want to show this collection in one way, and interact with it, via
-   *   the web interface. This is handled by an {@link CollectionHandler}.
+   *   We often want to show this collection in some way, and interact with it, via
+   *   the web interface. This is handled by a {@link CollectionHandler}.
    *   In the handler that wraps around the original instance (an object of this class),
    *   we need a way to create and access such a
    *   {@link CollectionHandler list handler}. Below you will find code

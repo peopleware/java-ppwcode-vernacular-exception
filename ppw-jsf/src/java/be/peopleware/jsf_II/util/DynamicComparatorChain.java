@@ -53,7 +53,7 @@ import org.apache.commons.logging.LogFactory;
  *   <code>address.street</code> is a nested name). For information about the format
  *   of the property names, see
  *   <a href="http://jakarta.apache.org/commons/beanutils/api/index.html" target="extern">the
- *   Apache Jakarta Commons beanutil Javadoc</a>. Furthmore, if
+ *   Apache Jakarta Commons beanutil Javadoc</a>. Furthermore, if
  *   the last element in a nested expression is <code>size</code> or
  *   <code>length</code>, and it is called on a {@link Collection} or
  *   {@link Map}, resp. an array, this returns the size of that instance.</p>

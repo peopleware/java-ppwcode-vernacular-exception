@@ -38,7 +38,7 @@ import be.peopleware.jsf_II.RobustCurrent;
  *   and the short label if it is <code>true</code>.</p>
  * <p>A value is returned for each property of {@link #getType()}. If no label
  *   can be found for a property, <code>&quot;???&quot; + <var>propertyName</var>
- *   + &quot;???&quot;</code>.</p>
+ *   + &quot;???&quot;</code> is returned.</p>
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.

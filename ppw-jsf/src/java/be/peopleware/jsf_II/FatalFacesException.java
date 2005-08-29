@@ -12,11 +12,11 @@ import javax.faces.FacesException;
 
 
 /**
- * A {@link FacesException} that will can thrown when a fatal situation
+ * A {@link FacesException} that can be thrown when a fatal situation
  * is detected. Exceptions of this kind should not be caught, until the last
  * moment, and then only to log the user out gracefully, and to notify
  * the user and administrators.
- * 
+ *
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */

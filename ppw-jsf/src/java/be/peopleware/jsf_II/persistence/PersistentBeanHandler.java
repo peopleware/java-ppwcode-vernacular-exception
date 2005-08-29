@@ -29,8 +29,8 @@ import be.peopleware.persistence_I.dao.Dao;
  * @author    Jan Dockx
  * @author    Peopleware n.v.
  *
- * @invar (getType() != null)
- *            ? PersistentBean.class.isAssignableFrom(getType())
+ * @invar (getPersistentBeanType() != null)
+ *            ? PersistentBean.class.isAssignableFrom(getPersistentBeanType())
  *            : true;
  * @idea to save memory, cache and share labels for the same type and
  *       locale on a higher level
@@ -158,7 +158,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    * @param  type
    *         The type to be set.
    * @pre (type != null) ? PersistentBean.class.isAssignableFrom(type);
-   * @post   getType() == type;
+   * @post   getPersistentBeanType() == type;
    *
    * @todo (jand) doc: and set the label maps
    */
@@ -190,7 +190,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    *
    * @param   typeName
    *          The fully qualified name of the type to be set.
-   * @post    getType() == Class.forName(type);
+   * @post    getPersistentBeanType() == Class.forName(typeName);
    * @throws  FacesException
    *          {@link Class#forName(String)}
    */
@@ -234,8 +234,9 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
   }
 
   /**
-   * @invar (getType() != null) ==> ($labels != null);
-   * @invar (getType() != null) ==> ($labels.getType().equals(getType()));
+   * @invar (getPersistentBeanType() != null) ==> ($labels != null);
+   * @invar (getPersistentBeanType() != null)
+   *           ==> ($labels.getType().equals(getPersistentBeanType()));
    */
   private I18nPropertyLabelMap $labels;
 
@@ -260,8 +261,9 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
 
 
   /**
-   * @invar (getType() != null) ==> ($shortLabels != null);
-   * @invar (getType() != null) ==> ($shortLabels.getType().equals(getType()));
+   * @invar (getPersistentBeanType() != null) ==> ($shortLabels != null);
+   * @invar (getPersistentBeanType() != null)
+   *          ==> ($shortLabels.getType().equals(getPersistentBeanType()));
    */
   private I18nPropertyLabelMap $shortLabels;
 
@@ -390,7 +392,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    * bean to do whatever configuration necessary.
    *
    * @post new.getInstance() isfresh
-   * @post new.getInstance() == getType().newInstance();
+   * @post new.getInstance() == getPersistentBeanType().newInstance();
    */
   protected PersistentBean createInstance() throws FatalFacesException {
     LOG.debug("creating new instance of type \"" + getPersistentBeanType() + "\"");
@@ -429,7 +431,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    * when needed.
    *
    * @pre pb != null;
-   * @pre pb.getClass() == getType()
+   * @pre pb.getClass() == getPersistentBeanType()
    */
   protected void postCreateInstance(PersistentBean pb) {
     // NOP
