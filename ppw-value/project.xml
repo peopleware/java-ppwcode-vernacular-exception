@@ -12,7 +12,7 @@
     the implementation of value types (including enumeration types), are laid out.
     Some common value types are implemented and offered for reuse.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>2.0.0-6.0</currentVersion>
+  <currentVersion>2.0.1-6.0</currentVersion>
   <package>be.peopleware.value_I</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
@@ -55,6 +55,18 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.4-20040521</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-test-I</artifactId>
       <version>1.0.2-1.0</version>
@@ -69,9 +81,6 @@
     <dependency>
       <groupId>ppw-libraries</groupId>
       <artifactId>ppw-bean-IV</artifactId>
-      <!-- MUDO (jand) this is a bad dependency;
-           it means that PropertyException needs to be moved down to a common
-           dependecy -->
       <version>1.1.0-2.0</version>
       <type>jar</type>
       <url>http://cvs.peopleware.be/projects/JavaLibraries/ppw-bean-IV/</url>
@@ -86,18 +95,6 @@
       <groupId>jsf</groupId>
       <artifactId>jsf-api</artifactId>
       <version>1.1.01</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>servletapi</groupId>
-      <artifactId>servletapi</artifactId>
-      <version>2.4-20040521</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
       <type>jar</type>
     </dependency>
   </dependencies>
