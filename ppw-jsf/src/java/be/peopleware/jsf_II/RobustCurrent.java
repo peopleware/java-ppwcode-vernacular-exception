@@ -9,6 +9,7 @@ package be.peopleware.jsf_II;
 
 
 import java.io.IOException;
+import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Locale;
@@ -182,8 +183,8 @@ public class RobustCurrent {
    *
    * @return  RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY
    *            .loadResourceBundle(baseName);
-   * @throws  FatalFacesException
-   *          locale();
+   * @throws FatalFacesException
+   *         locale();
    */
   public static ResourceBundle resourceBundle(String baseName) throws FatalFacesException {
     return RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY.loadResourceBundle(baseName);
@@ -204,6 +205,29 @@ public class RobustCurrent {
       fatalProblem("no external context found");
     }
     return result;
+  }
+
+  /**
+   * The current {@link Principal user principal}. Returns <code>null</code> if there
+   * is no user principal in the {@link ExternalContext}.
+   *
+   * @return externalContext().getUserPrincipal();
+   * @except externalContext();
+   */
+  public static Principal principal() throws FacesException {
+    return externalContext().getUserPrincipal();
+  }
+
+  /**
+   * Check whether the current {@link Principal user principal} has
+   * role <code>role</code>. Returns <code>false</code> if there
+   * is no user principal in the {@link ExternalContext}.
+   *
+   * @return externalContext().isUserInRole(role);
+   * @except externalContext();
+   */
+  public static boolean isUserInRole(String role) throws FacesException {
+    return externalContext().isUserInRole(role);
   }
 
   /**
@@ -298,7 +322,7 @@ public class RobustCurrent {
    *         facesContext().getApplication() == null;
    */
   public static Application application() throws FatalFacesException {
-    Application result = facesContext().getApplication();
+    Application result =  facesContext().getApplication();
     if (result == null) {
       fatalProblem("no faces application instance found");
     }
@@ -338,7 +362,6 @@ public class RobustCurrent {
   }
 
   /**
-   *
    * The current servlet or portlet application scope variables map.
    * Exception if <code>null</code>.
    *
@@ -366,7 +389,7 @@ public class RobustCurrent {
    *         application().getViewHandler() == null;
    */
   public static ViewHandler viewHandler() throws FatalFacesException {
-    ViewHandler result = application().getViewHandler();
+    ViewHandler result =  application().getViewHandler();
     if (result == null) {
       fatalProblem("no faces view handler found");
     }
@@ -509,7 +532,7 @@ public class RobustCurrent {
    * The <code>message</code> is logged in {@link #LOG}
    * as <code>fatal</code>.
    *
-   * @post   false;
+   * @post false;
    * @throws FatalFacesException ffExc
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == null);
    *         A FacesException that reports the problem.
@@ -529,7 +552,7 @@ public class RobustCurrent {
    * The <code>message</code> is logged in {@link #LOG}
    * as <code>fatal</code>.
    *
-   * @post   false;
+   * @post false;
    * @throws FatalFacesException ffExc
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == t);
    *         A FacesException that reports the problem.
@@ -549,7 +572,7 @@ public class RobustCurrent {
    * The <code>message</code> is logged in {@link #LOG}
    * as <code>fatal</code>.
    *
-   * @post   false;
+   * @post false;
    * @throws FatalFacesException ffExc
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == null);
    *         A FacesException that reports the problem.
@@ -571,7 +594,7 @@ public class RobustCurrent {
    *
    * @idea (jand) this should send a mail to administrator and developers
    *
-   * @post   false;
+   * @post false;
    * @throws FatalFacesException ffExc
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == t);
    *         A FacesException that reports the problem.
@@ -585,6 +608,7 @@ public class RobustCurrent {
 
 
   // TODO (jand) code lower still needs to be checked; does it belong here?
+
 
 
 
@@ -661,15 +685,15 @@ public class RobustCurrent {
 
   /**
    * This method is to be called by handlers in a situation where an expected
-   * record has disappeared from the database. We create a message about this,
+   * record has disappeared from the data base. We create a message about this,
    * log the occurrence, and send the user 1 page upstream (probably the previous
    * page). We agree that the navigation outcome to go 1 page upstream is
    * {@link #OUTCOME_NO_INSTANCE}.
    * The severity of the message is {@link FacesMessage#SEVERITY_WARN}.
    *
-   * @pre   type != null;
-   * @pre   log != null;
-   * @exceptapplication();
+   * @pre type != null;
+   * @pre log != null;
+   * @except application();
    */
   public static String noInstance(Class type, Log log) throws FatalFacesException {
     assert type != null;
@@ -862,16 +886,24 @@ public class RobustCurrent {
 
   /**
    * A class representing a variable in some scope.
-   * Each instance of this class has two properties:
-   * - key: the name of the variable
-   * - scope: a map that contains or has contained the variable under the
-   *          given key
-   * - value: the value of the variable
+   * Each instance of this class has 3 properties:
+   * <ul>
+   *   <li>key: the name of the variable</li>
+   *   <li>scope: a map that contains or has contained the variable under the
+   *              given key</li>
+   *   <li>value: the value of the variable</li>
+   * </ul>
+   * The value that is returned by {@link #getValue()} is the current value
+   * of the variable with name {@link #getKey()} in scope {@link #getScope()},
+   * if that value still exists in that scope. Otherwise, it is the value
+   * the variable had when we last consulted the scope
+   * ({@link #getLastKnownValue()}). The scope is consulted during construction,
+   * a call to {@link #getValue()}, {@link #remove()} or {@link #resetValue()}.
    *
-   * @author nsmeets
+   *
    * @invar  getKey() != null;
    * @invar  getScope() != null;
-   * @invar  getValue() != null;
+   * @invar  getLastKnownValue() != null;
    */
   public static class ScopeEntry {
 
@@ -882,11 +914,11 @@ public class RobustCurrent {
      *          The name of the variable.
      * @param   scope
      *          The map containing the variable.
-     * @pre     key != null;
-     * @pre     scope != null;
+     * @pre key != null;
+     * @pre scope != null;
      * @post    new.getKey().equals(key);
      * @post    new.getScope().equals(scope);
-     * @post    new.getValue() == scope.get(key);
+     * @post    new.getLastKnownValue() == scope.get(key);
      * @throws  NoSuchElementException
      *          scope.get(key) == null;
      */
@@ -898,7 +930,7 @@ public class RobustCurrent {
       }
       $key = key;
       $scope = scope;
-      $value = scope.get(key);
+      $lastKnownValue = scope.get(key);
     }
 
     /**
@@ -934,21 +966,42 @@ public class RobustCurrent {
      *
      * @basic
      */
-    public final Object getValue() {
-      return $value;
+    public final Object getLastKnownValue() {
+      return $lastKnownValue;
     }
 
     /**
-     * @invar  $value != null;
+     * @return (getScope().get(getKey()) != null) ? getScope().get(getKey()) : getLastKnownValue();
+     * @post  new.getLastKnownValue() == getValue();
      */
-    private Object $value;
+    public final Object getValue() {
+      resetValue();
+      return $lastKnownValue;
+    }
+
+    /**
+     * @post new.getLastKnownValue() == getValue();
+     */
+    public final void resetValue() {
+      Object current = $scope.get($key);
+      if (current != null) {
+        $lastKnownValue = current;
+      }
+    }
+
+    /**
+     * @invar  $lastKnownValue != null;
+     */
+    private Object $lastKnownValue;
 
     /**
      * Remove the key from the scope.
      *
      * @post  !new.getScope().containsKey(getKey());
+     * @post  new.getLastKnownValue() == getValue();
      */
     public final void remove() {
+      resetValue();
       $scope.remove(getKey());
     }
 
@@ -959,7 +1012,7 @@ public class RobustCurrent {
      * @post  new.getScope().get(key) == getValue();
      */
     public final void reput() {
-      $scope.put(getKey(), getValue());
+      $scope.put(getKey(), getLastKnownValue());
     }
 
   }
