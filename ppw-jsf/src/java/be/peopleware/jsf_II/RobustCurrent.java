@@ -13,6 +13,7 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -27,6 +28,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
+import javax.faces.el.ReferenceSyntaxException;
 import javax.faces.el.ValueBinding;
 import javax.faces.el.VariableResolver;
 import javax.faces.webapp.UIComponentTag;
@@ -73,13 +75,16 @@ public class RobustCurrent {
 
   private static final Log LOG = LogFactory.getLog(RobustCurrent.class);
 
+  /**
+   * The {@link JsfResourceBundleLoadStrategy} used.
+   */
   public static final JsfResourceBundleLoadStrategy JSF_RESOURCE_BUNDLE_LOAD_STRATEGY
       = new JsfResourceBundleLoadStrategy();
 
   /**
    * The current {@link FacesContext}. Exception if <code>null</code>.
    *
-   * @returns FacesContext.getCurrentInstance();
+   * @result result == FacesContext.getCurrentInstance();
    * @result FacesContext.getCurrentInstance() != null;
    * @throws FatalFacesException
    *         FacesContext.getCurrentInstance() == null;
@@ -95,7 +100,7 @@ public class RobustCurrent {
   /**
    * The current {@link UIViewRoot}. Exception if <code>null</code>.
    *
-   * @returns facesContext().getViewRoot();
+   * @result result == facesContext().getViewRoot();
    * @result facesContext().getViewRoot() != null;
    * @except facesContext();
    * @throws FatalFacesException
@@ -110,6 +115,9 @@ public class RobustCurrent {
   }
 
   /**
+   * Removes the value and submitted value of all {@link UIInput} elements
+   * in the UI tree.
+   *
    * <p>{@link UIInput} elements in the UI tree, starting from {@link #uiViewRoot()},
    *   can contain a local value, that was the result of a previous request / response
    *   cycle. If the component is not used in the mean time, it will still have that
@@ -117,14 +125,21 @@ public class RobustCurrent {
    * <p>This method sets {@link UIInput#getSubmittedValue()} and
    *   {@link UIInput#getValue()} to <code>null</code>, and
    *   {@link UIInput#isLocalValueSet()} to <code>false</code>.</p>
+   *
+   * @except uiViewRoot();
    */
-  public static void resetUIInputComponents() throws FacesException {
+  public static void resetUIInputComponents() throws FatalFacesException {
     resetUIInputComponent(uiViewRoot());
   }
 
   /**
+   * Removes the value and submitted value of all {@link UIInput} elements
+   * in the UI tree with <code>component</code> as its root.
+   *
    * Helper method for {@link #resetUIInputComponents()}.
    * Depth-first tree traversal.
+   *
+   * @pre  component != null;
    */
   private static void resetUIInputComponent(UIComponent component) {
     assert component != null;
@@ -145,7 +160,7 @@ public class RobustCurrent {
   /**
    * The current {@link Locale}. Exception if <code>null</code>.
    *
-   * @returns uiViewRoot().getLocale();
+   * @result result == uiViewRoot().getLocale();
    * @result uiViewRoot().getLocale() != null;
    * @except uiViewRoot();
    * @throws FatalFacesException
@@ -165,8 +180,10 @@ public class RobustCurrent {
    * retrieved with {@link #JSF_RESOURCE_BUNDLE_LOAD_STRATEGY}. If no
    * resource bundle could be found in this way, <code>null</code> is returned.
    *
-   * @throws FatalFacesException
-   *         locale();
+   * @return  RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY
+   *            .loadResourceBundle(baseName);
+   * @throws  FatalFacesException
+   *          locale();
    */
   public static ResourceBundle resourceBundle(String baseName) throws FatalFacesException {
     return RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY.loadResourceBundle(baseName);
@@ -175,7 +192,7 @@ public class RobustCurrent {
   /**
    * The current {@link ExternalContext}. Exception if <code>null</code>.
    *
-   * @returns facesContext().getExternalContext();
+   * @result result == facesContext().getExternalContext();
    * @result facesContext().getExternalContext() != null;
    * @except facesContext();
    * @throws FatalFacesException
@@ -190,14 +207,15 @@ public class RobustCurrent {
   }
 
   /**
-   * The current session. Exception if <code>null</code>.
+   * The session associated with the current request.
+   * Exception if <code>null</code>.
    * Create a session now if there isn't one.
    *
-   * @returns externalContext().getSession();
-   * @result externalContext().getSession() != null;
+   * @result result == externalContext().getSession(true);
+   * @result externalContext().getSession(true) != null;
    * @except externalContext();
    * @throws FatalFacesException
-   *         externalContext().getSession() == null;
+   *         externalContext().getSession(true) == null;
    */
   public static Object session() throws FatalFacesException {
     Object result = externalContext().getSession(true);
@@ -208,15 +226,14 @@ public class RobustCurrent {
   }
 
   /**
-   * The current session. Exception if <code>null</code>
-   * or of another type.
+   * The {@link HttpSession} associated with the current request.
+   * Exception if <code>null</code> or of another type.
    * Create a session now if there isn't one.
    *
-   * @returns session();
-   * @result externalContext().getSession() != null;
+   * @result result == session();
    * @except session();
    * @throws FatalFacesException
-   *         ! externalContext().getSession() instanceof HttpSession
+   *         ! (session() instanceof HttpSession)
    */
   public static HttpSession httpSession() throws FatalFacesException {
     HttpSession result = null;
@@ -232,7 +249,7 @@ public class RobustCurrent {
  /**
    * The current session map. Exception if <code>null</code>.
    *
-   * @returns externalContext().getSessionMap();
+   * @result result == externalContext().getSessionMap();
    * @result externalContext().getSessionMap() != null;
    * @except externalContext();
    * @throws FatalFacesException
@@ -249,10 +266,18 @@ public class RobustCurrent {
   /**
    * Redirect robustly to <code>link</code>
    *
-   * @post getExternalContext().redirect(link);
+   * @post   externalContext().redirect(link);
    * @except externalContext();
    * @throws FatalFacesException
    *         ; redirect failed with an IOException
+   * @throws IllegalArgumentException
+   *         If the specified url is relative
+   * @throws IllegalStateException
+   *         If, in a portlet environment, the current response object is a
+   *         RenderResponse instead of an ActionResponse.
+   * @throws IllegalStateException
+   *         If, in a servlet environment, the current response has already been
+   *         committed
    */
   public static void redirect(String link) throws FatalFacesException {
     try {
@@ -266,14 +291,14 @@ public class RobustCurrent {
   /**
    * The current {@link Application}. Exception if <code>null</code>.
    *
-   * @returns facesContext().getApplication();
+   * @result result == facesContext().getApplication();
    * @result facesContext().getApplication() != null;
    * @except facesContext();
    * @throws FatalFacesException
    *         facesContext().getApplication() == null;
    */
   public static Application application() throws FatalFacesException {
-    Application result =  facesContext().getApplication();
+    Application result = facesContext().getApplication();
     if (result == null) {
       fatalProblem("no faces application instance found");
     }
@@ -281,10 +306,12 @@ public class RobustCurrent {
   }
 
   /**
-   * The current <dfn>application resource bundle name</dfn>.
+   * The fully qualified class name of the ResourceBundle to be used
+   * for JavaServer Faces messages for this application (the name of the
+   * current <dfn>application resource bundle</dfn>).
    * This can be <code>null</code>.
    *
-   * @return application().getMessageBundle();
+   * @return result == application().getMessageBundle();
    * @except application();
    */
   public static String applicationBundleName() throws FatalFacesException {
@@ -298,6 +325,11 @@ public class RobustCurrent {
    * @return ResourceBundle.getBundle(applicationBundleName(),
                                                      locale());
    * @except application();
+   * @except locale();
+   * @throws NullPointerException
+   *         If <code>baseName</code> or <code>locale</code> is <code>null</code>.
+   * @throws MissingResourceException
+   *         If no resource bundle for the specified base name can be found.
    */
   public static ResourceBundle applicationBundle() throws FatalFacesException {
     ResourceBundle result = ResourceBundle.getBundle(applicationBundleName(),
@@ -306,10 +338,11 @@ public class RobustCurrent {
   }
 
   /**
+   *
    * The current servlet or portlet application scope variables map.
    * Exception if <code>null</code>.
    *
-   * @returns externalContext().getApplicationMap();
+   * @result result == externalContext().getApplicationMap();
    * @result externalContext().getApplicationMap() != null;
    * @except externalContext();
    * @throws FatalFacesException
@@ -326,14 +359,14 @@ public class RobustCurrent {
   /**
    * The current {@link ViewHandler}. Exception if <code>null</code>.
    *
-   * @returns application().getViewHandler();
+   * @result result == application().getViewHandler();
    * @result application().getViewHandler() != null;
    * @except application();
    * @throws FatalFacesException
    *         application().getViewHandler() == null;
    */
   public static ViewHandler viewHandler() throws FatalFacesException {
-    ViewHandler result =  application().getViewHandler();
+    ViewHandler result = application().getViewHandler();
     if (result == null) {
       fatalProblem("no faces view handler found");
     }
@@ -343,7 +376,7 @@ public class RobustCurrent {
   /**
    * The current servlet or portlet request. Exception if <code>null</code>.
    *
-   * @returns externalContext().getRequest();
+   * @result result == externalContext().getRequest();
    * @result externalContext().getRequest() != null;
    * @except externalContext();
    * @throws FatalFacesException
@@ -361,11 +394,10 @@ public class RobustCurrent {
    * The current {@link HttpServletRequest}.
    * Exception if <code>null</code> or of another type.
    *
-   * @returns externalContext().getRequest();
-   * @result externalContext().getRequest() != null;
-   * @except externalContext();
+   * @result request();
+   * @except request();
    * @throws FatalFacesException
-   *         ! externalContext().getResponse() instanceof HttpServletRequest;
+   *         ! (request() instanceof HttpServletRequest);
    */
   public static HttpServletRequest httpServletRequest() throws FatalFacesException {
     HttpServletRequest result = null;
@@ -381,11 +413,11 @@ public class RobustCurrent {
   /**
    * The current servlet or portlet response. Exception if <code>null</code>.
    *
-   * @returns externalContext().getRespanse();
-   * @result externalContext().getRespanse() != null;
+   * @result result == externalContext().getResponse();
+   * @result externalContext().getResponse() != null;
    * @except externalContext();
    * @throws FatalFacesException
-   *         externalContext().getRespanse() == null;
+   *         externalContext().getResponse() == null;
    */
   public static Object response() throws FatalFacesException {
     Object result = externalContext().getResponse();
@@ -399,11 +431,10 @@ public class RobustCurrent {
    * The current {@link HttpServletResponse}.
    * Exception if <code>null</code> or of another type.
    *
-   * @returns externalContext().getResponse();
-   * @result externalContext().getResponse() != null;
-   * @except externalContext();
+   * @result response();
+   * @except response();
    * @throws FatalFacesException
-   *         ! externalContext().getResponse() instanceof HttpServletResponse;
+   *         ! (response() instanceof HttpServletResponse);
    */
   public static HttpServletResponse httpServletResponse() throws FatalFacesException {
     HttpServletResponse result = null;
@@ -420,7 +451,7 @@ public class RobustCurrent {
    * The current servlet or portlet request scope variables map.
    * Exception if <code>null</code>.
    *
-   * @returns externalContext().getRequestMap();
+   * @result externalContext().getRequestMap();
    * @result externalContext().getRequestMap() != null;
    * @except externalContext();
    * @throws FatalFacesException
@@ -439,14 +470,22 @@ public class RobustCurrent {
    * session scope, and application scope, in that order. Return
    * <code>null</code> if no such variable is found.
    *
-   * @returns externalContext().getRequest();
-   * @result externalContext().getRequest() != null;
+   * @return [ (requestMap().get(var) != null)
+   *             ? (result == requestMap().get(var))
+   *             : [ (sessionMap().get(var) != null)
+   *                   ? (result == sessionMap().get(var))
+   *                   : [ (applicationMap().get(var) != null)
+   *                         ? (result == applicationMap().get(var))
+   *                         : (result == null)
+   *                     ]
+   *               ]
+   *         ]
    *
-   * @except externalContext();
-   * @throws FatalFacesException
-   *         externalContext().getRequest() == null;
-   * @throws FatalFacesException
-   *         externalContext().getSessionMap() == null;
+   * @except requestMap();
+   * @except sessionMap();
+   *         (if requestMap().get(var) == null)
+   * @except applicationMap();
+   *         (if requestMap().get(var) == null && sessionMap().get(var) == null)
    */
   public static Object variable(String var) throws FatalFacesException {
     Object result = requestMap().get(var);
@@ -460,6 +499,8 @@ public class RobustCurrent {
   }
 
   /**
+   * Log out the user and throw a {@link FatalFacesException}.
+   *
    * This method is to be called when a fatal error occurs.
    * We invalidate the {@link HttpSession}, actually logging
    * out the user, and throw a {@link FatalFacesException}.
@@ -468,7 +509,7 @@ public class RobustCurrent {
    * The <code>message</code> is logged in {@link #LOG}
    * as <code>fatal</code>.
    *
-   * @post false;
+   * @post   false;
    * @throws FatalFacesException ffExc
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == null);
    *         A FacesException that reports the problem.
@@ -478,14 +519,17 @@ public class RobustCurrent {
   }
 
   /**
+   * Log out the user and throw a {@link FatalFacesException}.
+   *
    * This method is to be called when a fatal error occurs.
    * We invalidate the {@link HttpSession}, actually logging
    * out the user, and throw a {@link FatalFacesException}.
    * This will propagate through the entire application to the
    * container, and an error page will be shown.
-   * The <code>message</code> is logged in <code>LOG</code> as <code>fatal</code>.
+   * The <code>message</code> is logged in {@link #LOG}
+   * as <code>fatal</code>.
    *
-   * @post false;
+   * @post   false;
    * @throws FatalFacesException ffExc
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == t);
    *         A FacesException that reports the problem.
@@ -495,14 +539,17 @@ public class RobustCurrent {
   }
 
   /**
+   * Log out the user and throw a {@link FatalFacesException}.
+   *
    * This method is to be called when a fatal error occurs.
    * We invalidate the {@link HttpSession}, actually logging
    * out the user, and throw a {@link FatalFacesException}.
    * This will propagate through the entire application to the
    * container, and an error page will be shown.
-   * The <code>message</code> is logged in <code>log</code> as <code>fatal</code>.
+   * The <code>message</code> is logged in {@link #LOG}
+   * as <code>fatal</code>.
    *
-   * @post false;
+   * @post   false;
    * @throws FatalFacesException ffExc
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == null);
    *         A FacesException that reports the problem.
@@ -512,16 +559,19 @@ public class RobustCurrent {
   }
 
   /**
+   * Log out the user and throw a {@link FatalFacesException}.
+   *
    * This method is to be called when a fatal error occurs.
    * We invalidate the {@link HttpSession}, actually logging
    * out the user, and throw a {@link FatalFacesException}.
    * This will propagate through the entire application to the
    * container, and an error page will be shown.
-   * The <code>message</code> is logged in <code>log</code> as <code>fatal</code>.
+   * The <code>message</code> is logged in {@link #LOG}
+   * as <code>fatal</code>.
    *
    * @idea (jand) this should send a mail to administrator and developers
    *
-   * @post false;
+   * @post   false;
    * @throws FatalFacesException ffExc
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == t);
    *         A FacesException that reports the problem.
@@ -538,17 +588,20 @@ public class RobustCurrent {
 
 
 
-
   /**
    * Get the {@link Throwable#getLocalizedMessage()} from <code>pExc</code>,
-   * and turn it into a message.
-   * The JSF component id of the message will be the
-   * {@link PropertyException#getPropertyName() property name found in the exception}.
-   * The severity of the message is {@link FacesMessage#SEVERITY_INFO}.
+   * using the resource bundle load strategy {@link #JSF_RESOURCE_BUNDLE_LOAD_STRATEGY}
+   * and turn it into a {@link FacesMessage}; use
+   * {@link #showCompoundPropertyException(CompoundPropertyException)} when
+   * <code>pExc</code> is a {@link CompoundPropertyException}.
    *
-   * @throws FacesException
+   * The severity of the message is {@link FacesMessage#SEVERITY_INFO}.
+   * @todo The JSF component id of the message will be the
+   * {@link PropertyException#getPropertyName() property name found in the exception}.
+   *
+   * @throws FatalFacesException
    */
-  public static void showPropertyException(PropertyException pExc) throws FacesException {
+  public static void showPropertyException(PropertyException pExc) throws FatalFacesException {
     if (pExc instanceof CompoundPropertyException) {
       showCompoundPropertyException((CompoundPropertyException)pExc);
     }
@@ -571,10 +624,10 @@ public class RobustCurrent {
    * turn it into faces messages. The faces action should return <code>null</code>:
    * we should stay on the same page.
    *
-   * @throws FacesException
+   * @throws FatalFacesException
    */
   public static void showCompoundPropertyException (CompoundPropertyException cpe)
-      throws FacesException {
+      throws FatalFacesException {
     Iterator iter = cpe.getElementExceptions().values().iterator();
     while (iter.hasNext()) {
       Set propertyExceptions = (Set)iter.next();
@@ -587,7 +640,10 @@ public class RobustCurrent {
   }
 
   /**
-   * <strong>= {@value}
+   * Navigation string used when an expected instance has disappeared from
+   * persistent storage.
+   *
+   * <strong>= {@value}</strong>
    *
    * @see #noInstance(Class, Log)
    */
@@ -597,7 +653,7 @@ public class RobustCurrent {
    * The key in the {@link #applicationBundle()} for the message
    * that reports on a disappeared object.
    *
-   * <strong>= {@value}
+   * <strong>= {@value}</strong>
    *
    * @see #noInstance(Class, Log)
    */
@@ -605,18 +661,17 @@ public class RobustCurrent {
 
   /**
    * This method is to be called by handlers in a situation where an expected
-   * record has disappeared from the data base. We create a message about this,
-   * log the occurence, and send the user 1 page upstream (probably the previous
+   * record has disappeared from the database. We create a message about this,
+   * log the occurrence, and send the user 1 page upstream (probably the previous
    * page). We agree that the navigation outcome to go 1 page upstream is
    * {@link #OUTCOME_NO_INSTANCE}.
    * The severity of the message is {@link FacesMessage#SEVERITY_WARN}.
    *
-   * @pre type != null;
-   * @pre log != null;
-   * @throws FacesException
-   *         application();
+   * @pre   type != null;
+   * @pre   log != null;
+   * @exceptapplication();
    */
-  public static String noInstance(Class type, Log log) throws FacesException {
+  public static String noInstance(Class type, Log log) throws FatalFacesException {
     assert type != null;
     assert log != null;
     log.info("current " + type + " not found in DB anymore; type: " + type);
@@ -632,12 +687,22 @@ public class RobustCurrent {
    * looked up in the application bundle. If <code>arguments</code>
    * is <code>null</code>, no formatting is done.
    *
-   * @throws FacesException
-   *         application();
+   * @param  key
+   *         This key is used to look up a message in the current
+   *         {@link #applicationBundle()}.
+   * @param  arguments
+   *         Arguments that can be substituted in the message if this message
+   *         has parameters.
+   * @param  severity
+   *         The severity of the message.
+   * @param  componentId
+   *         The id to which the message is associated.
+   * @except applicationBundle();
+   * @except facesContext();
    */
   public static void addApplicationMessage(String key, Object[] arguments,
                                             FacesMessage.Severity severity, String componentId)
-      throws FacesException {
+      throws FatalFacesException {
     ResourceBundle rb = applicationBundle();
     LOG.debug("bundle is: " + rb);
     String messageText;
@@ -663,13 +728,17 @@ public class RobustCurrent {
   /**
    * Returns true when the faces context contains at least one message.
    * Returns false otherwise.
+   *
    * @return facesContext().getMessages().hasNext();
+   * @except facesContext();
    */
-  public static boolean hasMessages() {
+  public static boolean hasMessages() throws FatalFacesException {
     return facesContext().getMessages().hasNext();
   }
 
   /**
+   * The empty string.
+   *
    * <strong>= &quot;&quot;</strong>
    */
   public final static String EMPTY = "";
@@ -681,10 +750,13 @@ public class RobustCurrent {
    * @pre component != null;
    * @pre name != null;
    * @pre ! name.equals(EMPTY);
-   * @throws FatalFacesException
-   *         application();
+   * @except application();
    * @throws FatalFacesException
    *         ! UIComponentTag.isValueReference(value)
+   * @throws NullPointerException
+   *         value == null;
+   * @throws ReferenceSyntaxException
+   *         <code>value</code> has invalid syntax
    */
   public static void creatValueBinding(UIComponent component, String name, String value)
       throws FatalFacesException {
@@ -700,12 +772,16 @@ public class RobustCurrent {
   }
 
   /**
-   * Return a HTTP request parameter, that came with the current request.
+   * Return all values in the current request that correspond to the HTTP
+   * request parameter with name <code>parameterName</code>.
    * If the parameter does not exist, <code>null</code> is returned.
    *
-   * @return externalContext().getRequestParameterValuesMap().get(parameterName);
-   * @throws FatalFacesException
-   *         externalContext();
+   * @param   parameterName
+   *          The name of a request parameter.
+   * @return  result
+   *          ==
+   *          externalContext().getRequestParameterValuesMap().get(parameterName);
+   * @except  externalContext();
    */
   public static String[] requestParameterValues(String parameterName) throws FatalFacesException {
     return (String[])externalContext().getRequestParameterValuesMap().get(parameterName);
@@ -726,12 +802,13 @@ public class RobustCurrent {
   }
 
   /**
-   * Retrieve the variable with name <code>variableName</code>.
-   * This will create managed beans if needed. If the name cannot be resolved,
-   * <code>null</code> is returned.
+   * Retrieve the variable with name <code>variableName</code> using the current
+   * variable resolver {@link #variableResolver()} and create a managed bean
+   * from faces-config.xml if needed.
+   * If the name cannot be resolved, <code>null</code> is returned.
    *
-   * @return application().getVariableResolver();
-   * @except application();
+   * @return variableResolver().resolveVariable(facesContext(), variableName);
+   * @except variableResolver();
    * @throws FatalFacesException
    *         An exception occured when resolving <code>variableName</code>.
    */
@@ -739,6 +816,9 @@ public class RobustCurrent {
     Object result = null;
     try {
       result = variableResolver().resolveVariable(facesContext(), variableName);
+    }
+    catch (NullPointerException eExc) {
+      fatalProblem("The given variableName is not effective: \"" + variableName + "\"", eExc);
     }
     catch (EvaluationException eExc) {
       fatalProblem("Exception resolving variable with name \"" + variableName + "\"", eExc);
@@ -780,11 +860,35 @@ public class RobustCurrent {
     }
   }
 
+  /**
+   * A class representing a variable in some scope.
+   * Each instance of this class has two properties:
+   * - key: the name of the variable
+   * - scope: a map that contains or has contained the variable under the
+   *          given key
+   * - value: the value of the variable
+   *
+   * @author nsmeets
+   * @invar  getKey() != null;
+   * @invar  getScope() != null;
+   * @invar  getValue() != null;
+   */
   public static class ScopeEntry {
 
     /**
-     * @pre key != null;
-     * @pre scope != null;
+     * Create a new scope entry with the given key and scope.
+     *
+     * @param   key
+     *          The name of the variable.
+     * @param   scope
+     *          The map containing the variable.
+     * @pre     key != null;
+     * @pre     scope != null;
+     * @post    new.getKey().equals(key);
+     * @post    new.getScope().equals(scope);
+     * @post    new.getValue() == scope.get(key);
+     * @throws  NoSuchElementException
+     *          scope.get(key) == null;
      */
     public ScopeEntry(String key, Map scope) throws NoSuchElementException {
       assert key != null;
@@ -794,39 +898,68 @@ public class RobustCurrent {
       }
       $key = key;
       $scope = scope;
+      $value = scope.get(key);
     }
 
+    /**
+     * The name of the variable.
+     *
+     * @basic
+     */
     public final String getKey() {
       return $key;
     }
 
+    /**
+     * @invar  $key != null;
+     */
     private String $key;
 
+    /**
+     * The map containing the variable.
+     *
+     * @basic
+     */
     public final Map getScope() {
       return $scope;
     }
 
+    /**
+     * @invar  $scope != null;
+     */
     private Map $scope;
 
+    /**
+     * The value of the variable.
+     *
+     * @basic
+     */
     public final Object getValue() {
-      if ($cache != null) {
-        return $cache;
-      }
-      else {
-        return $scope.get($key);
-      }
+      return $value;
     }
 
-    private Object $cache;
+    /**
+     * @invar  $value != null;
+     */
+    private Object $value;
 
+    /**
+     * Remove the key from the scope.
+     *
+     * @post  !new.getScope().containsKey(getKey());
+     */
     public final void remove() {
-      $cache = $scope.get($key);
-      $scope.remove($key);
+      $scope.remove(getKey());
     }
 
+    /**
+     * Put the key and the value into the scope.
+     *
+     * @post  new.getScope().containsKey(getKey());
+     * @post  new.getScope().get(key) == getValue();
+     */
     public final void reput() {
-      $scope.put($key, $cache);
-      $cache = null;
+      $scope.put(getKey(), getValue());
     }
 
   }
@@ -856,7 +989,7 @@ public class RobustCurrent {
    *
    * @note This method makes this class dependent on MyFaces. The API used
    *       is not part of the general JSF API, which doesn't expose the
-   *       possibility to make managed beans ourself. A workaround would
+   *       possibility to make managed beans ourselves. A workaround would
    *       be to get the current managed bean with name <code>name</code>,
    *       if any, without creating a new one (by looking in all scopes
    *       directly ourselves), remove it from that scope and remember it,
