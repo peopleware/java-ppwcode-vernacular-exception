@@ -131,6 +131,9 @@ public class PersistentBeanConverter implements Converter {
     if (value == null) {
       return EMPTY;
     }
+    if (value.equals(EMPTY)) {
+      return EMPTY;
+    }
     if (!(value instanceof PersistentBean)) {
       LOG.error("Unable to convert \"" + value + "\" because it is not a subclass of PersistentBean.");
       throw new ConverterException("Value is not subclass of PersistentBean Class");
