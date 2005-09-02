@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import javax.faces.FacesException;
+import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -241,6 +242,16 @@ public class NavigationStack {
     pop();
     LOG.debug("navigating back to previous state (" + previous + ")");
     previous.navigateHere();
+  }
+
+  /**
+   * Action listener method that calls {@link #goBack()}.
+   *
+   * @post goBack();
+   * @except goBack();
+   */
+  public final void goBack(ActionEvent event) throws FacesException {
+    goBack();
   }
 
 }
