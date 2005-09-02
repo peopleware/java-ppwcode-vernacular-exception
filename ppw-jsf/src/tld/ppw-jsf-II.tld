@@ -64,6 +64,40 @@
     </attribute>
   </tag>
 
+  <tag>
+    <description>
+      Tag for be.peopleware.jsf_II.component.UIPushNavInstance.
+      This component renders the instance of  
+      be.peopleware.jsf_II.persistence.InstanceHandler, and
+      push it to the rendered instance of 
+      be.peopleware.servlet.navigation.NavigationStack 
+      during the Render Response phase.
+    </description>
+    <display-name>ppw-jsf:pushNavInstance</display-name>
+    <name>pushNavInstance</name>
+    <tag-class>be.peopleware.jsf_II.component.PushNavInstanceTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <description>An expression that evaluates to the correct handler.
+        The handler must be a subtype of
+        be.peopleware.jsf_II.persistence.InstanceHandler.
+      </description>
+      <name>handler</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <description>An expression that evaluates to the correct instance of navigation stack.
+        The navigation stack must be a subtype of
+      	be.peopleware.servlet.navigation.NavigationStack.
+      </description>
+      <name>navigationStack</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+  </tag>
 
 </taglib>
 
