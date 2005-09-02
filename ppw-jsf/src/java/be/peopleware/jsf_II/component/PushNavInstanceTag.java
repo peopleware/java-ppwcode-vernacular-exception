@@ -49,12 +49,12 @@ public class PushNavInstanceTag extends UIComponentTag {
   //------------------------------------------------------------------
 
   
-  public final void setHandler(String handler) {
-    $handler = handler;
-    LOG.debug("handler expression set: " + $handler);
+  public final void setValue(String navigationInstanceExpression) {
+    $navigationInstanceExpression = navigationInstanceExpression;
+    LOG.debug("navigation instance expression set: " + $navigationInstanceExpression);
   }
   
-  private String $handler;
+  private String $navigationInstanceExpression;
   
   /*</property>*/
 
@@ -62,12 +62,12 @@ public class PushNavInstanceTag extends UIComponentTag {
   //------------------------------------------------------------------
 
   
-  public final void setNavigationStack(String navigationStack) {
-    $navigationStack = navigationStack;
-    LOG.debug("navigationStack expression set: " + $navigationStack);
+  public final void setNavigationStack(String navigationStackExpression) {
+    $navigationStackExpression = navigationStackExpression;
+    LOG.debug("navigationStack expression set: " + $navigationStackExpression);
   }
   
-  private String $navigationStack;
+  private String $navigationStackExpression;
   
   /*</property>*/
 
@@ -78,17 +78,17 @@ public class PushNavInstanceTag extends UIComponentTag {
   protected final void setProperties(UIComponent component) throws FatalFacesException {
     super.setProperties(component);
     RobustCurrent.creatValueBinding(component,
-                                    UIPushNavInstance.HANDLER_VALUE_BINDING_NAME,
-                                    $handler);
+                                    UIPushNavInstance.NAVIGATION_INSTANCE_VALUE_BINDING_NAME,
+                                    $navigationInstanceExpression);
     RobustCurrent.creatValueBinding(component,
                                     UIPushNavInstance.NAVIGATION_STACK_VALUE_BINDING_NAME,
-                                    $navigationStack);
+                                    $navigationStackExpression);
   }
   
   public final void release() {
     super.release();
-    $handler = null;
-    $navigationStack = null;
+    $navigationInstanceExpression = null;
+    $navigationStackExpression = null;
   }
   
 }

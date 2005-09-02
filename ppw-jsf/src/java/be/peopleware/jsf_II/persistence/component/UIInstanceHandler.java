@@ -65,7 +65,7 @@ public class UIInstanceHandler extends UIInput implements Serializable {
   public final static String HANDLER_VALUE_BINDING_NAME = "handler";
 
   /**
-   * Return the result of {@link #HANDLER_VALUE_BINDING_NAME} value binding.
+   * Return the result of {@link #NAVIGATION_INSTANCE_VALUE_BINDING_NAME} value binding.
    *
    * @return result != null;
    * @throws FatalFacesException

@@ -13,16 +13,16 @@ import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
-import be.peopleware.jsf_II.persistence.InstanceHandler;
+import be.peopleware.servlet.navigation.NavigationInstance;
 import be.peopleware.servlet.navigation.NavigationStack;
 
 
 /**
  * This {@link UIPushNavInstance} is used in JSF pages to push a handler 
- * (an instance of {@link InstanceHandler}) to a navigation stack 
+ * (an instance of {@link NavigationInstance}) to a navigation stack 
  * (an instance of {@link NavigationStack}) during the Render Response phase. 
  * In this mode of use,
- * the {@link InstanceHandler} is a managed bean in request scope and 
+ * the {@link NavigationInstance} is a managed bean and 
  * the {@link NavigationStack} is a managed bean in session scope. 
  *
  * @author    Jan Dockx
@@ -55,27 +55,27 @@ public class UIPushNavInstance extends UIInput implements Serializable {
   /**
    * <strong>= {@value}</strong>
    */
-  public final static String HANDLER_VALUE_BINDING_NAME = "handler";
+  public final static String NAVIGATION_INSTANCE_VALUE_BINDING_NAME = "navigationInstance";
 
   /**
-   * Return the result of {@link #HANDLER_VALUE_BINDING_NAME} value binding.
+   * Return the result of {@link #NAVIGATION_INSTANCE_VALUE_BINDING_NAME} value binding.
    *
    * @return result != null;
    * @throws FatalFacesException
    *         ; could not locate a handler through the value binding
    */
-  public InstanceHandler getHandler(FacesContext context)
+  public NavigationInstance getValue(FacesContext context)
       throws FatalFacesException {
-    ValueBinding vb = getValueBinding(HANDLER_VALUE_BINDING_NAME);
+    ValueBinding vb = getValueBinding(NAVIGATION_INSTANCE_VALUE_BINDING_NAME);
     if (vb == null) {
-      RobustCurrent.fatalProblem("Could not locate handler", LOG);
+      RobustCurrent.fatalProblem("Could not locate navigation instance", LOG);
     }
     Object result = vb.getValue(context);
     if ((result == null) ||
-        (! (result instanceof InstanceHandler))) {
-      RobustCurrent.fatalProblem("Could not locate handler", LOG);
+        (! (result instanceof NavigationInstance))) {
+      RobustCurrent.fatalProblem("Could not locate navigation instance", LOG);
     }
-    return (InstanceHandler)result;
+    return (NavigationInstance)result;
   }
 
   /*</property>*/
@@ -123,7 +123,7 @@ public class UIPushNavInstance extends UIInput implements Serializable {
    *         getNavigationStack();
    */
   public void encodeBegin(FacesContext context) throws IOException, FatalFacesException {
-    getNavigationStack(context).push(getHandler(context));
+    getNavigationStack(context).push(getValue(context));
   }
   public void encodeEnd(FacesContext context) throws IOException, FatalFacesException {
     // NOP
