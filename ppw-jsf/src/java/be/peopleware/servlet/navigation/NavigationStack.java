@@ -147,10 +147,10 @@ public class NavigationStack {
   }
 
   /**
-   * @return getSize() == 0;
+   * @return getSize() < 2;
    */
   public final boolean isEmpty() {
-    return $stack.isEmpty();
+    return $stack.size() < 2;
   }
 
 
