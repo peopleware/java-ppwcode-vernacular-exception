@@ -17,7 +17,7 @@
         </fileset>
       </copy>
     </u:available>
-    
+
     <!-- add jsp-tags to taglib jar -->
     <u:available file="${maven.src.dir}/jsp-tags">
       <mkdir dir="${maven.build.dest}/META-INF/tags"/>
@@ -28,9 +28,9 @@
           <include name="**/*.tag" />
           <include name="**/*.usage" />
         </fileset>
-      </copy>  
-    </u:available>   
-    
+      </copy>
+    </u:available>
+
     <!-- copy all properties files for inclusion in jar -->
     <echo message="Copying properties files ${maven.src.dir}/java to ${maven.build.dest}" />
     <copy todir="${maven.build.dest}">
@@ -38,16 +38,30 @@
         <include name="**/*.properties" />
       </fileset>
     </copy>
-    
+
     <!-- copy all betwixt files for inclusion in jar -->
     <echo message="Copying betwixt files ${maven.src.dir}/java to ${maven.build.dest}" />
     <copy todir="${maven.build.dest}">
       <fileset dir="${maven.src.dir}/java">
         <include name="**/*.betwixt" />
       </fileset>
-    </copy> 
+    </copy>
   </preGoal>
-  
+
+  <!-- include properties and text files in test too -->
+  <preGoal name="test:test-resources">
+
+    <!-- copy all properties files for inclusion in jar -->
+    <echo message="Copying properties files ${maven.src.dir}/test to ${maven.test.dest}" />
+    <copy todir="${maven.test.dest}">
+      <fileset dir="${maven.src.dir}/test">
+        <include name="**/*.properties" />
+        <include name="**/*.xml" />
+      </fileset>
+    </copy>
+
+  </preGoal>
+
   <!-- Deactive the generation of the tag library documentation if there is no
        tag library present -->
   <postGoal name="xdoc:register-reports">
@@ -58,13 +72,13 @@
     <u:available file="${maven.src.dir}/jsp-tags">
       <j:set var="tagsDirectoryPresent" value="true"/>
     </u:available>
-    
+
     <!-- Deregister the generation of tag library documentation if needed -->
     <j:if test="${taglibDirectoryPresent != 'true' and tagsDirectoryPresent != 'true'}">
-      <attainGoal name="taglib:deregister"/>  
+      <attainGoal name="taglib:deregister"/>
     </j:if>
   </postGoal>
-  
+
   
   <!-- Set up the war command so it includes tld, jsp tagfiles, properties
        and betwixt files -->
