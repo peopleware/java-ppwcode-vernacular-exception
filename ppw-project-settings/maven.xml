@@ -7,7 +7,7 @@
 
   <!-- Set up the jar command so it includes tld, jsp tagfiles, properties
        and betwixt files -->
-  <preGoal name="jar:jar">
+  <preGoal name="jar:resources">
     <!-- add tlds to taglib jar -->
     <u:available file="${maven.src.dir}/tld">
       <echo message="Copying tld files ${maven.src.dir}/tld to ${maven.build.dest}/META-INF" />
