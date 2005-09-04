@@ -1,11 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project >
-<project xmlns:j="jelly:core" xmlns:u="jelly:util">
+<project xmlns:j="jelly:core"
+         xmlns:u="jelly:util"
+         xmlns:maven="jelly:maven"
+         xmlns:ant="jelly:ant">
 
   <!-- Generic goal to deploy site, jar and distribution at once -->
   <goal name="release" prereqs="clean,site:deploy,jar:deploy,dist:deploy" />
 
-  <!-- Set up the jar command so it includes tld, jsp tagfiles, properties
+
+  <!--
+       Copied from http://maven.apache.org/faq.html#multiple-source-directories
+  <preGoal name="java:compile">
+    <ant:path
+      id="my.other.src.dir"
+      location="${basedir}/debug/src"/>
+    <maven:addPath
+      id="maven.compile.src.set"
+      refid="my.other.src.dir"/>
+  </preGoal>
+   -->
+
+
+  <!-- Compile Toryt stuff. This is a precursor to a toryt plugin, based on
+       the compile and test plugin. Only compilation for now. -->
+  <j:set var="maven.toryt.src" value="${basedir}/src/toryt"/>
+  <j:set var="maven.toryt.dest" value="${basedir}/target/toryt-classes"/>
+
+  <goal name="toryt:prepare-filesystem"
+    description="Create the needed directory structure">
+    <mkdir dir="${maven.toryt.dest}"/>
+  </goal>
+
+  <goal name="toryt:compile"
+    description="Compile the Toryt contracts"
+    prereqs="java:compile,java:jar-resources,toryt:prepare-filesystem">
+
+    <j:set var="maven.toryt._canContinue" value="true"/>
+
+    <j:if test="${context.getVariable('maven.toryt.src') == null}">
+      <echo>No Toryt src directory set.</echo>
+      <j:set var="maven.toryt._canContinue" value="false"/>
+    </j:if>
+
+    <j:if test="${context.getVariable('maven.toryt.dest') == null}">
+      <echo>No Toryt destionation set.</echo>
+      <j:set var="maven.toryt._canContinue" value="false"/>
+    </j:if>
+
+    <j:if test="${maven.toryt._canContinue}">
+
+      <echo>Compiling Toryt contracts from ${maven.toryt.src} to ${maven.toryt.dest}.</echo>
+      <javac
+        srcdir="${maven.toryt.src}"
+        destdir="${maven.toryt.dest}"
+        excludes="**/package.html"
+        debug="${maven.compile.debug}"
+        deprecation="${maven.compile.deprecation}"
+        optimize="false">
+        <j:if test="${context.getVariable('maven.test.source') != null}">
+          <setProperty name="source" value="${maven.test.source}" />
+        </j:if>
+        <classpath>
+          <pathelement path="${maven.toryt.dest}"/>
+          <pathelement path="${maven.build.dest}"/>
+          <path refid="maven.dependency.classpath"/>
+        </classpath>
+
+        <j:if test="${context.getVariable('maven.compile.compilerargs') != null}">
+          <compilerarg line="${maven.compile.compilerargs}" />
+        </j:if>
+
+        <j:if test="${context.getVariable('maven.compile.encoding') != null}">
+          <setProperty name="encoding" value="${maven.compile.encoding}" />
+        </j:if>
+
+        <j:if test="${context.getVariable('maven.compile.executable') != null}">
+          <setProperty name="executable" value="${maven.compile.executable}" />
+        </j:if>
+
+        <j:if test="${context.getVariable('maven.compile.fork') != null}">
+          <setProperty name="fork" value="${maven.compile.fork}" />
+        </j:if>
+
+        <j:if test="${context.getVariable('maven.compile.source') != null}">
+          <setProperty name="source" value="${maven.compile.source}" />
+        </j:if>
+
+        <j:if test="${context.getVariable('maven.compile.verbose') != null}">
+          <setProperty name="verbose" value="${maven.compile.verbose}" />
+        </j:if>
+      </javac>
+    </j:if>
+
+  </goal>
+
+
+ <!-- Set up the jar command so it includes tld, jsp tagfiles, properties
        and betwixt files -->
   <preGoal name="java:jar-resources">
     <!-- add tlds to taglib jar -->
@@ -60,6 +151,16 @@
         <include name="**/*.xml" />
       </fileset>
     </copy>
+
+  </preGoal>
+
+  <!-- also need toryt for tests -->
+  <preGoal name="test:compile">
+
+    <attainGoal name="toryt:compile"/>
+
+    <ant:path id="toryt.dest.dir" location="${maven.toryt.dest}"/>
+    <maven:addPath id="maven.dependency.classpath" refid="toryt.dest.dir"/>
 
   </preGoal>
 
