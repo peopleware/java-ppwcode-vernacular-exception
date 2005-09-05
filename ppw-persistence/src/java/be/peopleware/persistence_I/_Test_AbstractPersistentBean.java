@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import be.peopleware.bean_IV.RousseauBean;
-import be.peopleware.bean_IV._Test_RousseauBean;
+import be.peopleware.bean_V.RousseauBean;
+import be.peopleware.bean_V._Test_AbstractRousseauBean;
 import be.peopleware.test_I.Test;
 import be.peopleware.test_I.java.lang._Test_Long;
 
@@ -15,7 +15,7 @@ import be.peopleware.test_I.java.lang._Test_Long;
  * @author      Jan Dockx
  * @author      PeopleWare n.v.
  */
-public class _Test_PersistentBean extends _Test_RousseauBean {
+public class _Test_AbstractPersistentBean extends _Test_AbstractRousseauBean {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -30,7 +30,7 @@ public class _Test_PersistentBean extends _Test_RousseauBean {
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
 
   /*</section>*/
-  
+
   protected static final String EMPTY = ""; //$NON-NLS-1$
 
   public static void main(final String[] args) {
@@ -57,7 +57,7 @@ public class _Test_PersistentBean extends _Test_RousseauBean {
   }
 
   protected PersistentBean create_PersistentBean() {
-    return new PersistentBean();
+    return new Stub();
   }
 
   protected Set getCases() {
@@ -91,7 +91,7 @@ public class _Test_PersistentBean extends _Test_RousseauBean {
 
   private void test_PersistentBean__() {
     try {
-      PersistentBean po = new PersistentBean();
+      PersistentBean po = create_PersistentBean();
       validate(po.getId() == null);
       validateTypeInvariants(po);
     }
@@ -193,5 +193,9 @@ public class _Test_PersistentBean extends _Test_RousseauBean {
   }
 
   /*</section>*/
+
+  private static class Stub extends AbstractPersistentBean {
+    // NOP
+  }
 
 }
