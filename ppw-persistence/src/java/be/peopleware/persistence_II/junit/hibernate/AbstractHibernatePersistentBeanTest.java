@@ -131,7 +131,6 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
         }
       }
     }
-    assertTrue(civilized);
     extraPersistentBeanValidation(pb);
   }
 
