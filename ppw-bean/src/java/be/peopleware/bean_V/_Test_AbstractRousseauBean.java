@@ -1,4 +1,4 @@
-package be.peopleware.bean_IV;
+package be.peopleware.bean_V;
 
 
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import be.peopleware.test_I.java.lang._Test_Object;
  * @author      Jan Dockx
  * @author      PeopleWare n.v.
  */
-public class _Test_RousseauBean extends _Test_Object {
+public class _Test_AbstractRousseauBean extends _Test_Object {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -34,7 +34,7 @@ public class _Test_RousseauBean extends _Test_Object {
 
 
 
-  private static class Stub extends RousseauBean {
+  private static class Stub extends AbstractRousseauBean {
     // NOP
   }
 
@@ -204,7 +204,7 @@ public class _Test_RousseauBean extends _Test_Object {
   protected void post_normalize__(final RousseauBean subject) {
     // nothing to validate here
   }
-  
+
   protected final void test_hasSameValues_RousseauBean_() {
     Iterator iterOther = getCases().iterator();
     RousseauBean other1 = null;

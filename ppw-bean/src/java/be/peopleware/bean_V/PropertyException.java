@@ -1,4 +1,4 @@
-package be.peopleware.bean_IV;
+package be.peopleware.bean_V;
 
 
 import be.peopleware.exception_I.LocalizedMessageException;
