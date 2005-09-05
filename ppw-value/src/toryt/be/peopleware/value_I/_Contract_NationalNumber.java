@@ -15,7 +15,8 @@ import org.toryt.support.straightlist.EmptyStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
-import be.peopleware.bean_IV.PropertyException;
+
+import be.peopleware.bean_V.PropertyException;
 
 
 /**
@@ -65,7 +66,7 @@ public class _Contract_NationalNumber extends ClassContract {
 
             	return (result.getMiddleNumber().equals(middleNumber));
             }});
-          
+
           addPostcondition(new Condition() {
             public boolean validate(Map context) {
             	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
@@ -77,7 +78,7 @@ public class _Contract_NationalNumber extends ClassContract {
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
             	String leftNumber = (String)context.get("leftNumber");
-            	
+
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
             	return 	( leftNumber == null )
 						          && (pExc.reportsOn(
@@ -89,7 +90,7 @@ public class _Contract_NationalNumber extends ClassContract {
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
             	String leftNumber = (String)context.get("leftNumber");
-            	
+
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
 
               return	((leftNumber != null && !Pattern.matches(NationalNumber.LEFT_PATTERN, leftNumber))
@@ -102,7 +103,7 @@ public class _Contract_NationalNumber extends ClassContract {
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
             	String middleNumber = (String)context.get("middleNumber");
-            	
+
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
 
               return   ((middleNumber == null)
@@ -115,20 +116,20 @@ public class _Contract_NationalNumber extends ClassContract {
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
             	String middleNumber = (String)context.get("middleNumber");
-            	
+
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
 
               return ( 	(middleNumber != null && !Pattern.matches(NationalNumber.MIDDLE_PATTERN, middleNumber))
 						           	&& pExc.reportsOn(
 						           								 NationalNumber.class, "middleNumber",
 																			 "MIDDLE_NUMBER_INVALID_PATTERN", null)
-              			 );	
+              			 );
             }});
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
             	String rightNumber = (String)context.get("rightNumber");
-            	
+
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
 
               return (	(rightNumber == null)
@@ -137,19 +138,19 @@ public class _Contract_NationalNumber extends ClassContract {
 						                           "RIGHT_NUMBER_IS_NULL", null)
               			 );
             }});
-          
+
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
             public boolean validate(Map context) {
             	String rightNumber = (String)context.get("rightNumber");
-            	
+
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
 
               return (	(rightNumber != null && !Pattern.matches(NationalNumber.RIGHT_PATTERN, rightNumber))
 						             && pExc.reportsOn(
 						             							NationalNumber.class, "rightNumber",
 						                           "RIGHT_NUMBER_INVALID_PATTERN", null)
-										 );								 
+										 );
             }});
 
           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
@@ -157,7 +158,7 @@ public class _Contract_NationalNumber extends ClassContract {
             	String leftNumber = (String)context.get("leftNumber");
             	String middleNumber = (String)context.get("middleNumber");
             	String rightNumber = (String)context.get("rightNumber");
-            	
+
             	PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
               return (	(  leftNumber != null &&
               	           middleNumber != null &&
@@ -167,7 +168,7 @@ public class _Contract_NationalNumber extends ClassContract {
               	        &&  pExc.reportsOn(NationalNumber.class, null, "INVALID_CHECK", null)
 											);
             }});
-          
+
           close();
         }
 
@@ -184,7 +185,7 @@ public class _Contract_NationalNumber extends ClassContract {
 
     addConstructorContract(
         new ConstructorContract(this, NationalNumber.class, "NationalNumber()") {
-          {          	
+          {
           	// no preconditions
             // postconditions
             addPostcondition(new Condition() {
@@ -204,30 +205,30 @@ public class _Contract_NationalNumber extends ClassContract {
               	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
               	return (result.getRightNumber().equals("97"));
               }});
-         
+
             close();
           }
-          
+
           public StraightList getTestCases() throws TorytException {
             return EmptyStraightList.INSTANCE;
           }
       }
     );
-    
+
     addConstructorContract(
         new ConstructorContract(this, NationalNumber.class, "NationalNumber(be.peopleware.value_I.NationalNumber)") {
          public String[] getFormalParameters() {
             return new String[] {"nationalNumber"};
           }
 
-         {   
+         {
             // no preconditions
             // postconditions
             addPostcondition(new Condition() {
               public boolean validate(Map context) {
               	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
               	NationalNumber nationalNumber = (NationalNumber)context.get("nationalNumber");
-              	
+
               	return (result.getLeftNumber().equals(nationalNumber.getLeftNumber()));
               }});
 
@@ -235,7 +236,7 @@ public class _Contract_NationalNumber extends ClassContract {
               public boolean validate(Map context) {
               	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
               	NationalNumber nationalNumber = (NationalNumber)context.get("nationalNumber");
-              	
+
               	return (result.getMiddleNumber().equals(nationalNumber.getMiddleNumber()));
               }});
 
@@ -243,13 +244,13 @@ public class _Contract_NationalNumber extends ClassContract {
               public boolean validate(Map context) {
               	NationalNumber result = (NationalNumber)context.get(SUBJECT_KEY);
               	NationalNumber nationalNumber = (NationalNumber)context.get("nationalNumber");
-              	
+
               	return (result.getRightNumber().equals(nationalNumber.getRightNumber()));
               }});
-            
+
             close();
         }
-        
+
          public StraightList getTestCases() throws TorytException {
           return new LazyCombinationStraightList(
               new String[] {"nationalNumber"},
@@ -258,19 +259,19 @@ public class _Contract_NationalNumber extends ClassContract {
         }
        }
       );
-    
+
     // Define a list of all basic inspectors
     addBasicInspector("getLeftNumber()");
     addBasicInspector("getMiddleNumber()");
     addBasicInspector("getRightNumber()");
-    
+
     // instance methods
     addInstanceMethodContract(
       new MutatorContract(this, NationalNumber.class, "checkNationalNumber(java.lang.String,java.lang.String,java.lang.String)") {
       	public String[] getFormalParameters() {
       		return new String[] {"leftNumber", "middleNumber", "rightNumber"};
         }
-      	
+
       	{
       		addPrecondition (new Condition() {
       			public boolean validate(Map context) {
@@ -278,12 +279,12 @@ public class _Contract_NationalNumber extends ClassContract {
             	return leftNumber != null;
       			}
       		});
-      		
+
         	addPrecondition (new Condition() {
         			public boolean validate(Map context) {
               	String leftNumber = (String)context.get("leftNumber");
               	return Pattern.matches(NationalNumber.LEFT_PATTERN, leftNumber);
-        			}      		
+        			}
       		});
 
       		addPrecondition (new Condition() {
@@ -313,7 +314,7 @@ public class _Contract_NationalNumber extends ClassContract {
             	return Pattern.matches(NationalNumber.RIGHT_PATTERN, rightNumber);
       			}
       		});
-      		
+
           addPostcondition(new Condition() {
             public boolean validate(Map context) {
             	boolean result = ((Boolean)context.get(RESULT_KEY)).booleanValue();
@@ -323,10 +324,10 @@ public class _Contract_NationalNumber extends ClassContract {
             	return ( result == ((97 - Integer.parseInt(leftNumber + middleNumber) % 97) == (Integer.parseInt(rightNumber)))
             	    || ((97 - (Integer.parseInt(leftNumber + middleNumber) + NationalNumber.TWO_BILLION) % 97) == (Integer.parseInt(rightNumber))));
             }});
-      		
+
       		close();
       	}
-      	
+
         public StraightList getTestCases() throws TorytException {
           return new LazyCombinationStraightList(
               new String[] {SUBJECT_KEY, "leftNumber", "middleNumber", "rightNumber"},
@@ -338,14 +339,14 @@ public class _Contract_NationalNumber extends ClassContract {
         }
       }
     );
-    
+
     addInstanceMethodContract(
         new MutatorContract(this, NationalNumber.class, "equals(java.lang.Object)") {
 
         	public String[] getFormalParameters() {
         		return new String[] {"o"};
         	}
-      
+
         	{
 		        // no preconditions
 		        // postconditions
@@ -362,7 +363,7 @@ public class _Contract_NationalNumber extends ClassContract {
 											             ((NationalNumber) o).getRightNumber().equals(subject.getRightNumber())
 		                   	);
 		          }});
-		        
+
 		        close();
 		      }
 
@@ -386,7 +387,7 @@ public class _Contract_NationalNumber extends ClassContract {
 		        addPostcondition(new Condition() {
 		          public boolean validate(Map context) {
 		            NationalNumber subject = (NationalNumber)context.get(SUBJECT_KEY);
-		            int result = ((Integer)context.get(RESULT_KEY)).intValue();		            
+		            int result = ((Integer)context.get(RESULT_KEY)).intValue();
 		            return result
 		                   ==
 		                   subject.getLeftNumber().hashCode() + subject.getMiddleNumber().hashCode() + subject.getRightNumber().hashCode();
@@ -401,7 +402,7 @@ public class _Contract_NationalNumber extends ClassContract {
 		            new StraightList[] {getCases()});
 		      }
       });
-    
+
     addInstanceMethodContract(
         new MutatorContract(this, NationalNumber.class, "toString()") {
 
@@ -419,7 +420,7 @@ public class _Contract_NationalNumber extends ClassContract {
 	            return result
 	                    .equals(subject.getLeftNumber() + " " + subject.getMiddleNumber() + " " + subject.getRightNumber());
 	          }});
-	        
+
 	        close();
       }
 
@@ -452,21 +453,21 @@ public class _Contract_NationalNumber extends ClassContract {
         return (subject.getMiddleNumber() != null);
       }
     });
-    
+
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
         NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
         return (Pattern.matches(NationalNumber.MIDDLE_PATTERN, subject.getMiddleNumber()));
       }
     });
-    
+
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
         NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
         return (subject.getRightNumber() != null);
       }
     });
-    
+
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
         NationalNumber subject = (NationalNumber) context.get(SUBJECT_KEY);
@@ -482,9 +483,9 @@ public class _Contract_NationalNumber extends ClassContract {
     });
 
     close();
-    
+
   }
-  
+
   public StraightList getCasesMaps() throws TorytException {
       return new LazyCombinationStraightList(
                   new String[] {"leftNumber", "middleNumber", "rightNumber"},

@@ -1,7 +1,7 @@
 package be.peopleware.value_I;
 
 
-import be.peopleware.bean_IV.PropertyException;
+import be.peopleware.bean_V.PropertyException;
 
 
 /**

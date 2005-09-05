@@ -11,7 +11,7 @@ import org.toryt.support.straightlist.ArrayStraightList;
 import org.toryt.support.straightlist.NullFirstStraightList;
 import org.toryt.support.straightlist.StraightList;
 
-import be.peopleware.bean_IV.PropertyException;
+import be.peopleware.bean_V.PropertyException;
 
 
 /**

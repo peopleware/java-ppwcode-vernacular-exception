@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.regex.Pattern;
 
-import be.peopleware.bean_IV.CompoundPropertyException;
-import be.peopleware.bean_IV.PropertyException;
+import be.peopleware.bean_V.CompoundPropertyException;
+import be.peopleware.bean_V.PropertyException;
 
 
 /**

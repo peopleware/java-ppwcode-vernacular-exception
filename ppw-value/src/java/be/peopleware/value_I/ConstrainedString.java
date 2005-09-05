@@ -3,7 +3,7 @@ package be.peopleware.value_I;
 
 import java.io.Serializable;
 
-import be.peopleware.bean_IV.Delegate;
+import be.peopleware.bean_V.Delegate;
 
 
 /**

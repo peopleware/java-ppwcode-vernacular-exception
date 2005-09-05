@@ -15,7 +15,8 @@ import org.toryt.support.straightlist.EmptyStraightList;
 import org.toryt.support.straightlist.LazyCombinationStraightList;
 import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.StraightList;
-import be.peopleware.bean_IV.PropertyException;
+
+import be.peopleware.bean_V.PropertyException;
 
 
 /**

@@ -14,7 +14,7 @@ import java.sql.Types;
 
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.UserType;
-import be.peopleware.bean_IV.PropertyException;
+import be.peopleware.bean_V.PropertyException;
 import be.peopleware.value_I.NationalNumber;
 
 

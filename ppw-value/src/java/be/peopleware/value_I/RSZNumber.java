@@ -9,8 +9,8 @@ package be.peopleware.value_I;
 
 import java.util.regex.Pattern;
 
-import be.peopleware.bean_IV.CompoundPropertyException;
-import be.peopleware.bean_IV.PropertyException;
+import be.peopleware.bean_V.CompoundPropertyException;
+import be.peopleware.bean_V.PropertyException;
 
 
 /**
