@@ -9,6 +9,7 @@
     <release version="II v1.0.0/1.0" date="2005-09-05" description="PersistentBean is changed into an interface">
       <action dev="nsmeets" type="add">
         PersistentBean is changed into an interface. An abstract subclass AbstractPersistentBean containing a partial implementation of the interface is introduced.
+        The package be.peopleware.persistence_II.junit.hibernate is introduced.
       </action>
     </release>
 
