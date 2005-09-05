@@ -5,13 +5,13 @@
   <pomVersion>1</pomVersion>
   <name>PeopleWare JavaBeans Library IV</name>
   <groupId>ppw-libraries</groupId>
-  <artifactId>ppw-bean-IV</artifactId>
+  <artifactId>ppw-bean-V</artifactId>
   <shortDescription>Support for JavaBeans.</shortDescription>
   <description>Support for JavaBeans. General superclasses and utility
     classes that etch a number of idioms and design patterns in code.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.1.0-2.0</currentVersion>
-  <package>be.peopleware.bean_IV</package>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.bean_V</package>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
     <developer>
