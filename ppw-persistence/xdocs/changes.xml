@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="II v1.0.0/1.0" date="2005-09-05" description="PersistentBean is changed into an interface">
+      <action dev="nsmeets" type="add">
+        PersistentBean is changed into an interface. An abstract subclass AbstractPersistentBean containing a partial implementation of the interface is introduced.
+      </action>
+    </release>
+
     <release version="I v3.1.1/3.0" date="2005-08-14" description="Dependencies">
       <action dev="jand" type="update">
         Update of dependencies.
