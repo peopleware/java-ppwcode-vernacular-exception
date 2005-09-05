@@ -5,15 +5,15 @@
   <pomVersion>1</pomVersion>
   <name>PeopleWare Value Type Library I</name>
   <groupId>ppw-libraries</groupId>
-  <artifactId>ppw-value-I</artifactId>
+  <artifactId>ppw-value-II</artifactId>
   <shortDescription>Patterns for value types, and some common value types.</shortDescription>
   <description>Support for value types. Value types are algebra's, and not classes, but
     the only thing we have in Java are classes. Here, the most important patterns for
     the implementation of value types (including enumeration types), are laid out.
     Some common value types are implemented and offered for reuse.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>2.0.1-6.0</currentVersion>
-  <package>be.peopleware.value_I</package>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.value_II</package>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
   -->

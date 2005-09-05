@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="II v1.0.0/1.0" date="2005-09-05" description="ppw-value is now dependent on ppw-bean-V instead of ppw-bean-IV">
+      <action dev="nsmeets" type="update">
+        ppw-value is now dependent on ppw-bean-V instead of ppw-bean-IV.
+      </action>
+    </release>
+
     <release version="I v2.0.0/6.0" date="2005-08-14" description="Dependencies">
       <action dev="jand" type="update">
         Dependencies updated.
