@@ -11,6 +11,13 @@
   </properties>
   <body>
 
+    <release version="V v1.0.0/1.0" date="2005-09-05"
+      description="RousseauBean is changed into an interface">
+      <action dev="nsmeets" type="add">
+        RousseauBean is changed into an interface. An abstract subclass AbstractRousseauBean containing a partial implementation of the interface is introduced.
+      </action>
+    </release>
+
     <release version="IV v1.1.0/2.0" date="2005-08-14"
       description="Dependencies">
       <action dev="jand" type="update">
