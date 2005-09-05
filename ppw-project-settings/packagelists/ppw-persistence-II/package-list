@@ -1,0 +1,5 @@
+be.peopleware.persistence_II
+be.peopleware.persistence_II.dao
+be.peopleware.persistence_II.hibernate
+be.peopleware.persistence_II.junit.hibernate
+be.peopleware.persistence_II.ramstorage
