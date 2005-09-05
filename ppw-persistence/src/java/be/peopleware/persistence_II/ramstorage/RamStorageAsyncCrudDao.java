@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.persistence_I.ramstorage;
+package be.peopleware.persistence_II.ramstorage;
 
 
 import java.util.HashSet;
@@ -13,9 +13,9 @@ import java.util.Set;
 
 import be.peopleware.bean_V.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
-import be.peopleware.persistence_I.IdNotFoundException;
-import be.peopleware.persistence_I.PersistentBean;
-import be.peopleware.persistence_I.dao.AsyncCrudDao;
+import be.peopleware.persistence_II.IdNotFoundException;
+import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.dao.AsyncCrudDao;
 
 
 /**

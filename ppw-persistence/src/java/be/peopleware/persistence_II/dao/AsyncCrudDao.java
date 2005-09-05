@@ -1,4 +1,4 @@
-package be.peopleware.persistence_I.dao;
+package be.peopleware.persistence_II.dao;
 
 
 import java.util.Set;
@@ -6,8 +6,8 @@ import java.util.Set;
 import be.peopleware.bean_V.CompoundPropertyException;
 import be.peopleware.bean_V.RousseauBean;
 import be.peopleware.exception_I.TechnicalException;
-import be.peopleware.persistence_I.IdNotFoundException;
-import be.peopleware.persistence_I.PersistentBean;
+import be.peopleware.persistence_II.IdNotFoundException;
+import be.peopleware.persistence_II.PersistentBean;
 
 
 /**

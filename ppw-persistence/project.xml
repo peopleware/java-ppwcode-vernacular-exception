@@ -5,12 +5,12 @@
   <pomVersion>1</pomVersion>
   <name>PeopleWare Persistence Library I</name>
   <groupId>ppw-libraries</groupId>
-  <artifactId>ppw-persistence-I</artifactId>
+  <artifactId>ppw-persistence-II</artifactId>
   <shortDescription>Support for persistency.</shortDescription>
   <description>Support for persistency.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>3.1.1-3.0</currentVersion>
-  <package>be.peopleware.persistence_I</package>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.persistence_II</package>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
     <developer>

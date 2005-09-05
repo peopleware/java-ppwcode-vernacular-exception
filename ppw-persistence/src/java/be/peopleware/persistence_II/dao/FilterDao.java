@@ -1,4 +1,4 @@
-package be.peopleware.persistence_I.dao;
+package be.peopleware.persistence_II.dao;
 
 import java.util.List;
 import java.util.Set;

@@ -14,7 +14,7 @@ import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.Transaction;
 import net.sf.hibernate.cfg.Configuration;
-import be.peopleware.persistence_I.PersistentBean;
+import be.peopleware.persistence_II.PersistentBean;
 
 
 /**

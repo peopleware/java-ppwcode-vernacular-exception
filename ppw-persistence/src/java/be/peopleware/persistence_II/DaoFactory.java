@@ -1,6 +1,6 @@
-package be.peopleware.persistence_I;
+package be.peopleware.persistence_II;
 
-import be.peopleware.persistence_I.dao.Dao;
+import be.peopleware.persistence_II.dao.Dao;
 
 /**
  * A factory for creating dao objects.

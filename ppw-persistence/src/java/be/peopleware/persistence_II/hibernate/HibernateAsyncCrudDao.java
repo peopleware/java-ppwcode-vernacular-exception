@@ -1,4 +1,4 @@
-package be.peopleware.persistence_I.hibernate;
+package be.peopleware.persistence_II.hibernate;
 
 
 import java.sql.SQLException;
@@ -19,9 +19,9 @@ import be.peopleware.bean_V.ConstraintException;
 import be.peopleware.bean_V.DuplicateKeyException;
 import be.peopleware.exception_I.Exceptions;
 import be.peopleware.exception_I.TechnicalException;
-import be.peopleware.persistence_I.IdNotFoundException;
-import be.peopleware.persistence_I.PersistentBean;
-import be.peopleware.persistence_I.dao.AsyncCrudDao;
+import be.peopleware.persistence_II.IdNotFoundException;
+import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.dao.AsyncCrudDao;
 
 
 /**

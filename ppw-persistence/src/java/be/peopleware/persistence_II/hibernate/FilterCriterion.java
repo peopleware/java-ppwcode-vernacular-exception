@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.persistence_I.hibernate;
+package be.peopleware.persistence_II.hibernate;
 
 import java.util.ArrayList;
 import java.util.Collections;

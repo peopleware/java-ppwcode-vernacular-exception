@@ -1,8 +1,8 @@
-package be.peopleware.persistence_I.ramstorage;
+package be.peopleware.persistence_II.ramstorage;
 
 
-import be.peopleware.persistence_I.DaoFactory;
-import be.peopleware.persistence_I.dao.Dao;
+import be.peopleware.persistence_II.DaoFactory;
+import be.peopleware.persistence_II.dao.Dao;
 
 
 /**

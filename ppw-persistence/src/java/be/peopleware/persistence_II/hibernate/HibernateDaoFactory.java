@@ -1,7 +1,7 @@
-package be.peopleware.persistence_I.hibernate;
+package be.peopleware.persistence_II.hibernate;
 
-import be.peopleware.persistence_I.DaoFactory;
-import be.peopleware.persistence_I.dao.Dao;
+import be.peopleware.persistence_II.DaoFactory;
+import be.peopleware.persistence_II.dao.Dao;
 
 /**
  * A factory for creating hibernate dao objects.

@@ -17,7 +17,7 @@ import org.toryt.Contracts;
 
 import be.peopleware.bean_V.CompoundPropertyException;
 import be.peopleware.bean_V.PropertyException;
-import be.peopleware.persistence_I.PersistentBean;
+import be.peopleware.persistence_II.PersistentBean;
 
 
 /**

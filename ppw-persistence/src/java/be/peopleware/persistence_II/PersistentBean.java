@@ -1,4 +1,4 @@
-package be.peopleware.persistence_I;
+package be.peopleware.persistence_II;
 
 
 import java.io.Serializable;

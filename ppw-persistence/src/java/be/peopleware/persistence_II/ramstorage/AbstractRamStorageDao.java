@@ -4,22 +4,21 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.persistence_I.hibernate;
+package be.peopleware.persistence_II.ramstorage;
 
 
-import net.sf.hibernate.Session;
-import be.peopleware.persistence_I.dao.Dao;
+import be.peopleware.persistence_II.dao.Dao;
 
 
 /**
- * Support methods for Hibernate <acronym title="Data Access Object">DAO<acronym>'s.
- * These implementations need a Hibernate {@link Session}.
+ * Support methods for RamStorage <acronym title="Data Access Object">DAO<acronym>'s.
+ * These implementations need a {@link RamStorage}.
  *
  * @author Jan Dockx
  * @author Peopleware n.v.
  */
-public abstract class AbstractHibernateDao implements Dao {
-  
+public class AbstractRamStorageDao implements Dao {
+
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
   /** {@value} */
@@ -32,10 +31,24 @@ public abstract class AbstractHibernateDao implements Dao {
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /*</section>*/
 
+
   /**
    * @basic
-   * @init      null;
    */
-  public abstract Session getSession();
+  public final RamStorage getRamStorage() {
+    return $rs;
+  }
+
+  /**
+   * @post getRamStorage() == rs;
+   */
+  public final void setRamStorage(RamStorage rs) {
+    $rs = rs;
+  }
+  
+  /**
+   * @invar $rs != null;
+   */
+  private RamStorage $rs;
 
 }

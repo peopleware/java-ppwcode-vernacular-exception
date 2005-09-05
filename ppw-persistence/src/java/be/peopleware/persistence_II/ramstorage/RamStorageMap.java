@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.persistence_I.ramstorage;
+package be.peopleware.persistence_II.ramstorage;
 
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import be.peopleware.persistence_I.PersistentBean;
+import be.peopleware.persistence_II.PersistentBean;
 
 
 /**

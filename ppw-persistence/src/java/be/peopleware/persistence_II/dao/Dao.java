@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.persistence_I.dao;
+package be.peopleware.persistence_II.dao;
 
 
 
@@ -30,7 +30,7 @@ package be.peopleware.persistence_I.dao;
  * are not fulfilled when the DAO method is called.
  *
  * Subtypes may depend on the fact that the objects in persistent storage are
- * {@link be.peopleware.persistence_I.PersistentBean PersistentBeans},
+ * {@link be.peopleware.persistence_II.PersistentBean PersistentBeans},
  * although this will not always be necessary.
  *
  * A Dao cannot be made {@link java.io.Serializable} (we tried). Hibernate dao's

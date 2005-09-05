@@ -4,14 +4,14 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.persistence_I.ramstorage;
+package be.peopleware.persistence_II.ramstorage;
 
 
 import java.util.List;
 import java.util.Set;
 
 import be.peopleware.exception_I.TechnicalException;
-import be.peopleware.persistence_I.dao.FilterDao;
+import be.peopleware.persistence_II.dao.FilterDao;
 
 
 /**
