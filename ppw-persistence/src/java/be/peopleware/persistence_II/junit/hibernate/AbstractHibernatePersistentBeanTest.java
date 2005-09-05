@@ -15,8 +15,8 @@ import org.toryt.ClassContract;
 import org.toryt.Condition;
 import org.toryt.Contracts;
 
-import be.peopleware.bean_IV.CompoundPropertyException;
-import be.peopleware.bean_IV.PropertyException;
+import be.peopleware.bean_V.CompoundPropertyException;
+import be.peopleware.bean_V.PropertyException;
 import be.peopleware.persistence_I.PersistentBean;
 
 

@@ -14,9 +14,9 @@ import net.sf.hibernate.Transaction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import be.peopleware.bean_IV.CompoundPropertyException;
-import be.peopleware.bean_IV.ConstraintException;
-import be.peopleware.bean_IV.DuplicateKeyException;
+import be.peopleware.bean_V.CompoundPropertyException;
+import be.peopleware.bean_V.ConstraintException;
+import be.peopleware.bean_V.DuplicateKeyException;
 import be.peopleware.exception_I.Exceptions;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.persistence_I.IdNotFoundException;

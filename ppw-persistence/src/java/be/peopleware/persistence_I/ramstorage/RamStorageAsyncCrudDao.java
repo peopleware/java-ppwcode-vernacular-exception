@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import be.peopleware.bean_IV.CompoundPropertyException;
+import be.peopleware.bean_V.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.persistence_I.IdNotFoundException;
 import be.peopleware.persistence_I.PersistentBean;
