@@ -3,7 +3,7 @@
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>1</pomVersion>
-  <name>PeopleWare Persistence Library I</name>
+  <name>PeopleWare Persistence Library II</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-persistence-II</artifactId>
   <shortDescription>Support for persistency.</shortDescription>
