@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="I v1.1.0/1.0" date="2005-09-06" description="More converters and user types">
+      <action dev="jand" type="add">
+        Copied Hibernate user types and JSf converters from FVB convenants.
+      </action>
+    </release>
+
     <release version="II v1.0.0/1.0" date="2005-09-05" description="ppw-value is now dependent on ppw-bean-V instead of ppw-bean-IV">
       <action dev="nsmeets" type="update">
         ppw-value is now dependent on ppw-bean-V instead of ppw-bean-IV.
