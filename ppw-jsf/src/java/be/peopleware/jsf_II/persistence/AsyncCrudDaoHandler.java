@@ -2,7 +2,7 @@ package be.peopleware.jsf_II.persistence;
 
 
 import be.peopleware.jsf_II.FatalFacesException;
-import be.peopleware.persistence_I.dao.AsyncCrudDao;
+import be.peopleware.persistence_II.dao.AsyncCrudDao;
 
 
 /**

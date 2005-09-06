@@ -24,14 +24,14 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import be.peopleware.bean_IV.CompoundPropertyException;
+import be.peopleware.bean_V.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
-import be.peopleware.persistence_I.IdNotFoundException;
-import be.peopleware.persistence_I.PersistentBean;
-import be.peopleware.persistence_I.dao.AsyncCrudDao;
+import be.peopleware.persistence_II.IdNotFoundException;
+import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.dao.AsyncCrudDao;
 import be.peopleware.servlet.navigation.NavigationInstance;
 import be.peopleware.servlet.navigation.NavigationStack;
 import be.peopleware.servlet.sessionMopup.Removable;
@@ -77,16 +77,16 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  *  for the JSF page.</p>
  * <img src="doc-files/persistence.gif" style="width: 100%;" />
  *
- * <h3>Retrieving the {@link be.peopleware.persistence_I.PersistentBean Instance}</h3>
+ * <h3>Retrieving the {@link be.peopleware.persistence_II.PersistentBean Instance}</h3>
  * <p>With each HTTP request (except the request for a screen to fill out the
  *  values for a new instance, the request to create a new instance, the request
  *  to show a list of persistent beans and a request to go back to the
  *  previous page) we expect the
- *  {@link be.peopleware.persistence_I.PersistentBean#getId() primary key of a
+ *  {@link be.peopleware.persistence_II.PersistentBean#getId() primary key of a
  *  persistent bean} as request parameter. This id is filled in in the handler's
  *  {@link #getId()} property. Before
  *  the Update Model Values phase is reached, we need to load the
- *  {@link be.peopleware.persistence_I.PersistentBean} with
+ *  {@link be.peopleware.persistence_II.PersistentBean} with
  *  {@link #getId() this id} and type {@link #getPersistentBeanType()} from
  *  persistent storage. This instance will be stored in the
  *  {@link #getInstance() instance handler property}.</p>
@@ -112,11 +112,11 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  *  can go back to it later.</p>
  * <h3>Display</h3>
  * <p>In view mode <code>display</code>, the data of the {@link
- *  be.peopleware.persistence_I.PersistentBean} is shown, in a non-editable
+ *  be.peopleware.persistence_II.PersistentBean} is shown, in a non-editable
  *  way.</p>
  * <h4>delete</h4>
  * <p>From this state, we can try to delete the {@link
- *  be.peopleware.persistence_I.PersistentBean}. When the bean is not found in
+ *  be.peopleware.persistence_II.PersistentBean}. When the bean is not found in
  *  persistent storage (<code>delete(id) [! found(id)]</code>), the user is
  *  brought back to the previous page, and a message is shown. If the bean is
  *  found in persistent storage, deletion might fail for semantic reasons
@@ -169,7 +169,7 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  * <p>This is not implemented in this generic handler.</p>
  * <h3>Edit</h3>
  * <p>In view mode <code>edit</code>, the data of the {@link
- *  be.peopleware.persistence_I.PersistentBean} is shown, in an editable way. This
+ *  be.peopleware.persistence_II.PersistentBean} is shown, in an editable way. This
  *  means that the user can change the current values of the properties of the
  *  persistent bean or fill in the value of properties that were not specified
  *  before.</p>
@@ -193,7 +193,7 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  * </pre>
  * <h4>update</h4>
  * <p>From the <code>edit</code> state, we can try to update the {@link
- *  be.peopleware.persistence_I.PersistentBean} with the values filled in by the
+ *  be.peopleware.persistence_II.PersistentBean} with the values filled in by the
  *  user. When the bean is not found in persistent storage (<code>update(id, data)
  *  [! found(id)]</code>), the user is brought back to the
  *  previous page, and a message is shown. If the bean is found in persistent
@@ -247,7 +247,7 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  * </pre>
  * <h3>Deleted</h3>
  * <p>In view mode <code>deleted</code>, the data of the deleted {@link
- *  be.peopleware.persistence_I.PersistentBean} is shown, in a non-editable way,
+ *  be.peopleware.persistence_II.PersistentBean} is shown, in a non-editable way,
  *  with visual feedback about the fact that it was deleted (e.g., strikethrough).
  * <h4>goBack</h4>
  * <p>From this mode, the only action of the user can be to request to go back to
@@ -814,8 +814,8 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    * @throws  FatalFacesException
    *          When a TechnicalException is thrown by:
    *          {@link AsyncCrudDao#startTransaction()}
-   *          {@link AsyncCrudDao#updatePersistentBean(be.peopleware.persistence_I.PersistentBean)}
-   *          {@link AsyncCrudDao#commitTransaction(be.peopleware.persistence_I.PersistentBean)}
+   *          {@link AsyncCrudDao#updatePersistentBean(be.peopleware.persistence_II.PersistentBean)}
+   *          {@link AsyncCrudDao#commitTransaction(be.peopleware.persistence_II.PersistentBean)}
    *          {@link AsyncCrudDao#cancelTransaction()}
    */
   public String update() throws FatalFacesException {
@@ -1003,8 +1003,8 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    * @throws  FatalFacesException
    *          When a TechnicalException is thrown by:
    *          {@link AsyncCrudDao#startTransaction()}
-   *          {@link AsyncCrudDao#createPersistentBean(be.peopleware.persistence_I.PersistentBean)}
-   *          {@link AsyncCrudDao#commitTransaction(be.peopleware.persistence_I.PersistentBean)}
+   *          {@link AsyncCrudDao#createPersistentBean(be.peopleware.persistence_II.PersistentBean)}
+   *          {@link AsyncCrudDao#commitTransaction(be.peopleware.persistence_II.PersistentBean)}
    *          {@link AsyncCrudDao#cancelTransaction()}
    */
   public final String create() throws FatalFacesException {
@@ -1085,8 +1085,8 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    * @throws  FatalFacesException
    *          When a TechnicalException is thrown by:
    *          {@link AsyncCrudDao#startTransaction()}
-   *          {@link AsyncCrudDao#deletePersistentBean(be.peopleware.persistence_I.PersistentBean)}
-   *          {@link AsyncCrudDao#commitTransaction(be.peopleware.persistence_I.PersistentBean)}
+   *          {@link AsyncCrudDao#deletePersistentBean(be.peopleware.persistence_II.PersistentBean)}
+   *          {@link AsyncCrudDao#commitTransaction(be.peopleware.persistence_II.PersistentBean)}
    *          {@link AsyncCrudDao#cancelTransaction()}
    */
   public final String delete() throws FatalFacesException {

@@ -18,11 +18,11 @@ import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.RobustCurrent;
-import be.peopleware.persistence_I.DaoFactory;
-import be.peopleware.persistence_I.IdNotFoundException;
-import be.peopleware.persistence_I.PersistentBean;
-import be.peopleware.persistence_I.hibernate.HibernateAsyncCrudDao;
-import be.peopleware.persistence_I.hibernate.HibernateDaoFactory;
+import be.peopleware.persistence_II.DaoFactory;
+import be.peopleware.persistence_II.IdNotFoundException;
+import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.hibernate.HibernateAsyncCrudDao;
+import be.peopleware.persistence_II.hibernate.HibernateDaoFactory;
 import be.peopleware.servlet_I.hibernate.SessionInView;
 
 
@@ -34,7 +34,7 @@ import be.peopleware.servlet_I.hibernate.SessionInView;
  * <pre>
  *
  *  &lt;converter&gt;
- *    &lt;converter-for-class&gt;be.peopleware.persistence_I.PersistentBean&lt;/converter-for-class&gt;
+ *    &lt;converter-for-class&gt;be.peopleware.persistence_II.PersistentBean&lt;/converter-for-class&gt;
  *    &lt;converter-class&gt;be.peopleware.jsf_II.convertor.PersistentBeanConverter&lt;/converter-class&gt;
  *  &lt;/converter&gt;
  *
@@ -131,7 +131,7 @@ public class PersistentBeanConverter implements Converter {
     if (value == null) {
       return EMPTY;
     }
-    if (value.equals(EMPTY)) {
+    if (value.equals(EMPTY)) { // MUDO (jand) this is extremely weird; ask Abdul
       return EMPTY;
     }
     if (!(value instanceof PersistentBean)) {

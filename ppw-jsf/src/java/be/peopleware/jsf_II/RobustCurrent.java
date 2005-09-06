@@ -45,8 +45,8 @@ import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.el.VariableResolverImpl;
 
-import be.peopleware.bean_IV.CompoundPropertyException;
-import be.peopleware.bean_IV.PropertyException;
+import be.peopleware.bean_V.CompoundPropertyException;
+import be.peopleware.bean_V.PropertyException;
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.jsf_II.i18n.JsfResourceBundleLoadStrategy;
 
@@ -644,7 +644,7 @@ public class RobustCurrent {
 
   /**
    * When a {@link CompoundPropertyException} is caught, mostly
-   * as a result of a call to {@link be.peopleware.bean_IV.RousseauBean#checkCivility()},
+   * as a result of a call to {@link be.peopleware.bean_V.RousseauBean#checkCivility()},
    * turn it into faces messages. The faces action should return <code>null</code>:
    * we should stay on the same page.
    *

@@ -20,7 +20,7 @@ import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.util.DynamicComparatorChain;
-import be.peopleware.persistence_I.PersistentBean;
+import be.peopleware.persistence_II.PersistentBean;
 
 
 /**

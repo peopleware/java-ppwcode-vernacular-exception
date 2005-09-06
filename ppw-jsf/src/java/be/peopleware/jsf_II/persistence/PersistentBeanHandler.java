@@ -14,8 +14,8 @@ import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.i18n.BasenameResourceBundleMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
-import be.peopleware.persistence_I.PersistentBean;
-import be.peopleware.persistence_I.dao.Dao;
+import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.dao.Dao;
 
 
 /**
