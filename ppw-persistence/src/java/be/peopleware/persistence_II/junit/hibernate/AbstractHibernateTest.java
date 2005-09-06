@@ -110,7 +110,7 @@ public abstract class AbstractHibernateTest extends TestCase {
     }
   }
 
-  public Long save(final Object object) {
+  public Long create(final Object object) {
     try {
       $session.save(object);
       if (object instanceof PersistentBean) {
@@ -122,9 +122,19 @@ public abstract class AbstractHibernateTest extends TestCase {
     }
     catch (HibernateException hExc) {
       hExc.printStackTrace();
-      fail("Failed to save the object to the database.");
+      fail("Failed to create the object in the database.");
     }
     return null;
+  }
+
+  public void update(final Object object) {
+    try {
+      $session.update(object);
+    }
+    catch (HibernateException hExc) {
+      hExc.printStackTrace();
+      fail("Failed to update the object in the database.");
+    }
   }
 
   public void delete(final Object object) {
@@ -137,7 +147,7 @@ public abstract class AbstractHibernateTest extends TestCase {
     }
   }
 
-  public Object load(final Class clazz, final Long id) {
+  public Object retrieve(final Class clazz, final Long id) {
     Object result = null;
     try {
       result = $session.load(clazz, id);
@@ -147,24 +157,24 @@ public abstract class AbstractHibernateTest extends TestCase {
     }
     catch (HibernateException hExc) {
       hExc.printStackTrace();
-      fail("Failed to load the object from the database.");
+      fail("Failed to retrieve the object from the database.");
     }
     return result;
   }
 
-  public Set load(final Class persistentObjectType) {
+  public Set retrieve(final Class persistentObjectType) {
     Set results = new HashSet();
     try {
       results.addAll($session.createCriteria(persistentObjectType).list());
     }
     catch (HibernateException hExc) {
       hExc.printStackTrace();
-      fail("Failed to load objects from database");
+      fail("Failed to retrieve objects from database");
     }
     return results;
   }
 
-  public List load(String HqlQueryString) {
+  public List retrieve(String HqlQueryString) {
     List roles = null;
     try {
       Query q = getSession().createQuery(HqlQueryString);

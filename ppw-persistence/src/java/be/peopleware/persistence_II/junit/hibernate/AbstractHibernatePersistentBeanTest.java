@@ -86,7 +86,7 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
    * Session is open.
    */
   protected Collection loadInstancesToTest() {
-    return load(getClassUnderTest());
+    return retrieve(getClassUnderTest());
   }
 
   protected final ClassContract getClassContract() {
