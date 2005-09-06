@@ -1,4 +1,4 @@
-package be.peopleware.jsp_I;
+package be.peopleware.jsp_II;
 
 
 import java.util.ResourceBundle;

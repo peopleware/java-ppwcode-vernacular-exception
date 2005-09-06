@@ -1,4 +1,4 @@
-package be.peopleware.jsp_I.displaytag;
+package be.peopleware.jsp_II.displaytag;
 
 
 import java.text.NumberFormat;
@@ -7,8 +7,8 @@ import java.util.Locale;
 
 import org.displaytag.decorator.TableDecorator;
 
-import be.peopleware.jsp_I.tag.Functions;
-import be.peopleware.persistence_I.PersistentBean;
+import be.peopleware.jsp_II.tag.Functions;
+import be.peopleware.persistence_II.PersistentBean;
 
 
 /**

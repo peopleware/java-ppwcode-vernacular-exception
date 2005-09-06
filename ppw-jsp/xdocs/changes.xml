@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="II v1.0.0/1.0" date="2005-09-06" description="Dependencies">
+      <action dev="jand" type="update">
+        Using ppw-persistence II and ppw-bean V. incompatible change.
+      </action>
+    </release>
+
     <release version="I v1.1.0/2.0" date="2005-08-14" description="Dependencies">
       <action dev="jand" type="update">
         Update of dependencies.

@@ -8,7 +8,7 @@
   <display-name>Peopleware custom tag library</display-name>
   <tlib-version>1.1</tlib-version>
   <short-name>ppw</short-name>
-  <uri>http://www.peopleware.be/tags/jsp-I</uri>
+  <uri>http://www.peopleware.be/tags/jsp-II</uri>
 
   <tag>
     <description>
@@ -16,7 +16,7 @@
     </description>
     <display-name>ppw:showFullThrowableData</display-name>
     <name>showFullThrowableData</name>
-    <tag-class>be.peopleware.jsp_I.tag.ShowFullThrowableDataTag</tag-class>
+    <tag-class>be.peopleware.jsp_II.tag.ShowFullThrowableDataTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
       <description>
@@ -42,74 +42,74 @@
 
   <tag-file>
     <name>showExceptionCollection</name>
-    <path>/META-INF/tags/be/peopleware/jsp_I/tag/exception/showExceptionCollection.tagx</path>
+    <path>/META-INF/tags/be/peopleware/jsp_II/tag/exception/showExceptionCollection.tagx</path>
   </tag-file>
-  
+
   <!-- @todo (dvankeer): dateWithCalander tag files, put them here or somewhere else? -->
 
   <function>
     <name>currentLocale</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.util.Locale locale(javax.servlet.jsp.PageContext)</function-signature>
   </function>
 
   <function>
     <name>constant</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.Object constant(java.lang.String, java.lang.String)</function-signature>
   </function>
 
   <function>
     <name>i18nlabel</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.Object i18nlabel(javax.servlet.jsp.jstl.fmt.LocalizationContext, java.lang.String)</function-signature>
   </function>
 
   <function>
     <name>i18npl</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.String i18nPropertyLabel(java.lang.String, java.lang.String, javax.servlet.jsp.PageContext)</function-signature>
   </function>
 
   <function>
     <name>i18nspl</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.String i18nShortPropertyLabel(java.lang.String, java.lang.String, javax.servlet.jsp.PageContext)</function-signature>
   </function>
 
   <function>
     <name>i18ntl</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.String i18nTypeLabel(java.lang.String, javax.servlet.jsp.PageContext)</function-signature>
   </function>
 
   <function>
     <name>i18nptl</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.String i18nPluralTypeLabel(java.lang.String, javax.servlet.jsp.PageContext)</function-signature>
   </function>
 
   <function>
     <name>nl2br</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.String nl2br(java.lang.String)</function-signature>
   </function>
 
   <function>
     <name>br2nl</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.String br2nl(java.lang.String)</function-signature>
   </function>
 
   <function>
     <name>jndiLookup</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.lang.String jndiLookup(java.lang.String)</function-signature>
   </function>
-  
+
     <function>
     <name>principal</name>
-    <function-class>be.peopleware.jsp_I.tag.Functions</function-class>
+    <function-class>be.peopleware.jsp_II.tag.Functions</function-class>
     <function-signature>java.security.Principal principal(javax.servlet.jsp.PageContext)</function-signature>
   </function>
 

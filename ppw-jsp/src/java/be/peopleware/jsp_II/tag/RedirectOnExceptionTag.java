@@ -1,4 +1,4 @@
-package be.peopleware.jsp_I.tag;
+package be.peopleware.jsp_II.tag;
 
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;

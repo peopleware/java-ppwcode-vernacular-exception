@@ -1,4 +1,4 @@
-package be.peopleware.jsp_I.tag;
+package be.peopleware.jsp_II.tag;
 
 
 import javax.servlet.jsp.JspException;
@@ -7,8 +7,8 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import be.peopleware.bean_IV.PropertyException;
-import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
+import be.peopleware.bean_V.PropertyException;
+import be.peopleware.jsp_II.JSTLResourceBundleLoadStrategy;
 
 import java.io.IOException;
 
@@ -59,7 +59,7 @@ import java.io.IOException;
   }
 
   private static final JSTLResourceBundleLoadStrategy
-      JSTL_RESOURCE_BUNDLE_LOAD_STRATEGY = 
+      JSTL_RESOURCE_BUNDLE_LOAD_STRATEGY =
           new JSTLResourceBundleLoadStrategy();
 
   private void printThrowableAndNextCause(final Throwable t)

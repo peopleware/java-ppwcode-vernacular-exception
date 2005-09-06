@@ -1,4 +1,4 @@
-package be.peopleware.jsp_I.tag;
+package be.peopleware.jsp_II.tag;
 
 
 import java.security.Principal;
@@ -15,9 +15,9 @@ import javax.servlet.jsp.jstl.fmt.LocalizationContext;
 
 import org.apache.taglibs.standard.tag.common.fmt.SetLocaleSupport;
 
-import be.peopleware.bean_IV.Beans;
+import be.peopleware.bean_V.Beans;
 import be.peopleware.i18n_I.Properties;
-import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
+import be.peopleware.jsp_II.JSTLResourceBundleLoadStrategy;
 
 
 /**
@@ -336,7 +336,7 @@ import be.peopleware.jsp_I.JSTLResourceBundleLoadStrategy;
     Context envCtx = (Context)initCtx.lookup("java:comp/env"); //$NON-NLS-1$
     return (String)envCtx.lookup(name);
   }
-  
+
   /**
    * Return the Principal out of the pageContext.
    *
