@@ -336,6 +336,7 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  * @invar (getInstance() != null)
  *            ? getType().isInstance(getInstance())
  *            : true;
+ * @invar getViewMode() != null;
  *
  * @idea (jand) gather viewmode in separate class
  * @mudo (jand) security
@@ -434,7 +435,7 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    * The view mode of the handler.
    *
    * @basic
-   * @init null;
+   * @init VIEWMODE_DISPLAY
    */
   public final String getViewMode() {
     return $viewMode;
@@ -446,7 +447,7 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    * @param   viewMode
    *          The view mode to set.
    * @post    (viewMode == null)
-   *             ? new.getViewMode() == null
+   *             ? new.getViewMode().equals(VIEWMODE_DISPLAY)
    *             : new.getViewMode().equals(viewMode);
    * @throws  IllegalArgumentException
    *          ! isViewMode(viewMode);
@@ -465,7 +466,7 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    *            ? isViewMode($viewMode)
    *            : true;
    */
-  private String $viewMode;
+  private String $viewMode = VIEWMODE_DISPLAY;
 
   /*</property>*/
 

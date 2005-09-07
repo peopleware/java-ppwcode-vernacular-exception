@@ -28,6 +28,11 @@ import org.apache.commons.logging.LogFactory;
  *   should not depend on the actions of a specific user.</p>
  * <p>This listener is called on initialize and destroy of a request. This listener
  *   is to be registered with the web application in the <kbd>web.xml</kbd> file.</p>
+ * <pre>
+ *  &lt;listener&gt;
+ *    &lt;listener-class&gt;be.peopleware.servlet.sessionMopup.MopupListener&lt;/listener-class&gt;
+ *  &lt;/listener&gt;
+ * </pre>
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.

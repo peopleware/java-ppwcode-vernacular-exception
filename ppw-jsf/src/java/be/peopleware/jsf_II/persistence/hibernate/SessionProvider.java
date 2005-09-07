@@ -8,8 +8,11 @@ package be.peopleware.jsf_II.persistence.hibernate;
 
 
 import java.io.Serializable;
+import java.sql.Connection;
 
 import javax.servlet.ServletRequest;
+
+import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
 
 import org.apache.commons.logging.Log;
@@ -76,6 +79,17 @@ public class SessionProvider implements Serializable {
       RobustCurrent.fatalProblem("Could not retrieve Hibernate Session", tExc, LOG);
     }
     return session;
+  }
+
+  public Connection getConnection() throws FatalFacesException {
+    Connection result = null;
+    try {
+      result = getSession().connection();
+    }
+    catch (HibernateException e) {
+      RobustCurrent.fatalProblem("could not get connection from Hibernate session", e, LOG);
+    }
+    return result;
   }
 
 }
