@@ -1,7 +1,6 @@
 package be.peopleware.persistence_II.hibernate;
 
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -15,9 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.bean_V.CompoundPropertyException;
-import be.peopleware.bean_V.ConstraintException;
-import be.peopleware.bean_V.DuplicateKeyException;
-import be.peopleware.exception_I.Exceptions;
+import be.peopleware.bean_V.PropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.persistence_II.IdNotFoundException;
 import be.peopleware.persistence_II.PersistentBean;
@@ -33,6 +30,10 @@ import be.peopleware.persistence_II.dao.AsyncCrudDao;
  * @author    PeopleWare n.v.
  * @invar     getRequest() != null;
  * @invar     getSession() != null;
+ *
+ * @todo Exceptions thrown here should be {@link PropertyException PropertyExceptions}
+ *       instead of the more strict {@link CompoundPropertyException}, and should
+ *       allow null origin.
  */
 public class HibernateAsyncCrudDao extends AbstractHibernateDao implements AsyncCrudDao {
 
@@ -152,7 +153,6 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     }
     assert $tx != null;
     try {
-      getSession().flush();
       $tx.commit();
       $tx = null;
       Iterator iter = $deleted.iterator();
@@ -457,71 +457,6 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
    */
   private Set $deleted = new HashSet();
 
-  private static void handleHibernateException(final HibernateException hExc,
-                                               final String operationName,
-                                               final PersistentBean pb)
-      throws TechnicalException, CompoundPropertyException {
-    SQLException sqlExc = (SQLException)Exceptions.huntFor(hExc,
-                                                           SQLException.class);
-    if (sqlExc != null) {
-      if (sqlExc.getMessage()
-                .indexOf("Duplicate key or integrity constraint violation,  "
-                         + "message from server: \"Duplicate entry") >= 0
-          || sqlExc.getMessage().indexOf("Duplicate entry") >= 0 ) {
-        // WATCH OUT: SQL Error message contains 'dual space' after ','.
-        assert pb != null;
-        CompoundPropertyException cpExc = new CompoundPropertyException(pb,
-                                                                        null,
-                                                                        null,
-                                                                        null);
-        DuplicateKeyException dkExc = new DuplicateKeyException(pb,
-                                                                null,
-                                                                "VALUE_NOT_UNIQUE",
-                                                                sqlExc);
-        cpExc.addElementException(dkExc);
-        cpExc.close();
-        throw cpExc;
-      }
-      else if (sqlExc.getMessage()
-          .indexOf("Duplicate key or integrity constraint violation,  "
-                   + "message from server: \"Cannot delete or update a "
-                   + "parent row: a foreign key constraint fails\"") >= 0) {
-        // WATCH OUT: SQL Error message contains 'dual space' after ','.
-        assert pb != null;
-        CompoundPropertyException cpExc = new CompoundPropertyException(pb,
-                                                                        null,
-                                                                        null,
-                                                                        null);
-        ConstraintException cExc = new ConstraintException(pb,
-                                                           null,
-                                                           "CONSTRAINT_FAILURE",
-                                                           sqlExc);
-        cpExc.addElementException(cExc);
-        cpExc.close();
-        throw cpExc;
-      }
-      else {
-        // cannot be that the record is not found
-        throw new TechnicalException("problem "
-                                         + operationName
-                                         + " record",
-                                     hExc);
-      }
-    }
-    CompoundPropertyException cp = (CompoundPropertyException)Exceptions
-        .huntFor(hExc,
-                 CompoundPropertyException.class);
-    if (cp != null) {
-      throw cp;
-    }
-    else {
-      // cannot be that the record is not found
-      throw new TechnicalException("problem "
-                                       + operationName
-                                       + " record",
-                                   hExc);
-    }
-  }
 
 
   public final boolean isInTransaction() {

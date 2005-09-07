@@ -6,6 +6,18 @@
   </properties>
   <body>
 
+    <release version="II v1.1.0/2.0" date="2005-09-06" description="SqlExceptionHandler">
+      <action dev="jand" type="add">
+        Factored out SQLException handling out of HibernateAsyncCrudDao. Compatible change.
+      </action>
+    </release>
+
+    <release version="II v1.0.1/2.0" date="2005-09-06" description="Fix in create method of AsyncCrudDao">
+      <action dev="jand" type="fix">
+        Removed superfluous session flush.
+      </action>
+    </release>
+
     <release version="II v1.0.1/1.0" date="2005-09-06" description="Fix in JUnit test helper classes">
       <action dev="jand" type="fix">
         Interface of junit.hibernate was missing a method, and had wrong method names. Incompatible
