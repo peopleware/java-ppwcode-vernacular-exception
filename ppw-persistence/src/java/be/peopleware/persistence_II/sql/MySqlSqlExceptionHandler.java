@@ -48,8 +48,7 @@ public class MySqlSqlExceptionHandler implements SqlExceptionHandler {
   private static final Log LOG = LogFactory.getLog(MySqlSqlExceptionHandler.class);
 
 
-  public void handle(final SQLException sqlExc, final PersistentBean pb)
-      throws PropertyException {
+  public PropertyException handle(final SQLException sqlExc, final PersistentBean pb) {
     assert sqlExc != null;
     if (sqlExc.getMessage()
               .indexOf("Duplicate key or integrity constraint violation,  "
@@ -61,7 +60,7 @@ public class MySqlSqlExceptionHandler implements SqlExceptionHandler {
                                                               "VALUE_NOT_UNIQUE",
                                                               sqlExc);
       LOG.debug("recognized MySQL duplicate key exception", dkExc);
-      throw dkExc;
+      return dkExc;
     }
     if (sqlExc.getMessage()
         .indexOf("Duplicate key or integrity constraint violation,  "
@@ -73,8 +72,9 @@ public class MySqlSqlExceptionHandler implements SqlExceptionHandler {
                                                          "CONSTRAINT_FAILURE",
                                                          sqlExc);
       LOG.debug("recognized MySQL constraint violation exception", cExc);
-      throw cExc;
+      return cExc;
     }
+    return null;
   }
 
 }

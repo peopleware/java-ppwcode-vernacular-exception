@@ -55,13 +55,11 @@ public abstract class AbstractHibernateDao implements Dao {
       throws TechnicalException, CompoundPropertyException {
     SQLException sqlExc = (SQLException)Exceptions.huntFor(hExc, SQLException.class);
     if ((sqlExc != null) && (getSqlExceptionHandler() != null)) {
-      try {
-       getSqlExceptionHandler().handle(sqlExc, pb);
-       // if we are here, the above handler did not translate into a PropertyException
-      }
-      catch (PropertyException pExc) {
+      PropertyException pExc = getSqlExceptionHandler().handle(sqlExc, pb);
+      if (pExc != null) {
         wrapInCompound(pExc);
       }
+      // if we are here, the above handler did not translate into a PropertyException
       // cannot be that the record is not found
       throw new TechnicalException("problem "
                                       + operationName

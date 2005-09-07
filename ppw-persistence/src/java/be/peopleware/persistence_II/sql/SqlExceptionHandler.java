@@ -34,9 +34,9 @@ import be.peopleware.persistence_II.dao.Dao;
  * <p>Specific {@link Dao} implementations can use specific
  *   implementations of this interface to make abstraction of
  *   how to handle {@link SQLException SQLExceptions}.</p>
- * <p>Implementations either should throw a  {@link PropertyException}
+ * <p>Implementations either should return a {@link PropertyException}
  *   that wraps the given {@link SQLException} if they find it of
- *   a semantic nature. If not, they should end nominally.
+ *   a semantic nature. If not, they should return <code>null</code>.
  *   Implementation methods should have no effects.</p>
  *
  * @author    Jan Dockx
@@ -60,8 +60,8 @@ public interface SqlExceptionHandler {
 
 
   /**
-   * Throw a {@link PropertyException} wrapping <code>sqlException</code>
-   * if you find the latter of a semantic nature. If not, do NOP.
+   * Return a {@link PropertyException} wrapping <code>sqlException</code>
+   * if you find the latter of a semantic nature. If not, return <code>null</code>.
    *
    * @param sqlException
    *        The exception to handle.
@@ -69,7 +69,9 @@ public interface SqlExceptionHandler {
    *        The persistent bean for which we are performing a database
    *        operation. This can be <code>null</code>.
    * @pre sqlException != null;
+   * @throws TechnicalException
+   *         Could not find this out, for a technical reason.
    */
-  void handle(SQLException sqlException, PersistentBean pb) throws PropertyException;
+  PropertyException handle(SQLException sqlException, PersistentBean pb) throws TechnicalException;
 
 }
