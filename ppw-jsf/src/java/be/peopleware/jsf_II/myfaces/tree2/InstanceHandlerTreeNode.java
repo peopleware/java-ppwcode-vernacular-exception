@@ -7,6 +7,9 @@ TO SELECTED PARTIES.
 package be.peopleware.jsf_II.myfaces.tree2;
 
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.myfaces.custom.tree2.TreeNode;
 
 import be.peopleware.jsf_II.persistence.InstanceHandler;
@@ -23,6 +26,7 @@ import be.peopleware.jsf_II.persistence.InstanceHandler;
  *   facet name in the jspx page, is the FQCN of the
  *   {@link #getPersistentBeanType() persistent bean type} we
  *   are handling.</p>
+ * <p>This default implementation can be used for a {@link #isLeaf() leaf}</p>
  *
  * @note The {@link TreeNode} interface defines some stupid methods
  *       that should not appear in an API interface in the first place.
@@ -35,7 +39,7 @@ import be.peopleware.jsf_II.persistence.InstanceHandler;
  * @invar getChildCount() = getChildren().size();
  * @invar isLeaf() <==> getChildCount() == 0;
  */
-public abstract class AbstractInstanceHandlerTreeNode extends InstanceHandler implements TreeNode {
+public class InstanceHandlerTreeNode extends InstanceHandler implements TreeNode {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -61,6 +65,16 @@ public abstract class AbstractInstanceHandlerTreeNode extends InstanceHandler im
    */
   public final String getType() {
     return getPersistentBeanType().getName();
+  }
+
+  /**
+   * Overwrite this method to define what
+   * the children of this {@link TreeNode} are.
+   *
+   * @return-protected Collections.EMPTY_LIST
+   */
+  public List getChildren() {
+    return Collections.EMPTY_LIST;
   }
 
   /**
