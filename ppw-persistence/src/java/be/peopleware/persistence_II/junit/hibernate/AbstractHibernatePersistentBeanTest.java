@@ -149,7 +149,7 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
       Condition c = (Condition)iter.next();
       boolean result = c.validate(context);
       if (LOG.isErrorEnabled() && (! result)) {
-        LOG.error("type invariant violation: " + instance);
+        LOG.error("type invariant violation: " + c + " for " + instance);
       }
       assertTrue(result);
     }

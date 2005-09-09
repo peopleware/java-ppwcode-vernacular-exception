@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+    <release version="II v1.1.0/3.0" date="2005-09-09" description="More debug information added.">
+      <action dev="dvankeer" type="update">
+        Added more information on type invariant failured. Added failedcontidion to debug information
+      </action>
+    </release>
+
     <release version="II v1.1.0/2.0" date="2005-09-06" description="SqlExceptionHandler">
       <action dev="jand" type="add">
         Factored out SQLException handling out of HibernateAsyncCrudDao. Compatible change.
