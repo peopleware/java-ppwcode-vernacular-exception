@@ -7,6 +7,12 @@
   </properties>
   <body>
 
+    <release version="II v1.2.1/1.0" date="2005-09-09" description="Period.contains">
+      <action dev="jand" type="fix">
+        Period.containsInclusive(Date) and LeftInclusive: previous didn't make sense.
+      </action>
+    </release>
+
     <release version="II v1.2.0/1.0" date="2005-09-09" description="Period.contains">
       <action dev="jand" type="add">
         Period.contains(Date) added.

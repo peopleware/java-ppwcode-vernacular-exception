@@ -299,12 +299,29 @@ public class Period extends MutableValue implements Comparable {
 
   /**
    * <code>date</code> is in this period, half-inclusive:
+   * <code>date in [getStartDate(), getEndDate()]</code>.
+   *
+   * @return (date == null) && (getStartDate() == null) && (getEndDate() == null) &&
+   *            (! date.before(getStartDate())) && (! date.after(getEndDate()));
+   */
+  public final boolean containsInclusive(Date date) {
+    if ((date == null) || (getStartDate() == null) || (getEndDate() == null)) {
+      return false;
+    }
+    else {
+      return (! date.before(getStartDate())) && (! date.after(getEndDate()));
+    }
+  }
+
+
+  /**
+   * <code>date</code> is in this period, half-inclusive:
    * <code>date in [getStartDate(), getEndDate()[</code>.
    *
    * @return (date == null) && (getStartDate() == null) && (getEndDate() == null) &&
    *            (! date.before(getStartDate())) && date.before(getEndDate());
    */
-  public final boolean contains(Date date) {
+  public final boolean containsLeftInclusive(Date date) {
     if ((date == null) || (getStartDate() == null) || (getEndDate() == null)) {
       return false;
     }
