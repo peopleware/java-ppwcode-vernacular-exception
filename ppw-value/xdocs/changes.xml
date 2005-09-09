@@ -7,6 +7,12 @@
   </properties>
   <body>
 
+    <release version="II v1.2.0/1.0" date="2005-09-09" description="Period.contains">
+      <action dev="jand" type="add">
+        Period.contains(Date) added.
+      </action>
+    </release>
+
     <release version="II v1.1.0/1.0" date="2005-09-06" description="More converters and user types">
       <action dev="jand" type="add">
         Copied Hibernate user types and JSf converters from FVB convenants.

@@ -15,7 +15,7 @@ import java.util.Date;
  * should not be empty).
  * The start date is included in the interval, the end date is not
  * (right half-open interval).
- * 
+ *
  * The {@link #compareTo(Object) compare method} compares the
  * {@link #getStartDate()}.
  *
@@ -294,6 +294,22 @@ public class Period extends MutableValue implements Comparable {
     }
     else {
       return getStartDate().compareTo(p.getStartDate());
+    }
+  }
+
+  /**
+   * <code>date</code> is in this period, half-inclusive:
+   * <code>date in [getStartDate(), getEndDate()[</code>.
+   *
+   * @return (date == null) && (getStartDate() == null) && (getEndDate() == null) &&
+   *            (! date.before(getStartDate())) && date.before(getEndDate());
+   */
+  public final boolean contains(Date date) {
+    if ((date == null) || (getStartDate() == null) || (getEndDate() == null)) {
+      return false;
+    }
+    else {
+      return (! date.before(getStartDate())) && date.before(getEndDate());
     }
   }
 
