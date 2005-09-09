@@ -83,7 +83,7 @@ public class InstanceHandlerTreeNode extends InstanceHandler implements TreeNode
    * @return getChildren().size();
    */
   public int getChildCount() {
-    return 0;
+    return getChildren().size();
   }
 
   /**
