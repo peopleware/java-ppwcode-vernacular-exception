@@ -1,9 +1,14 @@
 package be.peopleware.jsf_II.persistence;
 
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 import javax.faces.FacesException;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +21,7 @@ import be.peopleware.jsf_II.i18n.BasenameResourceBundleMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
 import be.peopleware.persistence_II.PersistentBean;
 import be.peopleware.persistence_II.dao.Dao;
+import be.peopleware.servlet.navigation.NavigationInstance;
 
 
 /**
@@ -35,7 +41,7 @@ import be.peopleware.persistence_II.dao.Dao;
  * @idea to save memory, cache and share labels for the same type and
  *       locale on a higher level
  */
-public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
+public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implements NavigationInstance {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -52,6 +58,100 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
 
 
   private static final Log LOG = LogFactory.getLog(PersistentBeanHandler.class);
+
+
+
+  /*<property name="viewMode">*/
+  //------------------------------------------------------------------
+
+  /** {@value} */
+  public final static String VIEWMODE_DISPLAY = "display";
+  /** {@value} */
+  public final static String VIEWMODE_EDIT = "edit";
+
+  /**
+   * { {@link #VIEWMODE_DISPLAY}, {@link #VIEWMODE_EDIT} };
+   */
+  public final static String[] VIEWMODES
+      = {VIEWMODE_DISPLAY, VIEWMODE_EDIT};
+
+  /**
+   * Does <code>viewMode</code> represent a valid view mode?
+   *
+   * @param   viewMode
+   *          The viewMode to be checked.
+   * @return  Arrays.asList(VIEWMODES).contains(s);
+   */
+  public boolean isViewMode(String viewMode) {
+    return Arrays.asList(VIEWMODES).contains(viewMode);
+  }
+
+  /**
+   * The view mode of the handler.
+   *
+   * @basic
+   * @init VIEWMODE_DISPLAY
+   */
+  public final String getViewMode() {
+    return $viewMode;
+  }
+
+  /**
+   * Set the view mode to the given string.
+   *
+   * @param   viewMode
+   *          The view mode to set.
+   * @post    (viewMode == null)
+   *             ? new.getViewMode().equals(VIEWMODE_DISPLAY)
+   *             : new.getViewMode().equals(viewMode);
+   * @throws  IllegalArgumentException
+   *          ! isViewMode(viewMode);
+   */
+  public final void setViewMode(String viewMode) throws IllegalArgumentException {
+    if (! isViewMode(viewMode)) {
+      throw new IllegalArgumentException("\"" + viewMode + "\" is not a valid view mode; " +
+                                         "it must be one of " + VIEWMODES);
+    }
+    // set the view mode
+    $viewMode = viewMode;
+  }
+
+  /**
+   * @invar ($viewMode != null)
+   *            ? isViewMode($viewMode)
+   *            : true;
+   */
+  private String $viewMode = VIEWMODE_DISPLAY;
+
+  /**
+   * Returns true when the handler is in a state where we want the page
+   * to show data as fields, i.e., the data is editable. This is implemented
+   * in this package based on {@link #getViewMode()}, but might be extended
+   * in specific subclasses.
+   *
+   * This method is introduces to avoid writing
+   * <code>myHandler.viewmode eq 'edit' or myHandler.viewmode eq 'editNew'</code>
+   * and
+   * <code>myHandler.viewmode neq 'edit' and myHandler.viewmode neq 'editNew'</code>
+   * as value of the rendered attributes of in- and output fields in JSF pages,
+   * which is cumbersome.
+   * Now we can write
+   * <code>myHandler.showFields</code>
+   * and
+   * <code>not myHandler.showFields</code>.
+   *
+   * @result  false ? (! getViewMode().equals(PersistentBeanHandler.VIEWMODE_EDIT));
+   * @throws  FatalFacesException
+   *          getViewMode() == null;
+   */
+  public boolean isShowFields() throws FatalFacesException {
+    if (getViewMode() == null) {
+      RobustCurrent.fatalProblem("ViewMode is null", LOG);
+    }
+    return getViewMode().equals(VIEWMODE_EDIT);
+  }
+
+  /*</property>*/
 
 
 
@@ -438,6 +538,64 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
   }
 
 
+  /**
+   * <p>This method should be called to navigate to the page
+   *   for this handler in <code>viewMode</code>.</p>
+   * <p>This handler is made available to the JSP/JSF page in session scope,
+   *   as a variable with name
+   *   {@link PersistentBeanHandlerResolver}.{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
+   *   And we navigate to {@link #getViewId()}.</p>
+   * <p>The {@link #getPersistentBeanType() type}, and possibly more, should
+   *   be set before this method is called.</p>
+   *
+   * @post    isViewMode(viewMode) ? new.getViewMode().equals(viewMode)
+   *                             : new.getViewMode().equals(VIEWMODE_DISPLAY);
+   * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
+   * @throws  FatalFacesException
+   *          getPersistentBeanType() == null;
+   *
+   * @mudo (jand) security
+   */
+  public void navigateHere(String viewMode) throws FatalFacesException {
+    LOG.debug("navigate called");
+    if (getPersistentBeanType() == null) {
+      LOG.fatal("cannot navigate to detail, because no type is set (" +
+                this);
+    }
+    setViewMode(isViewMode(viewMode) ? viewMode : VIEWMODE_DISPLAY);
+    // put this handler in request scope, under an agreed name, create new view & navigate
+    putInSessionScope();
+    FacesContext context = RobustCurrent.facesContext();
+    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getViewId());
+    context.setViewRoot(viewRoot);
+    context.renderResponse();
+  }
+
+  public abstract String getViewId();
+
+  public abstract void putInSessionScope();
+
+  /**
+   * <p>Action listener method to navigate to the page
+   *   for this handler in {@link #VIEWMODE_DISPLAY},
+   *   via a call to {@link #navigateHere(String)}.</p>
+   * <p>This handler is made available to the JSP/JSF page in request scope,
+   *   as a variable with name
+   *   {@link PersistentBeanHandlerResolver}.{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
+   *   And we navigate to {@link #getViewId()}.</p>
+   * <p>The {@link #getPersistentBeanType() type}, and possibly more, should
+   *   be set before this method is called.</p>
+   *
+   * @post    new.getViewMode().equals(VIEWMODE_DISPLAY);
+   * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
+   * @throws  FatalFacesException
+   *          getType() == null;
+   * @throws  FatalFacesException
+   *          in more circumstances
+   */
+  public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
+    navigateHere(VIEWMODE_DISPLAY);
+  }
 
   /*<section name="skimmable">*/
   //------------------------------------------------------------------
@@ -447,6 +605,41 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler {
    * persistent bean type is not to be skimmed
    * i18n label maps should be cached at a higher level
    */
+
+  /*</section>*/
+
+
+
+  /*<section name="navigationInstance">*/
+  //------------------------------------------------------------------
+
+
+  /*<property name="LastRenderedTime">*/
+  //------------------------------------------------------------------
+
+  public final Date getLastRenderedTime() {
+    return $lastRenderedTime;
+  }
+
+  /**
+   * @post new.getTime().equals(NOW);
+   */
+  protected void resetLastRenderedTime() {
+    $lastRenderedTime = new Date();
+  }
+
+  /**
+   * @invar $lastRenderedTime != null;
+   */
+  private Date $lastRenderedTime = new Date();
+
+  /*</property>*/
+
+  public final void navigateHere() throws FatalFacesException {
+    LOG.debug("request to navigate back to this handler instance (" +
+              this + ")");
+    navigateHere(VIEWMODE_DISPLAY);
+  }
 
   /*</section>*/
 

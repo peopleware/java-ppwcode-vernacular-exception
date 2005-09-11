@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.persistence.InstanceHandler;
+import be.peopleware.jsf_II.persistence.PersistentBeanHandler;
 
 
 /**
@@ -191,9 +192,9 @@ public class UIInstanceHandler extends UIInput implements Serializable {
 
       { // viewMode
         viewMode = (String)requestParameters.get(viewModeTagName(context));
-        if (! InstanceHandler.isViewMode(viewMode)) {
+        if (! handler.isViewMode(viewMode)) {
           // if there is no correct view mode in the request, treat it as a display mode
-          viewMode = InstanceHandler.VIEWMODE_DISPLAY;
+          viewMode = PersistentBeanHandler.VIEWMODE_DISPLAY;
         }
       }
       if (!viewMode.equals(InstanceHandler.VIEWMODE_EDITNEW)) {
@@ -222,8 +223,7 @@ public class UIInstanceHandler extends UIInput implements Serializable {
       }
 
     }
-    //assert id != null;
-    assert InstanceHandler.isViewMode(viewMode);
+    assert handler.isViewMode(viewMode);
     // fill id and viewmode in handler
     handler.setInstance(null); // be sure
     handler.setId(id);

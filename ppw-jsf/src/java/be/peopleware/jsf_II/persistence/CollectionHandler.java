@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
@@ -21,6 +19,7 @@ import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.util.DynamicComparatorChain;
 import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.servlet.navigation.NavigationInstance;
 
 
 /**
@@ -53,6 +52,9 @@ import be.peopleware.persistence_II.PersistentBean;
  *   The action listener method {@link #sort(ActionEvent)} is available
  *   for end users to control the sort order. The default {@link #getComparator()} sorts on
  *   {@link PersistentBean#getId()}, which is not very end-user friendly.</p>
+ *
+ * @note Can only be used as a navigation instance when we want to show all
+ *       records of this type for now.
  *
  * @author     David Van Keer
  * @author     Peopleware n.v.
@@ -351,7 +353,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     LOG.debug("    instance is " + bean + "; RESOLVER is " + InstanceHandler.RESOLVER);
     InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(bean.getClass(), getDaoVariableName());
     handler.setInstance(bean);
-    handler.setViewMode(InstanceHandler.VIEWMODE_DISPLAY);
+    handler.setViewMode(PersistentBeanHandler.VIEWMODE_DISPLAY);
     LOG.debug("    handler is " + handler);
     return handler;
   }
@@ -374,17 +376,6 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   private List $handlers;
 
   public static final String LIST_VIEW_ID_SUFFIX = "_list" + VIEW_ID_SUFFIX;
-
-  /**
-   * @pre getType() != null;
-   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + LIST_VIEW_ID_SUFFIX;
-   */
-  public String getCollectionViewId() {
-    assert getPersistentBeanType() != null : "type cannot be null";
-    String typeName = getPersistentBeanType().getName();
-    typeName = typeName.replace('.', '/');
-    return VIEW_ID_PREFIX + typeName + LIST_VIEW_ID_SUFFIX;
-  }
 
   /**
    *
@@ -424,7 +415,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *   with it.</p>
    * <p>The fresh instance handler is made available to the JSP/JSF page in request scope,
    *   as a variable with the appropriate name, and we navigate to
-   *   {@link InstanceHandler#getDetailViewId()}.</p>
+   *   {@link InstanceHandler#getViewId()}.</p>
    */
   public final void navigateToEditNew() throws FatalFacesException {
     PersistentBean fresh = createInstance();
@@ -440,7 +431,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *   {@link #getPersistentBeanType()} or one of its subtypes.</p>
    * <p>The fresh handler is made available to the JSP/JSF page in request scope,
    *   as a variable with the appropriate name, and we navigate to
-   *   {@link InstanceHandler#getDetailViewId()}.</p>
+   *   {@link InstanceHandler#getViewId()}.</p>
    */
   public final void navigateToEditNew(PersistentBean fresh) throws FatalFacesException {
     assert fresh != null;
@@ -450,34 +441,18 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
-   * <p>This method should be called to navigate to the collection page
-   *   for this {@link #getPersistentBeanType()}.</p>
-   * <p>This handler is made available to the JSP/JSF page in request scope,
-   *   as a variable with name
-   *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
-   *   And we navigate to {@link #getCollectionViewId()}.</p>
-   * <p>The {@link #getPersistentBeanType() type} should
-   *   be set before this method is called. If {@link #getInstances()}
-   *   is not <code>null</code>, that collection is shown. If it is
-   *   <code>null</code>, all objects of type {@link #getPersistentBeanType()} are
-   *   retrieved from the database and shown.</p>
-   *
-   * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
-   * @throws  FatalFacesException
-   *          getType() == null;
+   * @pre getType() != null;
+   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + LIST_VIEW_ID_SUFFIX;
    */
-  public final void navigateHere() throws FatalFacesException {
-    LOG.debug("CollectionHandler.navigateHere called");
-    if (getPersistentBeanType() == null) {
-      LOG.fatal("cannot navigate to collection, because no type is set (" +
-                this);
-    }
-    // put this handler in request scope, under an agreed name, create new view & navigate
-    RESOLVER.putInRequestScope(this);
-    FacesContext context = RobustCurrent.facesContext();
-    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getCollectionViewId());
-    context.setViewRoot(viewRoot);
-    context.renderResponse();
+  public String getViewId() {
+    assert getPersistentBeanType() != null : "type cannot be null";
+    String typeName = getPersistentBeanType().getName();
+    typeName = typeName.replace('.', '/');
+    return VIEW_ID_PREFIX + typeName + LIST_VIEW_ID_SUFFIX;
+  }
+
+  public final void putInSessionScope() {
+    RESOLVER.putInSessionScope(this);
   }
 
   /*<section name="skimmable">*/
@@ -502,6 +477,41 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   //------------------------------------------------------------------
 
   // yep, for now
+
+  /*</section>*/
+
+
+  /*<section name="navigationInstance">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @note Can only be used as a navigation instance when we want to show all
+   *       records of this type for now.
+   *
+   * @result (ni == null) ? (result == null);
+   * @result (result != null) ? (result == this);
+   * @return ((getClass() == ni.getClass()) &&
+   *              (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType()) &&
+   *              equalsWithNull(getId(), ((InstanceHandler)ni).getId())) ?
+   *           this : null;
+   * @result (result != null) ? getTime().equals(NOW);
+   */
+  public NavigationInstance absorb(NavigationInstance ni) {
+    LOG.debug("request to absorb " + ni + " by " + this);
+    if (ni == null) {
+      return null;
+    }
+    else if ((getClass() == ni.getClass()) &&
+              (getPersistentBeanType() == ((CollectionHandler)ni).getPersistentBeanType())) {
+      LOG.debug("absorbing");
+      resetLastRenderedTime();
+      return this;
+    }
+    else {
+      LOG.debug("not absorbing");
+      return null;
+    }
+  }
 
   /*</section>*/
 

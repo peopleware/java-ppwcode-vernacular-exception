@@ -445,4 +445,21 @@ public class PersistentBeanHandlerResolver implements Serializable {
               varName + "\"");
   }
 
+  /**
+   * Put <code>handler</code> in session scope
+   * with name {@link #handlerVariableNameFor(Class) handlerVariableNameFor(handler.getType())}.
+   *
+   * @pre handler != null;
+   * @pre getMinimalHandlerClass().isInstance(handler);
+   * @post RobustCurrent.variable(handlerVariableNameFor(handler.getType()));
+   */
+  public final void putInSessionScope(PersistentBeanHandler handler) {
+    assert handler != null;
+    assert getMinimalHandlerClass().isInstance(handler);
+    String varName = handlerVariableNameFor(handler.getPersistentBeanType());
+    RobustCurrent.sessionMap().put(varName, handler);
+    LOG.debug("handler " + handler + " put in request scope with name \"" +
+              varName + "\"");
+  }
+
 }

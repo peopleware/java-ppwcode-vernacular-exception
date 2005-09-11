@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletRequestListener;
 
@@ -33,7 +30,6 @@ import be.peopleware.persistence_II.IdNotFoundException;
 import be.peopleware.persistence_II.PersistentBean;
 import be.peopleware.persistence_II.dao.AsyncCrudDao;
 import be.peopleware.servlet.navigation.NavigationInstance;
-import be.peopleware.servlet.navigation.NavigationStack;
 import be.peopleware.servlet.sessionMopup.Removable;
 import be.peopleware.servlet.sessionMopup.Skimmable;
 
@@ -341,7 +337,7 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  * @idea (jand) gather viewmode in separate class
  * @mudo (jand) security
  */
-public class InstanceHandler extends PersistentBeanHandler implements NavigationInstance {
+public class InstanceHandler extends PersistentBeanHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -404,91 +400,51 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
   //------------------------------------------------------------------
 
   /** {@value} */
-  public final static String VIEWMODE_DISPLAY = "display";
-  /** {@value} */
-  public final static String VIEWMODE_EDIT = "edit";
-  /** {@value} */
   public final static String VIEWMODE_EDITNEW = "editNew";
   /** {@value} */
   public final static String VIEWMODE_DELETED = "deleted";
 
   /**
-   * { {@link #VIEWMODE_DISPLAY}, {@link #VIEWMODE_EDIT},
-   *    {@link #VIEWMODE_EDITNEW}, {@link #VIEWMODE_DELETED} };
+   * { {@link #VIEWMODE_EDITNEW}, {@link #VIEWMODE_DELETED} };
    */
   public final static String[] VIEWMODES
-      = {VIEWMODE_DISPLAY, VIEWMODE_EDIT, VIEWMODE_EDITNEW, VIEWMODE_DELETED};
-
+      = {VIEWMODE_EDITNEW, VIEWMODE_DELETED};
 
   /**
    * Does <code>viewMode</code> represent a valid view mode?
    *
    * @param   viewMode
    *          The viewMode to be checked.
-   * @return  Arrays.asList(VIEWMODES).contains(s);
+   * @return  super.isViewMode(viewMode) ||
+   *            Arrays.asList(VIEWMODES).contains(viewMode);
    */
-  public static boolean isViewMode(String viewMode) {
-    return Arrays.asList(VIEWMODES).contains(viewMode);
+  public boolean isViewMode(String viewMode) {
+    return super.isViewMode(viewMode) ||
+            Arrays.asList(VIEWMODES).contains(viewMode);
   }
-
-  /**
-   * The view mode of the handler.
-   *
-   * @basic
-   * @init VIEWMODE_DISPLAY
-   */
-  public final String getViewMode() {
-    return $viewMode;
-  }
-
-  /**
-   * Set the view mode to the given string.
-   *
-   * @param   viewMode
-   *          The view mode to set.
-   * @post    (viewMode == null)
-   *             ? new.getViewMode().equals(VIEWMODE_DISPLAY)
-   *             : new.getViewMode().equals(viewMode);
-   * @throws  IllegalArgumentException
-   *          ! isViewMode(viewMode);
-   */
-  public final void setViewMode(String viewMode) throws IllegalArgumentException {
-    if (! isViewMode(viewMode)) {
-      throw new IllegalArgumentException("\"" + viewMode + "\" is not a valid view mode; " +
-                                         "it must be one of " + VIEWMODES);
-    }
-    // set the view mode
-    $viewMode = viewMode;
-  }
-
-  /**
-   * @invar ($viewMode != null)
-   *            ? isViewMode($viewMode)
-   *            : true;
-   */
-  private String $viewMode = VIEWMODE_DISPLAY;
-
-  /*</property>*/
 
   /**
    * Returns true when the handler is editable, i.e. when the view mode is
-   * equal to VIEWMODE_EDIT or VIEWMODE_EDITNEW. Returns false otherwise.
+   * equal to {@link PersistentBeanHandler#VIEWMODE_EDIT} or
+   * {@link #VIEWMODE_EDITNEW}. Returns <code>false</code> otherwise.
    *
    * This method is introduces to avoid writing
-   *  myHandler.viewmode eq 'edit' or myHandler.viewmode eq 'editNew'
-   *  and
-   *  myHandler.viewmode neq 'edit' and myHandler.viewmode neq 'editNew'
+   * <code>myHandler.viewmode eq 'edit' or myHandler.viewmode eq 'editNew'</code>
+   * and
+   * <code>myHandler.viewmode neq 'edit' and myHandler.viewmode neq 'editNew'</code>
    * as value of the rendered attributes of in- and output fields in JSF pages,
    * which is cumbersome.
    * Now we can write
-   *  myHandler.inViewModeEditOrEditNew
+   * <code>myHandler.inViewModeEditOrEditNew</code>
    * and
-   *  not myHandler.inViewModeEditOrEditNew
+   * <code>not myHandler.inViewModeEditOrEditNew</code>.
    *
-   * @return  getViewMode().equals(VIEWMODE_EDIT) ||
+   * @return  getViewMode().equals(PersistentBeanHandler.VIEWMODE_EDIT) ||
    *          getViewMode().equals(VIEWMODE_EDITNEW);
    * @throws  FatalFacesException
    *          getViewMode() == null;
+   *
+   * @deprecated
    */
   public final boolean isInViewModeEditOrEditNew() throws FatalFacesException {
     if (getViewMode() == null) {
@@ -497,10 +453,20 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
     }
     else {
       return
-        getViewMode().equals(VIEWMODE_EDIT) ||
+        getViewMode().equals(PersistentBeanHandler.VIEWMODE_EDIT) ||
         getViewMode().equals(VIEWMODE_EDITNEW);
     }
   }
+
+  /**
+   * @result false ? (! getViewMode().equals(VIEWMODE_EDITNEW));
+   */
+  public boolean isShowFields() throws FatalFacesException {
+    return super.isShowFields() ||
+            getViewMode().equals(VIEWMODE_EDITNEW);
+  }
+
+  /*</property>*/
 
 
   /*<property name="instance">*/
@@ -655,23 +621,12 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
 
 
   /**
-   * @pre getType() != null;
-   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + VIEW_ID_SUFFIX;
-   */
-  public String getDetailViewId() {
-    assert getPersistentBeanType() != null : "type cannot be null";
-    String typeName = getPersistentBeanType().getName();
-    typeName = typeName.replace('.', '/');
-    return VIEW_ID_PREFIX + typeName + VIEW_ID_SUFFIX;
-  }
-
-  /**
    * <p>This method should be called to navigate to detail page
    *   for this {@link #getInstance()} in <code>viewMode</code>.</p>
    * <p>This handler is made available to the JSP/JSF page in request scope,
    *   as a variable with name
    *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
-   *   And we navigate to {@link #getDetailViewId()}.</p>
+   *   And we navigate to {@link #getViewId()}.</p>
    * <p>The {@link #getPersistentBeanType() type} and an {@link #getInstance()} should
    *   be set before this method is called.</p>
    *
@@ -688,43 +643,26 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
   public final void navigateHere(String viewMode) throws FatalFacesException {
     LOG.debug("InstanceHandler.navigate called; id = " + getId() +
               ", instance = " + getInstance());
-    if (getPersistentBeanType() == null) {
-      LOG.fatal("cannot navigate to detail, because no type is set (" +
-                this);
-    }
     if (getInstance() == null) {
       LOG.fatal("cannot navigate to detail, because no instance is set (" +
                 this);
     }
-    setViewMode(isViewMode(viewMode) ? viewMode : VIEWMODE_DISPLAY);
-    // put this handler in request scope, under an agreed name, create new view & navigate
-    RESOLVER.putInRequestScope(this);
-    FacesContext context = RobustCurrent.facesContext();
-    UIViewRoot viewRoot = RobustCurrent.viewHandler().createView(context, getDetailViewId());
-    context.setViewRoot(viewRoot);
-    context.renderResponse();
+    super.navigateHere(viewMode);
   }
 
   /**
-   * <p>Action listener method to navigate to detail page
-   *   for this {@link #getInstance()} in {@link #VIEWMODE_DISPLAY},
-   *   via a call to {@link #navigateHere(String)}.</p>
-   * <p>This handler is made available to the JSP/JSF page in request scope,
-   *   as a variable with name
-   *   {@link #RESOLVER}{@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class) .PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
-   *   And we navigate to {@link #getDetailViewId()}.</p>
-   * <p>The {@link #getPersistentBeanType() type} and an {@link #getInstance()} should
-   *   be set before this method is called.</p>
-   *
-   * @post    new.getViewMode().equals(VIEWMODE_DISPLAY);
-   * @post    RobustCurrent.lookup(RESOLVER.handlerVariableNameFor(getType())) == this;
-   * @throws  FatalFacesException
-   *          getType() == null;
-   * @throws  FatalFacesException
-   *          getInstance() == null;
+   * @pre getType() != null;
+   * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + VIEW_ID_SUFFIX;
    */
-  public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
-    navigateHere(VIEWMODE_DISPLAY);
+  public String getViewId() {
+    assert getPersistentBeanType() != null : "type cannot be null";
+    String typeName = getPersistentBeanType().getName();
+    typeName = typeName.replace('.', '/');
+    return VIEW_ID_PREFIX + typeName + VIEW_ID_SUFFIX;
+  }
+
+  public void putInSessionScope() {
+    RESOLVER.putInSessionScope(this);
   }
 
   /**
@@ -732,7 +670,7 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
    *   {@link #getPersistentBeanType()} via a call to {@link CollectionHandler#navigateHere()}.</p>
    * <p>The collection handler handler is made available to the JSP/JSF page in request scope,
    *   as a variable with the appropiate name (see {@link CollectionHandler#navigateHere()}.
-   *   And we navigate to {@link CollectionHandler#getCollectionViewId()}.</p>
+   *   And we navigate to {@link CollectionHandler#getViewId()}.</p>
    *
    * @post    (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDao()).navigateHere();
    * @except  (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDao()).navigateHere();
@@ -742,7 +680,7 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
     CollectionHandler handler = (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getPersistentBeanType(), getDaoVariableName());
     LOG.debug("created collectionhandler for type " + getPersistentBeanType() +
               ": " + handler);
-    handler.navigateHere();
+    handler.navigateHere(aEv);
   }
 
   /**
@@ -1549,38 +1487,7 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
   //------------------------------------------------------------------
 
 
-  /*<property name="LastRenderedTime">*/
-  //------------------------------------------------------------------
-
-  public final Date getLastRenderedTime() {
-    return $lastRenderedTime;
-  }
-
   /**
-   * @post new.getTime().equals(NOW);
-   */
-  protected void resetLastRenderedTime() {
-    $lastRenderedTime = new Date();
-  }
-
-  /**
-   * @invar $lastRenderedTime != null;
-   */
-  private Date $lastRenderedTime = new Date();
-
-  /*</property>*/
-
-  /**
-   * Join the state of this <code>NavigationInstance</code> and <code>ni</code>
-   * into <code>result</code>. This is typically called on an instance
-   * on top of the {@link NavigationStack}, with a next <code>NavigationInstance</code>.
-   * If this succeeds, the current top of the stack is replaced with the result
-   * of this operation, and <code>ni</code> is not placed on the stack. This
-   * method may return <code>this</code>, possibly
-   * with changed state to take into account the <code>ni</code> navigation.
-   * If absorption is not possible, return <code>null</code>. When <code>ni</code> is
-   * <code>null</code>, return <code>null</code>.
-   *
    * @result (ni == null) ? (result == null);
    * @result (result != null) ? (result == this);
    * @return ((getClass() == ni.getClass()) &&
@@ -1622,12 +1529,6 @@ public class InstanceHandler extends PersistentBeanHandler implements Navigation
     return (one == null)
               ? (other == null)
               : one.equals(other);
-  }
-
-  public void navigateHere() throws FatalFacesException {
-    LOG.debug("request to navigate back to this handler instance (" +
-              getPersistentBeanType() + ", " + getId() + ")");
-    navigateHere(VIEWMODE_DISPLAY);
   }
 
   /*</section>*/
