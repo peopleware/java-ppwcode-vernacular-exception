@@ -13,6 +13,8 @@ import javax.faces.event.ActionEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import be.peopleware.bean_V.CompoundPropertyException;
+import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.i18n_I.Properties;
 import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
 import be.peopleware.jsf_II.FatalFacesException;
@@ -20,6 +22,7 @@ import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.i18n.BasenameResourceBundleMap;
 import be.peopleware.jsf_II.i18n.I18nPropertyLabelMap;
 import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.dao.AsyncCrudDao;
 import be.peopleware.persistence_II.dao.Dao;
 import be.peopleware.servlet.navigation.NavigationInstance;
 
@@ -82,7 +85,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *          The viewMode to be checked.
    * @return  Arrays.asList(VIEWMODES).contains(s);
    */
-  public boolean isViewMode(String viewMode) {
+  public boolean isValidViewMode(String viewMode) {
     return Arrays.asList(VIEWMODES).contains(viewMode);
   }
 
@@ -108,7 +111,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *          ! isViewMode(viewMode);
    */
   public final void setViewMode(String viewMode) throws IllegalArgumentException {
-    if (! isViewMode(viewMode)) {
+    if (! isValidViewMode(viewMode)) {
       throw new IllegalArgumentException("\"" + viewMode + "\" is not a valid view mode; " +
                                          "it must be one of " + VIEWMODES);
     }
@@ -562,7 +565,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
       LOG.fatal("cannot navigate to detail, because no type is set (" +
                 this);
     }
-    setViewMode(isViewMode(viewMode) ? viewMode : VIEWMODE_DISPLAY);
+    setViewMode(isValidViewMode(viewMode) ? viewMode : VIEWMODE_DISPLAY);
     // put this handler in request scope, under an agreed name, create new view & navigate
     putInSessionScope();
     FacesContext context = RobustCurrent.facesContext();
@@ -596,6 +599,208 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
   public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
     navigateHere(VIEWMODE_DISPLAY);
   }
+
+  /**
+   * This is an action method that should be called by a button in the JSF
+   * page to go to edit mode.
+   *
+   * A more detailed description of this action method can be found in the
+   * class description.
+
+   * @mudo (jand) security; goBack
+   */
+  public final String edit() {
+    LOG.debug("InstanceHandler.edit called; showing bean for edit");
+    try {
+      checkConditions(VIEWMODE_DISPLAY); // ConditionException
+      setViewMode(VIEWMODE_EDIT);
+      return getNavigationString();
+    }
+    catch(ConditionException exc) {
+      return exc.getNavigationString();
+    }
+  }
+
+  /**
+   * This is an action method that should be called by a button in the JSF
+   * page to cancel an update.
+   *
+   * A more detailed description of this action method can be found in the
+   * class description.
+   */
+  public final String cancelEdit() {
+    LOG.debug("InstanceHandler.cancelEdit called; showing bean");
+    try {
+      checkConditions(VIEWMODE_EDIT); // ConditionException
+      RobustCurrent.resetUIInputComponents();
+      setViewMode(VIEWMODE_DISPLAY);
+      return null;
+    }
+    catch(ConditionException exc) {
+      return exc.getNavigationString();
+    }
+  }
+
+  /**
+   * This is an action method that should be called by a button in the JSF
+   * page to update a persistent bean in persistent storage.
+   *
+   * A more detailed description of this action method can be found in the
+   * class description.
+   *
+   * @throws  FatalFacesException
+   *          When a TechnicalException is thrown by:
+   *          {@link AsyncCrudDao#startTransaction()}
+   *          {@link AsyncCrudDao#updatePersistentBean(be.peopleware.persistence_II.PersistentBean)}
+   *          {@link AsyncCrudDao#commitTransaction(be.peopleware.persistence_II.PersistentBean)}
+   *          {@link AsyncCrudDao#cancelTransaction()}
+   */
+  public String update() throws FatalFacesException {
+    LOG.debug("InstanceHandler.update called; the bean properties are already partially filled out");
+    try {
+      AsyncCrudDao dao = null;
+      try {
+        dao = getAsyncCrudDao();
+        checkConditions(VIEWMODE_EDIT); // ConditionException
+        updateValues();
+        LOG.debug("The bean properties are now fully filled out");
+        if (RobustCurrent.hasMessages()) {
+          // updateValues can create FacesMessages that signal semantic errors
+            return null;
+        }
+        else {
+          dao.startTransaction(); // TechnicalException
+          PersistentBean stupidPR = actualUpdate(dao);
+            // TechnicalException, CompoundPropertyException
+          dao.commitTransaction(stupidPR); // TODO (jand) remove stupid arg
+            // TechnicalException, CompoundPropertyException
+          setViewMode(VIEWMODE_DISPLAY);
+          return null;
+        }
+      }
+      catch(CompoundPropertyException cpExc) {
+        LOG.debug("update action failed; cancelling ...", cpExc);
+        dao.cancelTransaction(); // TechnicalException
+        LOG.debug("update action cancelled; using exception as faces message");
+        RobustCurrent.showCompoundPropertyException(cpExc);
+        setViewMode(VIEWMODE_EDIT);
+        return null;
+      }
+      catch(ConditionException exc) {
+        return exc.getNavigationString();
+      }
+    }
+    catch(TechnicalException exc) {
+      RobustCurrent.fatalProblem("Could not update", exc, LOG);
+      return null;
+    }
+  }
+
+  /**
+   * The actual update in persistent storage. No need to handle transaction:
+   * it is open.
+   *
+   * @todo (jand) for now, this method should return the PB
+   *        for the commitTransaction method, when it no longer needs the stupid
+   *        PB argument, this can be moved out.
+   */
+  protected abstract PersistentBean actualUpdate(AsyncCrudDao dao)
+      throws CompoundPropertyException, TechnicalException;
+
+  /**
+   * <p>
+   * This method can be used to update properties
+   * that are not updated during the Update Model Values.
+   * </p>
+   * <p>
+   * Suppose that a JSF page contains the following tag:
+   * </p>
+   * <pre>
+   *   &lt;h:inputText value=&quot;#{<var>myHandler</var>.instance.name}&quot; /&gt;
+   * </pre>
+   * <p>
+   * During the Update Model Values phase, the setName(String) method of the
+   * bean stored will be called, thereby updating
+   * the value of the name property. Similarly, other properties are updated.
+   * </p>
+   * <p>
+   * But there can also be properties of a {@link PersistentBean} that are not
+   * updated 'automatically' during the Update Model Values phase. An example
+   * of this is a property <code>date</code> of type {@link java.util.Date},
+   * that is represented in the JSF page by three inputText tags representing
+   * year, month and day.
+   * <p>
+   * <pre>
+   *   &lt;h:inputText value=&quot;#{<var>myHandler</var>.year}&quot; /&gt;
+   *   &lt;h:inputText value=&quot;#{<var>myHandler</var>.month}&quot; /&gt;
+   *   &lt;h:inputText value=&quot;#{<var>myHandler</var>.day}&quot; /&gt;
+   * </pre>
+   * <p>
+   * Because the values of these tags do not correspond directly
+   * to a property in the {@link PersistentBean}, the tags are backed by
+   * three properties ($year, $month, $day) in the handler with corresponding
+   * get and set methods. During the Update Model Values phase, the three
+   * properties are updated in the handler. The bean itself can then be
+   * updated during the Invoke Application phase, using the
+   * {@link #updateValues()} method. The implementation of this method could
+   * then be:
+   * </p>
+   * <pre>
+   *   Date date
+   *   = (new GregorianCalendar(getYear(), getMonth(), getDay())).getTime();
+   *   ((SomeType) getInstance()).setDate(date);
+   * </pre>
+   * <p>
+   *   The default implementation of this method does nothing.
+   * </p>
+   */
+  protected void updateValues() {
+    // NOP
+  }
+
+  /**
+   * Helper method used in action methods to check whether we can do the state change
+   * generally.
+   *
+   * @param   expectedViewMode
+   *          The view mode that should be checked.
+   * @pre     isViewMode(expectedViewMode);
+   * @post    true
+   * @throws  ConditionException exc
+   *          !getViewMode().equals(expectedViewMode)
+   *            && exc.getOutcome().equals(display());
+   *          As a side effect, we go to display mode.
+   */
+  protected void checkConditions(String expectedViewMode) throws ConditionException {
+    assert isValidViewMode(expectedViewMode);
+    if (!expectedViewMode.equals(getViewMode())) {
+      setViewMode(VIEWMODE_DISPLAY);
+      throw new ConditionException(null);
+    }
+  }
+
+  /**
+   * A class of exceptions that is used when checking whether an action method
+   * is called under the correct conditions.
+   *
+   * A navigation string describes where to go when a certain condition is not
+   * met.
+   *
+   * @author nsmeets
+   */
+  protected class ConditionException extends Exception {
+    public ConditionException(String navigationString) {
+      $navigationString = navigationString;
+    }
+
+    public String getNavigationString() {
+      return $navigationString;
+    }
+
+    private String $navigationString;
+  }
+
+
 
   /*<section name="skimmable">*/
   //------------------------------------------------------------------

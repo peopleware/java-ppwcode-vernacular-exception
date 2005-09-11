@@ -192,7 +192,7 @@ public class UIInstanceHandler extends UIInput implements Serializable {
 
       { // viewMode
         viewMode = (String)requestParameters.get(viewModeTagName(context));
-        if (! handler.isViewMode(viewMode)) {
+        if (! handler.isValidViewMode(viewMode)) {
           // if there is no correct view mode in the request, treat it as a display mode
           viewMode = PersistentBeanHandler.VIEWMODE_DISPLAY;
         }
@@ -223,7 +223,7 @@ public class UIInstanceHandler extends UIInput implements Serializable {
       }
 
     }
-    assert handler.isViewMode(viewMode);
+    assert handler.isValidViewMode(viewMode);
     // fill id and viewmode in handler
     handler.setInstance(null); // be sure
     handler.setId(id);

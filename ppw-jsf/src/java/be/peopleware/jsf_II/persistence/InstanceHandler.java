@@ -418,8 +418,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    * @return  super.isViewMode(viewMode) ||
    *            Arrays.asList(VIEWMODES).contains(viewMode);
    */
-  public boolean isViewMode(String viewMode) {
-    return super.isViewMode(viewMode) ||
+  public boolean isValidViewMode(String viewMode) {
+    return super.isValidViewMode(viewMode) ||
             Arrays.asList(VIEWMODES).contains(viewMode);
   }
 
@@ -703,19 +703,9 @@ public class InstanceHandler extends PersistentBeanHandler {
    *           result.equals(null)
    *         : true;
    * @mudo (jand) security
+   *
+  public final String edit();
    */
-  public final String edit() {
-    LOG.debug("InstanceHandler.edit called; showing bean for edit");
-    LOG.debug("persistentBean: " + getInstance());
-    try {
-      checkConditions(VIEWMODE_DISPLAY); // ConditionException
-      setViewMode(VIEWMODE_EDIT);
-      return getNavigationString();
-    }
-    catch(ConditionException exc) {
-      return exc.getNavigationString();
-    }
-  }
 
   /**
    * This is an action method that should be called by a button in the JSF
@@ -756,96 +746,22 @@ public class InstanceHandler extends PersistentBeanHandler {
    *          {@link AsyncCrudDao#updatePersistentBean(be.peopleware.persistence_II.PersistentBean)}
    *          {@link AsyncCrudDao#commitTransaction(be.peopleware.persistence_II.PersistentBean)}
    *          {@link AsyncCrudDao#cancelTransaction()}
+   *
+  public String update() throws FatalFacesException;
    */
-  public String update() throws FatalFacesException {
-    LOG.debug("InstanceHandler.update called; the bean is already partially updated");
-    LOG.debug("persistentBean: " + getInstance());
-    try {
-    AsyncCrudDao dao = getAsyncCrudDao();
-    try {
-        checkConditions(VIEWMODE_EDIT); // ConditionException
-      updateValues();
-      LOG.debug("The bean is now fully updated");
-      LOG.debug("persistentBean: " + getInstance());
-      if (RobustCurrent.hasMessages()) {
-        // updateValues can create FacesMessages that signal semantic errors
-          return null;
-      }
-      else {
-        dao.startTransaction(); // TechnicalException
-        dao.updatePersistentBean(getInstance()); // TechnicalException, CompoundPropertyException
-        dao.commitTransaction(getInstance()); // TechnicalException, CompoundPropertyException
-        setViewMode(VIEWMODE_DISPLAY);
-        return null;
-      }
-    }
-    catch(CompoundPropertyException cpExc) {
-      LOG.debug("update action failed; cancelling ...", cpExc);
-      dao.cancelTransaction(); // TechnicalException
-      LOG.debug("update action cancelled; using exception as faces message");
-      RobustCurrent.showCompoundPropertyException(cpExc);
-      setViewMode(VIEWMODE_EDIT);
-      return null;
-    }
-      catch(ConditionException exc) {
-        return exc.getNavigationString();
-  }
-    }
-    catch(TechnicalException exc) {
-      RobustCurrent.fatalProblem("Could not update " + getInstance(), exc, LOG);
-      return null;
-    }
-  }
 
   /**
-   * <p>
-   * This method can be used to update properties of {@link #getInstance()}
-   * that are not updated during the Update Model Values.
-   * </p>
-   * <p>
-   * Suppose that a JSF page contains the following tag:
-   * </p>
-   * <pre>
-   *   &lt;h:inputText value=&quot;#{<var>myHandler</var>.instance.name}&quot; /&gt;
-   * </pre>
-   * <p>
-   * During the Update Model Values phase, the setName(String) method of the
-   * bean stored in {@link #getInstance()} will be called, thereby updating
-   * the value of the name property. Similarly, other properties are updated.
-   * </p>
-   * <p>
-   * But there can also be properties of a {@link PersistentBean} that are not
-   * updated 'automatically' during the Update Model Values phase. An example
-   * of this is a property <code>date</code> of type {@link java.util.Date},
-   * that is represented in the JSF page by three inputText tags representing
-   * year, month and day.
-   * <p>
-   * <pre>
-   *   &lt;h:inputText value=&quot;#{<var>myHandler</var>.year}&quot; /&gt;
-   *   &lt;h:inputText value=&quot;#{<var>myHandler</var>.month}&quot; /&gt;
-   *   &lt;h:inputText value=&quot;#{<var>myHandler</var>.day}&quot; /&gt;
-   * </pre>
-   * <p>
-   * Because the values of these tags do not correspond directly
-   * to a property in the {@link PersistentBean}, the tags are backed by
-   * three properties ($year, $month, $day) in the handler with corresponding
-   * get and set methods. During the Update Model Values phase, the three
-   * properties are updated in the handler. The bean itself can then be
-   * updated during the Invoke Application phase, using the
-   * {@link #updateValues()} method. The implementation of this method could
-   * then be:
-   * </p>
-   * <pre>
-   *   Date date
-   *   = (new GregorianCalendar(getYear(), getMonth(), getDay())).getTime();
-   *   ((SomeType) getInstance()).setDate(date);
-   * </pre>
-   * <p>
-   *   The default implementation of this method does nothing.
-   * </p>
+   * The actual update in persistent storage. No need to handle transaction:
+   * it is open.
+   *
+   * @todo (jand) for now, this method should start and commit the transaction;
+   *        one the commitTransaction method no longer needs the stupid
+   *        PB argument, this can be moved out.
    */
-  protected void updateValues() {
-    // NOP
+  protected PersistentBean actualUpdate(AsyncCrudDao dao)
+      throws CompoundPropertyException, TechnicalException, FatalFacesException {
+    dao.updatePersistentBean(getInstance()); // TechnicalException, CompoundPropertyException
+    return getInstance(); // TODO (jand) stupid return stuff
   }
 
   /**
@@ -1086,39 +1002,12 @@ public class InstanceHandler extends PersistentBeanHandler {
    *            && exc.getOutcome().equals(display());
    *          As a side effect, we go to display mode.
    */
-  private void checkConditions(String expectedViewMode) throws ConditionException {
-    assert isViewMode(expectedViewMode);
-    String result = null;
+  protected void checkConditions(String expectedViewMode) throws ConditionException {
+    super.checkConditions(expectedViewMode);
     if (getInstance() == null) {
-      result = NO_INSTANCE;
-      goBack(result);
-      throw new ConditionException(result);
+      goBack(NO_INSTANCE);
+      throw new ConditionException(NO_INSTANCE);
     }
-    else if (!expectedViewMode.equals(getViewMode())) {
-      setViewMode(VIEWMODE_DISPLAY);
-      throw new ConditionException(null);
-    }
-  }
-
-  /**
-   * A class of exceptions that is used when checking whether an action method
-   * is called under the correct conditions.
-   *
-   * A navigation string describes where to go when a certain condition is not
-   * met.
-   *
-   * @author nsmeets
-   */
-  private class ConditionException extends Exception {
-    public ConditionException(String navigationString) {
-      $navigationString = navigationString;
-    }
-
-    public String getNavigationString() {
-      return $navigationString;
-    }
-
-    private String $navigationString;
   }
 
   /**
@@ -1181,20 +1070,9 @@ public class InstanceHandler extends PersistentBeanHandler {
    *              getViewMode().equals(VIEWMODE_DISPLAY) &&
    *              result.equals(null)
    *            : true;
+   *
+  public final String cancelEdit();
    */
-  public final String cancelEdit() {
-    LOG.debug("InstanceHandler.cancelEdit called; showing bean");
-    LOG.debug("persistentBean: " + getInstance());
-    try {
-      checkConditions(VIEWMODE_EDIT); // ConditionException
-      RobustCurrent.resetUIInputComponents();
-      setViewMode(VIEWMODE_DISPLAY);
-      return null;
-    }
-    catch(ConditionException exc) {
-      return exc.getNavigationString();
-    }
-  }
 
   /**
    * This is an action method that should be called by a button in the JSF

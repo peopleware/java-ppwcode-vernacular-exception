@@ -14,11 +14,13 @@ import javax.faces.event.ActionEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import be.peopleware.bean_V.CompoundPropertyException;
 import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.util.DynamicComparatorChain;
 import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.dao.AsyncCrudDao;
 import be.peopleware.servlet.navigation.NavigationInstance;
 
 
@@ -205,6 +207,33 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   private boolean $subtypesIncluded = true;
 
   /*</property>*/
+
+
+  protected void updateValues() {
+    Iterator iter = getInstanceHandlers().iterator();
+    while (iter.hasNext()) {
+      InstanceHandler ih = (InstanceHandler)iter.next();
+      ih.updateValues();
+    }
+  }
+
+  /**
+   * The actual update in persistent storage. No need to handle rollback;
+   *
+   * @todo (jand) for now, this method should start and commit the transaction;
+   *        one the commitTransaction method no longer needs the stupid
+   *        PB argument, this can be moved out.
+   */
+  protected PersistentBean actualUpdate(AsyncCrudDao dao)
+      throws CompoundPropertyException, TechnicalException, FatalFacesException {
+    PersistentBean stupidResult = null;
+    Iterator iter = getInstanceHandlers().iterator();
+    while (iter.hasNext()) {
+      InstanceHandler ih = (InstanceHandler)iter.next();
+      stupidResult = ih.actualUpdate(dao);
+    }
+    return stupidResult; // hack, returning last; just for stupid dao.commitTransaction
+  }
 
 
 
