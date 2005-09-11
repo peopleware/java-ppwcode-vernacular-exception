@@ -203,6 +203,7 @@ public abstract class Properties {
         return i18nPropertyLabel(postDot, preType, shortLabel, strategy);
       }
       catch (NoSuchMethodException nsmExc) {
+        // MUDO (jand) log warning
         return null;
       }
     }
