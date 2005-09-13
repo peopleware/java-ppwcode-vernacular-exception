@@ -12,6 +12,41 @@
 
   <tag>
     <description>
+      Tag for be.peopleware.jsf_II.persistence.component.UIViewModeHandler.
+      This component renders the view mode of a
+      be.peopleware.jsf_II.persistence.InstanceHandler, and
+      initialises such a handler during the Restore View phase.
+    </description>
+    <display-name>ppw-jsf:vmInit</display-name>
+    <name>vmInit</name>
+    <tag-class>be.peopleware.jsf_II.persistence.component.ViewModeHandlerTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <description>An expression that evaluates to the correct handler.
+        The handler must be a subtype of
+        be.peopleware.jsf_II.persistence.PersistentBeanHandler.
+      </description>
+      <name>handler</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <!-- default attributes -->
+    <attribute>
+      <description>The client id of this component.</description>
+      <name>id</name>
+    </attribute>
+    <attribute>
+      <description>Is this component rendered?
+        Should be 'true' for this tag.
+      </description>
+      <name>rendered</name>
+    </attribute>
+  </tag>
+
+
+  <tag>
+    <description>
       Tag for be.peopleware.jsf_II.persistence.component.UIInstanceHandler.
       This component renders the id and view mode of a
       be.peopleware.jsf_II.persistence.InstanceHandler, and

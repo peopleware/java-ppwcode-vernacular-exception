@@ -2,22 +2,14 @@ package be.peopleware.jsf_II.persistence.component;
 
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.el.ValueBinding;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.persistence.InstanceHandler;
-import be.peopleware.jsf_II.persistence.PersistentBeanHandler;
 
 
 /**
@@ -36,9 +28,8 @@ import be.peopleware.jsf_II.persistence.PersistentBeanHandler;
  *
  * @author    Jan Dockx
  * @author    Peopleware n.v.
- *
  */
-public class UIInstanceHandler extends UIInput implements Serializable {
+public class UIInstanceHandler extends UIViewModeHandler {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -56,52 +47,14 @@ public class UIInstanceHandler extends UIInput implements Serializable {
   private static final Log LOG = LogFactory.getLog(UIInstanceHandler.class);
 
 
-
-  /*<property name="handler">*/
-  //------------------------------------------------------------------
-
-  /**
-   * <strong>= {@value}</strong>
-   */
-  public final static String HANDLER_VALUE_BINDING_NAME = "handler";
-
-  /**
-   * Return the result of {@link #HANDLER_VALUE_BINDING_NAME} value binding.
-   *
-   * @return result != null;
-   * @throws FatalFacesException
-   *         ; could not locate a handler through the value binding
-   */
-  public InstanceHandler getHandler(FacesContext context)
-      throws FatalFacesException {
-    ValueBinding vb = getValueBinding(HANDLER_VALUE_BINDING_NAME);
-    if (vb == null) {
-      RobustCurrent.fatalProblem("Could not locate handler", LOG);
-    }
-    Object result = vb.getValue(context);
-    if ((result == null) ||
-        (! (result instanceof InstanceHandler))) {
-      RobustCurrent.fatalProblem("Could not locate handler", LOG);
-    }
-    return (InstanceHandler)result;
-  }
-
-  /*</property>*/
-
-
-  /*<section name="tag names">*/
+  /*<section name="id tag name">*/
   //------------------------------------------------------------------
 
   /**
    * <strong>= {@value}</strong>
    */
   public final static String INPUT_TAG_NAME_ID_EXTENSION = ".id";
-
-  /**
-   * <strong>= {@value}</strong>
-   */
-  public final static String INPUT_TAG_NAME_VIEWMODE_EXTENSION = ".viewMode";
-
+  
   /**
    * The name of the hidden input tag for the id.
    *
@@ -109,15 +62,6 @@ public class UIInstanceHandler extends UIInput implements Serializable {
    */
   public final String idTagName(FacesContext context) {
     return getClientId(context) + INPUT_TAG_NAME_ID_EXTENSION;
-  }
-
-  /**
-   * The name of the hidden input tag for the view mode.
-   *
-   * @return getClientId(context) + INPUT_TAG_NAME_VIEWMODE_EXTENSION;
-   */
-  public final String viewModeTagName(FacesContext context) {
-    return getClientId(context) + INPUT_TAG_NAME_VIEWMODE_EXTENSION;
   }
 
   /*</section>*/
@@ -138,32 +82,13 @@ public class UIInstanceHandler extends UIInput implements Serializable {
    *         getHandler();
    */
   public void encodeBegin(FacesContext context) throws IOException, FatalFacesException {
+    super.encodeBegin(context);
     encodeHiddenInput(context.getResponseWriter(),
-                      idTagName(context), getHandler(context).getId());
-    encodeHiddenInput(context.getResponseWriter(),
-                      viewModeTagName(context), getHandler(context).getViewMode());
+                      idTagName(context), ((InstanceHandler)getHandler(context)).getId());
   }
 
   public void encodeEnd(FacesContext context) throws IOException {
     // Empty encodeEnd so no input field is written out by default.
-  }
-
-  private final static String INPUT_TAG = "input";
-  private final static String INPUT_TAG_TYPE_ATTR = "type";
-  private final static String INPUT_TAG_TYPE_HIDDEN = "hidden";
-  private final static String INPUT_TAG_NAME_ATTR = "name";
-  private final static String INPUT_TAG_VALUE_ATTR = "value";
-
-  /**
-   * @pre getHandler() != null;
-   * @throws IOException
-   */
-  private void encodeHiddenInput(ResponseWriter response, String componentId, Object value) throws IOException {
-    response.startElement(INPUT_TAG, this);
-    response.writeAttribute(INPUT_TAG_TYPE_ATTR, INPUT_TAG_TYPE_HIDDEN, null);
-    response.writeAttribute(INPUT_TAG_NAME_ATTR, componentId, null);
-    response.writeAttribute(INPUT_TAG_VALUE_ATTR, (value != null) ? value : "", null);
-    response.endElement(INPUT_TAG);
   }
 
   /*</rendering>*/
@@ -177,26 +102,15 @@ public class UIInstanceHandler extends UIInput implements Serializable {
    * @pre context != null;
    * @throws FatalFacesException
    *         context.getExternalContext.getRequestParameterMap().get(idTagName(context));
-   * @throws FatalFacesException
-   *         getHandler();
    */
   public void decode(FacesContext context) throws FatalFacesException {
-    assert context != null;
-    InstanceHandler handler = getHandler(context); // FatalFacesException
-    setValid(true);
+    super.decode(context);
     Map requestParameters = context.getExternalContext().getRequestParameterMap();
-    assert requestParameters != null;
+    InstanceHandler handler = (InstanceHandler)getHandler(context); // FatalFacesException
+    String viewMode = handler.getViewMode();
     Long id = null;
-    String viewMode = null;
     { // get parameters from request
 
-      { // viewMode
-        viewMode = (String)requestParameters.get(viewModeTagName(context));
-        if (! handler.isValidViewMode(viewMode)) {
-          // if there is no correct view mode in the request, treat it as a display mode
-          viewMode = PersistentBeanHandler.VIEWMODE_DISPLAY;
-        }
-      }
       if (!viewMode.equals(InstanceHandler.VIEWMODE_EDITNEW)) {
         // id
         String idString = (String)requestParameters.get(idTagName(context));
@@ -223,11 +137,8 @@ public class UIInstanceHandler extends UIInput implements Serializable {
       }
 
     }
-    assert handler.isValidViewMode(viewMode);
-    // fill id and viewmode in handler
-    handler.setInstance(null); // be sure
+    // fill id in handler
     handler.setId(id);
-    handler.setViewMode(viewMode);
   }
 
   /*</section>*/
