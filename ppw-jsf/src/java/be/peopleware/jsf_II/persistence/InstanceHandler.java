@@ -619,6 +619,22 @@ public class InstanceHandler extends PersistentBeanHandler {
   /*</property>*/
 
 
+  /**
+   * This implementation automatically delegates this call
+   * to all {@link #getUsedAssociationHandlers()}.
+   */
+  protected void updateValues() {
+    if (getInstance() == null) {
+      RobustCurrent.fatalProblem("could not update values of null instance", LOG);
+    }
+    Iterator iter = getUsedAssociationHandlers().values().iterator();
+    while (iter.hasNext()) {
+      PersistentBeanHandler pbh = (PersistentBeanHandler)iter.next();
+      pbh.updateValues();
+    }
+    super.updateValues();
+  }
+
 
   /**
    * <p>This method should be called to navigate to detail page
@@ -1131,6 +1147,16 @@ public class InstanceHandler extends PersistentBeanHandler {
   }
 
   /**
+   * The association handlers that are actually created already,
+   * because we got a request for them through {@link #getAssociationHandlers()}.
+   *
+   * @return $associationHandlers.getInitializedAssociationHandlers();
+   */
+  public final Map getUsedAssociationHandlers() {
+    return $associationHandlers.getInitializedAssociationHandlers();
+  }
+
+  /**
    * Alias for {@link #getAssociationHandlers()} with a shorter name.
    */
   public final Map getAssocH() {
@@ -1160,6 +1186,14 @@ public class InstanceHandler extends PersistentBeanHandler {
     }
 
     private HashSet $keySet;
+
+    /**
+     * The association handlers that are actually created already,
+     * because we got a request for them through {@link #get(Object)}.
+     */
+    public final Map getInitializedAssociationHandlers() {
+      return Collections.unmodifiableMap($backingMap);
+    }
 
     private Map $backingMap = new HashMap();
 

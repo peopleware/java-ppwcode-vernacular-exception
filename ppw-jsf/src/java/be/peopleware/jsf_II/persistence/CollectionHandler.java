@@ -209,14 +209,6 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   /*</property>*/
 
 
-  protected void updateValues() {
-    Iterator iter = getInstanceHandlers().iterator();
-    while (iter.hasNext()) {
-      InstanceHandler ih = (InstanceHandler)iter.next();
-      ih.updateValues();
-    }
-  }
-
   /**
    * The actual update in persistent storage. No need to handle rollback;
    *
@@ -371,6 +363,21 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       LOG.debug("returning cached handlers");
     }
     return Collections.unmodifiableList($handlers);
+  }
+
+  /**
+   * Delegate this call to all handlers in {@link #getInstanceHandlers()}.
+   */
+  protected void updateValues() {
+    if (getInstanceHandlers() == null) {
+      RobustCurrent.fatalProblem("cannot update values if there are no instance handlers", LOG);
+    }
+    Iterator iter = getInstanceHandlers().iterator();
+    while (iter.hasNext()) {
+      InstanceHandler ih = (InstanceHandler)iter.next();
+      ih.updateValues();
+    }
+    super.updateValues();
   }
 
   /**

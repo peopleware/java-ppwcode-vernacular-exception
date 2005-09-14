@@ -751,10 +751,13 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *   ((SomeType) getInstance()).setDate(date);
    * </pre>
    * <p>
-   *   The default implementation of this method does nothing.
+   *   The default implementation of this method does nothing. If the subtype
+   *   has dependent handlers, a call to this method should do local things,
+   *   and delegate to the dependent handlers. The method is can be made
+   *   <code>public</code> in subtypes for that reason if necessary.
    * </p>
    */
-  protected void updateValues() {
+  void updateValues() {
     // NOP
   }
 
