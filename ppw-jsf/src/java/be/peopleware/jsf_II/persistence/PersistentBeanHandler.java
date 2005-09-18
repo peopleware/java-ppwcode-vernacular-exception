@@ -111,12 +111,12 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *          ! isViewMode(viewMode);
    */
   public final void setViewMode(String viewMode) throws IllegalArgumentException {
-    if (! isValidViewMode(viewMode)) {
+    if ((viewMode != null) && (! isValidViewMode(viewMode))) {
       throw new IllegalArgumentException("\"" + viewMode + "\" is not a valid view mode; " +
                                          "it must be one of " + VIEWMODES);
     }
     // set the view mode
-    $viewMode = viewMode;
+    $viewMode = (viewMode == null) ? VIEWMODE_DISPLAY : viewMode;
   }
 
   /**

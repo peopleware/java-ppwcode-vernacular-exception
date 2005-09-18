@@ -388,6 +388,34 @@ public class InstanceHandler extends PersistentBeanHandler {
   }
 
   /**
+   * <p>Set {@link #getId()} from the request parameter with name
+   *   <code>name</code>. If no such parameter is found, we do
+   *   nothing.</p>
+   * <p>For some reason, expressions like
+   * <code>#{param.myParamName}</code>
+   * return <code>0</code> when used in the <kbd>faces-config.xml</kbd>, where
+   * there is a parameter like <code>myParamName=4567</code> in the HTTP
+   * request. This is a workaround that does seem to work.</p>
+   */
+  public final void setIdFromRequestParameterName(String name) {
+    Map requestParameters = RobustCurrent.paramMap();
+    String idString = (String)requestParameters.get(name);
+    if (idString != null) {
+      try {
+        Long id = Long.valueOf(idString); // NumberFormatException
+        setId(id);
+      }
+      catch (NumberFormatException nfExc) {
+        RobustCurrent.fatalProblem("The id value in the request is not a Long (" +
+                                   idString +  ")",
+                                   nfExc,
+                                   LOG);
+        // IDEA (jand) this is not fatal; do goback()
+      }
+    }
+  }
+
+  /**
    * The id of the {@link PersistentBean} that will be handled
    * by the requests.
    */
