@@ -489,6 +489,24 @@ public class RobustCurrent {
   }
 
   /**
+   * The current servlet or portlet request parameter map.
+   * Exception if <code>null</code>.
+   *
+   * @result externalContext().getRequestParameterMap();
+   * @result externalContext().getRequestParameterMap() != null;
+   * @except externalContext();
+   * @throws FatalFacesException
+   *         externalContext().getRequestParameterMap() == null;
+   */
+  public static Map paramMap() throws FatalFacesException {
+    Map result = externalContext().getRequestParameterMap();
+    if (result == null) {
+      fatalProblem("no request scope parameter map found");
+    }
+    return result;
+  }
+
+  /**
    * Look for a variable with name <code>var</code> in request scope,
    * session scope, and application scope, in that order. Return
    * <code>null</code> if no such variable is found.

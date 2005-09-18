@@ -10,6 +10,7 @@ package be.peopleware.jsf_II;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.Map;
 
 import javax.faces.FacesException;
 
@@ -53,6 +54,23 @@ public class UtilHandler {
    */
   public Principal getPrincipal() throws FacesException {
     return RobustCurrent.principal();
+  }
+
+  /**
+   * The HTTP request parameter map.
+   * For some reason, expressions like
+   * <code>#{param.myParamName}</code>
+   * return <code>0</code> when used in the <kbd>faces-config.xml</kbd>, where
+   * there is a parameter like <code>myParamName=4567</code> in the HTTP
+   * request. In this case, e.g., the <code>decode</code> method of
+   * the <code>UIInputHidden</code> that wrote the parameter, does find
+   * the correct value. By using this method
+   * (<code>#{utilHandler.param.myParamName}</code>)
+   * in the <kbd>faces-config.xml</kbd>, the problem goes away, but I don't know
+   * why.
+   */
+  public Map param() {
+    return RobustCurrent.paramMap();
   }
 
 }
