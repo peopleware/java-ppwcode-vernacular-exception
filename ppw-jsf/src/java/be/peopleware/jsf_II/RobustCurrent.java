@@ -11,7 +11,10 @@ package be.peopleware.jsf_II;
 import java.io.IOException;
 import java.security.Principal;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -653,10 +656,54 @@ public class RobustCurrent {
       String messageText =  pExc.getLocalizedMessage();
       LOG.debug("messageText = " + messageText);
       FacesMessage message =  new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, null);
-      // RobustCurrent.facesContext().addMessage(pExc.getPropertyName(), message);
-      // MUDO check! this means that he id of the component must match the property name!
       LOG.debug("faces message = " + message);
-      RobustCurrent.facesContext().addMessage(null, message);
+      /* do we have a 1 component whose id ends in pExc.getPropertyName()?
+       * the use that id for the message, else null */
+      String componentId = null;
+      List components  = componentsWithIdEndingIn(pExc.getPropertyName());
+      if (components.size() == 1) {
+        UIComponent component = (UIComponent)components.get(0);
+        componentId = component.getClientId(facesContext());
+      }
+      RobustCurrent.facesContext().addMessage(componentId, message);
+    }
+  }
+
+  /**
+   * A list of all the components in the current {@link #uiViewRoot()}
+   * whose {@link UIComponent#getClientId(javax.faces.context.FacesContext)}'s
+   * part after the last colon is <code>componentIdPart</code>.
+   */
+  public static List componentsWithIdEndingIn(String componentIdPart) throws FatalFacesException {
+    if ((componentIdPart == null) || (componentIdPart.equals(EMPTY))) {
+      return Collections.EMPTY_LIST;
+    }
+    List result = new ArrayList();
+    componentsWithIdEndingIn(uiViewRoot(), componentIdPart, facesContext(), result);
+    return result;
+  }
+
+  /**
+   * A list of all the components in the current {@link #uiViewRoot()}
+   * whose {@link UIComponent#getClientId(javax.faces.context.FacesContext)}'s
+   * part after the last colon is <code>componentIdPart</code>.
+   */
+  private static void componentsWithIdEndingIn(UIComponent current,
+                                               String componentIdPart,
+                                               FacesContext fc,
+                                               List acc) {
+    assert current != null;
+    assert componentIdPart != null;
+    String clientId = current.getClientId(fc);
+    String[] parts = clientId.split(":");
+    if (parts[parts.length - 1].equals(componentIdPart)) {
+      acc.add(current);
+    }
+    // handle children
+    Iterator iter = current.getChildren().iterator();
+    while (iter.hasNext()) {
+      UIComponent child = (UIComponent)iter.next();
+      componentsWithIdEndingIn(child, componentIdPart, fc, acc);
     }
   }
 
