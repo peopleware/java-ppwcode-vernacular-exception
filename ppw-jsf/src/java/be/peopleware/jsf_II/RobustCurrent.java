@@ -660,11 +660,12 @@ public class RobustCurrent {
       /* do we have a 1 component whose id ends in pExc.getPropertyName()?
        * the use that id for the message, else null */
       String componentId = null;
-      List components  = componentsWithIdEndingIn(pExc.getPropertyName());
-      if (components.size() == 1) {
-        UIComponent component = (UIComponent)components.get(0);
-        componentId = component.getClientId(facesContext());
-      }
+// MUDO (jand) code below creates a weird problem
+//      List components  = componentsWithIdEndingIn(pExc.getPropertyName());
+//      if (components.size() == 1) {
+//        UIComponent component = (UIComponent)components.get(0);
+//        componentId = component.getClientId(facesContext());
+//      }
       RobustCurrent.facesContext().addMessage(componentId, message);
     }
   }
