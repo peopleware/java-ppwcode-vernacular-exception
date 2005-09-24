@@ -491,7 +491,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
 
   /**
    * Create a new instance of type {@link #getPersistentBeanType()} with the default
-   * constructor. {@link #createInstance()} is called on the fresh
+   * constructor. {@link #postCreateInstance(PersistentBean)} is called on the fresh
    * bean to do whatever configuration necessary.
    *
    * @post new.getInstance() isfresh

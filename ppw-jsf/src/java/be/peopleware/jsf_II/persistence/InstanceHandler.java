@@ -581,13 +581,16 @@ public class InstanceHandler extends PersistentBeanHandler {
   }
 
   /**
+   * {@link #postLoadInstance(PersistentBean)} is called on the fresh
+   * bean to do whatever configuration necessary.
+   *
    * @pre getDao() != null;
    * @throws FatalFacesException
    *         {@link AsyncCrudDao#retrievePersistentBean(java.lang.Long, java.lang.Class)} / {@link TechnicalException}
    * @throws FatalFacesException
    *         MUDO (jand) other occurences must be replaced by goBack()
    */
-  private PersistentBean loadInstance() throws FatalFacesException {
+  protected final PersistentBean loadInstance() throws FatalFacesException {
     LOG.debug("loading instance with id = " + getId() +
               " and type = " + getPersistentBeanType());
     assert getAsyncCrudDao() != null;
@@ -611,6 +614,9 @@ public class InstanceHandler extends PersistentBeanHandler {
         // if makes that there really is lazy loading if not in debug
         LOG.debug("retrieved persistent bean is " + result);
       }
+      LOG.debug("Calling postLoadInstance");
+      postLoadInstance(result);
+      LOG.debug("retrieved instance after postLoadInstance: " + result);
     }
     catch (IdNotFoundException infExc) {
       // this will force $instance null
@@ -627,6 +633,20 @@ public class InstanceHandler extends PersistentBeanHandler {
                                  getPersistentBeanType(), tExc, LOG);
     }
     return result;
+  }
+
+  /**
+   * Method called by {@link #loadInstance()},
+   * to do additional configuration of retrieved beans of type
+   * {@link #getPersistentBeanType()}.
+   * This default does nothing, but subclasses should overwrite
+   * when needed.
+   *
+   * @pre pb != null;
+   * @pre pb.getClass() == getPersistentBeanType()
+   */
+  protected void postLoadInstance(PersistentBean pb) {
+    // NOP
   }
 
   /**
