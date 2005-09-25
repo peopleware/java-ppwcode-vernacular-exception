@@ -65,9 +65,12 @@ public final class SetLocalePhaseListener implements PhaseListener, Serializable
    * <p>Where JSTL stores it's locale setting. This is
    *   <code>javax.servlet.jsp.jstl.core.Config.FMT_LOCATE</code>.</p>
    *
+   * @note For some reason <code>.session</code> is added in the effective
+   *       variable name to <code>javax.servlet.jsp.jstl.core.Config.FMT_LOCATE</code>.
+   *
    * <p><strong>{@value}</strong></p>
    */
-  public static final String FMT_LOCALE = "javax.servlet.jsp.jstl.fmt.locale";
+  public static final String FMT_LOCALE = "javax.servlet.jsp.jstl.fmt.locale.session";
 
   /**
    * Set the {@link UIViewRoot#getLocale()}
