@@ -345,10 +345,12 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *            A Set with PersistentBeanHandlers based on the instances of this Handler..
    */
   public final List getInstanceHandlers() throws FatalFacesException {
-    if ($handlers == null) {
-      LOG.debug("no handlers cached; creating new handlers");
+    Collection instances = getInstances();
+    if (($handlers == null) || ($handlers.size() != instances.size())) {
+// MUDO (jand) test if the contents is actually changed
+      LOG.debug("no handlers cached or collection changed; creating new handlers");
       List handlers = new ArrayList();
-      Iterator iter = getInstances().iterator();
+      Iterator iter = instances.iterator();
       LOG.debug("got instances");
       LOG.debug("creating handler for each instance");
       while (iter.hasNext()) {
