@@ -120,6 +120,20 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
   }
 
   /**
+   * <p>Set {@link #getViewMode()} from the request parameter with name
+   *   <code>name</code>. If no such parameter is found, we do
+   *   nothing.</p>
+   * <p>This is a workaround because new versions of MyFaces don't
+   *   allow setting managed properties of beans in session
+   *   scope from the shorter-lived param variable.</p>
+   */
+  public final void setViewModeFromRequestParameterName(String name) {
+    Map requestParameters = RobustCurrent.paramMap();
+    String viewMode = (String)requestParameters.get(name);
+    setViewMode(isValidViewMode(viewMode) ? viewMode : VIEWMODE_DISPLAY);
+  }
+
+  /**
    * @invar ($viewMode != null)
    *            ? isViewMode($viewMode)
    *            : true;
