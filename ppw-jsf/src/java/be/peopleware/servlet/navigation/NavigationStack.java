@@ -8,6 +8,7 @@
 package be.peopleware.servlet.navigation;
 
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
@@ -20,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import be.peopleware.jsf_II.FatalFacesException;
 import be.peopleware.jsf_II.RobustCurrent;
 import be.peopleware.jsf_II.persistence.PersistentBeanHandler;
+import be.peopleware.servlet.sessionMopup.Skimmable;
 
 
 /**
@@ -105,7 +107,7 @@ import be.peopleware.jsf_II.persistence.PersistentBeanHandler;
  * @invar getSize() >= 0;
  * @invar isEmpty() ? getTop() == null;
  */
-public class NavigationStack {
+public class NavigationStack implements Skimmable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -253,6 +255,26 @@ public class NavigationStack {
   public final void goBack(ActionEvent event) throws FacesException {
     goBack();
   }
+
+  /*<section name="skimmable">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Skim all registered {@link NavigationInstance NavigationInstances}.
+   * Instances are never removed!
+   */
+  public void skim() {
+    Iterator iter = $stack.iterator();
+    while (iter.hasNext()) {
+      NavigationInstance ni = (NavigationInstance)iter.next();
+      if (ni instanceof Skimmable) {
+        Skimmable skimNi = (Skimmable)ni;
+        skimNi.skim();
+      }
+    }
+  }
+
+  /*</section>*/
 
 }
 
