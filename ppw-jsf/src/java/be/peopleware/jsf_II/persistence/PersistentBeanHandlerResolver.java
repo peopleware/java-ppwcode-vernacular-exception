@@ -385,7 +385,7 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *   {@link #managedHandlerFor(Class) managedHandlerFor(pbType)},
    *   or, if no such handler exist,
    *   {@link #createDefaultHandlerFor(Class, String) createDefaultHandlerFor(pbType, daoVariableName)}.
-   *   If so, this new default handler is stored in request scope with name
+   *   If so, this new default handler is stored in session scope with name
    *   {@link #handlerVariableNameFor(Class) handlerVariableNameFor(pbType)}.</p>
    */
   public final PersistentBeanHandler handlerFor(Class pbType, String daoVariableName)
@@ -394,9 +394,9 @@ public class PersistentBeanHandlerResolver implements Serializable {
     PersistentBeanHandler result = managedHandlerFor(pbType);
     if (result == null) {
       LOG.debug("Could not find handler for type " + pbType +
-                "; will create default handler and put it in request scope");
+                "; will create default handler and put it in session scope");
       result = createDefaultHandlerFor(pbType, daoVariableName);
-      RobustCurrent.requestMap().put(handlerVariableNameFor(pbType), result);
+      putInSessionScope(result);
     }
     else {
       LOG.debug("handler found in some scope, or created as managed bean: " + result);
@@ -458,7 +458,7 @@ public class PersistentBeanHandlerResolver implements Serializable {
     assert getMinimalHandlerClass().isInstance(handler);
     String varName = handlerVariableNameFor(handler.getPersistentBeanType());
     RobustCurrent.sessionMap().put(varName, handler);
-    LOG.debug("handler " + handler + " put in request scope with name \"" +
+    LOG.debug("handler " + handler + " put in session scope with name \"" +
               varName + "\"");
   }
 
