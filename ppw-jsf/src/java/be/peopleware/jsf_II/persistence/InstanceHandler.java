@@ -1245,6 +1245,10 @@ public class InstanceHandler extends PersistentBeanHandler {
 
     private Map $backingMap = new HashMap();
 
+    public final void removeInitializedAssociationHandlerFor(String propertyName) {
+      $backingMap.remove(propertyName);
+    }
+    
     public Object get(Object key) throws FatalFacesException {
       if (! keySet().contains(key)) {
         LOG.warn("request for associations handler with unknown key (property name) \"" +
@@ -1469,10 +1473,12 @@ public class InstanceHandler extends PersistentBeanHandler {
     else if ((getClass() == ni.getClass()) &&
               (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType()) &&
               (equalsWithNull(getId(), ((InstanceHandler)ni).getId()) ||
-                  ((getId() == null) && (((InstanceHandler)ni).getId() != null)))) {
+                  ((getId() == null) && (((InstanceHandler)ni).getId() != null)) ||
+                  ((getId() != null) && (((InstanceHandler)ni).getId() == null)))) {
       LOG.debug("absorbing");
       resetLastRenderedTime();
-      if ((getId() == null) && (((InstanceHandler)ni).getId() != null)) {
+      if ((getId() == null) && (((InstanceHandler)ni).getId() != null)||
+          ((getId() != null) && (((InstanceHandler)ni).getId() == null))) {
         // we have just created a new instance; copy the id
         setId(((InstanceHandler)ni).getId());
       }
