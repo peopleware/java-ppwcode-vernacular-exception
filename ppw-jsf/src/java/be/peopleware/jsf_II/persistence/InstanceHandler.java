@@ -401,18 +401,24 @@ public class InstanceHandler extends PersistentBeanHandler {
     Map requestParameters = RobustCurrent.paramMap();
     String idString = (String)requestParameters.get(name);
     if (idString != null) {
-      try {
-        Long id = Long.valueOf(idString); // NumberFormatException
-        setId(id);
+      if (idString.equals(EMPTY)) {
+        setId(null);
       }
-      catch (NumberFormatException nfExc) {
-        RobustCurrent.fatalProblem("The id value in the request is not a Long (" +
-                                   idString +  ")",
-                                   nfExc,
-                                   LOG);
-        // IDEA (jand) this is not fatal; do goback()
+      else {
+        try {
+          Long id = Long.valueOf(idString); // NumberFormatException
+          setId(id);
+        }
+        catch (NumberFormatException nfExc) {
+          RobustCurrent.fatalProblem("The id value in the request is not a Long (" +
+                                     idString +  ")",
+                                     nfExc,
+                                     LOG);
+          // IDEA (jand) this is not fatal; do goback()
+        }
       }
     }
+    // else (idString not in request param), do NOP
   }
 
   /**
