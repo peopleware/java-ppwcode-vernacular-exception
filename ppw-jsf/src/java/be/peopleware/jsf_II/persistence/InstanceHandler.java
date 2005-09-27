@@ -1019,6 +1019,7 @@ public class InstanceHandler extends PersistentBeanHandler {
         dao.deletePersistentBean(getInstance()); // TechnicalException
         dao.commitTransaction(getInstance());// TechnicalException, CompoundPropertyException
         assert getInstance().getId() == null;
+        setId(null);
         setViewMode(VIEWMODE_DELETED);
         return getNavigationString();
       }
@@ -1248,7 +1249,7 @@ public class InstanceHandler extends PersistentBeanHandler {
     public final void removeInitializedAssociationHandlerFor(String propertyName) {
       $backingMap.remove(propertyName);
     }
-    
+
     public Object get(Object key) throws FatalFacesException {
       if (! keySet().contains(key)) {
         LOG.warn("request for associations handler with unknown key (property name) \"" +
