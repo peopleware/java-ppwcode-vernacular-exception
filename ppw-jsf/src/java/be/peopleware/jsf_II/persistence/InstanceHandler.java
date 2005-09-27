@@ -1205,6 +1205,10 @@ public class InstanceHandler extends PersistentBeanHandler {
     return $associationHandlers.getInitializedAssociationHandlers();
   }
 
+  public final void removeUsedAssociationHandlerFor(String propertyName) {
+    $associationHandlers.removeInitializedAssociationHandlerFor(propertyName);
+  }
+
   /**
    * Alias for {@link #getAssociationHandlers()} with a shorter name.
    */
