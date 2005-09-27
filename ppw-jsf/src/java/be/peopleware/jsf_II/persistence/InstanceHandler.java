@@ -1450,10 +1450,15 @@ public class InstanceHandler extends PersistentBeanHandler {
   /**
    * @result (ni == null) ? (result == null);
    * @result (result != null) ? (result == this);
-   * @return ((getClass() == ni.getClass()) &&
-   *              (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType()) &&
-   *              equalsWithNull(getId(), ((InstanceHandler)ni).getId())) ?
-   *           this : null;
+   * @return ((getClass() == ni.getClass())
+   *             && (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType())
+   *             && (equalsWithNull(getId(), ((InstanceHandler)ni).getId())
+   *                    || ((getId() == null) && (((InstanceHandler)ni).getId() != null)))
+   *           ? this
+   *           : null;
+   *         The last part of the condition takes care of creating a new instance: this previous
+   *         NavigationInstance was the page with no id, and after succesful creation, we do have
+   *         an id, but it is the same page.
    * @result (result != null) ? getTime().equals(NOW);
    */
   public NavigationInstance absorb(NavigationInstance ni) {
@@ -1463,9 +1468,14 @@ public class InstanceHandler extends PersistentBeanHandler {
     }
     else if ((getClass() == ni.getClass()) &&
               (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType()) &&
-              equalsWithNull(getId(), ((InstanceHandler)ni).getId())) {
+              (equalsWithNull(getId(), ((InstanceHandler)ni).getId()) ||
+                  ((getId() == null) && (((InstanceHandler)ni).getId() != null)))) {
       LOG.debug("absorbing");
       resetLastRenderedTime();
+      if ((getId() == null) && (((InstanceHandler)ni).getId() != null)) {
+        // we have just created a new instance; copy the id
+        setId(((InstanceHandler)ni).getId());
+      }
       return this;
     }
     else {
