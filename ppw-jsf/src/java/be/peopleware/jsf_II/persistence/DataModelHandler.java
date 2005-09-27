@@ -51,10 +51,7 @@ public class DataModelHandler extends CollectionHandler {
    */
   public final DataModel getDataModel() throws FatalFacesException {
     LOG.debug("request for datamodel");
-    if ($dataModel == null) {
-      /* data model does not need to be updated when instance collection changes,
-       * because it is a ListDataModel, and that doesn't hold state itself.
-       */
+    if (($dataModel == null) || isInstanceHandlersObsolete()) {
       LOG.debug("no datamodel cached; creating new datamodel");
       $dataModel = new ListDataModel(getInstanceHandlers());
       LOG.debug("datamodel created and cached");

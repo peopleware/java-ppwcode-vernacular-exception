@@ -346,8 +346,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    */
   public final List getInstanceHandlers() throws FatalFacesException {
     Collection instances = getInstances();
-    if (($handlers == null) || ($handlers.size() != instances.size())) {
-// MUDO (jand) test if the contents is actually changed
+    if (isInstanceHandlersObsolete()) {
       LOG.debug("no handlers cached or collection changed; creating new handlers");
       List handlers = new ArrayList();
       Iterator iter = instances.iterator();
@@ -367,6 +366,11 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     return Collections.unmodifiableList($handlers);
   }
 
+  protected boolean isInstanceHandlersObsolete() {
+    return ($handlers == null) || ($handlers.size() != getInstances().size());
+//  MUDO (jand) test if the contents is actually changed
+  }
+  
   /**
    * Delegate this call to all handlers in {@link #getInstanceHandlers()}.
    */
