@@ -125,6 +125,26 @@ public final class VATNumber extends ImmutableValue {
   }
 
   /**
+   * Construct a new instance from a String, which we interpret
+   * leniently.
+   *
+   * @pre pattern != null;
+   */
+  public VATNumber(String pattern) throws PropertyException {
+    assert pattern != null;
+    String[] array = pattern.split("[ -/|*:]+");
+    StringBuffer buffer = new StringBuffer("");
+    for (int i = 0; i < array.length; i++) {
+      buffer.append(array[i]);
+    }
+    String nnString = buffer.toString();
+    String leftNumber = nnString.substring(0,3);
+    String middleNumber = nnString.substring(3,6);
+    String rightNumber = nnString.substring(6,9);
+    initialize(leftNumber, middleNumber, rightNumber);
+  }
+
+  /**
    * @post    getLeftNumber().equals("123");
    * @post    getMiddleNumber().equals("456");
    * @post    getRightNumber().equals("749");

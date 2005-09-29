@@ -14,6 +14,7 @@ import java.sql.Types;
 
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.UserType;
+import be.peopleware.bean_V.PropertyException;
 import be.peopleware.value_II.RSZNumber;
 
 
@@ -102,11 +103,16 @@ public class RszNumberUserType implements UserType {
                                   final String[] names,
                                   final Object owner)
           throws HibernateException, SQLException {
-
     RSZNumber result = null;
-    if (!(resultSet.wasNull())) {
-      String dbValue = resultSet.getString(names[0]);
-      result = new RSZNumber(dbValue); // IllegalArgumentException
+    String dbValue = null;
+    try {
+      if (!(resultSet.wasNull())) {
+        dbValue = resultSet.getString(names[0]);
+        result = new RSZNumber(dbValue); // PropertyException
+      }
+    }
+    catch (PropertyException pExc) {
+      throw new HibernateException("could not transform " + dbValue + " into an RSZ number", pExc);
     }
     return result;
   }

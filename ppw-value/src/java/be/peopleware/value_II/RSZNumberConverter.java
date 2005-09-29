@@ -6,6 +6,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
+import be.peopleware.bean_V.PropertyException;
+
 
 /**
  * Converter for {@link RSZNumber}. The {@link #getAsObject(FacesContext, UIComponent, String)}
@@ -37,7 +39,7 @@ public class RSZNumberConverter implements Converter {
       try {
         return new RSZNumber(value);
       }
-      catch (IllegalArgumentException e) {
+      catch (PropertyException e) {
         throw new ConverterException("RSZ number " + value + "could not be created", e);
       }
     }

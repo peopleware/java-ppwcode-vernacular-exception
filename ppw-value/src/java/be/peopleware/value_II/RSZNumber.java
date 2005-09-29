@@ -132,23 +132,18 @@ public final class RSZNumber extends ImmutableValue {
    *
    * @pre pattern != null;
    */
-  public RSZNumber(String pattern) throws IllegalArgumentException {
+  public RSZNumber(String pattern) throws PropertyException {
     assert pattern != null;
-    try {
-      String[] array = pattern.split("[ -/|*:]+");
-      StringBuffer buffer = new StringBuffer("");
-      for (int i = 0; i<array.length;i++) {
-        buffer.append(array[i]);
-      }
-      String nnString = buffer.toString();
-      String leftNumber = nnString.substring(0,3);
-      String middleNumber = nnString.substring(3,10);
-      String rightNumber = nnString.substring(10,12);
-      initialize(leftNumber, middleNumber, rightNumber);
+    String[] array = pattern.split("[ -/|*:]+");
+    StringBuffer buffer = new StringBuffer("");
+    for (int i = 0; i < array.length; i++) {
+      buffer.append(array[i]);
     }
-    catch (Throwable e) {
-      throw new IllegalArgumentException("RSZ number " + pattern + "could not be created");
-    }
+    String nnString = buffer.toString();
+    String leftNumber = nnString.substring(0,3);
+    String middleNumber = nnString.substring(3,10);
+    String rightNumber = nnString.substring(10,12);
+    initialize(leftNumber, middleNumber, rightNumber);
   }
 
   /**

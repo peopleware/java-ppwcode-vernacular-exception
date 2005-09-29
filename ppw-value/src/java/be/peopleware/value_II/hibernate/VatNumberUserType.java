@@ -103,19 +103,16 @@ public class VatNumberUserType implements UserType {
           throws HibernateException, SQLException {
 
     VATNumber result = null;
-    String nn = resultSet.getString(names[0]);
-
-    if (!(resultSet.wasNull())) {
-      String nn_left = nn.substring(0,3);
-      String nn_middle = nn.substring(4,7);
-      String nn_right = nn.substring(8);
-      try {
-        result = new VATNumber(nn_left, nn_middle, nn_right);
+    String dbValue = null;
+    try {
+      if (!(resultSet.wasNull())) {
+        dbValue = resultSet.getString(names[0]);
+        result = new VATNumber(dbValue);
       }
-      catch(PropertyException pExc) {
-        throw new HibernateException("could not convert string \""
-                                     + nn + "\" from DB to VATNumber", pExc);
-      }
+    }
+    catch(PropertyException pExc) {
+      throw new HibernateException("could not convert string \""
+                                   + dbValue + "\" from DB to VATNumber", pExc);
     }
     return result;
   }
@@ -151,7 +148,7 @@ public class VatNumberUserType implements UserType {
     }
     else {
       VATNumber nn = (VATNumber)value;
-      statement.setString(index, nn.getLeftNumber()+"-"+nn.getMiddleNumber()+"-"+nn.getRightNumber());
+      statement.setString(index, nn.getLeftNumber() + nn.getMiddleNumber() + nn.getRightNumber());
     }
   }
 }

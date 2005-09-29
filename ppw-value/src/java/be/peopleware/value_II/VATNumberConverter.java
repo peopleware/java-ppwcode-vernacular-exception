@@ -27,23 +27,12 @@ public class VATNumberConverter implements Converter {
 
   public Object getAsObject(FacesContext context, UIComponent component, String value)
       throws ConverterException {
-    VATNumber nn = null;
     if ((value == null) || (value.length() == 0)) {
       return null;
     }
     else {
       try {
-        String[] array = value.split("[ -/|*:]+");
-        StringBuffer buffer = new StringBuffer("");
-        for (int i = 0; i<array.length;i++) {
-          buffer.append(array[i]);
-        }
-        String nnString = buffer.toString();
-        String leftNumber = nnString.substring(0,3);
-        String middleNumber = nnString.substring(3,6);
-        String rightNumber = nnString.substring(6,9);
-        nn = new VATNumber(leftNumber, middleNumber, rightNumber);
-        return nn;
+        return new VATNumber(value);
       }
       catch (Throwable e) {
         throw new ConverterException("VAT number " + value + "could not be created");
