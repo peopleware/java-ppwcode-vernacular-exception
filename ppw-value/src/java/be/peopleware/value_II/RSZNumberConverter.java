@@ -23,32 +23,22 @@ import javax.faces.convert.ConverterException;
  * </pre>
  *
  * @author nsmeets
+ * @author Jan Dockx
  * @author Peopleware n.v.
  */
 public class RSZNumberConverter implements Converter {
 
   public Object getAsObject(FacesContext context, UIComponent component, String value)
       throws ConverterException {
-    RSZNumber nn = null;
     if ((value == null) || (value.length() == 0)) {
       return null;
     }
     else {
       try {
-        String[] array = value.split("[ -/|*:]+");
-        StringBuffer buffer = new StringBuffer("");
-        for (int i = 0; i<array.length;i++) {
-          buffer.append(array[i]);
-        }
-        String nnString = buffer.toString();
-        String leftNumber = nnString.substring(0,3);
-        String middleNumber = nnString.substring(3,10);
-        String rightNumber = nnString.substring(10,12);
-        nn = new RSZNumber(leftNumber, middleNumber, rightNumber);
-        return nn;
+        return new RSZNumber(value);
       }
-      catch (Throwable e) {
-        throw new ConverterException("RSZ number " + value + "could not be created");
+      catch (IllegalArgumentException e) {
+        throw new ConverterException("RSZ number " + value + "could not be created", e);
       }
     }
   }

@@ -14,7 +14,6 @@ import java.sql.Types;
 
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.UserType;
-import be.peopleware.bean_V.PropertyException;
 import be.peopleware.value_II.RSZNumber;
 
 
@@ -24,6 +23,8 @@ import be.peopleware.value_II.RSZNumber;
  *
  * @author    nsmeets
  * @author    rclerckx
+ * @author    Jan Dockx
+ * @author    PeopleWare n.v.
  */
 public class RszNumberUserType implements UserType {
 
@@ -103,18 +104,9 @@ public class RszNumberUserType implements UserType {
           throws HibernateException, SQLException {
 
     RSZNumber result = null;
-    String nn = resultSet.getString(names[0]);
-
     if (!(resultSet.wasNull())) {
-      String nn_left = nn.substring(0,3);
-      String nn_middle = nn.substring(4,11);
-      String nn_right = nn.substring(12);
-      try {
-        result = new RSZNumber(nn_left, nn_middle, nn_right);
-      }
-      catch(PropertyException pExc) {
-        assert false : "Shouldn't happen";
-      }
+      String dbValue = resultSet.getString(names[0]);
+      result = new RSZNumber(dbValue); // IllegalArgumentException
     }
     return result;
   }
@@ -150,7 +142,7 @@ public class RszNumberUserType implements UserType {
     }
     else {
       RSZNumber nn = (RSZNumber) value;
-      statement.setString(index, nn.getLeftNumber()+"-"+nn.getMiddleNumber()+"-"+nn.getRightNumber());
+      statement.setString(index, nn.getLeftNumber() + nn.getMiddleNumber() + nn.getRightNumber());
     }
   }
 }

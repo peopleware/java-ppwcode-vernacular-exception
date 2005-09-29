@@ -17,6 +17,8 @@ import be.peopleware.bean_V.PropertyException;
  * A class of RSZ numbers.
  *
  * @author nsmeets
+ * @author Jan Dockx
+ * @author PeopleWare n.v.
  *
  * @invar  getLeftNumber() != null;
  * @invar  Pattern.matches(LEFT_PATTERN, getLeftNumber());
@@ -122,6 +124,31 @@ public final class RSZNumber extends ImmutableValue {
    */
   public RSZNumber(String leftNumber, String middleNumber, String rightNumber) throws PropertyException {
     initialize(leftNumber, middleNumber, rightNumber);
+  }
+
+  /**
+   * Construct a new instance from a String, which we interpret
+   * leniently.
+   *
+   * @pre pattern != null;
+   */
+  public RSZNumber(String pattern) throws IllegalArgumentException {
+    assert pattern != null;
+    try {
+      String[] array = pattern.split("[ -/|*:]+");
+      StringBuffer buffer = new StringBuffer("");
+      for (int i = 0; i<array.length;i++) {
+        buffer.append(array[i]);
+      }
+      String nnString = buffer.toString();
+      String leftNumber = nnString.substring(0,3);
+      String middleNumber = nnString.substring(3,10);
+      String rightNumber = nnString.substring(10,12);
+      initialize(leftNumber, middleNumber, rightNumber);
+    }
+    catch (Throwable e) {
+      throw new IllegalArgumentException("RSZ number " + pattern + "could not be created");
+    }
   }
 
   /**
