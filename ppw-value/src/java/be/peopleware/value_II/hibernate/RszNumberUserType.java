@@ -106,10 +106,11 @@ public class RszNumberUserType implements UserType {
     RSZNumber result = null;
     String dbValue = null;
     try {
+      dbValue = resultSet.getString(names[0]);
       if (!(resultSet.wasNull())) {
-        dbValue = resultSet.getString(names[0]);
         result = new RSZNumber(dbValue); // PropertyException
       }
+      // else, result stays null (NULL in DB)
     }
     catch (PropertyException pExc) {
       throw new HibernateException("could not transform " + dbValue + " into an RSZ number", pExc);
