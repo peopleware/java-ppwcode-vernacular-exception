@@ -7,6 +7,12 @@
   </properties>
   <body>
 
+    <release version="II v1.3.0/1.1" date="2005-09-29" description="deal with NULL from DB for RSZ and VAT">
+      <action dev="jand" type="fix">
+        VAT and RSZ numbers that are NULL in DB now don't crash.
+      </action>
+    </release>
+
     <release version="II v1.3.0/1.0" date="2005-09-29" description="VAT and RSZ number are more lenients when reading from DB">
       <action dev="jand" type="add">
         VAT and RSZ number are more lenients when reading from DB. Writing to DB does not include
