@@ -54,7 +54,7 @@ public class UIInstanceHandler extends UIViewModeHandler {
    * <strong>= {@value}</strong>
    */
   public final static String INPUT_TAG_NAME_ID_EXTENSION = ".id";
-  
+
   /**
    * The name of the hidden input tag for the id.
    *
@@ -111,7 +111,8 @@ public class UIInstanceHandler extends UIViewModeHandler {
     Long id = null;
     { // get parameters from request
 
-      if (!viewMode.equals(InstanceHandler.VIEWMODE_EDITNEW)) {
+      if (!viewMode.equals(InstanceHandler.VIEWMODE_EDITNEW) &&
+          !viewMode.equals(InstanceHandler.VIEWMODE_DELETED)) {
         // id
         String idString = (String)requestParameters.get(idTagName(context));
         if (idString == null) {
