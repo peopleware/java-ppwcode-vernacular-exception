@@ -3,7 +3,7 @@
 <project>
   <extend>../ppw-libraries-settings/project.xml</extend>
   <pomVersion>1</pomVersion>
-  <name>PeopleWare Value Type Library I</name>
+  <name>PeopleWare Value Type Library II</name>
   <groupId>ppw-libraries</groupId>
   <artifactId>ppw-value-II</artifactId>
   <shortDescription>Patterns for value types, and some common value types.</shortDescription>
