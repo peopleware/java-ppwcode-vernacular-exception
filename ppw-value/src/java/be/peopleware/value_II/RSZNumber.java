@@ -133,17 +133,27 @@ public final class RSZNumber extends ImmutableValue {
    * @pre pattern != null;
    */
   public RSZNumber(String pattern) throws PropertyException {
+    if (pattern == null) {
+      throw new PropertyException(this, null, "NULL_PATTERN", null);
+    }
     assert pattern != null;
     String[] array = pattern.split("[ -/|*:]+");
+        // PatternSyntaxException: cannot happen
     StringBuffer buffer = new StringBuffer("");
     for (int i = 0; i < array.length; i++) {
       buffer.append(array[i]);
     }
     String nnString = buffer.toString();
-    String leftNumber = nnString.substring(0,3);
-    String middleNumber = nnString.substring(3,10);
-    String rightNumber = nnString.substring(10,12);
-    initialize(leftNumber, middleNumber, rightNumber);
+    try {
+      String leftNumber = nnString.substring(0,3);
+      String middleNumber = nnString.substring(3,10);
+      String rightNumber = nnString.substring(10,12);
+        // IndexOutOfBoundsException
+      initialize(leftNumber, middleNumber, rightNumber);
+    }
+    catch (IndexOutOfBoundsException ioobExc) {
+      throw new PropertyException(RSZNumber.class, null, "PATTERN_TOO_SHORT", ioobExc);
+    }
   }
 
   /**

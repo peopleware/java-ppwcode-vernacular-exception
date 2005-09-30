@@ -45,7 +45,7 @@
     <dependency>
       <groupId>toryt</groupId>
       <artifactId>toryt</artifactId>
-      <version>I-1.2.0-2.0</version>
+      <version>I-1.3.0-3.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -58,6 +58,32 @@
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
       <version>2.4-20040521</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <!-- toryt -->
+      <artifactId>commons-lang</artifactId>
+      <version>2.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>taglibs</groupId>
+      <!-- toryt -->
+      <artifactId>standard</artifactId>
+      <version>1.1.2</version>
+      <type>jar</type>
+      <properties>
+        <!-- in eclipse for DevLoader
+        <eclipse.dependency>false</eclipse.dependency> -->
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <!-- toryt -->
+      <artifactId>commons-cli</artifactId>
+      <version>1.0</version>
       <type>jar</type>
     </dependency>
     <dependency>

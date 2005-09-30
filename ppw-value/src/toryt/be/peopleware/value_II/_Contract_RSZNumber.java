@@ -44,6 +44,217 @@ public class _Contract_RSZNumber extends ClassContract {
 
     // constructors
     addConstructorContract(
+       new ConstructorContract(this, RSZNumber.class, "RSZNumber(java.lang.String)") {
+         public String[] getFormalParameters() {
+           return new String[] {"pattern"};
+         }
+
+         {
+           // no preconditions
+           // postconditions
+//           addPostcondition(new Condition() {
+//             public boolean validate(Map context) {
+//               RSZNumber subject = (RSZNumber)context.get(SUBJECT_KEY);
+//               String leftNumber = (String)context.get("leftNumber");
+//
+//               return (subject.getLeftNumber().equals(leftNumber));
+//             }});
+//
+//           addPostcondition(new Condition() {
+//             public boolean validate(Map context) {
+//               RSZNumber subject = (RSZNumber)context.get(SUBJECT_KEY);
+//               String middleNumber = (String)context.get("middleNumber");
+//
+//               return (subject.getMiddleNumber().equals(middleNumber));
+//             }});
+//
+//           addPostcondition(new Condition() {
+//             public boolean validate(Map context) {
+//               RSZNumber subject = (RSZNumber)context.get(SUBJECT_KEY);
+//               String rightNumber = (String)context.get("rightNumber");
+//
+//               return (subject.getRightNumber().equals(rightNumber));
+//             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               pattern = pattern.replaceAll("[ -/|*:]+", "");
+               try {
+                 String leftNumber = pattern.substring(0, 3);
+                 PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+                 return  ( leftNumber == null )
+                         && (pExc.reportsOn(
+                             RSZNumber.class, "leftNumber",
+                                 "LEFT_NUMBER_IS_NULL", null)
+                         );
+               }
+               catch (IndexOutOfBoundsException ioobExc) {
+                 return false;
+               }
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               pattern = pattern.replaceAll("[ -/|*:]+", "");
+               try {
+                 String leftNumber = pattern.substring(0, 3);
+                 PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+
+                 return  ((leftNumber != null && !Pattern.matches(RSZNumber.LEFT_PATTERN, leftNumber))
+                          && pExc.reportsOn(
+                                           RSZNumber.class, "leftNumber",
+                                           "LEFT_NUMBER_INVALID_PATTERN", null)
+                         );
+               }
+               catch (IndexOutOfBoundsException ioobExc) {
+                 return false;
+               }
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               pattern = pattern.replaceAll("[ -/|*:]+", "");
+               try {
+                 String middleNumber = pattern.substring(3, 10);
+                 PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+                 return   ((middleNumber == null)
+                             && pExc.reportsOn(
+                                           RSZNumber.class, "middleNumber",
+                                          "MIDDLE_NUMBER_IS_NULL", null)
+                          );
+               }
+               catch (IndexOutOfBoundsException ioobExc) {
+                 return false;
+               }
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               pattern = pattern.replaceAll("[ -/|*:]+", "");
+               try {
+                 String middleNumber = pattern.substring(3, 10);
+                 PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+                 return (  (middleNumber != null && !Pattern.matches(RSZNumber.MIDDLE_PATTERN, middleNumber))
+                           && pExc.reportsOn(
+                                          RSZNumber.class, "middleNumber",
+                                          "MIDDLE_NUMBER_INVALID_PATTERN", null)
+                        );
+               }
+               catch (IndexOutOfBoundsException ioobExc) {
+                 return false;
+               }
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               pattern = pattern.replaceAll("[ -/|*:]+", "");
+               try {
+                 String rightNumber = pattern.substring(10, 12);
+                 PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+                 return (  (rightNumber == null)
+                           && pExc.reportsOn(
+                                          RSZNumber.class, "rightNumber",
+                                          "RIGHT_NUMBER_IS_NULL", null)
+                      );
+               }
+               catch (IndexOutOfBoundsException ioobExc) {
+                 return false;
+               }
+             }});
+
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               pattern = pattern.replaceAll("[ -/|*:]+", "");
+               try {
+                 String rightNumber = pattern.substring(10, 12);
+                 PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+                 return (  (rightNumber != null && !Pattern.matches(RSZNumber.RIGHT_PATTERN, rightNumber))
+                            && pExc.reportsOn(
+                                         RSZNumber.class, "rightNumber",
+                                          "RIGHT_NUMBER_INVALID_PATTERN", null)
+                        );
+               }
+               catch (IndexOutOfBoundsException ioobExc) {
+                 return false;
+               }
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               pattern = pattern.replaceAll("[ -/|*:]+", "");
+               try {
+                 String leftNumber = pattern.substring(0, 3);
+                 String middleNumber = pattern.substring(3, 10);
+                 String rightNumber = pattern.substring(10, 12);
+                 PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+                 return (  (  leftNumber != null &&
+                              middleNumber != null &&
+                              rightNumber != null &&
+                              !RSZNumber.checkRSZNumber(leftNumber, middleNumber, rightNumber)
+                           )
+                           &&  pExc.reportsOn(RSZNumber.class, null, "INVALID_CHECK", null)
+                         );
+               }
+               catch (IndexOutOfBoundsException ioobExc) {
+                 return false;
+               }
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+               return (  (pattern == null)
+                         &&  pExc.reportsOn(RSZNumber.class, null, "NULL_PATTERN", null)
+                       );
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               String pattern = (String)context.get("pattern");
+               pattern = pattern.replaceAll("[ -/|*:]+", "");
+               PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+               return (  (pattern.length() < 12)
+                         &&  pExc.reportsOn(RSZNumber.class, null, "PATTERN_TOO_SHORT", pExc.getCause())
+                       );
+             }});
+
+           close();
+         }
+
+         public StraightList getTestCases() throws TorytException {
+           return new LazyCombinationStraightList(
+               new String[] {"pattern"},
+               new StraightList[] {
+                   new ArrayStraightList( new String[] {"024 1234567 49",
+                                                        "024 2223334 08",
+                                                        "024 9998887 06",
+                                                        "0241234567 49",
+                                                        "024-2223334 08",
+                                                        "024 9998887/06",
+                                                        "024*1234567*49",
+                                                        "0242223334 08",
+                                                        "024 999888706",
+                                                        "024123456749",
+                                                        "024 2223",
+                                                        "04 9998887 06",
+                                                        "024 1234567 49 683129890",
+                                                        "024123456749683129890",
+                                                        "0sdgsd",
+                                                        "024"})
+               });
+         }
+       }
+     );
+    addConstructorContract(
       new ConstructorContract(this, RSZNumber.class, "RSZNumber(java.lang.String,java.lang.String,java.lang.String)") {
         public String[] getFormalParameters() {
           return new String[] {"leftNumber", "middleNumber", "rightNumber"};
@@ -218,7 +429,7 @@ public class _Contract_RSZNumber extends ClassContract {
     );
 
     addConstructorContract(
-        new ConstructorContract(this, RSZNumber.class, "RSZNumber(be.peopleware.value_I.RSZNumber)") {
+        new ConstructorContract(this, RSZNumber.class, "RSZNumber(be.peopleware.value_II.RSZNumber)") {
          public String[] getFormalParameters() {
             return new String[] {"rszNumber"};
           }
