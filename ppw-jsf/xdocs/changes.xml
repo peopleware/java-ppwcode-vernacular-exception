@@ -6,6 +6,12 @@
   </properties>
   <body>
 
+   <release version="II v1.0.1/1.0" date="2005-09-30" description="Changed the UIInstanceHandler#decode method.">
+      <action dev="nsmeets" type="add">
+        Changed the UIInstanceHandler#decode method so that it takes care of view mode 'deleted'.
+      </action>
+    </release>
+
     <release version="II v1.0.0/1.0" date="??" description="complete refactor">
       <action dev="jand" type="add">
       	Complete refactor.
