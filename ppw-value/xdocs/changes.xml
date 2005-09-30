@@ -7,6 +7,12 @@
   </properties>
   <body>
 
+    <release version="II v1.3.0/1.2" date="2005-09-30" description="new RSZ and VAT constructor">
+      <action dev="jand" type="fix">
+        Fixed problem in new VAT and RSZ numbers constructor.
+      </action>
+    </release>
+
     <release version="II v1.3.0/1.1" date="2005-09-29" description="deal with NULL from DB for RSZ and VAT">
       <action dev="jand" type="fix">
         VAT and RSZ numbers that are NULL in DB now don't crash.

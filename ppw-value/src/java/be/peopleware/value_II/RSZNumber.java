@@ -130,13 +130,12 @@ public final class RSZNumber extends ImmutableValue {
    * Construct a new instance from a String, which we interpret
    * leniently.
    *
-   * @pre pattern != null;
+   * @todo contract (see toryt)
    */
   public RSZNumber(String pattern) throws PropertyException {
     if (pattern == null) {
-      throw new PropertyException(this, null, "NULL_PATTERN", null);
+      throw new PropertyException(RSZNumber.class, null, "NULL_PATTERN", null);
     }
-    assert pattern != null;
     String[] array = pattern.split("[ -/|*:]+");
         // PatternSyntaxException: cannot happen
     StringBuffer buffer = new StringBuffer("");

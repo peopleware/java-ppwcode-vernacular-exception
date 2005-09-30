@@ -128,20 +128,29 @@ public final class VATNumber extends ImmutableValue {
    * Construct a new instance from a String, which we interpret
    * leniently.
    *
-   * @pre pattern != null;
+   * @todo contract & Toryt
    */
   public VATNumber(String pattern) throws PropertyException {
-    assert pattern != null;
+    if (pattern == null) {
+      throw new PropertyException(VATNumber.class, null, "NULL_PATTERN", null);
+    }
     String[] array = pattern.split("[ -/|*:]+");
+        // PatternSyntaxException: cannot happen
     StringBuffer buffer = new StringBuffer("");
     for (int i = 0; i < array.length; i++) {
       buffer.append(array[i]);
     }
     String nnString = buffer.toString();
-    String leftNumber = nnString.substring(0,3);
-    String middleNumber = nnString.substring(3,6);
-    String rightNumber = nnString.substring(6,9);
-    initialize(leftNumber, middleNumber, rightNumber);
+    try {
+      String leftNumber = nnString.substring(0,3);
+      String middleNumber = nnString.substring(3,6);
+      String rightNumber = nnString.substring(6,9);
+          // IndexOutOfBoundsException
+      initialize(leftNumber, middleNumber, rightNumber);
+    }
+    catch (IndexOutOfBoundsException ioobExc) {
+      throw new PropertyException(VATNumber.class, null, "PATTERN_TOO_SHORT", ioobExc);
+    }
   }
 
   /**
