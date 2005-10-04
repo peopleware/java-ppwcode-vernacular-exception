@@ -128,6 +128,7 @@
       <fileset dir="${maven.src.dir}/java">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
+        <include name="**/*.txt" />
       </fileset>
     </copy>
 
@@ -149,6 +150,7 @@
       <fileset dir="${maven.src.dir}/test">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
+        <include name="**/*.txt" />
       </fileset>
     </copy>
 
@@ -202,10 +204,11 @@
     </copy>
 
     <!-- copy all xml files for inclusion in war -->
-    <echo message="Copying betwixt files ${maven.src.dir}/java to ${maven.build.dest}" />
+    <echo message="Copying XML and txt files ${maven.src.dir}/java to ${maven.build.dest}" />
     <copy todir="${maven.build.dest}">
       <fileset dir="${maven.src.dir}/java">
         <include name="**/*.xml" />
+        <include name="**/*.txt" />
       </fileset>
     </copy>
   </preGoal>
