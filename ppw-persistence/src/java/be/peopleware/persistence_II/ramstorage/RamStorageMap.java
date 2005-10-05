@@ -73,7 +73,7 @@ public final class RamStorageMap {
    * @result (forall PersistentBean pb; result.contains(pb);
    *              (exists long l; ; find(l) == pb));
    * @result cC:noNull(result);
-   * @resutl cC:instanceOf(result, getType());
+   * @result cC:instanceOf(result, getType());
    */
   public synchronized Set all() {
     return new HashSet($pbMap.values());
