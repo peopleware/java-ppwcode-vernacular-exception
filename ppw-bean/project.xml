@@ -12,6 +12,9 @@
   <inceptionYear>2004</inceptionYear>
   <currentVersion>1.0.0-1.0</currentVersion>
   <package>be.peopleware.bean_V</package>
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-bean</developerConnection>
+  </repository>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
     <developer>
