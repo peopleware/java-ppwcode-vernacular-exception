@@ -11,12 +11,16 @@
   <inceptionYear>2004</inceptionYear>
   <currentVersion>1.1.0-3.0</currentVersion>
   <package>be.peopleware.persistence_II</package>
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-persistence</developerConnection>
+    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/ppw-persistence</url>
+  </repository>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
     <developer>
       <name>Jan Dockx</name>
       <id>jand</id>
-      <email>Jan.Dockx@peopleware.be</email>
+      <email>Jan_Dockx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
     </developer>
@@ -30,7 +34,14 @@
     <developer>
       <name>Rene Clerckx</name>
       <id>rclerckx</id>
-      <email>Rene.Clerckx@peopleware.be</email>
+      <email>Rene_Clerckx@peopleware.be</email>
+      <organization>PeopleWare n.v.</organization>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <name>Nele Smeets</name>
+      <id>nsmeets</id>
+      <email>Nele_Smeets@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
       <timezone>+1</timezone>
     </developer>
