@@ -112,7 +112,9 @@ public class UIViewModeHandler extends UIInput implements Serializable {
   //------------------------------------------------------------------
 
   /**
-   * Writes to the output stream a hidden input tag:
+   * Writes a hidden input tag, containing the view mode, to the output stream.
+   *
+   * The following hidden input tag is written:
    * <pre>
    *   &lt;input type=&quot;hidden&quot; name=&quot;<var>clientId</var>.viewMode&quot; value=&quot;<var>handler.viewMode</var>&quot; /&gt;
    * </pre>

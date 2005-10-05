@@ -1147,9 +1147,9 @@ public class InstanceHandler extends PersistentBeanHandler {
 
   /**
    * This is an action method that should be called by a button in the JSF
-   * page to cancel the creation of a new persistent bean
-   * (i.e. a persistent bean that was created in memory but not saved in
-   * persistent storage yet).
+   * page to cancel the creation of a new persistent bean.
+   * (Remark: a 'new persistent bean' is a persistent bean that was created in
+   * memory but not saved in persistent storage yet).
    *
    * A more detailed description of this action method can be found in the
    * class description.

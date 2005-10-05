@@ -72,7 +72,10 @@ public class UIInstanceHandler extends UIViewModeHandler {
   //------------------------------------------------------------------
 
   /**
-   * Writes to the output stream 2 hidden input tags:
+   * Writes 2 hidden input tags, containing the view mode and id, to the
+   * output stream.
+   *
+   * The following hidden input tags are written:
    * <pre>
    *   &lt;input type=&quot;hidden&quot; name=&quot;<var>clientId</var>.id&quot; value=&quot;<var>handler.id</var>&quot; /&gt;
    *   &lt;input type=&quot;hidden&quot; name=&quot;<var>clientId</var>.viewMode&quot; value=&quot;<var>handler.viewMode</var>&quot; /&gt;
