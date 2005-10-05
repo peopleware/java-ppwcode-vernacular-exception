@@ -40,7 +40,7 @@ package be.peopleware.bean_V;
  * <p>Since <code>RousseauBean</code>s are semantic classes, i.e., they
  *   are intented for their instances to represent real-world objects,
  *   they should always be used <em>by reference</em>. For this reason,
- *   the contracts of {@link #equals(Object)} and {@link #hashCode()},
+ *   the contracts of {@link Object#equals(Object)} and {@link Object#hashCode()},
  *   inherited from {@link Object}, are frozen here.</p>
  * <p>Subclasses should take care to override the following methods diligently:
  *   <ul>
@@ -139,5 +139,11 @@ public interface RousseauBean {
    * @result   result ==> (o != null) && (getClass() == o.getClass());
    */
   boolean hasSameValues(final RousseauBean rb);
+
+  // overridden to make final
+  boolean equals(final Object other);
+
+  // overridden to make final
+  int hashCode();
 
 }

@@ -120,13 +120,15 @@ public abstract class AbstractRousseauBean implements RousseauBean {
   }
 
   /**
-   * @return this == other;
+   * @see  RousseauBean
    */
   public final boolean equals(final Object other) {
     return super.equals(other);
   }
 
-  // overridden to make final
+  /**
+   * @see  RousseauBean
+   */
   public final int hashCode() {
     return super.hashCode();
   }
