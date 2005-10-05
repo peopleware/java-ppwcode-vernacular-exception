@@ -11,12 +11,16 @@
   <inceptionYear>2004</inceptionYear>
   <currentVersion>1.0.1-1.0</currentVersion>
   <package>be.peopleware.jsf_II</package>
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-jsf</developerConnection>
+    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/ppw-jsf</url>
+  </repository>
   <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
   <developers>
     <developer>
       <name>Jan Dockx</name>
       <id>jand</id>
-      <email>Jan.Dockx@peopleware.be</email>
+      <email>Jan_Dockx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
     </developer>
@@ -30,7 +34,7 @@
     <developer>
       <name>Rene Clerckx</name>
       <id>rclerckx</id>
-      <email>Rene.Clerckx@peopleware.be</email>
+      <email>Rene_Clerckx@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
       <timezone>+1</timezone>
     </developer>
@@ -38,6 +42,20 @@
       <name>Nele Smeets</name>
       <id>nsmeets</id>
       <email>Nele_Smeets@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+    <developer>
+      <name>Wim Lambrechts</name>
+      <id>wlambrec</id>
+      <email>Wim_Lambrechts@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+    <developer>
+      <name>Abdul Shoudouev</name>
+      <id>ashoudou</id>
+      <email>Abdulvakhid_Shoudouev@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
     </developer>
