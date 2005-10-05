@@ -26,7 +26,7 @@
     <developer>
       <name>Jan Dockx</name>
       <id>jand</id>
-      <email>Jan.Dockx@peopleware.be</email>
+      <email>Jan_Dockx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
     </developer>
@@ -34,6 +34,13 @@
       <name>David Van Keer</name>
       <id>dvankeer</id>
       <email>David_Van_Keer@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+    <developer>
+      <name>Nele Smeets</name>
+      <id>nsmeets</id>
+      <email>Nele_Smeets@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
     </developer>
