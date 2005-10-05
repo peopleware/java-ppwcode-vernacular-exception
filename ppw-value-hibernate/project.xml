@@ -12,6 +12,10 @@ These user types take care of RDBMS persistency of objects of these value types.
   <inceptionYear>2004</inceptionYear>
   <currentVersion>2.0.0-1.0</currentVersion>
   <package>be.peopleware.value_I.hibernate_I</package>
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-value-hibernate</developerConnection>
+    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/ppw-value-hibernate</url>
+  </repository>
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
   -->
@@ -19,7 +23,7 @@ These user types take care of RDBMS persistency of objects of these value types.
     <developer>
       <name>Jan Dockx</name>
       <id>jand</id>
-      <email>Jan.Dockx@peopleware.be</email>
+      <email>Jan_Dockx@peopleware.be</email>
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
     </developer>
