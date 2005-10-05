@@ -590,8 +590,7 @@ public class RobustCurrent {
    * out the user, and throw a {@link FatalFacesException}.
    * This will propagate through the entire application to the
    * container, and an error page will be shown.
-   * The <code>message</code> is logged in {@link #LOG}
-   * as <code>fatal</code>.
+   * The <code>message</code> is logged as <code>fatal</code>.
    *
    * @post false;
    * @throws FatalFacesException ffExc
@@ -610,8 +609,7 @@ public class RobustCurrent {
    * out the user, and throw a {@link FatalFacesException}.
    * This will propagate through the entire application to the
    * container, and an error page will be shown.
-   * The <code>message</code> is logged in {@link #LOG}
-   * as <code>fatal</code>.
+   * The <code>message</code> is logged as <code>fatal</code>.
    *
    * @idea (jand) this should send a mail to administrator and developers
    *
