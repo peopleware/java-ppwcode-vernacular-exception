@@ -19,6 +19,10 @@
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
   -->
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-i18n</developerConnection>
+    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/ppw-i18n</url>
+  </repository>
   <developers>
     <developer>
       <name>Jan Dockx</name>
