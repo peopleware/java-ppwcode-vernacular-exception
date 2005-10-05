@@ -18,6 +18,10 @@
   <!--
   <logo>http://maven.apache.org/images/maven.jpg</logo>
   -->
+  <repository>
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-exception</developerConnection>
+    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/ppw-exception</url>
+  </repository>
   <developers>
     <developer>
       <name>Jan Dockx</name>
