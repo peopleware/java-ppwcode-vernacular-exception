@@ -33,18 +33,18 @@
       <organization>PeopleWare n.v.</organization>
     </developer>
     <developer>
-      <name>Rene Clerckx</name>
-      <id>rclerckx</id>
-      <email>Rene_Clerckx@peopleware.be</email>
-      <organization>PeopleWare n.v.</organization>
-      <timezone>+1</timezone>
-    </developer>
-    <developer>
       <name>Wim Lambrechts</name>
       <id>wlambrec</id>
       <email>Wim_Lambrechts@peopleware.be</email>
       <organization>PeopleWare n.v.</organization>
       <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <name>Nele Smeets</name>
+      <id>nsmeets</id>
+      <email>Nele_Smeets@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
     </developer>
   </developers>
   <contributors>
