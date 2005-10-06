@@ -80,8 +80,8 @@ public class RobustCurrent {
   /**
    * The {@link JsfResourceBundleLoadStrategy} used.
    */
-  public static final JsfResourceBundleLoadStrategy JSF_RESOURCE_BUNDLE_LOAD_STRATEGY
-      = new JsfResourceBundleLoadStrategy();
+  public static final JsfResourceBundleLoadStrategy JSF_RESOURCE_BUNDLE_LOAD_STRATEGY =
+    new JsfResourceBundleLoadStrategy();
 
   /**
    * The current {@link FacesContext}. Exception if <code>null</code>.
@@ -289,7 +289,7 @@ public class RobustCurrent {
   }
 
   /**
-   * Redirect robustly to <code>link</code>
+   * Redirect robustly to <code>link</code>.
    *
    * @post   externalContext().redirect(link);
    * @except externalContext();
@@ -356,7 +356,8 @@ public class RobustCurrent {
    * @throws MissingResourceException
    *         If no resource bundle for the specified base name can be found.
    */
-  public static ResourceBundle applicationBundle() throws FatalFacesException {
+  public static ResourceBundle applicationBundle()
+      throws FatalFacesException, MissingResourceException {
     ResourceBundle result = ResourceBundle.getBundle(applicationBundleName(),
                                                      locale());
     return result;
@@ -576,7 +577,8 @@ public class RobustCurrent {
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == t);
    *         A FacesException that reports the problem.
    */
-  private static void fatalProblem(final String message, final Throwable t) throws FatalFacesException {
+  private static void fatalProblem(final String message, final Throwable t)
+      throws FatalFacesException {
     fatalProblem(message, t, LOG);
   }
 
@@ -616,7 +618,8 @@ public class RobustCurrent {
    *         ffExc.getMessage().equals(message) && (ffExc.getCause() == t);
    *         A FacesException that reports the problem.
    */
-  public static void fatalProblem(final String message, final Throwable t, final Log log) throws FatalFacesException {
+  public static void fatalProblem(final String message, final Throwable t, final Log log)
+      throws FatalFacesException {
     log.fatal(message, t);
     httpSession().invalidate();
     throw new FatalFacesException(message, t);
@@ -642,7 +645,8 @@ public class RobustCurrent {
    *
    * @throws FatalFacesException
    */
-  public static void showPropertyException(final PropertyException pExc) throws FatalFacesException {
+  public static void showPropertyException(final PropertyException pExc)
+      throws FatalFacesException {
     if (pExc instanceof CompoundPropertyException) {
       showCompoundPropertyException((CompoundPropertyException)pExc);
     }
@@ -671,7 +675,8 @@ public class RobustCurrent {
    * whose {@link UIComponent#getClientId(javax.faces.context.FacesContext)}'s
    * part after the last colon is <code>componentIdPart</code>.
    */
-  public static List componentsWithIdEndingIn(final String componentIdPart) throws FatalFacesException {
+  public static List componentsWithIdEndingIn(final String componentIdPart)
+      throws FatalFacesException {
     if ((componentIdPart == null) || (componentIdPart.equals(EMPTY))) {
       return Collections.EMPTY_LIST;
     }
@@ -710,7 +715,7 @@ public class RobustCurrent {
    *
    * @throws FatalFacesException
    */
-  public static void showCompoundPropertyException (final CompoundPropertyException cpe)
+  public static void showCompoundPropertyException(final CompoundPropertyException cpe)
       throws FatalFacesException {
     Iterator iter = cpe.getElementExceptions().values().iterator();
     while (iter.hasNext()) {
@@ -842,12 +847,13 @@ public class RobustCurrent {
    * @throws ReferenceSyntaxException
    *         <code>value</code> has invalid syntax
    */
-  public static void creatValueBinding(final UIComponent component, final String name, final String value)
-      throws FatalFacesException {
+  public static void creatValueBinding(final UIComponent component,
+      final String name, final String value)
+      throws FatalFacesException, ReferenceSyntaxException {
     assert component != null;
     assert name != null;
-    assert ! name.equals(EMPTY);
-    if (! UIComponentTag.isValueReference(value)) {
+    assert !name.equals(EMPTY);
+    if (!UIComponentTag.isValueReference(value)) {
       fatalProblem("\"" + value + "\" is not a valid value reference", LOG);
     }
     ValueBinding vb = application().createValueBinding(value);
@@ -867,7 +873,8 @@ public class RobustCurrent {
    *          externalContext().getRequestParameterValuesMap().get(parameterName);
    * @except  externalContext();
    */
-  public static String[] requestParameterValues(final String parameterName) throws FatalFacesException {
+  public static String[] requestParameterValues(final String parameterName)
+      throws FatalFacesException {
     return (String[])externalContext().getRequestParameterValuesMap().get(parameterName);
     // exceptions cannot happen according to contract of getRequestParameterValuesMap
   }
@@ -982,7 +989,7 @@ public class RobustCurrent {
      * @throws  NoSuchElementException
      *          scope.get(key) == null;
      */
-    public ScopeEntry(String key, Map scope) throws NoSuchElementException {
+    public ScopeEntry(final String key, final Map scope) throws NoSuchElementException {
       assert key != null;
       assert scope != null;
       if (scope.get(key) == null) {
@@ -1125,8 +1132,8 @@ public class RobustCurrent {
       result = builder.buildManagedBean(facesContext(), mbc);
     }
     catch (Exception exc) {
-      fatalProblem("error building managed bean with name \"" +
-                   name + "\"", exc);
+      fatalProblem("error building managed bean with name \""
+                    + name + "\"", exc);
     }
     LOG.debug("created new managed bean: " + result);
     return result;
