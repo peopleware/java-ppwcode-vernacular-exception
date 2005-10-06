@@ -70,7 +70,8 @@ public abstract class AbstractRousseauBean implements RousseauBean {
     CompoundPropertyException cpe = getWildExceptions();
     if (!cpe.isEmpty()) {
       if (LOG.isDebugEnabled()) { // this if does only loggin
-        LOG.debug("the wild exceptions were not empty; we will throw the CompoundPropertyException"); //$NON-NLS-1$
+        LOG.debug("the wild exceptions were not empty; we will throw the " +
+            "CompoundPropertyException"); //$NON-NLS-1$
         LOG.debug("current RousseauBean is " + toString()); //$NON-NLS-1$
         LOG.debug(cpe.getElementExceptions());
         LOG.debug("ElementExceptions details:"); //$NON-NLS-1$
