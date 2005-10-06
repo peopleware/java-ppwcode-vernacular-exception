@@ -1,3 +1,9 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
+
 package be.peopleware.bean_V;
 
 
@@ -7,7 +13,7 @@ import be.peopleware.exception_I.TechnicalException;
 /**
  * <p>This exception is thrown when you try to instantiate a Bean, and it
  *   failed.</p>
- * 
+ *
  * <p>Not really deprecated yet, but consider using a {@link PropertyException}
  *   with {@link PropertyException#getOrigin()} <code>= null</code>.
  *
