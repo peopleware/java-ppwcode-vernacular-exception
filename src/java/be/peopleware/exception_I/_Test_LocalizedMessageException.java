@@ -1,3 +1,9 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
+
 package be.peopleware.exception_I;
 
 
@@ -220,3 +226,8 @@ public class _Test_LocalizedMessageException extends _Test_Object {
   /* </section> */
 
 }
+/*<license>
+Copyright 2004, PeopleWare n.v.
+NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+TO SELECTED PARTIES.
+</license>*/

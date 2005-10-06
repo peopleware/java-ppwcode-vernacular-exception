@@ -1,3 +1,9 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
+
 package be.peopleware.exception_I;
 
 
@@ -106,8 +112,8 @@ public abstract class LocalizedMessageException extends Exception {
     $localizedMessageResourceBundleLoadStrategy = strategy;
   }
 
-  ResourceBundleLoadStrategy $localizedMessageResourceBundleLoadStrategy
-      = new DefaultResourceBundleLoadStrategy();
+  private ResourceBundleLoadStrategy $localizedMessageResourceBundleLoadStrategy =
+    new DefaultResourceBundleLoadStrategy();
 
   /*</property>*/
 
@@ -158,8 +164,7 @@ public abstract class LocalizedMessageException extends Exception {
    * non-localized message is returned.
    */
   public final String getLocalizedMessage() {
-    ResourceBundleLoadStrategy strategy
-        = getLocalizedMessageResourceBundleLoadStrategy();
+    ResourceBundleLoadStrategy strategy = getLocalizedMessageResourceBundleLoadStrategy();
     String[] keys = getLocalizedMessageKeys();
     String result;
     if ((strategy == null) || (keys == null) || keys.length <= 0) {
