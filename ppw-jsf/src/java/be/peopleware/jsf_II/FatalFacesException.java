@@ -39,7 +39,7 @@ public class FatalFacesException extends FacesException {
    * @post new.getMessage().equals(message);
    * @post new.getCause() == null;
    */
-  public FatalFacesException(String message) {
+  public FatalFacesException(final String message) {
     super(message);
   }
 
@@ -47,7 +47,7 @@ public class FatalFacesException extends FacesException {
    * @post new.getMessage().equals(message);
    * @post new.getCause() == cause;
    */
-  public FatalFacesException(String message, Throwable cause) {
+  public FatalFacesException(final String message, final Throwable cause) {
     super(message, cause);
   }
 
