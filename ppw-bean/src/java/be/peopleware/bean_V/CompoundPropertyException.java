@@ -145,7 +145,6 @@ public final class CompoundPropertyException extends PropertyException {
    * @post      new.getCause() == cause ;
    * @post      new.getElementExceptions().isEmpty();
    * @post      !new.isClosed();
-   * 
    * @since IV 1.0.1/1.0
    */
   public CompoundPropertyException(final Object origin,
@@ -181,7 +180,6 @@ public final class CompoundPropertyException extends PropertyException {
    * @post      new.getCause() == cause ;
    * @post      new.getElementExceptions().isEmpty();
    * @post      !new.isClosed();
-   * 
    * @since IV
    */
   public CompoundPropertyException(final Class originType,
@@ -205,7 +203,7 @@ public final class CompoundPropertyException extends PropertyException {
    *
    * @basic
    */
-  public final boolean isClosed() {
+  public boolean isClosed() {
     return $closed;
   }
 
@@ -214,7 +212,7 @@ public final class CompoundPropertyException extends PropertyException {
    * @throws IllegalStateException
    *         isClosed();
    */
-  public final void close() throws IllegalStateException {
+  public void close() throws IllegalStateException {
     if ($closed) {
       throw new IllegalStateException("can't close twice");
     }
@@ -251,7 +249,7 @@ public final class CompoundPropertyException extends PropertyException {
    *
    * @basic
    */
-  public final Map getElementExceptions() {
+  public Map getElementExceptions() {
     Map result = null;
     if (isClosed()) {
       result = $elementExceptions; // is made unmodifiable by now
@@ -266,7 +264,7 @@ public final class CompoundPropertyException extends PropertyException {
   /**
    * @return    getElementExceptions().get(null);
    */
-  public final Set getGeneralElementExceptions() {
+  public Set getGeneralElementExceptions() {
     return (Set)getElementExceptions().get(null);
   }
 
@@ -287,7 +285,7 @@ public final class CompoundPropertyException extends PropertyException {
    *            Same origin or origin type!
    * @mudo (jand) implement and document this last exception!
    */
-  public final void addElementException(final PropertyException pExc)
+  public void addElementException(final PropertyException pExc)
       throws IllegalStateException, IllegalArgumentException {
     if (isClosed()) {
       throw new IllegalStateException("cannot add exceptions to " //$NON-NLS-1$
@@ -455,7 +453,6 @@ public final class CompoundPropertyException extends PropertyException {
    * @result    (exists PropertyException pe;
    *                getElementExceptions().get(propertyName).contains(pe);
    *                (pe.hasProperties(originType, propertyName, message, cause)));
-   * 
    * @since IV
    */
   public boolean contains(final Class originType,
@@ -485,7 +482,7 @@ public final class CompoundPropertyException extends PropertyException {
    *
    * @mudo contract
    */
-  public final void throwIfNotEmpty() throws PropertyException {
+  public void throwIfNotEmpty() throws PropertyException {
     if (!isEmpty()) {
       close();
       if (getSize() > 1) {
@@ -496,12 +493,12 @@ public final class CompoundPropertyException extends PropertyException {
       }
     }
   }
-  
+
   /**
    * @return sum(foreach Set s; getElementExceptions().values().contains(s);
    *              s.size());
    */
-  public final int getSize() {
+  public int getSize() {
     int acc = 0;
     Iterator iter = getElementExceptions().values().iterator();
     while (iter.hasNext()) {
@@ -510,13 +507,13 @@ public final class CompoundPropertyException extends PropertyException {
     }
     return acc;
   }
-  
+
   /**
    * Returns an element exception of this instance. Especially
    * intresting if <code>getSize() == 1</code>, of course.
    * Returns <code>null</code> if <code>getSize() == 0</code>.
    */
-  public final PropertyException getAnElement() {
+  public PropertyException getAnElement() {
     if (isEmpty()) {
       return null;
     }
@@ -527,33 +524,32 @@ public final class CompoundPropertyException extends PropertyException {
       return (PropertyException)iter.next();
     }
   }
-  
+
   /**
    * @result contains(final Object origin,
    *                  final String propertyName,
    *                  final String message,
    *                  final Throwable cause);
    */
-  public final boolean reportsOn(final Object origin,
-                            final String propertyName,
-                            final String message,
-                            final Throwable cause) {
+  public boolean reportsOn(final Object origin,
+                           final String propertyName,
+                           final String message,
+                           final Throwable cause) {
     return contains(origin, propertyName, message, cause);
   }
-  
+
   /**
    * @result contains(final Object origin,
    *                  final String propertyName,
    *                  final String message,
    *                  final Throwable cause);
-   * 
    * @since IV
    */
-  public final boolean reportsOn(final Class originType,
-                            final String propertyName,
-                            final String message,
-                            final Throwable cause) {
+  public boolean reportsOn(final Class originType,
+                           final String propertyName,
+                           final String message,
+                           final Throwable cause) {
     return contains(originType, propertyName, message, cause);
   }
- 
+
 }

@@ -219,8 +219,7 @@ public class Beans {
                                               final String propertyName)
       throws IntrospectionException, NoSuchMethodException {
     assert beanClass != null;
-    Method mutator
-        = getPropertyDescriptor(beanClass, propertyName).getWriteMethod();
+    Method mutator = getPropertyDescriptor(beanClass, propertyName).getWriteMethod();
         // this can be null for a write-protected property
     if (mutator == null) {
       throw new NoSuchMethodException("No write method for property " //$NON-NLS-1$
@@ -486,7 +485,7 @@ public class Beans {
    * @throws ClassNotFoundException
    * @throws IOException
    */
-  public static Object instantiatePrefixed(ClassLoader cl,
+  public static Object instantiatePrefixed(final ClassLoader cl,
                                            final String prefix,
                                            final String fqcn)
       throws IOException, ClassNotFoundException {

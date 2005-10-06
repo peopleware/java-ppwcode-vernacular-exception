@@ -104,7 +104,6 @@ public class CircularityException extends PropertyException {
    * @post      new.getLocalizedMessageResourceBundleLoadStrategy().getClass()
    *                == DefaultResourceBundleLoadStrategy.class;
    * @post      new.getParent() == parent;
-   * 
    * @since IV
    */
   public CircularityException(final Class originType,
@@ -120,6 +119,11 @@ public class CircularityException extends PropertyException {
   /*</construction;>*/
 
 
+  /**
+   * The parent.
+   *
+   * @basic
+   */
   public final Object getParent() {
     return $parent;
   }
@@ -145,7 +149,6 @@ public class CircularityException extends PropertyException {
   /**
    * @return    super.hasProperties(originType, propertyName, message, cause)
    *            && getParent() == parent;
-   * 
    * @since IV
    */
   public boolean hasProperties(final Class originType,
