@@ -142,7 +142,7 @@ public interface RousseauBean {
    *
    * @param     rb
    *            The object to compare values with.
-   * @result   result ==> (o != null) && (getClass() == o.getClass());
+   * @result   result ==> (rb != null) && (getClass() == rb.getClass());
    */
   boolean hasSameValues(final RousseauBean rb);
 
