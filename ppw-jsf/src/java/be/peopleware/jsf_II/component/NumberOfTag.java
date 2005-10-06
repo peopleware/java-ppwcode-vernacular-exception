@@ -78,7 +78,7 @@ public class NumberOfTag extends UIComponentTag {
    *          ? new.getValue() == null
    *          : collectionExpression.equals(new.getValue());
    */
-  public void setValue(String collectionExpression) {
+  public void setValue(final String collectionExpression) {
     $collectionExpression = collectionExpression;
   }
 
@@ -97,7 +97,7 @@ public class NumberOfTag extends UIComponentTag {
    * @throws FatalFacesException
    *         {@link RobustCurrent#creatValueBinding(UIComponent, String, String)};
    */
-  protected final void setProperties(UIComponent component) throws FatalFacesException {
+  protected final void setProperties(final UIComponent component) throws FatalFacesException {
     super.setProperties(component);
     RobustCurrent.creatValueBinding(component,
                                     UINumberOf.COLLECTION_VALUE_BINDING_NAME,
@@ -112,7 +112,7 @@ public class NumberOfTag extends UIComponentTag {
    */
   public final void release() {
     super.release();
-    $collectionExpression = null;
+    setValue(null);
   }
 
 }
