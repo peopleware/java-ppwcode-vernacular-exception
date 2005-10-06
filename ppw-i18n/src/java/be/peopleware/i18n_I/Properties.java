@@ -1,3 +1,9 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
+
 package be.peopleware.i18n_I;
 
 
@@ -32,6 +38,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  * <p>The other public methods are support methods to retrieve properties
  *   file entries.</p>
  *
+ * @author Jan Dockx
  * @todo (jand): test code
  * @idea split the support and bean label properties in different classes;
  *       move the bean property label stuff to ppw-bean
@@ -145,7 +152,7 @@ public abstract class Properties {
    */
   public static final String PROPERTY_SEPARATOR_TOKEN = "#"; //$NON-NLS-1$
 
-  private final static char DOT = '.';
+  private static final char DOT = '.';
 
   /**
    * <p>Return a label for a property with name <code>property</code>
@@ -164,7 +171,7 @@ public abstract class Properties {
    *   <a href="http://jakarta.apache.org/commons/beanutils/commons-beanutils-1.7.0/docs/api/"><code>org.apache.commons.beanutils.PropertyUtilsBean</code></a>.
    *   This means that, if <code>property</code> contains '.' separators, we
    *   look up the type of the portion before the dot, and then call
-   *   <code>findKeyInTypePropertoes(<var>beforeDotType</var>, <var>propertyAfterDot</var>, shortLabel, strategy)</code>.
+   *   <code>findKeyInTypeProperties(<var>beforeDotType</var>, <var>propertyAfterDot</var>, shortLabel, strategy)</code>.
    *   If one of the properties in this path does not exist, we return <code>null</code>.</p>
    *
    * @param property
@@ -227,13 +234,13 @@ public abstract class Properties {
    *
    * @idea (jand) should have existed in commons beanutils; move to ppw-utils
    */
-  private static PropertyDescriptor getPropertyDescriptor(Class type, String propertyName)
-      throws NoSuchMethodException {
-    assert (type != null) && (propertyName != null) &&
-            (! propertyName.equals("")) :
-              "type and propertyName cannot be null or empty";
+  private static PropertyDescriptor getPropertyDescriptor(final Class type,
+      final String propertyName) throws NoSuchMethodException {
+    assert (type != null) && (propertyName != null)
+             && (!propertyName.equals(""))
+             : "type and propertyName cannot be null or empty";
     PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(type);
-    for (int i =0; i < pds.length; i++) {
+    for (int i = 0; i < pds.length; i++) {
       if (pds[i].getName().equals(propertyName)) {
         return pds[i];
       }
@@ -253,7 +260,7 @@ public abstract class Properties {
    *
    * @idea (jand) should have existed in commons beanutils; move to ppw-utils
    */
-  private static Class getPropertyType(Class type, String propertyName)
+  private static Class getPropertyType(final Class type, final String propertyName)
       throws NoSuchMethodException {
     return getPropertyDescriptor(type, propertyName).getPropertyType();
   }
@@ -344,8 +351,7 @@ public abstract class Properties {
    *
    * <p><strong>= {@value}</strong></p>
    */
-  public static final String I18N_PROPERTY_LABEL_KEY_PREFIX
-      = "propertyName."; //$NON-NLS-1$
+  public static final String I18N_PROPERTY_LABEL_KEY_PREFIX = "propertyName."; //$NON-NLS-1$
 
   /**
    * <p>Prefix used in property files to discriminate short property
@@ -353,8 +359,8 @@ public abstract class Properties {
    *
    * <p><strong>= {@value}</strong></p>
    */
-  public static final String I18N_SHORT_PROPERTY_LABEL_KEY_PREFIX
-      = I18N_PROPERTY_LABEL_KEY_PREFIX + "short."; //$NON-NLS-1$
+  public static final String I18N_SHORT_PROPERTY_LABEL_KEY_PREFIX =
+      I18N_PROPERTY_LABEL_KEY_PREFIX + "short."; //$NON-NLS-1$
 
   /**
    * @pre property != null;
@@ -390,8 +396,7 @@ public abstract class Properties {
    *
    * <p><strong>= {@value}</strong></p>
    */
-  public static final String I18N_TYPE_LABEL_KEY
-      = "type"; //$NON-NLS-1$
+  public static final String I18N_TYPE_LABEL_KEY = "type"; //$NON-NLS-1$
 
   /**
    * <p>Key used in property files to discriminate the
@@ -399,14 +404,14 @@ public abstract class Properties {
    *
    * <p><strong>= {@value}</strong></p>
    */
-  public static final String I18N_PLURAL_TYPE_LABEL_KEY
-      = I18N_TYPE_LABEL_KEY + ".plural"; //$NON-NLS-1$
+  public static final String I18N_PLURAL_TYPE_LABEL_KEY =
+    I18N_TYPE_LABEL_KEY + ".plural"; //$NON-NLS-1$
 
-  private static String[] I18N_TYPE_LABEL_KEYS
-      = new String[] {I18N_TYPE_LABEL_KEY};
+  private static String[] I18N_TYPE_LABEL_KEYS =
+    new String[] {I18N_TYPE_LABEL_KEY};
 
-  private static String[] I18N_PLURAL_TYPE_LABEL_KEYS
-      = new String[] {I18N_PLURAL_TYPE_LABEL_KEY};
+  private static String[] I18N_PLURAL_TYPE_LABEL_KEYS =
+    new String[] {I18N_PLURAL_TYPE_LABEL_KEY};
 
   /**
    * <p>Return a label for a type <code>type</code>.</p>
