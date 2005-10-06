@@ -38,8 +38,10 @@ import be.peopleware.jsf_II.RobustCurrent;
  *   non-existent key, <code>null</code> is returned. This is hard to debug.
  *   Therefor, a warning is written to the log in this case.</p>
  *
+ * @invar  getResourceBundleBaseName() != null;
  * @author David Van Keer
  * @author Jan Dockx
+ * @author Nele Smeets
  * @author PeopleWare n.v.
  */
 public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
@@ -71,6 +73,7 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
    * The {@link Locale} in the current {@link UIViewRoot} is used
    * to initialize the {@link #keySet()} and {@link #entrySet()}.
    *
+   * @post   new.getResourceBundleName() == baseName;
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
@@ -80,9 +83,12 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
   }
 
   /**
-   * @pre $resourceBundleBaseName must be set
-   * @throws FatalFacesException
-   *         getCurrentResourceBundle();
+   * Returns all keys in the resource bundle with name <code>baseName</code>.
+   *
+   * @result  result != null;
+   * @result  result.equals(all elements in currentResourceBundle(baseName).getKeys());
+   * @throws  FatalFacesException
+   *          currentResourceBundle(baseName);
    */
   private static Set createKeySet(final String baseName) throws FatalFacesException {
     Set result = new HashSet();
@@ -103,6 +109,11 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
   /*<property name="resourceBundleBaseName">*/
   //------------------------------------------------------------------
 
+  /**
+   * The base name of the resource bundle.
+   *
+   * @basic
+   */
   public final String getResourceBundleBaseName() {
     return $resourceBundleBaseName;
   }
@@ -125,6 +136,7 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
    * {@link JsfResourceBundleLoadStrategy}. If no such bundle can be found,
    * an exception is thrown.
    *
+   * @return currentResourceBundle(getResourceBundleBaseName());
    * @throws FatalFacesException
    *         RobustCurrent.resourceBundle(getResourceBundleBaseName());
    * @throws FatalFacesException
@@ -140,10 +152,11 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
    * {@link JsfResourceBundleLoadStrategy}. If no such bundle can be found,
    * an exception is thrown.
    *
+   * @result RobustCurrent.resourceBundle(baseName);
    * @throws FatalFacesException
-   *         RobustCurrent.resourceBundle(getResourceBundleBaseName());
+   *         RobustCurrent.resourceBundle(baseName);
    * @throws FatalFacesException
-   *         RobustCurrent.resourceBundle(getResourceBundleBaseName()) == null;
+   *         RobustCurrent.resourceBundle(baseName) == null;
    */
   private static ResourceBundle currentResourceBundle(final String baseName)
       throws FatalFacesException {
@@ -162,32 +175,38 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
 
 
   /**
-   * If there is no key <code>key</code>, return <code>null</code>.
+   * Return the value corresponding to the given key.
+   * If no value for the given key is found, return <code>null</code>.
    *
+   * @result (getCurrentResourceBundle().getString(key) doesn't throw an exception)
+   *           ==> (result == getCurrentResourceBundle().getString(key));
+   * @result (getCurrentResourceBundle().getString(key) throws an exception,
+   *          different from FatalFacesException)
+   *           ==> (result == null);
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
-  protected final String getLabel(final String buttonName) throws FatalFacesException {
+  protected final String getLabel(final String key) throws FatalFacesException {
     String result = null;
     try {
-      result = getCurrentResourceBundle().getString(buttonName);
+      result = getCurrentResourceBundle().getString(key);
     }
     catch (MissingResourceException mrExc) {
-      LOG.warn("no entry for key \"" + buttonName
+      LOG.warn("no entry for key \"" + key
                + "\" found in resource bundle with basename \""
                + getResourceBundleBaseName() + "\" (locale: "
                + RobustCurrent.locale() + "); returning null",
                mrExc);
     }
     catch (ClassCastException ccExc) {
-      LOG.warn("entry for key \"" + buttonName
+      LOG.warn("entry for key \"" + key
                + "\" in resource bundle with basename \""
                + getResourceBundleBaseName() + "\" (locale: "
                + RobustCurrent.locale()
                + ") is not a String; returning null",
                ccExc);
     }
-    LOG.debug("entry for " + buttonName + ": " + result);
+    LOG.debug("entry for " + key + ": " + result);
     return result;
   }
 
