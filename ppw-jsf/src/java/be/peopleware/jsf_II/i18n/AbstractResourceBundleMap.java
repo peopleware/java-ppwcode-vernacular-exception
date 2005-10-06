@@ -38,6 +38,10 @@ import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
  *
  * @invar  keySet() != null;
  * @invar  cC:instanceOf(keySet(), String);
+ * @invar  entrySet() != null;
+ * @invar  (forAll Object obj;
+ *            entrySet().contains(obj);
+ *            obj != null => obj instanceof String);
  *
  * @author David Van Keer
  * @author Jan Dockx
@@ -74,6 +78,7 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
    * @toryt(cC, org.toryt.contract.Collections);
    * @pre    cC:noNull(keySet);
    * @pre    cC:instanceOf(keySet, String);
+   * @post   new.keySet().equals(keySet);
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
