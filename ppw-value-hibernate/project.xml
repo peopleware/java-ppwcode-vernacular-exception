@@ -34,6 +34,13 @@ These user types take care of RDBMS persistency of objects of these value types.
       <timezone>+1</timezone>
       <organization>PeopleWare n.v.</organization>
     </developer>
+    <developer>
+      <name>Nele Smeets</name>
+      <id>nsmeets</id>
+      <email>Nele_Smeets@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
   </developers>
   <contributors>
     <contributor>
