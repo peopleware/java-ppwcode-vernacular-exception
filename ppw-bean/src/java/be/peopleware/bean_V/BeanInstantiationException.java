@@ -87,6 +87,9 @@ public class BeanInstantiationException extends TechnicalException {
     return $beanType;
   }
 
+  /**
+   * @invar  $beanType != null;
+   */
   private Class $beanType;
 
   /*</property>*/
