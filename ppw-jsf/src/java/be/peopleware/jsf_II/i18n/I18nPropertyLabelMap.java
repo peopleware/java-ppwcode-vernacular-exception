@@ -26,20 +26,31 @@ import be.peopleware.jsf_II.RobustCurrent;
 /**
  * <p>A map that offers the i18n labels for properties of beans, to be found
  *   in properties files, as described in
- *   {@link Properties#i18nPropertyLabel(java.lang.String, java.lang.Class, boolean, ResourceBundleLoadStrategy)}.</p>
- *   This is based on the functionality of <code>&lt;f:loadBundle&gt;</code>.</p>
+ *   {@link Properties#i18nPropertyLabel(java.lang.String, java.lang.Class,
+ *    boolean, ResourceBundleLoadStrategy)}.
+ *   This is based on the functionality of <code>&lt;f:loadBundle&gt;</code>.
+ * </p>
  * <p>The keys in this map are the programmatic property names of {@link #getType()}.
  *   If no match can be found in the property file with the name
  *   <code>getType() + &quot;.properties&quot;</code> with the expected key,
- *   we look in the properties file for all supertypes.</p>
+ *   we look in the properties file for all supertypes.
+ * </p>
  * <p>The locale used is retrieved from the {@link UIViewRoot#getLocale()}, and
  *   the resource bundles are loaded using the JSF strategy. The returned
  *   label is the nominal label if {@link #isShortLabel()} is <code>false</code>,
- *   and the short label if it is <code>true</code>.</p>
+ *   and the short label if it is <code>true</code>.
+ * </p>
  * <p>A value is returned for each property of {@link #getType()}. If no label
  *   can be found for a property, <code>&quot;???&quot; + <var>propertyName</var>
- *   + &quot;???&quot;</code> is returned.</p>
+ *   + &quot;???&quot;</code> is returned.
+ * </p>
  *
+ * @invar  getType() != null;
+ * @toryt(cC, org.toryt.contract.Collections);
+ * @invar  keySet().size() == PropertyUtils.getPropertyDescriptors(getType()).length;
+ * @invar  (forall int i;
+ *            0 <= i < PropertyUtils.getPropertyDescriptors(getType()).length;
+ *            keySet().contains(PropertyUtils.getPropertyDescriptors(getType())[i].getName()));
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
@@ -67,20 +78,31 @@ public class I18nPropertyLabelMap extends AbstractResourceBundleMap {
   //------------------------------------------------------------------
 
   /**
-   * @pre type != null;
+   * Create a new i18n property label map.
+   * The key set is initialised using the given type.
+   *
+   * @pre  type != null;
    * @post new.getType() == type;
    * @post new.isShortLabel() == shortLabel;
+   * @post.private  new.keySet() == createKeySet(type);
    */
-  public I18nPropertyLabelMap(Class type, boolean shortLabel) {
+  public I18nPropertyLabelMap(final Class type, final boolean shortLabel) {
     super(createKeySet(type));
     $type = type;
     $shortLabel = shortLabel;
   }
 
   /**
-   * @pre type != null;
+   * Returns the names of all properties of the given type.
+   *
+   * @pre     type != null;
+   * @result  result != null;
+   * @result  result.size() == PropertyUtils.getPropertyDescriptors(type).length;
+   * @result  (forAll int i;
+   *             0 <= i < PropertyUtils.getPropertyDescriptors(type).length;
+   *             result.contains(PropertyUtils.getPropertyDescriptors(type)[i].getName()));
    */
-  private static Set createKeySet(Class type) {
+  private static Set createKeySet(final Class type) {
     assert type != null;
     LOG.debug("type is " + type);
     PropertyDescriptor[] properties = PropertyUtils.getPropertyDescriptors(type);
@@ -131,25 +153,17 @@ public class I18nPropertyLabelMap extends AbstractResourceBundleMap {
 
   /*</property>*/
 
-
-
   /**
-   * The set of the names of all properties of {@link #getType()}.
+   * Return the value corresponding to the given key.
+   * If no value for the given key is found, return <code>null</code>.
    *
-   * @toryt(cC, org.toryt.contract.Collections);
-   * @result cC:noNull(result);
-   * @result cC:instanceOf(result, String);
-   * @result result.size() == PropertyUtils.getPropertyDescriptors(getType());
-   * @result (forall PropertyDescriptor pd;
-   *            PropertyUtils.getPropertyDescriptors(getType()).contains(pd);
-   *            result.contains(pd.getName()));
-   *
-  public final Set keySet();
+   * @see     AbstractResourceBundleMap
+   * @return  Properties.i18nPropertyLabel(
+   *              propertyName, getType(),
+   *              isShortLabel(),
+   *              RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY);
    */
-
-
-
-  protected final String getLabel(String propertyName) {
+  protected final String getLabel(final String propertyName) {
     String result = Properties.i18nPropertyLabel(propertyName, getType(),
                                                  isShortLabel(),
                                                  RobustCurrent.JSF_RESOURCE_BUNDLE_LOAD_STRATEGY);
