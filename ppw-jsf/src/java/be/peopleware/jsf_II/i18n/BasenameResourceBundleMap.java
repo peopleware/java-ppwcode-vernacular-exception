@@ -74,7 +74,7 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
-  public BasenameResourceBundleMap(String baseName) throws FatalFacesException {
+  public BasenameResourceBundleMap(final String baseName) throws FatalFacesException {
     super(createKeySet(baseName));
     $resourceBundleBaseName = baseName;
   }
@@ -84,7 +84,7 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
-  private static final Set createKeySet(String baseName) throws FatalFacesException {
+  private static Set createKeySet(final String baseName) throws FatalFacesException {
     Set result = new HashSet();
     Enumeration enumeration = currentResourceBundle(baseName).getKeys();
     while (enumeration.hasMoreElements()) {
@@ -145,12 +145,13 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
    * @throws FatalFacesException
    *         RobustCurrent.resourceBundle(getResourceBundleBaseName()) == null;
    */
-  private final static ResourceBundle currentResourceBundle(String baseName) throws FatalFacesException {
+  private static ResourceBundle currentResourceBundle(final String baseName)
+      throws FatalFacesException {
     ResourceBundle result = RobustCurrent.resourceBundle(baseName);
     if (result == null) {
-      RobustCurrent.fatalProblem("could not load resource bundle with basename \"" +
-                                 baseName + "\" (locale: " +
-                                 RobustCurrent.locale() + ")", LOG);
+      RobustCurrent.fatalProblem("could not load resource bundle with basename \""
+                                 + baseName + "\" (locale: "
+                                 + RobustCurrent.locale() + ")", LOG);
     }
     return result;
   }
@@ -172,15 +173,19 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
       result = getCurrentResourceBundle().getString(buttonName);
     }
     catch (MissingResourceException mrExc) {
-      LOG.warn("no entry for key \"" + buttonName + "\" found in resource bundle with basename \"" +
-               getResourceBundleBaseName() + "\" (locale: " + RobustCurrent.locale() +
-               "); returning null",
+      LOG.warn("no entry for key \"" + buttonName
+               + "\" found in resource bundle with basename \""
+               + getResourceBundleBaseName() + "\" (locale: "
+               + RobustCurrent.locale() + "); returning null",
                mrExc);
     }
     catch (ClassCastException ccExc) {
-      LOG.warn("entry for key \"" + buttonName + "\" in resource bundle with basename \"" +
-               getResourceBundleBaseName() + "\" (locale: " + RobustCurrent.locale() +
-               ") is no a String; returning null", ccExc);
+      LOG.warn("entry for key \"" + buttonName
+               + "\" in resource bundle with basename \""
+               + getResourceBundleBaseName() + "\" (locale: "
+               + RobustCurrent.locale()
+               + ") is not a String; returning null",
+               ccExc);
     }
     LOG.debug("entry for " + buttonName + ": " + result);
     return result;
