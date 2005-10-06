@@ -128,8 +128,7 @@ public class Beans {
              ClassCastException {
     assert beanClass != null;
     PropertyEditor result = null;
-    PropertyDescriptor descriptor
-        = getPropertyDescriptor(beanClass, propertyName);
+    PropertyDescriptor descriptor = getPropertyDescriptor(beanClass, propertyName);
     Class editorClass = descriptor.getPropertyEditorClass();
     // probable not found
     if (editorClass != null) {
@@ -167,8 +166,7 @@ public class Beans {
                                              final String propertyName)
       throws IntrospectionException, NoSuchMethodException {
     assert beanClass != null;
-    Method inspector
-        = getPropertyDescriptor(beanClass, propertyName).getReadMethod();
+    Method inspector = getPropertyDescriptor(beanClass, propertyName).getReadMethod();
         // this can be null for an read-protected property
     if (inspector == null) {
       throw new NoSuchMethodException("No read method for property " //$NON-NLS-1$
@@ -427,11 +425,11 @@ public class Beans {
     }
   }
 
-  private final static String PREFIXED_FQCN_PATTERN = "\\."; //$NON-NLS-1$
+  private static final String PREFIXED_FQCN_PATTERN = "\\."; //$NON-NLS-1$
 
-  private final static String EMPTY = ""; //$NON-NLS-1$
+  private static final String EMPTY = ""; //$NON-NLS-1$
 
-  private final static String DOT = "."; //$NON-NLS-1$
+  private static final String DOT = "."; //$NON-NLS-1$
 
   /**
    * Return a fully qualified class name that is in the same package
@@ -448,7 +446,7 @@ public class Beans {
     String[] parts = fqcn.split(PREFIXED_FQCN_PATTERN);
     String prefixedName = prefix + parts[parts.length - 1];
     String result = EMPTY;
-    for (int i =0; i < parts.length - 1; i++) {
+    for (int i = 0; i < parts.length - 1; i++) {
       result = result + parts[i] + DOT;
     }
     result = result + prefixedName;
