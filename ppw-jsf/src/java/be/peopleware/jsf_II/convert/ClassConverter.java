@@ -51,8 +51,8 @@ public class ClassConverter implements Converter {
    * @throws ConverterException
    *         ; the class with FQCN <code>value</code> could not be loaded.
    */
-  public Object getAsObject(FacesContext context, UIComponent component, String value)
-      throws ConverterException {
+  public Object getAsObject(final FacesContext context, final UIComponent component,
+      final String value) throws ConverterException {
     if (value == null) {
       return null;
     }
@@ -66,19 +66,24 @@ public class ClassConverter implements Converter {
     }
   }
 
-  public final static String EMPTY = "";
+  /**
+   * The empty string.
+   *
+   * <strong>= &quot;&quot;</strong>
+   */
+  public static final String EMPTY = "";
 
   /**
    * @return (value != null) ? value.getName() : EMPTY;
    * @throws ConverterException
    *         ! value instanceof Class
    */
-  public String getAsString(FacesContext context, UIComponent component, Object value)
-      throws ConverterException {
+  public String getAsString(final FacesContext context, final UIComponent component,
+      final Object value) throws ConverterException {
     if (value == null) {
       return EMPTY;
     }
-    if (! (value instanceof Class)) {
+    if (!(value instanceof Class)) {
       throw new ConverterException("value is not a Class");
     }
     return ((Class)value).getName();

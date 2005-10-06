@@ -26,13 +26,12 @@ import be.peopleware.jsf_II.RobustCurrent;
 
 
 /**
- * This {@link UIComponent} is used in JSF pages to count the number of elements of a Collection. 
+ * This {@link UIComponent} is used in JSF pages to count the number of elements of a Collection.
  * The collection is given as a value of the attribute <code>collection</code>
  *
  * @author    Jan Dockx
  * @author    Abdul Shoudouev
  * @author    Peopleware n.v.
- *
  */
 public class UINumberOf extends UIOutput {
 
@@ -59,7 +58,7 @@ public class UINumberOf extends UIOutput {
   /**
    * <strong>= {@value}</strong>
    */
-  public final static String COLLECTION_VALUE_BINDING_NAME = "value";
+  public static final String COLLECTION_VALUE_BINDING_NAME = "value";
 
   /**
    * Return the result of {@link #COLLECTION_VALUE_BINDING_NAME} value binding.
@@ -68,15 +67,15 @@ public class UINumberOf extends UIOutput {
    * @throws FatalFacesException
    *         ; could not locate a collection through the value binding
    */
-  public Collection getValue(FacesContext context)
+  public Collection getValue(final FacesContext context)
       throws FatalFacesException {
     ValueBinding vb = getValueBinding(COLLECTION_VALUE_BINDING_NAME);
     if (vb == null) {
       RobustCurrent.fatalProblem("Could not locate collection", LOG);
     }
     Object result = vb.getValue(context);
-    if ((result == null) ||
-        (! (result instanceof java.util.Collection))) {
+    if ((result == null)
+        || (!(result instanceof java.util.Collection))) {
       RobustCurrent.fatalProblem("Could not locate collection", LOG);
     }
     return (Collection)result;
@@ -96,12 +95,17 @@ public class UINumberOf extends UIOutput {
    *
    * @throws FatalFacesException
    *         getValue();
+   * @throws IOException
+   *         If an I/O exception occurs while rendering.
    */
-  public void encodeBegin(FacesContext context) throws IOException, FatalFacesException {
+  public void encodeBegin(final FacesContext context) throws IOException, FatalFacesException {
     ResponseWriter writer = context.getResponseWriter();
     writer.write(format(getValue(context).size()));
   }
-  public void encodeEnd(FacesContext context) throws IOException, FatalFacesException {
+  /**
+   * Does nothing.
+   */
+  public void encodeEnd(final FacesContext context) {
     // NOP
   }
 
@@ -110,8 +114,8 @@ public class UINumberOf extends UIOutput {
     return NumberFormat.getIntegerInstance(loc);
   }
 
-  private final static String ZERO_REPLACEMENT = "-";
-  
+  private static final String ZERO_REPLACEMENT = "-";
+
   /**
    * Convenience method to format a number.
    */
@@ -124,7 +128,7 @@ public class UINumberOf extends UIOutput {
       return result;
     }
   }
-  
+
   /*</rendering>*/
-  
+
 }

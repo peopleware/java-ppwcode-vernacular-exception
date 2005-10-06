@@ -83,7 +83,7 @@ public class PushNavInstanceTag extends UIComponentTag {
    *          ? new.getValue() == null
    *          : navigationInstanceExpression.equals(new.getValue());
    */
-  public final void setValue(String navigationInstanceExpression) {
+  public final void setValue(final String navigationInstanceExpression) {
     $navigationInstanceExpression = navigationInstanceExpression;
     LOG.debug("navigation instance expression set: " + $navigationInstanceExpression);
   }
@@ -112,7 +112,7 @@ public class PushNavInstanceTag extends UIComponentTag {
    *          ? new.getNavigationStack() == null
    *          : navigationStackExpression.equals(new.getNavigationStack());
    */
-  public final void setNavigationStack(String navigationStackExpression) {
+  public final void setNavigationStack(final String navigationStackExpression) {
     $navigationStackExpression = navigationStackExpression;
     LOG.debug("navigationStack expression set: " + $navigationStackExpression);
   }
@@ -137,7 +137,7 @@ public class PushNavInstanceTag extends UIComponentTag {
    * @throws FatalFacesException
    *         {@link RobustCurrent#creatValueBinding(UIComponent, String, String)};
    */
-  protected final void setProperties(UIComponent component) throws FatalFacesException {
+  protected final void setProperties(final UIComponent component) throws FatalFacesException {
     super.setProperties(component);
     RobustCurrent.creatValueBinding(component,
                                     UIPushNavInstance.NAVIGATION_INSTANCE_VALUE_BINDING_NAME,

@@ -28,7 +28,7 @@ import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
  *   These maps are unmodifiable.</p>
  * <p>Subclasses have to provide a keySet of supported keys at construction
  *   time, and implement {@link #getLabel(String)}</p>
- * <p>Request for an actual entry will use the Locale that
+ * <p>Requests for an actual entry will use the Locale that
  *   is in the {@link UIViewRoot} then. If there are entries in the properties
  *   file for 1 {@link Locale} that are not in the properties file for another
  *   {@link Locale}, strange behavior is to be expected.</p>
@@ -129,7 +129,7 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
    *            ==> result == "??? " + keyString + " ???";
    * @throws  FatalFacesException
    */
-  public final Object get(Object key) throws FatalFacesException {
+  public final Object get(final Object key) throws FatalFacesException {
     LOG.debug("getting entry for " + key);
     if (key == null) {
       LOG.warn("key \"" + key + "\" is null; returning null");

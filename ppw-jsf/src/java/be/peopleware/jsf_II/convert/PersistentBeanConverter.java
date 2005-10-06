@@ -110,13 +110,19 @@ public class PersistentBeanConverter implements Converter {
       }
       catch (TechnicalException tExc) {
         LOG.error("Failed to retrieve \"" + type + "\" due to technical problems", tExc);
-        throw new ConverterException("Unable to retrieve PersistentBean due to technical problems.");
+        throw new ConverterException("Unable to retrieve PersistentBean due "
+            + "to technical problems.");
       }
     }
     return result;
   }
 
-  public final static String EMPTY = "";
+  /**
+   * The empty string.
+   *
+   * <strong>= &quot;&quot;</strong>
+   */
+  public static final String EMPTY = "";
 
   /**
    * @return    (value != null)
@@ -137,7 +143,8 @@ public class PersistentBeanConverter implements Converter {
       return EMPTY;
     }
     if (!(value instanceof PersistentBean)) {
-      LOG.error("Unable to convert \"" + value + "\" because it is not a subclass of PersistentBean.");
+      LOG.error("Unable to convert \"" + value + "\" because it is not a "
+          + "subclass of PersistentBean.");
       throw new ConverterException("Value is not subclass of PersistentBean Class");
     }
     PersistentBean persistentBean = ((PersistentBean)value);
