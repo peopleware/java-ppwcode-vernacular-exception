@@ -1,7 +1,9 @@
-/*
- * <license> Copyright 2004-2005, PeopleWare n.v. NO RIGHTS ARE GRANTED FOR THE
- * USE OF THIS SOFTWARE, EXCEPT, IN WRITING, TO SELECTED PARTIES. </license>
- */
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
+
 package be.peopleware.jsf_II.convert;
 
 
@@ -89,7 +91,7 @@ public class PersistentBeanConverter implements Converter {
         throw new FacesException("Cannot convert String to Class", cnfExc);
       }
     }
-    
+
     Object result = null;
     if (value != null && !value.equals(EMPTY)) {
       Long id = Long.valueOf(value);

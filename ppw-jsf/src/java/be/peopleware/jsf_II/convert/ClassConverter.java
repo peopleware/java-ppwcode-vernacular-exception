@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 
 package be.peopleware.jsf_II.convert;
 
@@ -16,7 +15,7 @@ import javax.faces.convert.ConverterException;
 
 /**
  * Converter for {@link Class}. The value must be the FQCN of the class.
- * 
+ *
  * To activate this, the following entry has to appear in <kbd>faces-config.xml</kbd>:
  * <pre>
  * &lt;converter&gt;
@@ -24,16 +23,16 @@ import javax.faces.convert.ConverterException;
  *   &lt;converter-class&gt;be.peopleware.jsf_I.convert.ClassConverter&lt;/converter-class&gt;
  * &lt;/converter&gt;
  * </pre>
- * 
+ *
  * @author Wim Lambrechts
- * @author René Clerckx
+ * @author Renï¿½ Clerckx
  * @author Jan Dockx
  * @author Peopleware n.v.
- * 
+ *
  * @todo (jand) Toryt
  */
 public class ClassConverter implements Converter {
-  
+
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
   /** {@value} */
@@ -66,9 +65,9 @@ public class ClassConverter implements Converter {
       }
     }
   }
-  
+
   public final static String EMPTY = "";
-  
+
   /**
    * @return (value != null) ? value.getName() : EMPTY;
    * @throws ConverterException
@@ -84,6 +83,6 @@ public class ClassConverter implements Converter {
     }
     return ((Class)value).getName();
   }
-  
+
 }
 

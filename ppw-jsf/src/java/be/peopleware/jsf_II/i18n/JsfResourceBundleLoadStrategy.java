@@ -1,5 +1,5 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
@@ -20,7 +20,7 @@ import be.peopleware.jsf_II.RobustCurrent;
 /**
  * <p>Strategy pattern to load i18n resource bundles for JSF.</p>
  *
- * @author    René Clerckx
+ * @author    Renï¿½ Clerckx
  * @author    PeopleWare n.v.
  */
 public class JsfResourceBundleLoadStrategy implements ResourceBundleLoadStrategy, Serializable {
