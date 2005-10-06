@@ -39,7 +39,6 @@ public abstract class AbstractRousseauBean implements RousseauBean {
 
 
   private static final Log LOG = LogFactory.getLog(AbstractRousseauBean.class);
-  protected final String EMPTY = ""; //$NON-NLS-1$
 
   /**
    * @see  RousseauBean
