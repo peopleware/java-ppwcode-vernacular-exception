@@ -74,6 +74,7 @@ public class BasenameResourceBundleMap extends AbstractResourceBundleMap {
    * to initialize the {@link #keySet()} and {@link #entrySet()}.
    *
    * @post   new.getResourceBundleName() == baseName;
+   * @post.private  new.keySet() == createKeySet(baseName);
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
