@@ -12,7 +12,7 @@ import be.peopleware.exception_I.LocalizedMessageException;
 
 /**
  * <p>PropertyExceptions are exceptions that carry with them information
- *   about the property for which they occured. They are usually thrown
+ *   about the property for which they occurred. They are usually thrown
  *   by a property setter during validation. If the property name is
  *   <code>null</code>, it means that the exception could not be
  *   attributed to a specific property of {@link #getOrigin()}.
@@ -74,7 +74,7 @@ public class PropertyException extends LocalizedMessageException {
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
-   *            The exception that occured, causing this exception to be
+   *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    *
    * @pre       origin != null;
@@ -125,7 +125,7 @@ public class PropertyException extends LocalizedMessageException {
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
-   *            The exception that occured, causing this exception to be
+   *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    *
    * @pre       origin != null;
@@ -177,7 +177,7 @@ public class PropertyException extends LocalizedMessageException {
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
-   *            The exception that occured, causing this exception to be
+   *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    *
    * @pre       originType != null;
@@ -469,7 +469,7 @@ public class PropertyException extends LocalizedMessageException {
    * <p>The second key is intended for use in a properties file that
    *   comes with the exception class. It is intended for error messages
    *   that can be written independent of the actual origin or property
-   *   for which they occured. Such messages should often be considered
+   *   for which they occurred. Such messages should often be considered
    *   a fall-back.
    *   The key that should be used in these files is of the form
    *   <code>"message." + getMessage()</code>. If the message is

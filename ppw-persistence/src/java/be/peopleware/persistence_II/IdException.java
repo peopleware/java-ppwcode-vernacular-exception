@@ -40,7 +40,7 @@ public class IdException extends LocalizedMessageException {
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
-   *            The exception that occured, causing this exception to be
+   *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    * @param     beanClass
    *            The bean class which is involved in this Exception.

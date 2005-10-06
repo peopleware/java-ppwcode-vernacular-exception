@@ -46,7 +46,7 @@
       <action dev="jand" type="fix">
     CompoundPropertyException close() now throws IllegalStateException
     when called when already closed (can't close twice). This was introduced
-    to better trace a weird error that occured in OLTS. This is considered
+    to better trace a weird error that occurred in OLTS. This is considered
     a bug fix in the contract (which is possible because
     IllegalStateException is a RuntimeException).
     For OLTS, this change has to appear also in a branch.

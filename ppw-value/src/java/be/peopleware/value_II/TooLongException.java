@@ -54,7 +54,7 @@ public class TooLongException extends PropertyException {
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
-   *            The exception that occured, causing this exception to be
+   *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    *
    * @pre       origin != null;

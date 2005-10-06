@@ -66,7 +66,7 @@ public class PersistentBeanConverter implements Converter {
    *              : null;
    * @throws    ConverterException
    *            No PersistentBean was found with a ID of <code>value</code> or
-   *            technical problems occured while trying to retrieve the correct
+   *            technical problems occurred while trying to retrieve the correct
    *            PersistentBean
    */
   public Object getAsObject(final FacesContext context,

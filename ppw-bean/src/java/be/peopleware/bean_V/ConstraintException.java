@@ -9,7 +9,7 @@ package be.peopleware.bean_V;
 
 /**
  * <p>ConstraintException are exceptions that carry with them information
- *   about the property for which they occured. They are usually thrown
+ *   about the property for which they occurred. They are usually thrown
  *   by the underlying database checking the constraints. If the property name
  *   is <code>null</code>, it means that the exception could not be attributed
  *   to a specific property of {@link #getOrigin()}.</p>

@@ -93,7 +93,7 @@ public final class CompoundPropertyException extends PropertyException {
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
-   *            The exception that occured, causing this exception to be
+   *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    *
    * @pre       origin != null;
@@ -130,7 +130,7 @@ public final class CompoundPropertyException extends PropertyException {
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
-   *            The exception that occured, causing this exception to be
+   *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    *
    * @pre       origin != null;
@@ -164,7 +164,7 @@ public final class CompoundPropertyException extends PropertyException {
    * @param     message
    *            The message that describes the exceptional circumstance.
    * @param     cause
-   *            The exception that occured, causing this exception to be
+   *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    *
    * @pre       origin != null;
@@ -241,7 +241,7 @@ public final class CompoundPropertyException extends PropertyException {
   /**
    * A map of sets of exceptions. The key in the map is the name
    * of the property for which the exceptions in the set stored as
-   * value for that key occured. Since the exception is itself a property
+   * value for that key occurred. Since the exception is itself a property
    * exception, the property name must match. <code>null</code> is used
    * as the key for general exceptions that can not be attributed
    * to a single exception. If there are multiple entries in the map,

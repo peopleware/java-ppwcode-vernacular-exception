@@ -898,7 +898,7 @@ public class RobustCurrent {
    * @return variableResolver().resolveVariable(facesContext(), variableName);
    * @except variableResolver();
    * @throws FatalFacesException
-   *         An exception occured when resolving <code>variableName</code>.
+   *         An exception occurred when resolving <code>variableName</code>.
    */
   public static Object resolve(String variableName) throws FatalFacesException {
     Object result = null;
