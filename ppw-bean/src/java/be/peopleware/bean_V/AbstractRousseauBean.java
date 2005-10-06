@@ -160,7 +160,17 @@ public abstract class AbstractRousseauBean implements RousseauBean {
     return result;
   }
 
-  public static boolean hasSameValuesWithNull(RousseauBean one, RousseauBean other) {
+  /**
+   * Returns true when the two given objects are both null, or equal;
+   * returns false otherwise.
+   *
+   * @param   one
+   * @param   other
+   * @return  (one == null)
+   *            ? result == (other == null)
+   *            : result == (one.hasSameValues(other));
+   */
+  public static boolean hasSameValuesWithNull(final RousseauBean one, final RousseauBean other) {
     return (one == null)
             ? (other == null)
             : one.hasSameValues(other);
