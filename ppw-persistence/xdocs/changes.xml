@@ -1,8 +1,13 @@
 <document>
+
+  <!-- see http://maven.apache.org/reference/plugins/changes/ for documentation -->
+  <!-- There are four valid values for action type:  add, fix, remove, update. -->
+
   <properties>
     <title>Changes to ppw-persistence</title>
-    <author email="dvankeer@peopleware.be">David Van Keer</author>
-    <author email="jand@peopleware.be">Jan Dockx</author>
+    <author email="David_Van_Keer@peopleware.be">David Van Keer</author>
+    <author email="Jan_Dockx@peopleware.be">Jan Dockx</author>
+    <author email="Nele_Smeets@peopleware.be">Nele Smeets</author>
   </properties>
   <body>
 
