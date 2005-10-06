@@ -36,8 +36,12 @@ import be.peopleware.jsf_II.util.AbstractUnmodifiableMap;
  *   non-existent key, <code>null</code> is returned. This is hard to debug.
  *   Therefor, a warning is written to the log in this case.</p>
  *
+ * @invar  keySet() != null;
+ * @invar  cC:instanceOf(keySet(), String);
+ *
  * @author David Van Keer
  * @author Jan Dockx
+ * @author Nele Smeets
  * @author PeopleWare n.v.
  */
 public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap {
@@ -55,28 +59,25 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
   /*</section>*/
 
 
-
   private static final Log LOG = LogFactory.getLog(AbstractResourceBundleMap.class);
-
 
 
   /*<construction>*/
   //------------------------------------------------------------------
 
   /**
-   * Create a new initialized properties map for the resource bundle
-   * with basename <code>baseName</code>.
-   * The {@link Locale} in the current {@link UIViewRoot} is used
-   * to initialize the {@link #keySet()} and {@link #entrySet()}.
+   * Create a new abstract resource bundle map with the given key set.
+   * The key set is initialised using the given set.
    *
-   * @pre keySet != null;
+   * @param  keySet
+   * @pre    keySet != null;
    * @toryt(cC, org.toryt.contract.Collections);
-   * @pre cC:noNull(keySet);
-   * @pre cC:instanceOf(keySet, String);
+   * @pre    cC:noNull(keySet);
+   * @pre    cC:instanceOf(keySet, String);
    * @throws FatalFacesException
    *         getCurrentResourceBundle();
    */
-  protected AbstractResourceBundleMap(Set keySet) throws FatalFacesException {
+  protected AbstractResourceBundleMap(final Set keySet) throws FatalFacesException {
     $keySet = keySet;
     initEntrySet(); // $keySet must have been set
   }
@@ -89,7 +90,9 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
   //------------------------------------------------------------------
 
   /**
-   * TODO (dvankeer): Write description
+   * Returns a set view of the keys contained in this map.
+   *
+   * @basic
    */
   public final Set keySet() {
     return $keySet;
@@ -97,6 +100,7 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
 
   /**
    * @invar $keySet != null;
+   * @invar  cC:instanceOf(keySet(), String);
    */
   private Set $keySet;
 
@@ -108,14 +112,22 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
   //------------------------------------------------------------------
 
   /**
-   * If the <code>key</code> is
-   * @todo description, contract
+   * Returns the value to which this map maps the specified key.
    *
-   * If the key is not in the set, we try the key as a nested property
-   * name nevertheless. If nothing found, we return
-   * "???".
+   * If the given key is not effective or not a String, <code>null</code> is
+   * returned.
+   * Otherwise, the corresponding value is searched using the
+   * {@link #getLabel(String)} method.
+   * If there is not corresponding value, we return
+   * "??? " + key + " ???".
    *
-   * @throws FatalFacesException
+   * @result  (key == null || !(key instanceof String))
+   *            ==> result == null;
+   * @result  (key != null && key instanceof String && getLabel(key) != null)
+   *            ==> result == getLabel(key);
+   * @result  (key != null && key instanceof String && getLabel(key) == null)
+   *            ==> result == "??? " + keyString + " ???";
+   * @throws  FatalFacesException
    */
   public final Object get(Object key) throws FatalFacesException {
     LOG.debug("getting entry for " + key);
@@ -123,7 +135,7 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
       LOG.warn("key \"" + key + "\" is null; returning null");
       return null;
     }
-    if (! (key instanceof String)) {
+    if (!(key instanceof String)) {
       LOG.warn("key \"" + key + "\" is not a String; returning null");
       return null;
     }
@@ -138,13 +150,26 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
   }
 
   /**
-   * Return the entry for key. If no entry for key is found, return <code>null</code>.
+   * Return the value corresponding to the given key.
+   * If no value for the given key is found, return <code>null</code>.
+   *
    * @pre key != null;
    * @pre key instanceof String;
    * @pre containsKey(key);
    */
-  protected abstract String getLabel(String key);
+  protected abstract String getLabel(final String key);
 
+  /**
+   * Returns a collection view of the values contained in this map.
+   *
+   * The values are found by invoking {@link #getLabel(String)} on the keys in
+   * {@link #keySet()}.
+   *
+   * @result  result != null;
+   * @result  (forAll Object key; keySet().contains(key); result.contains(getLabel(key)));
+   * @result  (forAll Object obj; result.contains(obj);
+   *             (forSome Object key; keySet().contains(key), obj = getLabel(key)));
+   */
   public final Collection values() {
     Set result = new TreeSet();
     Iterator keys = keySet().iterator();
@@ -163,14 +188,26 @@ public abstract class AbstractResourceBundleMap extends AbstractUnmodifiableMap 
   //------------------------------------------------------------------
 
   /**
-   * This set contains label-value pairs, for all
+   * Returns a set view of the mappings contained in this map.
+   *
+   * @basic
    */
   public final Set entrySet() {
     return $entrySet;
   }
 
   /**
-   * @pre $keySet must have been set
+   * Initialise the entry set using the keys in {@link #keySet()}.
+   * For each key, a corresponding {@link AbstractUnmodifiableMap.DefaultSetEntry}
+   * is created.
+   *
+   * @pre   keySet() != null;
+   * @post  new.entrySet() != null;
+   * @post  cC:instanceOf(new.entrySet(), DefaultSetEntry);
+   * @post  (forAll Object key; keySet().contains(key);
+   *           (forSome Object entry; new.entrySet().contains(entry); entry.getKey() == key));
+   * @post  (forAll Object entry; new.entrySet().contains(entry);
+   *           (forSome Object key; keySet().contains(key); entry.getKey() == key));
    */
   private void initEntrySet() {
     Set result = new TreeSet();
