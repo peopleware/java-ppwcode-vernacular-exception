@@ -52,6 +52,31 @@ public class DuplicateKeyException extends PropertyException {
 
   /*</section>*/
 
+  /**
+   * @param     origin
+   *            The bean that has thrown this exception.
+   * @param     propertyName
+   *            The name of the property of which the setter has thrown
+   *            this exception because parameter validation failed.
+   * @param     message
+   *            The message that describes the exceptional circumstance.
+   * @param     cause
+   *            The exception that occurred, causing this exception to be
+   *            thrown, if that is the case.
+   *
+   * @pre       origin != null;
+   * @pre       (propertyName != null) ==> ! propertyName.equals("");
+   * @pre       (message != null) ==> ! message.equals("");
+   * @post      new.getOrigin() == origin;
+   * @post      (propertyName != null) ==>
+   *                new.getpropertyName().equals(propertyName);
+   * @post      (propertyName == null) ==> new.getpropertyName() == null;
+   * @post      (message != null) ==> new.getMessage().equals(message);
+   * @post      (message == null) ==> new.getMessage() == null;
+   * @post      new.getCause() == cause ;
+   * @post      new.getElementExceptions().isEmpty();
+   * @post      !new.isClosed();
+   */
   public DuplicateKeyException(final Object origin,
                                final String propertyName,
                                final String message,

@@ -146,10 +146,18 @@ public interface RousseauBean {
    */
   boolean hasSameValues(final RousseauBean rb);
 
-  // overridden to make final
+  /**
+   * Overridden to make final.
+   *
+   * @see Object
+   */
   boolean equals(final Object other);
 
-  // overridden to make final
+  /**
+   * Overridden to make final.
+   *
+   * @see Object
+   */
   int hashCode();
 
 }

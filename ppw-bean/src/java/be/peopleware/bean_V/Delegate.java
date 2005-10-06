@@ -53,7 +53,8 @@ package be.peopleware.bean_V;
  *    * &#x40;invar $<var>myDelegate</var> != null;
  *    * &#x40;invar $<var>myDelegate</var>.getDelegatingBean() == this;
  *    &#x2A;/
- *   private <var>MyDelegate</var> $<var>myDelegate</var> = new <var>MyDelegate</var>(this, &quot;<var>propertyName</var>&quot;);
+ *   private <var>MyDelegate</var> $<var>myDelegate</var> =
+ *     new <var>MyDelegate</var>(this, &quot;<var>propertyName</var>&quot;);
  *
  *   /&#x2A;&lt;/property&gt;&#x2A;/
  *
@@ -145,7 +146,8 @@ package be.peopleware.bean_V;
  *    * &#x40;pre <var>myDelegate</var>.getDelegatingBean() == null;
  *    * &#x40;post new.get<var>MyDelegate</var>() == <var>myDelegate</var>;
  *    * &#x40;post new.get<var>MyDelegate</var>().getDelegatingBean() == this;
- *    * &#x40;post new.get<var>MyDelegate</var>().getPropertyName().equals(&quot;<var>propertyName</var>&quot;);
+ *    * &#x40;post new.get<var>MyDelegate</var>().getPropertyName()
+ *                    .equals(&quot;<var>propertyName</var>&quot;);
  *    &#x2A;/
  *   void set<var>MyDelegate</var>(<var>MyDelegate</var> <var>myDelegate</var>) {
  *     assert <var>myDelegate</var> != null;
@@ -193,7 +195,7 @@ package be.peopleware.bean_V;
  *   created. These methods are labelled deprecated for easy trace
  *   later.</strong></p>
  *
- * @idea (jand): Change Hibernate to accomodate for delegates in the way 
+ * @idea (jand): Change Hibernate to accomodate for delegates in the way
  *       described above. Investigate whether the current extension mechanisms
  *       can be used (doubtful). Otherwise, contact the Hibernate developers to
  *       see what the scope of the change would be. It is highly likely that

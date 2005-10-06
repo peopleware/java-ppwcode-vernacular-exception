@@ -146,7 +146,6 @@ public class PropertyException extends LocalizedMessageException {
    *
    * @idea (jand): check effectively that <code>propertyName</code> is
    *               a property of <code>origin</code>
-   * 
    * @since IV 1.1.0/1.0
    */
   public PropertyException(final Object origin,
@@ -160,7 +159,7 @@ public class PropertyException extends LocalizedMessageException {
         : "property name cannot be the empty string"; //$NON-NLS-1$
     assert (message == null) || (!message.equals("")) //$NON-NLS-1$
         : "message name cannot be the empty string"; //$NON-NLS-1$
-    if (! inOriginInitialization) {
+    if (!inOriginInitialization) {
       $origin = origin;
     }
     $originType = origin.getClass();
@@ -197,7 +196,6 @@ public class PropertyException extends LocalizedMessageException {
    *
    * @idea (jand): check effectively that <code>propertyName</code> is
    *               a property of <code>origin</code>
-   * 
    * @since IV
    */
   public PropertyException(final Class originType,
@@ -345,7 +343,7 @@ public class PropertyException extends LocalizedMessageException {
                     ? message == null
                     : getMessage().equals(message));
   }
-  
+
   /**
    * @param     originType
    *            The type of origin to compare the one of this Exception with.
@@ -366,7 +364,6 @@ public class PropertyException extends LocalizedMessageException {
    *                && ((getMessage() == null)
    *                      ? message == null
    *                      : getMessage().equals(message));
-   * 
    * @since IV
    */
   public boolean hasProperties(final Class originType,
@@ -384,19 +381,19 @@ public class PropertyException extends LocalizedMessageException {
                     ? message == null
                     : getMessage().equals(message));
   }
-  
+
   /**
    * Does this exception, in some way, report about
    * an exceptional condition concerning <code>origin</code>,
    * <code>propertyName</code>, with <code>message</code>
    * and <code>cause</code>.
-   * 
+   *
    * This is the non-deterministic version of
    * {@link #hasProperties(Object, String, String, Throwable)}, which
    * can be overwritten by subclasses.
    * The default implementation calls
    * {@link #hasProperties(Object, String, String, Throwable)}.
-   * 
+   *
    * @protected.result hasProperties(origin,
    *                                 propertyName,
    *                                 message,
@@ -414,18 +411,18 @@ public class PropertyException extends LocalizedMessageException {
    * an exceptional condition concerning <code>originType</code>,
    * <code>propertyName</code>, with <code>message</code>
    * and <code>cases</code>.
-   * 
+   *
    * This is the non-deterministic version of
    * {@link #hasProperties(Class, String, String, Throwable)}, which
    * can be overwritten by subclasses.
    * The default implementation calls
    * {@link #hasProperties(Class, String, String, Throwable)}.
-   * 
+   *
    * @protected.result hasProperties(originType,
    *                                 propertyName,
    *                                 message,
    *                                 cause);
-   * 
+   *
    * @since IV
    */
   public boolean reportsOn(final Class originType,

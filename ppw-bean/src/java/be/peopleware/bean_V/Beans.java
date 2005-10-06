@@ -462,6 +462,7 @@ public class Beans {
    *        The original fully qualified class name to derive
    *        the prefixed class name from.
    * @throws ClassNotFoundException
+   *         true;
    */
   public static Class loadPrefixedClass(final String prefix,
                                         final String fqcn)
