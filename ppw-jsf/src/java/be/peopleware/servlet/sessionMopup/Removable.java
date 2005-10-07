@@ -33,7 +33,7 @@ public interface Removable {
 
 
   /**
-   * Return <code>true</code> if <code>this</this</code> wants to be removed
+   * Return <code>true</code> if <code>this</code> wants to be removed
    * from the collection at this time.
    */
   boolean isToBeRemoved();

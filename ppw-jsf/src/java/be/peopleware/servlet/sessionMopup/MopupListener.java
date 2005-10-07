@@ -64,7 +64,9 @@ public class MopupListener implements ServletRequestListener, Serializable {
   // Serializability ok: no instance state
 
   /**
-   * Do nothing
+   * Do nothing.
+   *
+   * @post  true;
    */
   public void requestInitialized(final ServletRequestEvent event) {
     // NOP
@@ -129,9 +131,9 @@ public class MopupListener implements ServletRequestListener, Serializable {
       }
     }
     catch (ClassCastException ccExc) {
-      LOG.fatal("Servlet request was not an HttpServletRequest. This listener " +
-                "only makes sense in the HTTP context, since it works on " +
-                "session scope.");
+      LOG.fatal("Servlet request was not an HttpServletRequest. This listener "
+                + "only makes sense in the HTTP context, since it works on "
+                + "session scope.");
     }
     catch (IllegalStateException isExc) {
       // NOP; session was invalidated and will be removed anyway
