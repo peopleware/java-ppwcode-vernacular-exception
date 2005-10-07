@@ -55,7 +55,7 @@ public abstract class WrappingTreeNode implements TreeNode, Serializable {
    * @exception IllegalArgumentException
    *            <code>instance</code> is <code>null</code>.
    */
-  protected WrappingTreeNode(Object wrapped)
+  protected WrappingTreeNode(final Object wrapped)
       throws IllegalArgumentException {
     if (wrapped == null) {
       throw new IllegalArgumentException("instance cannot be null");
@@ -88,7 +88,14 @@ public abstract class WrappingTreeNode implements TreeNode, Serializable {
     return getChildCount() == 0;
   }
 
-  public final void setLeaf(boolean l) throws UnsupportedOperationException {
+  /**
+   * This inherited method is not supported.
+   *
+   * @post   false;
+   * @throws UnsupportedOperationException
+   *         true;
+   */
+  public final void setLeaf(final boolean l) throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }
 
@@ -96,13 +103,20 @@ public abstract class WrappingTreeNode implements TreeNode, Serializable {
    * As a default implementation, we offer the FQCN of
    * the wrapped business object. Subclasses can override this method.
    *
-   * @return-protected getInstance().getClass().getName(); the FQCN of {@link #getWrapped()}.
+   * @protected.result getInstance().getClass().getName(); the FQCN of {@link #getWrapped()}.
    */
   public String getType() {
     return getWrapped().getClass().getName();
   }
 
-  public final void setType(String t) throws UnsupportedOperationException {
+  /**
+   * This inherited method is not supported.
+   *
+   * @post   false;
+   * @throws UnsupportedOperationException
+   *         true;
+   */
+  public final void setType(final String t) throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }
 
@@ -110,17 +124,28 @@ public abstract class WrappingTreeNode implements TreeNode, Serializable {
    * As a default implementation, we offer the {@link List#size()}
    * of {@link #getChildren()}. Subclasses can override this method.
    *
-   * @return-protected getChildren().size();
+   * @protected.result getChildren().size();
    */
   public int getChildCount() {
     return getChildren().size();
   }
 
+  /**
+   * Returns the description.
+   *
+   * @basic
+   */
   public final String getDescription() {
     return $description;
   }
 
-  public final void setDescription(String description) {
+  /**
+   * Set the given description.
+   *
+   * @param description
+   * @post  new.getDescription() == description;
+   */
+  public final void setDescription(final String description) {
     $description = description;
   }
 
@@ -128,11 +153,22 @@ public abstract class WrappingTreeNode implements TreeNode, Serializable {
 
 
 
+  /**
+   * Returns the identifier.
+   *
+   * @basic
+   */
   public final String getIdentifier() {
     return $identifier;
   }
 
-  public final void setIdentifier(String identifier) {
+  /**
+   * Set the given identifier.
+   *
+   * @param identifier
+   * @post  new.getIdentifier() == identifier;
+   */
+  public final void setIdentifier(final String identifier) {
     $identifier = identifier;
   }
 
