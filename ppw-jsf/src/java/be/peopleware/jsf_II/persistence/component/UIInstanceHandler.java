@@ -22,8 +22,8 @@ import be.peopleware.jsf_II.persistence.InstanceHandler;
  * This {@link UIComponent} is used in JSF pages to initialize {@link InstanceHandler}
  * instances early in the JSF request / response lifecycle. In this mode of use,
  * the {@link InstanceHandler} is a managed bean in request scope. The
- * {@link InstanceHandler#getPersistentBeanType()} is set in <kbd>faces-config.xml</kbd> as a managed
- * property. The required {@link InstanceHandler#getId()} and
+ * {@link InstanceHandler#getPersistentBeanType()} is set in <kbd>faces-config.xml</kbd>
+ * as a managed property. The required {@link InstanceHandler#getId()} and
  * {@link InstanceHandler#getViewMode()} comes with the request as request parameters.
  * They need to be set in the {@link InstanceHandler} early, to
  * be able to retrieve the instance from persistent storage before it is accessed by
@@ -57,16 +57,18 @@ public class UIInstanceHandler extends UIViewModeHandler {
   //------------------------------------------------------------------
 
   /**
+   * The suffix of the name of the hidden input tag for the id.
+   *
    * <strong>= {@value}</strong>
    */
-  public final static String INPUT_TAG_NAME_ID_EXTENSION = ".id";
+  public static final String INPUT_TAG_NAME_ID_EXTENSION = ".id";
 
   /**
    * The name of the hidden input tag for the id.
    *
    * @return getClientId(context) + INPUT_TAG_NAME_ID_EXTENSION;
    */
-  public final String idTagName(FacesContext context) {
+  public final String idTagName(final FacesContext context) {
     return getClientId(context) + INPUT_TAG_NAME_ID_EXTENSION;
   }
 
@@ -89,14 +91,24 @@ public class UIInstanceHandler extends UIViewModeHandler {
    *
    * @throws FatalFacesException
    *         getHandler();
+   * @throws IOException
+   *         If an input/output error occurs while rendering.
    */
-  public void encodeBegin(FacesContext context) throws IOException, FatalFacesException {
+  public void encodeBegin(final FacesContext context) throws IOException, FatalFacesException {
     super.encodeBegin(context);
     encodeHiddenInput(context.getResponseWriter(),
                       idTagName(context), ((InstanceHandler)getHandler(context)).getId());
   }
 
-  public void encodeEnd(FacesContext context) throws IOException {
+  /**
+   * If our rendered property is true, render the ending of the current state
+   * of this UIComponent; does nothing.
+   *
+   * @post    true;
+   * @throws  IOException
+   *          false;
+   */
+  public void encodeEnd(final FacesContext context) throws IOException {
     // Empty encodeEnd so no input field is written out by default.
   }
 
@@ -108,11 +120,14 @@ public class UIInstanceHandler extends UIViewModeHandler {
   //------------------------------------------------------------------
 
   /**
+   * Decode any new state of this UIComponent from the request contained in
+   * the specified FacesContext, and store this state as needed.
+   *
    * @pre context != null;
    * @throws FatalFacesException
    *         context.getExternalContext.getRequestParameterMap().get(idTagName(context));
    */
-  public void decode(FacesContext context) throws FatalFacesException {
+  public void decode(final FacesContext context) throws FatalFacesException {
     super.decode(context);
     Map requestParameters = context.getExternalContext().getRequestParameterMap();
     InstanceHandler handler = (InstanceHandler)getHandler(context); // FatalFacesException
@@ -120,16 +135,15 @@ public class UIInstanceHandler extends UIViewModeHandler {
     Long id = null;
     { // get parameters from request
 
-      if (!viewMode.equals(InstanceHandler.VIEWMODE_EDITNEW) &&
-          !viewMode.equals(InstanceHandler.VIEWMODE_DELETED)) {
+      if (!viewMode.equals(InstanceHandler.VIEWMODE_EDITNEW)
+          && !viewMode.equals(InstanceHandler.VIEWMODE_DELETED)) {
         // id
         String idString = (String)requestParameters.get(idTagName(context));
         if (idString == null) {
           setValid(false);
-          RobustCurrent.fatalProblem("There was no id value in the request " +
-                                     "(expected parameter name: " +
-                                     idTagName(context) + ")",
-                                     LOG);
+          RobustCurrent.fatalProblem(
+              "There was no id value in the request (expected parameter name: "
+              + idTagName(context) + ")", LOG);
           // IDEA (jand) this is not fatal; do goback()
         }
         assert idString != null;
@@ -138,10 +152,9 @@ public class UIInstanceHandler extends UIViewModeHandler {
         }
         catch (NumberFormatException nfExc) {
           setValid(false);
-          RobustCurrent.fatalProblem("The id value in the request is not a Long (" +
-                                     idString +  ")",
-                                     nfExc,
-                                     LOG);
+          RobustCurrent.fatalProblem(
+              "The id value in the request is not a Long (" + idString +  ")",
+              nfExc, LOG);
           // IDEA (jand) this is not fatal; do goback()
         }
       }

@@ -517,6 +517,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   }
 
   /**
+   * A string identifying the page corresponding to this handler.
+   *
    * @pre getType() != null;
    * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + LIST_VIEW_ID_SUFFIX;
    */

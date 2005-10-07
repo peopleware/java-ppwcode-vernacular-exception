@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * @MUDO (jand): AANPASSEN
+ * @MUDO (jand): AANPASSEN.
  *
  * Security strategy API for {@link PersistentBeanHandler PersistentBeanHandlers}.
  * AsyncCrudHandlers enable the user to

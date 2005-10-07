@@ -67,7 +67,7 @@ public class UIViewModeHandler extends UIInput implements Serializable {
   /**
    * <strong>= {@value}</strong>
    */
-  public final static String HANDLER_VALUE_BINDING_NAME = "handler";
+  public static final String HANDLER_VALUE_BINDING_NAME = "handler";
 
   /**
    * Return the result of {@link #HANDLER_VALUE_BINDING_NAME} value binding.
@@ -76,15 +76,15 @@ public class UIViewModeHandler extends UIInput implements Serializable {
    * @throws FatalFacesException
    *         ; could not locate a handler through the value binding
    */
-  public PersistentBeanHandler getHandler(FacesContext context)
+  public PersistentBeanHandler getHandler(final FacesContext context)
       throws FatalFacesException {
     ValueBinding vb = getValueBinding(HANDLER_VALUE_BINDING_NAME);
     if (vb == null) {
       RobustCurrent.fatalProblem("Could not locate handler", LOG);
     }
     Object result = vb.getValue(context);
-    if ((result == null) ||
-        (! (result instanceof PersistentBeanHandler))) {
+    if ((result == null)
+        || (!(result instanceof PersistentBeanHandler))) {
       RobustCurrent.fatalProblem("Could not locate handler", LOG);
     }
     return (PersistentBeanHandler)result;
@@ -99,14 +99,14 @@ public class UIViewModeHandler extends UIInput implements Serializable {
   /**
    * <strong>= {@value}</strong>
    */
-  public final static String INPUT_TAG_NAME_VIEWMODE_EXTENSION = ".viewMode";
+  public static final String INPUT_TAG_NAME_VIEWMODE_EXTENSION = ".viewMode";
 
   /**
    * The name of the hidden input tag for the view mode.
    *
    * @return getClientId(context) + INPUT_TAG_NAME_VIEWMODE_EXTENSION;
    */
-  public final String viewModeTagName(FacesContext context) {
+  public final String viewModeTagName(final FacesContext context) {
     return getClientId(context) + INPUT_TAG_NAME_VIEWMODE_EXTENSION;
   }
 
@@ -127,27 +127,43 @@ public class UIViewModeHandler extends UIInput implements Serializable {
    *
    * @throws FatalFacesException
    *         getHandler();
+   * @throws IOException
+   *         If an input/output error occurs while rendering.
    */
-  public void encodeBegin(FacesContext context) throws IOException, FatalFacesException {
+  public void encodeBegin(final FacesContext context) throws IOException, FatalFacesException {
     encodeHiddenInput(context.getResponseWriter(),
                       viewModeTagName(context), getHandler(context).getViewMode());
   }
 
-  public void encodeEnd(FacesContext context) throws IOException {
+  /**
+   * If our rendered property is true, render the ending of the current state
+   * of this UIComponent; does nothing.
+   *
+   * @post    true;
+   * @throws  IOException
+   *          false;
+   */
+  public void encodeEnd(final FacesContext context) throws IOException {
     // Empty encodeEnd so no input field is written out by default.
   }
 
-  private final static String INPUT_TAG = "input";
-  private final static String INPUT_TAG_TYPE_ATTR = "type";
-  private final static String INPUT_TAG_TYPE_HIDDEN = "hidden";
-  private final static String INPUT_TAG_NAME_ATTR = "name";
-  private final static String INPUT_TAG_VALUE_ATTR = "value";
+  private static final String INPUT_TAG = "input";
+  private static final String INPUT_TAG_TYPE_ATTR = "type";
+  private static final String INPUT_TAG_TYPE_HIDDEN = "hidden";
+  private static final String INPUT_TAG_NAME_ATTR = "name";
+  private static final String INPUT_TAG_VALUE_ATTR = "value";
 
   /**
+   * Write a hidden input tag to the given {@link ResponseWriter} using the
+   * given id and value.
+   *
    * @pre getHandler() != null;
    * @throws IOException
+   *         If an input/output error occurs while rendering.
    */
-  protected void encodeHiddenInput(ResponseWriter response, String componentId, Object value) throws IOException {
+  protected void encodeHiddenInput(
+      final ResponseWriter response, final String componentId, final Object value)
+      throws IOException {
     response.startElement(INPUT_TAG, this);
     response.writeAttribute(INPUT_TAG_TYPE_ATTR, INPUT_TAG_TYPE_HIDDEN, null);
     response.writeAttribute(INPUT_TAG_NAME_ATTR, componentId, null);
@@ -167,7 +183,7 @@ public class UIViewModeHandler extends UIInput implements Serializable {
    * @throws FatalFacesException
    *         getHandler();
    */
-  public void decode(FacesContext context) throws FatalFacesException {
+  public void decode(final FacesContext context) throws FatalFacesException {
     assert context != null;
     PersistentBeanHandler handler = getHandler(context); // FatalFacesException
     setValid(true);
@@ -178,7 +194,7 @@ public class UIViewModeHandler extends UIInput implements Serializable {
 
       { // viewMode
         viewMode = (String)requestParameters.get(viewModeTagName(context));
-        if (! handler.isValidViewMode(viewMode)) {
+        if (!handler.isValidViewMode(viewMode)) {
           // if there is no correct view mode in the request, treat it as a display mode
           viewMode = PersistentBeanHandler.VIEWMODE_DISPLAY;
         }

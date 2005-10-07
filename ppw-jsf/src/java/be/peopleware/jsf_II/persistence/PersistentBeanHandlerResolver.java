@@ -74,16 +74,18 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *            (new.getDefaultHandlerClass() == minimalHandlerClass);
    * @post new.getHandlerVarNameSuffix().equals(handlerVarNameSuffix);
    */
-  public PersistentBeanHandlerResolver(Class defaultHandlerClass,
-                                       Class minimalHandlerClass,
-                                       String handlerVarNameSuffix) {
+  public PersistentBeanHandlerResolver(final Class defaultHandlerClass,
+      final Class minimalHandlerClass, final String handlerVarNameSuffix) {
     assert minimalHandlerClass != null;
     assert PersistentBeanHandler.class.isAssignableFrom(minimalHandlerClass);
-    assert (defaultHandlerClass != null) ?
-              minimalHandlerClass.isAssignableFrom(defaultHandlerClass) : true;
+    assert (defaultHandlerClass != null)
+             ? minimalHandlerClass.isAssignableFrom(defaultHandlerClass)
+             : true;
     assert handlerVarNameSuffix != null;
     $mininalHandlerClass = minimalHandlerClass;
-    $defaultHandlerClass = (defaultHandlerClass != null) ? defaultHandlerClass : minimalHandlerClass;
+    $defaultHandlerClass = (defaultHandlerClass != null)
+                             ? defaultHandlerClass
+                             : minimalHandlerClass;
     $handlerVarNameSuffix = handlerVarNameSuffix;
   }
 
@@ -95,8 +97,8 @@ public class PersistentBeanHandlerResolver implements Serializable {
    * @post new.getDefaultHandlerClass() == minimalHandlerClass;
    * @post new.getHandlerVarNameSuffix().equals(handlerVarNameSuffix);
    */
-  public PersistentBeanHandlerResolver(Class minimalHandlerClass,
-                                       String handlerVarNameSuffix) {
+  public PersistentBeanHandlerResolver(final Class minimalHandlerClass,
+                                       final String handlerVarNameSuffix) {
     this(minimalHandlerClass, minimalHandlerClass, handlerVarNameSuffix);
   }
 
@@ -154,7 +156,7 @@ public class PersistentBeanHandlerResolver implements Serializable {
    * @pre PersistentBean.class.isAssignableFrom(type);
    * @return type.getName().replace('.', '$') + handlerVarNameSuffix();
    */
-  public final String handlerVariableNameFor(Class type) {
+  public final String handlerVariableNameFor(final Class type) {
     assert type != null;
     assert PersistentBean.class.isAssignableFrom(type);
     String fqcn = type.getName();
@@ -171,21 +173,23 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      resolve(handlerVariableNameFor(pbType)));
    */
-  private PersistentBeanHandler initHandler(Class pbType, String varName, Object handler)
+  private PersistentBeanHandler initHandler(
+      final Class pbType, final String varName, final Object handler)
       throws FatalFacesException {
     if (handler == null) {
       return null;
     }
     else {
-      if (! (getMinimalHandlerClass().isInstance(handler))) {
-        RobustCurrent.fatalProblem("variable name \"" + varName +
-                                   "\" resolved to an object that is not an instance of " +
-                                   getDefaultHandlerClass() + ": " + handler, LOG);
+      if (!(getMinimalHandlerClass().isInstance(handler))) {
+        RobustCurrent.fatalProblem(
+            "variable name \"" + varName
+            + "\" resolved to an object that is not an instance of "
+            + getDefaultHandlerClass() + ": " + handler, LOG);
       }
       PersistentBeanHandler pbh = (PersistentBeanHandler)handler;
       if (pbh.getPersistentBeanType() == null) {
-        LOG.debug("type was not set in managed bean with name \"" + varName +
-                  "\"; now set to " + pbType);
+        LOG.debug("type was not set in managed bean with name \"" + varName
+                  + "\"; now set to " + pbType);
         pbh.setPersistentBeanType(pbType);
       }
       return pbh;
@@ -215,7 +219,7 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      resolve(handlerVariableNameFor(pbType)));
    */
-  private PersistentBeanHandler managedHandlerForDirect(Class pbType)
+  private PersistentBeanHandler managedHandlerForDirect(final Class pbType)
       throws FatalFacesException {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
@@ -254,10 +258,10 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *                      resolve(handlerVariableNameFor(pbType)));
    * @except managedHandler(pbType.getSuperClass());
    */
-  public final PersistentBeanHandler managedHandlerFor(Class pbType)
+  public final PersistentBeanHandler managedHandlerFor(final Class pbType)
       throws FatalFacesException {
     assert pbType != null;
-    if (! PersistentBean.class.isAssignableFrom(pbType)) {
+    if (!PersistentBean.class.isAssignableFrom(pbType)) {
       return null;
     }
     else {
@@ -294,7 +298,7 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *         ! getMinimalHandlerClass().isAssignableFrom(RobustCurrent.
    *                      freshManagedBean(handlerVariableNameFor(pbType));
    */
-  private PersistentBeanHandler freshManagedHandlerForDirect(Class pbType)
+  private PersistentBeanHandler freshManagedHandlerForDirect(final Class pbType)
       throws FatalFacesException {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
@@ -334,10 +338,10 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *                      freshManagedBean(handlerVariableNameFor(pbType)));
    * @except freshManagedHandler(pbType.getSuperClass());
    */
-  public final PersistentBeanHandler freshManagedHandlerFor(Class pbType)
+  public final PersistentBeanHandler freshManagedHandlerFor(final Class pbType)
       throws FatalFacesException {
     assert pbType != null;
-    if (! PersistentBean.class.isAssignableFrom(pbType)) {
+    if (!PersistentBean.class.isAssignableFrom(pbType)) {
       return null;
     }
     else {
@@ -364,7 +368,8 @@ public class PersistentBeanHandlerResolver implements Serializable {
    * @result result.getType() == pbType;
    * @result result.getDaoVariableName().equals(daoVariableName);
    */
-  public final PersistentBeanHandler createDefaultHandlerFor(Class pbType, String daoVariableName) {
+  public final PersistentBeanHandler createDefaultHandlerFor(
+      final Class pbType, final String daoVariableName) {
     assert pbType != null;
     assert PersistentBean.class.isAssignableFrom(pbType);
     PersistentBeanHandler handler = null;
@@ -372,8 +377,8 @@ public class PersistentBeanHandlerResolver implements Serializable {
       handler = (PersistentBeanHandler)getDefaultHandlerClass().newInstance(); // Exc
       handler.setPersistentBeanType(pbType);
       handler.setDaoVariableName(daoVariableName);
-      LOG.debug("created new default handler for PersistentBean type \"" +
-                pbType + "\": " + handler);
+      LOG.debug("created new default handler for PersistentBean type \""
+                + pbType + "\": " + handler);
     }
     catch (Exception exc) {
       LOG.fatal("exception should not happen: ", exc);
@@ -394,13 +399,13 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *   If so, this new default handler is stored in session scope with name
    *   {@link #handlerVariableNameFor(Class) handlerVariableNameFor(pbType)}.</p>
    */
-  public final PersistentBeanHandler handlerFor(Class pbType, String daoVariableName)
+  public final PersistentBeanHandler handlerFor(final Class pbType, final String daoVariableName)
       throws FatalFacesException {
     LOG.debug("request for handler for type " + pbType);
     PersistentBeanHandler result = managedHandlerFor(pbType);
     if (result == null) {
-      LOG.debug("Could not find handler for type " + pbType +
-                "; will create default handler and put it in session scope");
+      LOG.debug("Could not find handler for type " + pbType
+                + "; will create default handler and put it in session scope");
       result = createDefaultHandlerFor(pbType, daoVariableName);
       putInSessionScope(result);
     }
@@ -418,13 +423,14 @@ public class PersistentBeanHandlerResolver implements Serializable {
    *   {@link #createDefaultHandlerFor(Class, String) createDefaultHandlerFor(pbType, daoVariableName)}.
    *   The resulting handler is not stored in any scope.</p>
    */
-  public final PersistentBeanHandler freshHandlerFor(Class pbType, String daoVariableName)
+  public final PersistentBeanHandler freshHandlerFor(
+      final Class pbType, final String daoVariableName)
       throws FatalFacesException {
     LOG.debug("request for fresh handler for type " + pbType);
     PersistentBeanHandler result = freshManagedHandlerFor(pbType);
     if (result == null) {
-      LOG.debug("Could not create fresh managed handler for type " + pbType +
-                "; will create default handler");
+      LOG.debug("Could not create fresh managed handler for type " + pbType
+                + "; will create default handler");
       result = createDefaultHandlerFor(pbType, daoVariableName);
     }
     else {
@@ -442,30 +448,29 @@ public class PersistentBeanHandlerResolver implements Serializable {
    * @pre getMinimalHandlerClass().isInstance(handler);
    * @post RobustCurrent.variable(handlerVariableNameFor(handler.getType()));
    */
-  public final void putInRequestScope(PersistentBeanHandler handler) {
+  public final void putInRequestScope(final PersistentBeanHandler handler) {
     assert handler != null;
     assert getMinimalHandlerClass().isInstance(handler);
     String varName = handlerVariableNameFor(handler.getPersistentBeanType());
     RobustCurrent.requestMap().put(varName, handler);
-    LOG.debug("handler " + handler + " put in request scope with name \"" +
-              varName + "\"");
+    LOG.debug("handler " + handler + " put in request scope with name \"" + varName + "\"");
   }
 
   /**
-   * Put <code>handler</code> in session scope
-   * with name {@link #handlerVariableNameFor(Class) handlerVariableNameFor(handler.getType())}.
+   * Put <code>handler</code> in session scope with name
+   * {@link #handlerVariableNameFor(Class)
+   *        handlerVariableNameFor(handler.getPersistentBeanType())}.
    *
    * @pre handler != null;
    * @pre getMinimalHandlerClass().isInstance(handler);
    * @post RobustCurrent.variable(handlerVariableNameFor(handler.getType()));
    */
-  public final void putInSessionScope(PersistentBeanHandler handler) {
+  public final void putInSessionScope(final PersistentBeanHandler handler) {
     assert handler != null;
     assert getMinimalHandlerClass().isInstance(handler);
     String varName = handlerVariableNameFor(handler.getPersistentBeanType());
     RobustCurrent.sessionMap().put(varName, handler);
-    LOG.debug("handler " + handler + " put in session scope with name \"" +
-              varName + "\"");
+    LOG.debug("handler " + handler + " put in session scope with name \"" + varName + "\"");
   }
 
 }

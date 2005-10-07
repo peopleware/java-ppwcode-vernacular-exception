@@ -280,7 +280,7 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  *   This is necessary, because, e.g., for some of the action methods
  *   ({@link #update()} and {@link #create()}), the bean must be available in
  *   {@link #getInstance()} before the Update Model Values phase, to receive
- *   values from the UIView.</br>
+ *   values from the UIView.<br />
  *   If no instance with the requested id can be found in persistent storage,
  *   {@link #getInstance()} will be <code>null</code> afterwards to signal this.
  *   <br />
@@ -360,7 +360,9 @@ public class InstanceHandler extends PersistentBeanHandler {
 
   private static final Log LOG = LogFactory.getLog(InstanceHandler.class);
 
-
+  /**
+   * Default constructor.
+   */
   public InstanceHandler() {
     LOG.debug("constructor of InstanceHandler");
   }
@@ -403,7 +405,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    * there is a parameter like <code>myParamName=4567</code> in the HTTP
    * request. This is a workaround that does seem to work.</p>
    */
-  public final void setIdFromRequestParameterName(String name) {
+  public final void setIdFromRequestParameterName(final String name) {
     Map requestParameters = RobustCurrent.paramMap();
     String idString = (String)requestParameters.get(name);
     if (idString != null) {
@@ -416,10 +418,9 @@ public class InstanceHandler extends PersistentBeanHandler {
           setId(id);
         }
         catch (NumberFormatException nfExc) {
-          RobustCurrent.fatalProblem("The id value in the request is not a Long (" +
-                                     idString +  ")",
-                                     nfExc,
-                                     LOG);
+          RobustCurrent.fatalProblem(
+              "The id value in the request is not a Long (" + idString +  ")",
+              nfExc,  LOG);
           // IDEA (jand) this is not fatal; do goback()
         }
       }
@@ -439,16 +440,27 @@ public class InstanceHandler extends PersistentBeanHandler {
   /*<property name="viewMode">*/
   //------------------------------------------------------------------
 
-  /** {@value} */
-  public final static String VIEWMODE_EDITNEW = "editNew";
-  /** {@value} */
-  public final static String VIEWMODE_DELETED = "deleted";
+  /**
+   * The string representing view mode "editNew".
+   *
+   * <strong>= &quot;editNew&quot;</strong>
+   */
+  public static final String VIEWMODE_EDITNEW = "editNew";
 
   /**
-   * { {@link #VIEWMODE_EDITNEW}, {@link #VIEWMODE_DELETED} };
+   * The string representing view mode "deleted".
+   *
+   * <strong>= &quot;deleted&quot;</strong>
    */
-  public final static String[] VIEWMODES
-      = {VIEWMODE_EDITNEW, VIEWMODE_DELETED};
+  public static final String VIEWMODE_DELETED = "deleted";
+
+  /**
+   * An array of strings containing view modes "editNew" and "deleted".
+   *
+   * <strong>= {VIEWMODE_EDITNEW, VIEWMODE_DELETED};</strong>
+   */
+  public static final String[] VIEWMODES =
+      {VIEWMODE_EDITNEW, VIEWMODE_DELETED};
 
   /**
    * Does <code>viewMode</code> represent a valid view mode?
@@ -458,9 +470,9 @@ public class InstanceHandler extends PersistentBeanHandler {
    * @return  super.isViewMode(viewMode) ||
    *            Arrays.asList(VIEWMODES).contains(viewMode);
    */
-  public boolean isValidViewMode(String viewMode) {
-    return super.isValidViewMode(viewMode) ||
-            Arrays.asList(VIEWMODES).contains(viewMode);
+  public boolean isValidViewMode(final String viewMode) {
+    return super.isValidViewMode(viewMode)
+             || Arrays.asList(VIEWMODES).contains(viewMode);
   }
 
   /**
@@ -493,8 +505,8 @@ public class InstanceHandler extends PersistentBeanHandler {
     }
     else {
       return
-        getViewMode().equals(PersistentBeanHandler.VIEWMODE_EDIT) ||
-        getViewMode().equals(VIEWMODE_EDITNEW);
+        getViewMode().equals(PersistentBeanHandler.VIEWMODE_EDIT)
+        || getViewMode().equals(VIEWMODE_EDITNEW);
     }
   }
 
@@ -502,8 +514,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    * @result false ? (! getViewMode().equals(VIEWMODE_EDITNEW));
    */
   public boolean isShowFields() throws FatalFacesException {
-    return super.isShowFields() ||
-            getViewMode().equals(VIEWMODE_EDITNEW);
+    return super.isShowFields()
+             || getViewMode().equals(VIEWMODE_EDITNEW);
   }
 
   /*</property>*/
@@ -542,8 +554,8 @@ public class InstanceHandler extends PersistentBeanHandler {
     if ($instance == null) {
       LOG.debug("instance is not cached");
       if (getPersistentBeanType() == null) {
-        RobustCurrent.fatalProblem("should load instance from db or create fresh instance, " +
-                                   "but type is null", LOG);
+        RobustCurrent.fatalProblem("should load instance from db or create fresh instance, "
+                                   + "but type is null", LOG);
       }
       if (getId() != null) {
         LOG.debug("id = " + getId() + "; loading from DB");
@@ -575,12 +587,12 @@ public class InstanceHandler extends PersistentBeanHandler {
    * @throws IllegalArgumentException
    *         (instance != null) && ! getType().isAssignableFrom(instance.getClass());
    */
-  public final void setInstance(PersistentBean instance) throws IllegalArgumentException {
+  public final void setInstance(final PersistentBean instance) throws IllegalArgumentException {
     LOG.debug("setting instance to " + instance);
-    if ((instance != null) && (! getPersistentBeanType().isAssignableFrom(instance.getClass()))) {
-      throw new IllegalArgumentException("instance " + instance +
-                                         " is not a subtype of " +
-                                         getPersistentBeanType());
+    if ((instance != null) && (!getPersistentBeanType().isAssignableFrom(instance.getClass()))) {
+      throw new IllegalArgumentException("instance " + instance
+                                         + " is not a subtype of "
+                                         + getPersistentBeanType());
     }
     $instance = instance;
     if (instance != null) {
@@ -598,13 +610,14 @@ public class InstanceHandler extends PersistentBeanHandler {
    *
    * @pre getDao() != null;
    * @throws FatalFacesException
-   *         {@link AsyncCrudDao#retrievePersistentBean(java.lang.Long, java.lang.Class)} / {@link TechnicalException}
+   *         {@link AsyncCrudDao#retrievePersistentBean(java.lang.Long, java.lang.Class)} /
+   *         {@link TechnicalException}
    * @throws FatalFacesException
    *         MUDO (jand) other occurences must be replaced by goBack()
    */
   protected final PersistentBean loadInstance() throws FatalFacesException {
-    LOG.debug("loading instance with id = " + getId() +
-              " and type = " + getPersistentBeanType());
+    LOG.debug("loading instance with id = " + getId()
+              + " and type = " + getPersistentBeanType());
     assert getAsyncCrudDao() != null;
     PersistentBean result = null;
     try {
@@ -618,7 +631,8 @@ public class InstanceHandler extends PersistentBeanHandler {
       }
       LOG.debug("retrieving persistent bean with id "
                   + getId() + " and type " + getPersistentBeanType() + "...");
-      result = getAsyncCrudDao().retrievePersistentBean(getId(), getPersistentBeanType()); // IdNotFoundException, TechnicalException
+      result = getAsyncCrudDao().retrievePersistentBean(getId(), getPersistentBeanType());
+          // IdNotFoundException, TechnicalException
       assert result != null;
       assert result.getId().equals(getId());
       assert getPersistentBeanType().isInstance(result);
@@ -632,17 +646,17 @@ public class InstanceHandler extends PersistentBeanHandler {
     }
     catch (IdNotFoundException infExc) {
       // this will force $instance null
-      LOG.info("could not find instance of type " + getPersistentBeanType() +
-               " with id " + getId(), infExc);
+      LOG.info("could not find instance of type " + getPersistentBeanType()
+               + " with id " + getId(), infExc);
       // MUDO goback() instead of exception
-      RobustCurrent.fatalProblem("could not find persistent bean with id " +
-                                 getId() + " of type " +
-                                 getPersistentBeanType(), infExc, LOG);
+      RobustCurrent.fatalProblem("could not find persistent bean with id "
+                                 + getId() + " of type "
+                                 + getPersistentBeanType(), infExc, LOG);
     }
     catch (TechnicalException tExc) {
-      RobustCurrent.fatalProblem("could not retrieve persistent bean with id " +
-                                 getId() + " of type " +
-                                 getPersistentBeanType(), tExc, LOG);
+      RobustCurrent.fatalProblem("could not retrieve persistent bean with id "
+                                 + getId() + " of type "
+                                 + getPersistentBeanType(), tExc, LOG);
     }
     return result;
   }
@@ -657,7 +671,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    * @pre pb != null;
    * @pre pb.getClass() == getPersistentBeanType()
    */
-  protected void postLoadInstance(PersistentBean pb) {
+  protected void postLoadInstance(final PersistentBean pb) {
     // NOP
   }
 
@@ -716,17 +730,19 @@ public class InstanceHandler extends PersistentBeanHandler {
    *
    * @mudo (jand) security
    */
-  public final void navigateHere(String viewMode) throws FatalFacesException {
-    LOG.debug("InstanceHandler.navigate called; id = " + getId() +
-              ", instance = " + getInstance());
+  public final void navigateHere(final String viewMode) throws FatalFacesException {
+    LOG.debug("InstanceHandler.navigate called; id = " + getId()
+              + ", instance = " + getInstance());
     if (getInstance() == null) {
-      LOG.fatal("cannot navigate to detail, because no instance is set (" +
-                this);
+      LOG.fatal("cannot navigate to detail, because no instance is set ("
+                + this);
     }
     super.navigateHere(viewMode);
   }
 
   /**
+   * A string identifying the page corresponding to this handler.
+   *
    * @pre getType() != null;
    * @return VIEW_ID_PREFIX + s/\./\//(getType().getName()) + VIEW_ID_SUFFIX;
    */
@@ -737,6 +753,13 @@ public class InstanceHandler extends PersistentBeanHandler {
     return VIEW_ID_PREFIX + typeName + VIEW_ID_SUFFIX;
   }
 
+  /**
+   * Put this handler in session scope with name
+   * {@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class)
+   *        PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
+   *
+   * @post  RESOLVER.putInSessionScope(this);
+   */
   public void putInSessionScope() {
     RESOLVER.putInSessionScope(this);
   }
@@ -748,14 +771,18 @@ public class InstanceHandler extends PersistentBeanHandler {
    *   as a variable with the appropiate name (see {@link CollectionHandler#navigateHere()}.
    *   And we navigate to {@link CollectionHandler#getViewId()}.</p>
    *
-   * @post    (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDao()).navigateHere();
-   * @except  (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getType(), getDao()).navigateHere();
+   * @post    (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(
+   *              getType(), getDao()).navigateHere();
+   * @except  (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(
+   *              getType(), getDao()).navigateHere();
    */
-  public final void navigateToList(ActionEvent aEv) throws FatalFacesException {
+  public final void navigateToList(final ActionEvent aEv) throws FatalFacesException {
     LOG.debug("InstanceHandler.navigateToList called");
-    CollectionHandler handler = (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(getPersistentBeanType(), getDaoVariableName());
-    LOG.debug("created collectionhandler for type " + getPersistentBeanType() +
-              ": " + handler);
+    CollectionHandler handler =
+      (CollectionHandler)CollectionHandler.RESOLVER.handlerFor(
+          getPersistentBeanType(), getDaoVariableName());
+    LOG.debug("created collectionhandler for type " + getPersistentBeanType()
+              + ": " + handler);
     handler.navigateHere(aEv);
   }
 
@@ -834,7 +861,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    *        one the commitTransaction method no longer needs the stupid
    *        PB argument, this can be moved out.
    */
-  protected PersistentBean actualUpdate(AsyncCrudDao dao)
+  protected PersistentBean actualUpdate(final AsyncCrudDao dao)
       throws CompoundPropertyException, TechnicalException, FatalFacesException {
     dao.updatePersistentBean(getInstance()); // TechnicalException, CompoundPropertyException
     return getInstance(); // TODO (jand) stupid return stuff
@@ -865,9 +892,11 @@ public class InstanceHandler extends PersistentBeanHandler {
    *          instance.getId() != null ||
    *          !getType().isInstance(instance);
    */
-  public final void editNew(PersistentBean instance) throws InvalidBeanException {
+  public final void editNew(final PersistentBean instance) throws InvalidBeanException {
     LOG.debug("InstanceHandler.editNew called; a new instance is stored in the handler");
-    if (instance == null || instance.getId() != null || !getPersistentBeanType().isInstance(instance)) {
+    if (instance == null
+        || instance.getId() != null
+        || !getPersistentBeanType().isInstance(instance)) {
       throw new InvalidBeanException(instance, getPersistentBeanType());
     }
     $instance = instance;
@@ -878,17 +907,37 @@ public class InstanceHandler extends PersistentBeanHandler {
     LOG.debug("Stored new persistent bean successfully");
   }
 
+  /**
+   * A class of exceptions containing a persistent bean and a type.
+   */
   public class InvalidBeanException extends Exception {
 
-    public InvalidBeanException(PersistentBean persistentBean, Class type) {
+    /**
+     * Create a new {@link InvalidBeanException} with the given persistent bean
+     * and type.
+     *
+     * @post  new.getPersistentBean() == persistentBean;
+     * @post  new.getType() == type;
+     */
+    public InvalidBeanException(final PersistentBean persistentBean, final Class type) {
       $persistentBean = persistentBean;
       $type = type;
     }
 
+    /**
+     * The persistent bean.
+     *
+     * @basic
+     */
     public PersistentBean getPersistentBean() {
       return $persistentBean;
     }
 
+    /**
+     * The type of the persistent bean.
+     *
+     * @basic
+     */
     public Class getType() {
       return $type;
     }
@@ -939,8 +988,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    *          {@link AsyncCrudDao#cancelTransaction()}
    */
   public final String create() throws FatalFacesException {
-    LOG.debug("InstanceHandler.create called; a new bean is created and is "+
-        "already partially updated");
+    LOG.debug("InstanceHandler.create called; a new bean is created and is "
+        + "already partially updated");
     LOG.debug("persistentBean: " + getInstance());
     try {
       AsyncCrudDao dao = getAsyncCrudDao();
@@ -968,7 +1017,7 @@ public class InstanceHandler extends PersistentBeanHandler {
           return null;
         }
       }
-      catch(CompoundPropertyException cpExc) {
+      catch (CompoundPropertyException cpExc) {
         LOG.debug("create action failed; cancelling ...", cpExc);
         dao.cancelTransaction(); // TechnicalException
         LOG.debug("create action cancelled; using exception as faces message");
@@ -977,14 +1026,33 @@ public class InstanceHandler extends PersistentBeanHandler {
         return null;
       }
     }
-    catch(TechnicalException exc) {
+    catch (TechnicalException exc) {
       RobustCurrent.fatalProblem("Could not create " + getInstance(), exc, LOG);
       return null;
     }
   }
 
+  /**
+   * The navigation string used when no persistent bean is attached to this
+   * handler.
+   *
+   * <strong>= &quot;NO_INSTANCE&quot;</strong>
+   */
   public static final String NO_INSTANCE = "NO_INSTANCE";
+
+  /**
+   * The navigation string used when an action cannot be executed in the current
+   * view mode.
+   *
+   * <strong>= &quot;INCORRECT_VIEWMODE&quot;</strong>
+   */
   public static final String INCORRECT_VIEWMODE = "INCORRECT_VIEWMODE";
+
+  /**
+   * The navigation string used when creating a new persistent bean is cancelled.
+   *
+   * <strong>= &quot;CANCEL_EDITNEW&quot;</strong>
+   */
   public static final String CANCEL_EDITNEW = "CANCEL_EDITNEW";
 
   /**
@@ -1029,13 +1097,13 @@ public class InstanceHandler extends PersistentBeanHandler {
         checkConditions(VIEWMODE_DISPLAY); // ConditionException
         dao.startTransaction(); // TechnicalException
         dao.deletePersistentBean(getInstance()); // TechnicalException
-        dao.commitTransaction(getInstance());// TechnicalException, CompoundPropertyException
+        dao.commitTransaction(getInstance()); // TechnicalException, CompoundPropertyException
         assert getInstance().getId() == null;
         setId(null);
         setViewMode(VIEWMODE_DELETED);
         return getNavigationString();
       }
-      catch(ConditionException exc) {
+      catch (ConditionException exc) {
         return exc.getNavigationString();
       }
       catch (CompoundPropertyException cpExc) {
@@ -1047,7 +1115,7 @@ public class InstanceHandler extends PersistentBeanHandler {
         return null;
       }
     }
-    catch(TechnicalException exc) {
+    catch (TechnicalException exc) {
       RobustCurrent.fatalProblem("Could not delete " + getInstance(), exc, LOG);
       return null;
     }
@@ -1079,7 +1147,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    *            && exc.getOutcome().equals(display());
    *          As a side effect, we go to display mode.
    */
-  protected void checkConditions(String expectedViewMode) throws ConditionException {
+  protected void checkConditions(final String expectedViewMode) throws ConditionException {
     super.checkConditions(expectedViewMode);
     if (getInstance() == null) {
       goBack(NO_INSTANCE);
@@ -1111,7 +1179,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    *          A message signalling why we are going back to a previous page.
    * @mudo
    */
-  public String goBack(String message) {
+  public String goBack(final String message) {
 //  MUDO
     return message;
   }
@@ -1217,7 +1285,12 @@ public class InstanceHandler extends PersistentBeanHandler {
     return $associationHandlers.getInitializedAssociationHandlers();
   }
 
-  public final void removeUsedAssociationHandlerFor(String propertyName) {
+  /**
+   * Remove the association handler corresponding to the given property name.
+   *
+   * @post !new.getAssociationHandlers().containsKey(propertyName);
+   */
+  public final void removeUsedAssociationHandlerFor(final String propertyName) {
     $associationHandlers.removeInitializedAssociationHandlerFor(propertyName);
   }
 
@@ -1231,7 +1304,7 @@ public class InstanceHandler extends PersistentBeanHandler {
   private final class AutomaticAssociationHandlersMap extends AbstractUnmodifiableMap
       implements Removable, Skimmable {
 
-    public final Set keySet() {
+    public Set keySet() {
       if ($keySet == null) {
         initKeySet();
       }
@@ -1241,7 +1314,8 @@ public class InstanceHandler extends PersistentBeanHandler {
     private void initKeySet() {
       $keySet = new HashSet();
       $keySet.addAll(getAssociationMetaMap().keySet());
-      PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(getPersistentBeanType());
+      PropertyDescriptor[] descriptors =
+        PropertyUtils.getPropertyDescriptors(getPersistentBeanType());
       for (int i = 0; i < descriptors.length; i++) {
         PropertyDescriptor pd = descriptors[i];
         if (PersistentBean.class.isAssignableFrom(pd.getPropertyType())) {
@@ -1256,20 +1330,20 @@ public class InstanceHandler extends PersistentBeanHandler {
      * The association handlers that are actually created already,
      * because we got a request for them through {@link #get(Object)}.
      */
-    public final Map getInitializedAssociationHandlers() {
+    public Map getInitializedAssociationHandlers() {
       return Collections.unmodifiableMap($backingMap);
     }
 
     private Map $backingMap = new HashMap();
 
-    public final void removeInitializedAssociationHandlerFor(String propertyName) {
+    public void removeInitializedAssociationHandlerFor(final String propertyName) {
       $backingMap.remove(propertyName);
     }
 
-    public Object get(Object key) throws FatalFacesException {
-      if (! keySet().contains(key)) {
-        LOG.warn("request for associations handler with unknown key (property name) \"" +
-                 key + "\"; returning null");
+    public Object get(final Object key) throws FatalFacesException {
+      if (!keySet().contains(key)) {
+        LOG.warn("request for associations handler with unknown key (property name) \""
+                 + key + "\"; returning null");
         return null;
       }
       Object result = $backingMap.get(key);
@@ -1289,47 +1363,58 @@ public class InstanceHandler extends PersistentBeanHandler {
             result = freshCollectionHandlerFor(associatedType, (Collection)propertyValue);
           }
           else {
-            LOG.warn("Property \"" + propertyName + "\" is not a PersistentBean or a " +
-                     "Collection; returning null");
+            LOG.warn("Property \"" + propertyName + "\" is not a PersistentBean or a "
+                     + "Collection; returning null");
             return null;
           }
           $backingMap.put(key, result);
         }
         catch (ClassCastException ccExc) {
-          RobustCurrent.fatalProblem("could not get persistentbean for property \"" + propertyName + "\"", ccExc, LOG);
+          RobustCurrent.fatalProblem(
+              "Could not get persistentbean for property \"" + propertyName + "\"",
+              ccExc, LOG);
         }
         catch (IllegalArgumentException iaExc) {
-          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", iaExc, LOG);
+          RobustCurrent.fatalProblem(
+              "Could not get property \"" + propertyName + "\"", iaExc, LOG);
         }
         catch (IllegalAccessException iaExc) {
-          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", iaExc, LOG);
+          RobustCurrent.fatalProblem(
+              "Could not get property \"" + propertyName + "\"", iaExc, LOG);
         }
         catch (InvocationTargetException itExc) {
-          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", itExc, LOG);
+          RobustCurrent.fatalProblem(
+              "Could not get property \"" + propertyName + "\"", itExc, LOG);
         }
         catch (NullPointerException npExc) {
-          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", npExc, LOG);
+          RobustCurrent.fatalProblem(
+              "Could not get property \"" + propertyName + "\"", npExc, LOG);
         }
         catch (ExceptionInInitializerError eiiErr) {
-          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", eiiErr, LOG);
+          RobustCurrent.fatalProblem(
+              "Could not get property \"" + propertyName + "\"", eiiErr, LOG);
         }
         catch (NoSuchMethodException nsmExc) {
-          RobustCurrent.fatalProblem("could not get property \"" + propertyName + "\"", nsmExc, LOG);
+          RobustCurrent.fatalProblem(
+              "Could not get property \"" + propertyName + "\"", nsmExc, LOG);
         }
       }
       return result;
     }
 
-    private InstanceHandler freshPersistentBeanInstanceHandlerFor(PersistentBean pb) throws FatalFacesException, IllegalArgumentException {
-      InstanceHandler pbch = (InstanceHandler)RESOLVER.freshHandlerFor(pb.getClass(), getDaoVariableName());
+    private InstanceHandler freshPersistentBeanInstanceHandlerFor(final PersistentBean pb)
+        throws FatalFacesException, IllegalArgumentException {
+      InstanceHandler pbch =
+        (InstanceHandler)RESOLVER.freshHandlerFor(pb.getClass(), getDaoVariableName());
       pbch.setInstance(pb);
       return pbch;
     }
 
-    private CollectionHandler freshCollectionHandlerFor(Class associatedType, Collection c)
-        throws FatalFacesException {
+    private CollectionHandler freshCollectionHandlerFor(
+        final Class associatedType, final Collection c) throws FatalFacesException {
       CollectionHandler ch =
-          (CollectionHandler)CollectionHandler.RESOLVER.freshHandlerFor(associatedType, getDaoVariableName());
+          (CollectionHandler)CollectionHandler.RESOLVER.freshHandlerFor(
+              associatedType, getDaoVariableName());
       ch.setInstances(c);
       return ch;
     }
@@ -1341,7 +1426,7 @@ public class InstanceHandler extends PersistentBeanHandler {
       Iterator iter = $backingMap.values().iterator();
       while (iter.hasNext()) {
         PersistentBeanHandler pbH = (PersistentBeanHandler)iter.next();
-        if (! pbH.isToBeRemoved()) {
+        if (!pbH.isToBeRemoved()) {
           LOG.debug("cached association handler " + pbH + " is not to be removed");
           return false;
         }
@@ -1370,7 +1455,8 @@ public class InstanceHandler extends PersistentBeanHandler {
 
   }
 
-  private final AutomaticAssociationHandlersMap $associationHandlers = new AutomaticAssociationHandlersMap();
+  private final AutomaticAssociationHandlersMap $associationHandlers =
+    new AutomaticAssociationHandlersMap();
 
   /**
    * <p>The automated {@link #getAssociationHandlers() association handlers map} requires
@@ -1410,10 +1496,12 @@ public class InstanceHandler extends PersistentBeanHandler {
   /*</section>*/
 
   /**
+   * The resolver.
+   *
    * @invar RESOLVER.getHandlerDefaultClass() == InstanceHandler.class;
    * @invar RESOLVER.getHandlerVarNameSuffix().equals(EMPTY);
    */
-  public final static PersistentBeanHandlerResolver RESOLVER =
+  public static final PersistentBeanHandlerResolver RESOLVER =
       new PersistentBeanHandlerResolver(InstanceHandler.class, "");
 
 
@@ -1453,9 +1541,9 @@ public class InstanceHandler extends PersistentBeanHandler {
    *            getAssociationHandler().isToBeRemoved();
    */
   public boolean isToBeRemoved() {
-    boolean result = (getViewMode().equals(VIEWMODE_DISPLAY) ||
-                          getViewMode().equals(VIEWMODE_DELETED)) &&
-                        $associationHandlers.isToBeRemoved();
+    boolean result = (getViewMode().equals(VIEWMODE_DISPLAY)
+                       || getViewMode().equals(VIEWMODE_DELETED))
+                     && $associationHandlers.isToBeRemoved();
     LOG.debug(this.toString() + ".isToBeRemoved() = " + result);
     return result;
   }
@@ -1482,20 +1570,27 @@ public class InstanceHandler extends PersistentBeanHandler {
    *         an id, but it is the same page.
    * @result (result != null) ? getTime().equals(NOW);
    */
-  public NavigationInstance absorb(NavigationInstance ni) {
+  public NavigationInstance absorb(final NavigationInstance ni) {
     LOG.debug("request to absorb " + ni + " by " + this);
     if (ni == null) {
       return null;
     }
-    else if ((getClass() == ni.getClass()) &&
-              (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType()) &&
-              (equalsWithNull(getId(), ((InstanceHandler)ni).getId()) ||
-                  ((getId() == null) && (((InstanceHandler)ni).getId() != null)) ||
-                  ((getId() != null) && (((InstanceHandler)ni).getId() == null)))) {
+    else if ((getClass() == ni.getClass())
+             && (getPersistentBeanType() == ((InstanceHandler)ni).getPersistentBeanType())
+             && (equalsWithNull(getId(), ((InstanceHandler)ni).getId())
+                 ||
+                 ((getId() == null) && (((InstanceHandler)ni).getId() != null))
+                 ||
+                 ((getId() != null) && (((InstanceHandler)ni).getId() == null))
+                )) {
       LOG.debug("absorbing");
       resetLastRenderedTime();
-      if ((getId() == null) && (((InstanceHandler)ni).getId() != null)||
-          ((getId() != null) && (((InstanceHandler)ni).getId() == null))) {
+      if ((getId() == null)
+          &&
+          (((InstanceHandler)ni).getId() != null)
+          ||
+          ((getId() != null) && (((InstanceHandler)ni).getId() == null))
+      ) {
         // we have just created a new instance; copy the id
         setId(((InstanceHandler)ni).getId());
       }

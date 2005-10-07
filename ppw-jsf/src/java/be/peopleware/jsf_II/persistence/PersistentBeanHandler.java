@@ -35,7 +35,7 @@ import be.peopleware.servlet.navigation.NavigationInstance;
 
 /**
  * Common functionality of JavaServer Faces backing beans that process requests
- * for {@link PersistentBean PersistentBeans}. This provides code for an
+ * for {@link PersistentBean PersistentBeans}. This provides code for a
  * {@link Dao} and a {@link CrudSecurityStrategy}.
  * These are stateful instances, that should be stored in request scope.
  *
@@ -50,7 +50,8 @@ import be.peopleware.servlet.navigation.NavigationInstance;
  * @idea to save memory, cache and share labels for the same type and
  *       locale on a higher level
  */
-public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implements NavigationInstance {
+public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler
+    implements NavigationInstance {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -74,15 +75,14 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
   //------------------------------------------------------------------
 
   /** {@value} */
-  public final static String VIEWMODE_DISPLAY = "display";
+  public static final String VIEWMODE_DISPLAY = "display";
   /** {@value} */
-  public final static String VIEWMODE_EDIT = "edit";
+  public static final String VIEWMODE_EDIT = "edit";
 
   /**
    * { {@link #VIEWMODE_DISPLAY}, {@link #VIEWMODE_EDIT} };
    */
-  public final static String[] VIEWMODES
-      = {VIEWMODE_DISPLAY, VIEWMODE_EDIT};
+  public static final String[] VIEWMODES = {VIEWMODE_DISPLAY, VIEWMODE_EDIT};
 
   /**
    * Does <code>viewMode</code> represent a valid view mode?
@@ -91,7 +91,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *          The viewMode to be checked.
    * @return  Arrays.asList(VIEWMODES).contains(s);
    */
-  public boolean isValidViewMode(String viewMode) {
+  public boolean isValidViewMode(final String viewMode) {
     return Arrays.asList(VIEWMODES).contains(viewMode);
   }
 
@@ -116,10 +116,10 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    * @throws  IllegalArgumentException
    *          ! isViewMode(viewMode);
    */
-  public final void setViewMode(String viewMode) throws IllegalArgumentException {
+  public final void setViewMode(final String viewMode) throws IllegalArgumentException {
     if ((viewMode != null) && (! isValidViewMode(viewMode))) {
-      throw new IllegalArgumentException("\"" + viewMode + "\" is not a valid view mode; " +
-                                         "it must be one of " + VIEWMODES);
+      throw new IllegalArgumentException("\"" + viewMode + "\" is not a valid view mode; "
+                                         + "it must be one of " + VIEWMODES);
     }
     // set the view mode
     $viewMode = (viewMode == null) ? VIEWMODE_DISPLAY : viewMode;
@@ -133,7 +133,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *   allow setting managed properties of beans in session
    *   scope from the shorter-lived param variable.</p>
    */
-  public final void setViewModeFromRequestParameterName(String name) {
+  public final void setViewModeFromRequestParameterName(final String name) {
     Map requestParameters = RobustCurrent.paramMap();
     String viewMode = (String)requestParameters.get(name);
     setViewMode(isValidViewMode(viewMode) ? viewMode : VIEWMODE_DISPLAY);
@@ -285,11 +285,11 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *
    * @todo (jand) doc: and set the label maps
    */
-  public final void setPersistentBeanType(Class type) {
+  public final void setPersistentBeanType(final Class type) {
     // pre and not exception, because this is a programmatic error
     assert ((type != null) ? PersistentBean.class.isAssignableFrom(type) : true)
-            : "Type must be a subtype of " + PersistentBean.class +
-              " (and " + type + " isn't).";
+            : "Type must be a subtype of " + PersistentBean.class
+              + " (and " + type + " isn't).";
     $persistentBeanType = type;
     LOG.debug("type of " + this + " set to Class " + type.getName());
     LOG.debug("loading label properties");
@@ -317,7 +317,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    * @throws  FacesException
    *          {@link Class#forName(String)}
    */
-  public void setTypeAsString(String typeName) throws FacesException {
+  public void setTypeAsString(final String typeName) throws FacesException {
     Class type;
     try {
       type = Class.forName(typeName);
@@ -442,24 +442,22 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
   /**
    * <strong>= {@value}</strong>
    */
-  private final static String BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME =
+  private static final String BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME =
     "ButtonLabels";
 
   /**
    * <strong>= {@value}</strong>
    */
-  private final static String DOT = ".";
+  private static final String DOT = ".";
 
   /**
-   * <strong>= PersistentBeanHandler.class.getPackage().getName() +
-   *   DOT + BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME;</strong>
+   * <strong>= PersistentBeanHandler.class.getPackage().getName()
+   *   + DOT + BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME;</strong>
    */
-  private final static String BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME =
-    PersistentBeanHandler.class.getPackage().getName() +
-    DOT + BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME;
+  private static final String BUTTON_LABEL_RESOURCE_BUNDLE_BASENAME =
+    PersistentBeanHandler.class.getPackage().getName()
+      + DOT + BUTTON_LABEL_RESOURCE_BUNDLE_SIMPLE_BASENAME;
 
-  /**
-   */
   private Map $buttonLabels;
 
   /*</property>*/
@@ -487,7 +485,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *            ? new.getNavigationString() == null;
    *            : new.getNavigationString().equals(navigationString);
    */
-  public void setNavigationString(String navigationString) {
+  public void setNavigationString(final String navigationString) {
     $navigationString = navigationString;
   }
 
@@ -503,7 +501,18 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
   /*<section name="viewId's">*/
   //------------------------------------------------------------------
 
+  /**
+   * The prefix of a view id.
+   *
+   * <strong>= &quot;/jsf/&quot;</strong>
+   */
   public static final String VIEW_ID_PREFIX = "/jsf/";
+
+  /**
+   * The suffix of a view id.
+   *
+   * <strong>= &quot;.jspx&quot;</strong>
+   */
   public static final String VIEW_ID_SUFFIX = ".jspx";
 
   /*</section>*/
@@ -529,19 +538,24 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
     }
     // all exceptions are programmatic errors here, in subclass, in config or in JSF
     catch (InstantiationException iExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), iExc, LOG);
+      RobustCurrent.fatalProblem(
+          "Could not create fresh instance of type " + getPersistentBeanType(), iExc, LOG);
     }
     catch (IllegalAccessException iaExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), iaExc, LOG);
+      RobustCurrent.fatalProblem(
+          "Could not create fresh instance of type " + getPersistentBeanType(), iaExc, LOG);
     }
     catch (ExceptionInInitializerError eiiErr) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), eiiErr, LOG);
+      RobustCurrent.fatalProblem(
+          "Could not create fresh instance of type " + getPersistentBeanType(), eiiErr, LOG);
     }
     catch (SecurityException sExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), sExc, LOG);
+      RobustCurrent.fatalProblem(
+          "Could not create fresh instance of type " + getPersistentBeanType(), sExc, LOG);
     }
     catch (ClassCastException ccExc) {
-      RobustCurrent.fatalProblem("could not create fresh instance of type " + getPersistentBeanType(), ccExc, LOG);
+      RobustCurrent.fatalProblem(
+          "Could not create fresh instance of type " + getPersistentBeanType(), ccExc, LOG);
     }
     return result;
   }
@@ -556,7 +570,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    * @pre pb != null;
    * @pre pb.getClass() == getPersistentBeanType()
    */
-  protected void postCreateInstance(PersistentBean pb) {
+  protected void postCreateInstance(final PersistentBean pb) {
     // NOP
   }
 
@@ -579,11 +593,10 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *
    * @mudo (jand) security
    */
-  public void navigateHere(String viewMode) throws FatalFacesException {
+  public void navigateHere(final String viewMode) throws FatalFacesException {
     LOG.debug("navigate called");
     if (getPersistentBeanType() == null) {
-      LOG.fatal("cannot navigate to detail, because no type is set (" +
-                this);
+      LOG.fatal("cannot navigate to detail, because no type is set (" + this);
     }
     setViewMode(isValidViewMode(viewMode) ? viewMode : VIEWMODE_DISPLAY);
     // put this handler in request scope, under an agreed name, create new view & navigate
@@ -594,8 +607,14 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
     context.renderResponse();
   }
 
+  /**
+   * A string identifying the page corresponding to this handler.
+   */
   public abstract String getViewId();
 
+  /**
+   * Put this handler in session scope.
+   */
   public abstract void putInSessionScope();
 
   /**
@@ -616,7 +635,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    * @throws  FatalFacesException
    *          in more circumstances
    */
-  public final void navigateHere(ActionEvent aEv) throws FatalFacesException {
+  public final void navigateHere(final ActionEvent aEv) throws FatalFacesException {
     navigateHere(VIEWMODE_DISPLAY);
   }
 
@@ -636,7 +655,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
       setViewMode(VIEWMODE_EDIT);
       return getNavigationString();
     }
-    catch(ConditionException exc) {
+    catch (ConditionException exc) {
       return exc.getNavigationString();
     }
   }
@@ -656,7 +675,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
       setViewMode(VIEWMODE_DISPLAY);
       return null;
     }
-    catch(ConditionException exc) {
+    catch (ConditionException exc) {
       return exc.getNavigationString();
     }
   }
@@ -676,7 +695,8 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *          {@link AsyncCrudDao#cancelTransaction()}
    */
   public String update() throws FatalFacesException {
-    LOG.debug("InstanceHandler.update called; the bean properties are already partially filled out");
+    LOG.debug("InstanceHandler.update called; the bean properties are already "
+              + "partially filled out");
     try {
       AsyncCrudDao dao = null;
       try {
@@ -698,7 +718,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
           return null;
         }
       }
-      catch(CompoundPropertyException cpExc) {
+      catch (CompoundPropertyException cpExc) {
         LOG.debug("update action failed; cancelling ...", cpExc);
         dao.cancelTransaction(); // TechnicalException
         LOG.debug("update action cancelled; using exception as faces message");
@@ -706,11 +726,11 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
         setViewMode(VIEWMODE_EDIT);
         return null;
       }
-      catch(ConditionException exc) {
+      catch (ConditionException exc) {
         return exc.getNavigationString();
       }
     }
-    catch(TechnicalException exc) {
+    catch (TechnicalException exc) {
       RobustCurrent.fatalProblem("Could not update", exc, LOG);
       return null;
     }
@@ -724,7 +744,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *        for the commitTransaction method, when it no longer needs the stupid
    *        PB argument, this can be moved out.
    */
-  protected abstract PersistentBean actualUpdate(AsyncCrudDao dao)
+  protected abstract PersistentBean actualUpdate(final AsyncCrudDao dao)
       throws CompoundPropertyException, TechnicalException;
 
   /**
@@ -794,7 +814,7 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    *            && exc.getOutcome().equals(display());
    *          As a side effect, we go to display mode.
    */
-  protected void checkConditions(String expectedViewMode) throws ConditionException {
+  protected void checkConditions(final String expectedViewMode) throws ConditionException {
     assert isValidViewMode(expectedViewMode);
     if (!expectedViewMode.equals(getViewMode())) {
       setViewMode(VIEWMODE_DISPLAY);
@@ -812,10 +832,22 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
    * @author nsmeets
    */
   protected class ConditionException extends Exception {
-    public ConditionException(String navigationString) {
+
+    /**
+     * Creates a new condition exception with the given navigation string.
+     *
+     * @param navigationString
+     * @post  new.getNavigationString() == navigationString;
+     */
+    public ConditionException(final String navigationString) {
       $navigationString = navigationString;
     }
 
+    /**
+     * Returns the navigation string.
+     *
+     * @basic
+     */
     public String getNavigationString() {
       return $navigationString;
     }
@@ -845,6 +877,11 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
   /*<property name="LastRenderedTime">*/
   //------------------------------------------------------------------
 
+  /**
+   * Returns the time when the page for this handler was last rendered.
+   *
+   * @basic
+   */
   public final Date getLastRenderedTime() {
     return $lastRenderedTime;
   }
@@ -863,9 +900,14 @@ public abstract class PersistentBeanHandler extends AsyncCrudDaoHandler implemen
 
   /*</property>*/
 
+  /**
+  * <p>This method should be called to navigate to the page
+  *   for this handler in display mode.</p>
+  *
+  * @post  navigateHere(VIEWMODE_DISPLAY);
+  */
   public final void navigateHere() throws FatalFacesException {
-    LOG.debug("request to navigate back to this handler instance (" +
-              this + ")");
+    LOG.debug("request to navigate back to this handler instance (" + this + ")");
     navigateHere(VIEWMODE_DISPLAY);
   }
 

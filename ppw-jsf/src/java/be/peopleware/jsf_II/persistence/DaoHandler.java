@@ -104,10 +104,10 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
    * @post new.getDaoVariableName() == null;
    * @post new.getDefaultVariableName().equals(defaultDaoVariableName);
    */
-  protected DaoHandler(Class daoType, String defaultDaoVariableName) {
+  protected DaoHandler(final Class daoType, final String defaultDaoVariableName) {
     assert daoType != null : "daoType cannot be null";
-    assert Dao.class.isAssignableFrom(daoType) :
-            daoType.getName() + " is not a subtype of " + Dao.class.getName();
+    assert Dao.class.isAssignableFrom(daoType)
+             : daoType.getName() + " is not a subtype of " + Dao.class.getName();
     $daoType = daoType;
     $defaultDaoVariableName = defaultDaoVariableName;
   }
@@ -154,14 +154,14 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
    *               getDoaVariableName().equals(EMPTY);
    */
   public final boolean isDaoVariableNameEmpty() {
-    return ($daoVariableName == null) ||
-                $daoVariableName.equals(EMPTY);
+    return ($daoVariableName == null)
+            || $daoVariableName.equals(EMPTY);
   }
 
   /**
    * @post new.getDaoVariableName().equals(daoVariableName);
    */
-  public final void setDaoVariableName(String daoVariableName) {
+  public final void setDaoVariableName(final String daoVariableName) {
     LOG.debug("daoVariableName set: " + daoVariableName);
     $daoVariableName = daoVariableName;
   }
@@ -192,8 +192,8 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
    *               getDefaultDoaVariableName().equals(EMPTY);
    */
   public final boolean isDefaultDaoVariableNameEmpty() {
-    return ($defaultDaoVariableName== null) ||
-                  $defaultDaoVariableName.equals(EMPTY);
+    return ($defaultDaoVariableName == null)
+            || $defaultDaoVariableName.equals(EMPTY);
   }
 
   private String $defaultDaoVariableName;
@@ -229,20 +229,20 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
    */
   public final Dao getDao() throws FatalFacesException {
     LOG.debug("request for dao (dao variable name = " + getDaoVariableName() + ")");
-    if (! hasDaoVariableName()) {
-      RobustCurrent.fatalProblem("dao variable name is null or the empty String " +
-                                 "and no default set", LOG);
+    if (!hasDaoVariableName()) {
+      RobustCurrent.fatalProblem("dao variable name is null or the empty String "
+                                 + "and no default set", LOG);
     }
-    Object dao = (Dao)RobustCurrent.resolve(isDaoVariableNameEmpty() ?
-                                              getDefaultDaoVariableName() :
-                                              getDaoVariableName());
-    LOG.debug("resolved object with name \"" + (isDaoVariableNameEmpty() ?
-                                                   getDefaultDaoVariableName() :
-                                                   getDaoVariableName()) + "\" to " +
-              dao);
-    if (! getDaoType().isInstance(dao)) {
-      RobustCurrent.fatalProblem("dao is not of the expected type (" +
-                                 getDaoType() + ")", LOG);
+    Object dao = (Dao)RobustCurrent.resolve(isDaoVariableNameEmpty()
+                                              ? getDefaultDaoVariableName()
+                                              : getDaoVariableName());
+    LOG.debug("resolved object with name \""
+              + (isDaoVariableNameEmpty()
+                   ? getDefaultDaoVariableName()
+                   : getDaoVariableName()) + "\" to " + dao);
+    if (!getDaoType().isInstance(dao)) {
+      RobustCurrent.fatalProblem("dao is not of the expected type ("
+                                 + getDaoType() + ")", LOG);
     }
     return (Dao)dao;
   }
@@ -252,7 +252,7 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
    *          (! isDefaultDaoVariableNameEmpty());
    */
   public final boolean hasDaoVariableName() {
-    return ! (isDaoVariableNameEmpty() && isDefaultDaoVariableNameEmpty());
+    return !(isDaoVariableNameEmpty() && isDefaultDaoVariableNameEmpty());
   }
 
   /*</property>*/
@@ -299,6 +299,6 @@ public abstract class DaoHandler implements Serializable, Removable, Skimmable {
    *
    * @mudo (jand) probably remove
    */
-  public final static String NAVIGATION_STRING_STAY_HERE = "success";
+  public static final String NAVIGATION_STRING_STAY_HERE = "success";
 
 }
