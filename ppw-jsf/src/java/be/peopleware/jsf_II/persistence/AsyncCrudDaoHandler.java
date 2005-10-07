@@ -60,7 +60,7 @@ public abstract class AsyncCrudDaoHandler extends DaoHandler {
       fqcnVarName() + DEFAULT_DAO_VARIABLE_NAME_SUFFIX;
 
   /**
-   * FQCN, with all "." replaced by "$";
+   * FQCN, with all "." replaced by "$".
    *
    * @return AsyncCrudDaoHandler.class.getName().replace('.', '$');
    */

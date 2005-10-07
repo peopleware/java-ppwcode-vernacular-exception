@@ -71,7 +71,7 @@ public class InstanceHandlerTreeNode extends InstanceHandler implements TreeNode
    * Overwrite this method to define what
    * the children of this {@link TreeNode} are.
    *
-   * @return-protected Collections.EMPTY_LIST
+   * @protected.result  Collections.EMPTY_LIST
    */
   public List getChildren() {
     return Collections.EMPTY_LIST;
@@ -94,25 +94,25 @@ public class InstanceHandlerTreeNode extends InstanceHandler implements TreeNode
   }
 
   /**
-   * NOP; should not be in the interface
+   * NOP; should not be in the interface.
    *
    * @deprecated
    */
-  public final void setLeaf(boolean arg0) {
+  public final void setLeaf(final boolean arg0) {
     // NOP
   }
 
   /**
-   * NOP; should not be in the interface
+   * NOP; should not be in the interface.
    *
    * @deprecated
    */
-  public final void setType(String arg0) {
+  public final void setType(final String arg0) {
     // NOP
   }
 
   /**
-   * should not be in the interface
+   * Should not be in the interface.
    *
    * @return null;
    *
@@ -123,25 +123,25 @@ public class InstanceHandlerTreeNode extends InstanceHandler implements TreeNode
   }
 
   /**
-   * NOP; should not be in the interface
+   * NOP; should not be in the interface.
    *
    * @deprecated
    */
-  public final void setDescription(String arg0) {
+  public final void setDescription(final String arg0) {
     // NOP
   }
 
   /**
-   * NOP; should not be in the interface
+   * NOP; should not be in the interface.
    *
    * @deprecated
    */
-  public final void setIdentifier(String arg0) {
+  public final void setIdentifier(final String arg0) {
     // NOP
   }
 
   /**
-   * should not be in the interface
+   * Should not be in the interface.
    *
    * @return null;
    *
