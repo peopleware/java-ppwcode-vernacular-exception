@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.persistence_II.hibernate;
 
 
@@ -61,7 +60,7 @@ public final class HibernateFilterDao extends HibernateAsyncCrudDao implements F
    * @see FilterDao
    * @mudo (dvankeer) This code is duplicated in JsfHibernateFilterDao.
    */
-  public final Set retrievePersistentBeans(final Class type,
+  public Set retrievePersistentBeans(final Class type,
                                            final List criteriaList)
       throws TechnicalException {
     LOG.debug("Starting find for persistent beans with type=" + type.getName()
@@ -111,7 +110,7 @@ public final class HibernateFilterDao extends HibernateAsyncCrudDao implements F
    *                else
    *                  result == null;
    */
-  public Criterion createHibernateCriterion(FilterCriterion filterCriterion) {
+  public Criterion createHibernateCriterion(final FilterCriterion filterCriterion) {
     String operator = filterCriterion.getOperator();
     String propertyName = filterCriterion.getPropertyName();
     List values = filterCriterion.getValues();
@@ -139,7 +138,7 @@ public final class HibernateFilterDao extends HibernateAsyncCrudDao implements F
         return null;
       }
     }
-    assert false : "Unknown operator in filter criterion: "+operator;
+    assert false : "Unknown operator in filter criterion: " + operator;
     return null;
   }
 
@@ -153,7 +152,7 @@ public final class HibernateFilterDao extends HibernateAsyncCrudDao implements F
    *          ||
    *          ((value instanceof String) && (((String)value).length() == 0))
    */
-  private boolean isNullOrEmptyString(Object value) {
+  private boolean isNullOrEmptyString(final Object value) {
     return
       (value == null)
       ||

@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.persistence_II.ramstorage;
 
 
@@ -19,7 +24,7 @@ public class RamStorageDaoFactory implements DaoFactory {
    *          A string describing the type of the dao to return.
    * @return  result instanceof AbstractRamStorageDao;
    */
-  public Dao getDao(String type) {
+  public Dao getDao(final String type) {
     if (ASYNC_CRUD.equals(type)) {
       return new RamStorageAsyncCrudDao();
     }

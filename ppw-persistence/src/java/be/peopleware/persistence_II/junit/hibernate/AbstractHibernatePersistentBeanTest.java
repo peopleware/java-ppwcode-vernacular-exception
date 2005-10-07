@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.persistence_II.junit.hibernate;
 
 
@@ -23,6 +28,8 @@ import be.peopleware.persistence_II.PersistentBean;
 /**
  * A simple helper class for hibernate actions within jUnit tests.
  *
+ * @invar   getClassUnderTest() != null;
+ * @invar   PersistentBean.class.isAssignableFrom(getClassUnderTest());
  * @author  David Van Keer
  * @author  Peopleware n.v.
  * @todo    (nsmeets) Copied from WoundPilot.
@@ -44,19 +51,51 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
 
   private static final Log LOG = LogFactory.getLog(AbstractHibernatePersistentBeanTest.class);
 
-  protected AbstractHibernatePersistentBeanTest(Class classUnderTest) {
+  /**
+   * Create a new test for the given class.
+   *
+   * @param  classUnderTest
+   * @pre    classUnderTest != null;
+   * @pre    PersistentBean.class.isAssignableFrom(classUnderTest);
+   * @post   new.getClassUnderTest() == classUnderTest;
+   */
+  protected AbstractHibernatePersistentBeanTest(final Class classUnderTest) {
     assert classUnderTest != null;
     assert PersistentBean.class.isAssignableFrom(classUnderTest);
     $classUnderTest = classUnderTest;
   }
 
+ /*<property name="alarmSymptoms">*/
+ //------------------------------------------------------------------
+
+  /**
+   * Returns the class that is tested.
+   *
+   * @basic
+   */
   public final Class getClassUnderTest() {
     return $classUnderTest;
   }
 
   private Class $classUnderTest;
 
+  /*</property>*/
 
+  /**
+   * The number of persistent beans that is tested when logging is debug enabled.
+   *
+   * <strong>= {@value}</strong>
+   */
+  public static final int NB_TESTS_DEBUG = 100;
+
+  /**
+   * Tests all instances of {@link #getClassUnderTest()} in the underlying
+   * storage.
+   * The method {@link #validatePersistentBean(PersistentBean)} is used to test
+   * the persistent beans.
+   * When logging is debug enabled, the number of persistent beans that is tested is
+   * limited to NB_TESTS_DEBUG.
+   */
   public void testAlInstances() {
     LOG.debug("Opening Hibernate session and starting a new transaction.");
     openSession();
@@ -67,8 +106,8 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
     int count = 0;
     while (iter.hasNext()) {
       count++;
-      if (LOG.isDebugEnabled() && (count > 100)) {
-        LOG.debug("limiting checks to 100 instances when debug is enabled");
+      if (LOG.isDebugEnabled() && (count > NB_TESTS_DEBUG)) {
+        LOG.debug("limiting checks to " + NB_TESTS_DEBUG + " instances when debug is enabled");
         break;
       }
       if (LOG.isWarnEnabled() && (count % 5000 == 0)) {
@@ -89,21 +128,36 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
     return retrieve(getClassUnderTest());
   }
 
+  /**
+   * Retrieves the class contract corresponding to the class that is tested.
+   *
+   * @return (ClassContract)Contracts.typeContractInstance(getClassUnderTest())
+   *               does not throw an exception
+   *           ? result == (ClassContract)Contracts.typeContractInstance(getClassUnderTest())
+   *           : result == null;
+   */
   protected final ClassContract getClassContract() {
     ClassContract result = null;
     try {
       result = (ClassContract)Contracts.typeContractInstance(getClassUnderTest());
     }
     catch (IOException e) {
-      assert false : "IOExceptionshould not happen: " + e;
+      assert false : "IOException should not happen: " + e;
     }
     catch (ClassNotFoundException e) {
-      assert false : "ClassNotFoundExceptionshould not happen: " + e;
+      assert false : "ClassNotFoundException should not happen: " + e;
     }
     return result;
   }
 
-  protected void validatePersistentBean(PersistentBean pb) {
+  /**
+   * Validate the given persistent bean.
+   * The following validations are executed:
+   * - the given persistent bean should be effective
+   * - the invariants are checked
+   * - some extra validation, using {@link #extraPersistentBeanValidation(PersistentBean)}
+   */
+  protected void validatePersistentBean(final PersistentBean pb) {
     if (LOG.isDebugEnabled()) {
       LOG.debug("pb: " + ((pb == null) ? "null" : pb.toStringLong()));
     }
@@ -115,7 +169,7 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
      * are ok.
      * But it is something weird: WARN.
      */
-    if (LOG.isWarnEnabled() && (! civilized)) {
+    if (LOG.isWarnEnabled() && (!civilized)) {
       CompoundPropertyException cpe = pb.getWildExceptions();
       LOG.warn("Not civilized: " + pb);
       Iterator iter1 = cpe.getElementExceptions().values().iterator();
@@ -134,11 +188,15 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
     extraPersistentBeanValidation(pb);
   }
 
-  protected void extraPersistentBeanValidation(PersistentBean pb) {
+  /**
+   * Some extra validation to be performed on the given persistent bean.
+   * Should be overridden by subclasses.
+   */
+  protected void extraPersistentBeanValidation(final PersistentBean pb) {
     // NOP
   }
 
-  private void validateTypeInvariants(Object instance) {
+  private void validateTypeInvariants(final Object instance) {
     assert instance != null;
     LOG.debug("getClassContract(): " + getClassContract());
     Set invars = getClassContract().getTypeInvariantConditions();
@@ -148,7 +206,7 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
     while (iter.hasNext()) {
       Condition c = (Condition)iter.next();
       boolean result = c.validate(context);
-      if (LOG.isErrorEnabled() && (! result)) {
+      if (LOG.isErrorEnabled() && (!result)) {
         LOG.error("type invariant violation: " + c + " for " + instance);
       }
       assertTrue(result);

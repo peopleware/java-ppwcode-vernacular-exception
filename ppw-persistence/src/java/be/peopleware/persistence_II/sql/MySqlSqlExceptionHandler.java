@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.persistence_II.sql;
 
 
@@ -48,12 +53,30 @@ public class MySqlSqlExceptionHandler implements SqlExceptionHandler {
   private static final Log LOG = LogFactory.getLog(MySqlSqlExceptionHandler.class);
 
 
+  /**
+   * Return a {@link PropertyException} wrapping <code>sqlException</code>
+   * if you find the latter of a semantic nature. If not, return <code>null</code>.
+   *
+   * If the message of the given sql exception contains the string
+   *   "Duplicate key or integrity constraint violation,  message from server: \"Duplicate entry"
+   * or
+   *   "Duplicate entry"
+   * return a {@link DuplicateKeyException}.
+   *
+   * If the message of the given sql exception contains the string
+   * "Duplicate key or integrity constraint violation,  "
+   *             + "message from server: \"Cannot delete or update a "
+   *             + "parent row: a foreign key constraint fails\""
+   * return a {@link ConstraintException}.
+   *
+   * Otherwise, return null.
+   */
   public PropertyException handle(final SQLException sqlExc, final PersistentBean pb) {
     assert sqlExc != null;
     if (sqlExc.getMessage()
               .indexOf("Duplicate key or integrity constraint violation,  "
                        + "message from server: \"Duplicate entry") >= 0
-        || sqlExc.getMessage().indexOf("Duplicate entry") >= 0 ) {
+        || sqlExc.getMessage().indexOf("Duplicate entry") >= 0) {
       // WATCH OUT: SQL Error message contains 'dual space' after ','.
       DuplicateKeyException dkExc = new DuplicateKeyException(pb,
                                                               null,

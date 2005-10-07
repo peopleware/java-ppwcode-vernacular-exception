@@ -1,6 +1,13 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.persistence_II;
 
 import be.peopleware.persistence_II.dao.Dao;
+import be.peopleware.persistence_II.dao.AsyncCrudDao;
+import be.peopleware.persistence_II.dao.FilterDao;
 
 /**
  * A factory for creating dao objects.
@@ -12,8 +19,19 @@ import be.peopleware.persistence_II.dao.Dao;
  */
 public interface DaoFactory {
 
+  /**
+   * String identifying an {@link AsyncCrudDao}.
+   *
+   * <strong>= &quot;asyncCrud&quot;</strong>
+   */
   public static final String ASYNC_CRUD = "asyncCrud";
-  public static final String FILTER = "filter"; // @mudo ok? ExtendedDao invoeren in persistence
+
+  /**
+   * String identifying a {@link FilterDao}.
+   *
+   * <strong>= &quot;filter&quot;</strong>
+   */
+  public static final String FILTER = "filter";
 
   /**
    * Returns a dao of the given type.

@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.persistence_II.hibernate;
 
 
@@ -65,19 +70,20 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
 
 
   private static final String NULL_SESSION = "Session is null";
-  private static final String NO_PENDING_TRANSACTION
-      = "No transaction pending";
-  private static final String PENDING_TRANSACTION
-      = "There is a transaction still pending";
-  private static final String NO_PERSISTENT_OBJECT
-      = "No persistent object";
-  private static final String WRONG_SUBTYPE
-      = " not a subtype of PersistentBean";
+  private static final String NO_PENDING_TRANSACTION = "No transaction pending";
+  private static final String PENDING_TRANSACTION = "There is a transaction still pending";
+  private static final String NO_PERSISTENT_OBJECT = "No persistent object";
+  private static final String WRONG_SUBTYPE = " not a subtype of PersistentBean";
 
 
   /*<property name="session">*/
   //------------------------------------------------------------------
 
+  /**
+   * The hibernate session associated with this dao.
+   *
+   * @basic
+   */
   public Session getSession() {
     return $session;
   }
@@ -446,6 +452,16 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     LOG.debug("Deletion succeeded.");
   }
 
+  /*<property name="deleted">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Returns true when the given persistent bean has been deleted; returns false
+   * otherwise.
+   *
+   * @param  pb
+   * @basic
+   */
   public boolean isDeleted(final PersistentBean pb) {
     return $deleted.contains(pb);
   }
@@ -457,16 +473,33 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
    */
   private Set $deleted = new HashSet();
 
+  /*</property>*/
 
+ /*<property name="inTransaction">*/
+ //------------------------------------------------------------------
 
+  /**
+   * Returns true when a transaction is open; returns false otherwise.
+   *
+   * @basic
+   */
   public final boolean isInTransaction() {
     return $isInTransaction;
   }
 
+  /**
+   * Set the given boolean value, reflecting whether a transaction is open
+   * or not.
+   *
+   * @param inTransaction
+   * @post  new.isInTransaction() == inTransaction;
+   */
   protected final void setInTransaction(final boolean inTransaction) {
     $isInTransaction = inTransaction;
   }
 
   private boolean $isInTransaction;
+
+  /*</property>*/
 
 }

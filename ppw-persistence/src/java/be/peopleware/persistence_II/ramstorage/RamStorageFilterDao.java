@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.persistence_II.ramstorage;
 
 
@@ -54,9 +53,9 @@ public final class RamStorageFilterDao extends RamStorageAsyncCrudDao implements
    * @see    FilterDao
    * @mudo
    */
-  public final Set retrievePersistentBeans(final Class type, final List criteriaList)
+  public Set retrievePersistentBeans(final Class type, final List criteriaList)
       throws TechnicalException {
     assert false : "not implemented yet";
-		return null;
-	}
+    return null;
+  }
 }

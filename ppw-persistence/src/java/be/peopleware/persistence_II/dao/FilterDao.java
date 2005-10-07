@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.persistence_II.dao;
 
 import java.util.List;
@@ -54,6 +59,7 @@ public interface FilterDao extends AsyncCrudDao {
    *                   )
    *          );
    * @throws TechnicalException
+   *         true;
    */
   Set retrievePersistentBeans(final Class type, final List criteriaList)
       throws TechnicalException;

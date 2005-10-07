@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.persistence_II.hibernate;
 
 
@@ -22,7 +21,7 @@ import be.peopleware.persistence_II.sql.SqlExceptionHandler;
 
 
 /**
- * Support methods for Hibernate <acronym title="Data Access Object">DAO<acronym>'s.
+ * Support methods for Hibernate <acronym title="Data Access Object">DAO</acronym>'s.
  * These implementations need a Hibernate {@link Session}.
  *
  * @author Jan Dockx
@@ -80,9 +79,10 @@ public abstract class AbstractHibernateDao implements Dao {
     }
   }
 
-  private final void wrapInCompound(PropertyException pExc) throws CompoundPropertyException {
+  private void wrapInCompound(final PropertyException pExc) throws CompoundPropertyException {
     assert pExc != null;
-    CompoundPropertyException cpExc = new CompoundPropertyException(pExc.getOrigin(), null, null, null);
+    CompoundPropertyException cpExc =
+        new CompoundPropertyException(pExc.getOrigin(), null, null, null);
     cpExc.addElementException(pExc);
     cpExc.close();
     throw cpExc;

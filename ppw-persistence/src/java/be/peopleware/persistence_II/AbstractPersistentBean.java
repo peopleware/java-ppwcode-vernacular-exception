@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.persistence_II;
 
 
@@ -85,7 +90,7 @@ public abstract class AbstractPersistentBean
    *
    * @see   PersistentBean
    */
-  public void appendLongRepresentation(StringBuffer acc) {
+  public void appendLongRepresentation(final StringBuffer acc) {
     acc.append(getClass().getName());
     acc.append("@");
     acc.append(hashCode());
@@ -94,9 +99,9 @@ public abstract class AbstractPersistentBean
     acc.append("]");
   }
 
-  private final static String SEPARATOR = ", ";
+  private static final String SEPARATOR = ", ";
 
-  private void appendProperties(StringBuffer acc) {
+  private void appendProperties(final StringBuffer acc) {
     PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(this);
     for (int i = 0; i < pds.length; i++) {
       appendPropertyString(pds[i].getName(), acc);
@@ -106,7 +111,7 @@ public abstract class AbstractPersistentBean
     }
   }
 
-  private void appendPropertyString(String propertyName, StringBuffer acc) {
+  private void appendPropertyString(final String propertyName, final StringBuffer acc) {
     acc.append(propertyName);
     acc.append("=");
     try {

@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.persistence_II.ramstorage;
 
 import java.util.Collections;
@@ -50,7 +49,13 @@ public class RamStorage {
     }
     return skpbm;
   }
-  
+
+  /**
+   * Returns a map with all the {@link RamStorageMap} instances.
+   * The key is the type of the map.
+   *
+   * @basic
+   */
   public synchronized Map getRamStorageMaps() {
     return Collections.unmodifiableMap($pbMaps);
   }

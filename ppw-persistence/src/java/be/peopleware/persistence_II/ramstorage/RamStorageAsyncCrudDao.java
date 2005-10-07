@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.persistence_II.ramstorage;
 
 
@@ -129,14 +128,31 @@ public class RamStorageAsyncCrudDao extends AbstractRamStorageDao implements Asy
 
   private Set $toCreate;
 
+ /*<property name="inTransaction">*/
+ //------------------------------------------------------------------
+
+  /**
+   * Returns true when a transaction open.
+   *
+   * @basic
+   */
   public final boolean isInTransaction() {
     return $isInTransaction;
   }
 
+  /**
+   * Set the given boolean value, reflecting whether a transaction is open
+   * or not.
+   *
+   * @param inTransaction
+   * @post  new.isInTransaction() == inTransaction;
+   */
   protected final void setInTransaction(final boolean inTransaction) {
     $isInTransaction = inTransaction;
   }
 
   private boolean $isInTransaction;
+
+  /*</property>*/
 
 }

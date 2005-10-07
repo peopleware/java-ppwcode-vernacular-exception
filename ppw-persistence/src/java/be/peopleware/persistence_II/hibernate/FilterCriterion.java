@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.persistence_II.hibernate;
 
 import java.util.ArrayList;
@@ -37,7 +36,18 @@ public class FilterCriterion {
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /*</section>*/
 
+  /**
+   * String identifying the 'equals' operator.
+   *
+   * <strong>= &quot;eq&quot;</strong>
+   */
   public static final String EQ = "eq";
+
+  /**
+   * String identifying the 'like' operator.
+   *
+   * <strong>= &quot;like&quot;</strong>
+   */
   public static final String LIKE = "like";
 
   /* <construction> */
@@ -56,7 +66,7 @@ public class FilterCriterion {
    *             new.getValues().get(i) == values.get(i));
    * @post  getOperator().equals(operator);
    */
-  public FilterCriterion(String propertyName, List values, String operator) {
+  public FilterCriterion(final String propertyName, final List values, final String operator) {
     initialise(propertyName, values, operator);
   }
 
@@ -70,7 +80,7 @@ public class FilterCriterion {
    * @post  new.getValues().get(0) == value;
    * @post  getOperator().equals(operator);
    */
-  public FilterCriterion(String propertyName, Object value, String operator) {
+  public FilterCriterion(final String propertyName, final Object value, final String operator) {
     List values = new ArrayList();
     values.add(value);
     initialise(propertyName, values, operator);
@@ -89,7 +99,7 @@ public class FilterCriterion {
    *             new.getValues().get(i) == values.get(i));
    * @post  getOperator().equals(operator);
    */
-  private void initialise(String propertyName, List values, String operator) {
+  private void initialise(final String propertyName, final List values, final String operator) {
     $propertyName = propertyName;
     $values = Collections.unmodifiableList(values);
     $operator = operator;

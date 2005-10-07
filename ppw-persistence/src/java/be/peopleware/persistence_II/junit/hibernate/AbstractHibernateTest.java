@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.persistence_II.junit.hibernate;
 
 
@@ -43,7 +48,7 @@ public abstract class AbstractHibernateTest extends TestCase {
 
   private static SessionFactory $sessionFactory;
 
-  private final static String JUNIT_CONFIG_FILE_LOCATION =
+  private static final String JUNIT_CONFIG_FILE_LOCATION =
       "/hibernate_junit.cfg.xml";
 
   static {
@@ -191,6 +196,8 @@ public abstract class AbstractHibernateTest extends TestCase {
   }
 
   private Session $session;
+
+
 
   public Transaction getTransaction() {
     return $tx;
