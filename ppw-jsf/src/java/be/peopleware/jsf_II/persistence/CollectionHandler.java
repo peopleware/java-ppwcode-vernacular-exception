@@ -107,9 +107,9 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * @mudo (jand) this skimming is probably not ok
    *
    * @return a sorted version of {@link #getStoredInstances()}
-   * @throw FatalFacesException
-   *        (getStoredInstances() != null) &&
-   *            ((getType() == null) || (getDoa() == null));
+   * @throws FatalFacesException
+   *         (getStoredInstances() != null) &&
+   *             ((getType() == null) || (getDoa() == null));
    */
   public final Collection getInstances() throws FatalFacesException {
     LOG.debug("request for instances collection");
@@ -130,16 +130,18 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     if (getAsyncCrudDao() == null) {
       RobustCurrent.fatalProblem("dao is unknown", LOG);
     }
-    LOG.debug("will try to load all instances of type \"" + getPersistentBeanType() +
-              "\" with dao " + getAsyncCrudDao());
+    LOG.debug("will try to load all instances of type \"" + getPersistentBeanType()
+              + "\" with dao " + getAsyncCrudDao());
     Set result = Collections.EMPTY_SET;
     try {
       // we are not doing this in a transaction, deliberately
-      result = getAsyncCrudDao().retrieveAllPersistentBeans(getPersistentBeanType(), isSubtypesIncluded());
+      result = getAsyncCrudDao().retrieveAllPersistentBeans(
+                     getPersistentBeanType(), isSubtypesIncluded());
     }
     catch (TechnicalException tExc) {
-      RobustCurrent.fatalProblem("Failed to retrieve all PersistenBeans of type \"" +
-                                 getPersistentBeanType() + "\" with dao " + getAsyncCrudDao(), tExc, LOG);
+      RobustCurrent.fatalProblem("Failed to retrieve all PersistenBeans of type \""
+                                 + getPersistentBeanType() + "\" with dao "
+                                 + getAsyncCrudDao(), tExc, LOG);
     }
     return result;
   }
@@ -202,7 +204,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *
    * @post getType() == type;
    */
-  public final void setSubtypesIncluded(boolean subtypesIncluded) {
+  public final void setSubtypesIncluded(final boolean subtypesIncluded) {
     $subtypesIncluded = subtypesIncluded;
   }
 
@@ -222,7 +224,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *        one the commitTransaction method no longer needs the stupid
    *        PB argument, this can be moved out.
    */
-  protected PersistentBean actualUpdate(AsyncCrudDao dao)
+  protected PersistentBean actualUpdate(final AsyncCrudDao dao)
       throws CompoundPropertyException, TechnicalException, FatalFacesException {
     PersistentBean stupidResult = null;
     Iterator iter = getInstanceHandlers().iterator();
@@ -288,35 +290,38 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   /**
    * <strong>= {@value}</strong>
    */
-  public final static String SORT_PROPERTY_REQUEST_PARAMETER_NAME = "sortProperty";
+  public static final String SORT_PROPERTY_REQUEST_PARAMETER_NAME = "sortProperty";
 
 
   /**
    * <strong>= {@value}</strong>
    */
-  public final static String EMPTY = "";
+  public static final String EMPTY = "";
 
   /**
    * <p>Action listener method that calls {@link DynamicComparatorChain#bringToFront(String)}
    *   with the value of HTTP request parameter {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}
    *   as argument. Since the previous order needs to be remembered, the {@link #getComparator()}
    *   is best implemented as a managed bean in session scope.</p>
-   * <p>This action listener method could be called with a <code>commandLink</code> as follows:</p>
+   * <p>This action listener method could be called with a <code>commandLink</code>
+   *   as follows:</p>
    * <pre>
    *   &lt;h:commandLink value=&quot;<var>label</var>&quot; actionListener=&quot;#{handler.sort}&quot; immediate=&quot;true&quot;&gt;
    *     &lt;f:param name=&quot;<var>{@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}</var>&quot; value=&quot;<var>property name</var>&quot; /&gt;
    *   &lt;/h:commandLink&gt;
    * </pre>
-   * <p>If there is no {@link #getComparator()}, or there is no {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME}
-   *   HTTP request parameter, nothing happens.</p>
+   * <p>If there is no {@link #getComparator()}, or there is no
+   *   {@link #SORT_PROPERTY_REQUEST_PARAMETER_NAME} HTTP request parameter,
+   *   nothing happens.</p>
    */
-  public final void sort(ActionEvent ae) {
+  public final void sort(final ActionEvent ae) {
     LOG.debug("call to sort");
     if (getComparator() == null) {
       LOG.warn("call to sort, but no comparator found");
       return;
     }
-    String sortPropertyName = RobustCurrent.requestParameterValues(SORT_PROPERTY_REQUEST_PARAMETER_NAME)[0];
+    String sortPropertyName =
+      RobustCurrent.requestParameterValues(SORT_PROPERTY_REQUEST_PARAMETER_NAME)[0];
     if ((sortPropertyName == null) || (sortPropertyName.equals(EMPTY))) {
       LOG.warn("call to sort, but no sort property name found in HTTP request");
       return;
@@ -338,7 +343,11 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   /*</section>*/
 
-
+  /**
+   * The name of the request parameter containing the id.
+   *
+   * <strong>= &quot;pbId&quot;</strong>
+   */
   public static final String ID_REQUEST_PARAMETER_NAME = "pbId";
 
   /**
@@ -349,6 +358,10 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *
    * @return    Set
    *            A Set with PersistentBeanHandlers based on the instances of this Handler..
+   * @throws    FatalFacesException
+   *            getInstances();
+   * @throws    FatalFacesException
+   *            freshInstanceHandlerFor(bean);
    */
   public final List getInstanceHandlers() throws FatalFacesException {
     Collection instances = getInstances();
@@ -376,7 +389,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     return ($handlers == null) || ($handlers.size() != getInstances().size());
 //  MUDO (jand) test if the contents is actually changed
   }
-  
+
   /**
    * Delegate this call to all handlers in {@link #getInstanceHandlers()}.
    */
@@ -397,9 +410,12 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *
    * @throws FatalFacesException
    */
-  protected InstanceHandler freshInstanceHandlerFor(PersistentBean bean) throws FatalFacesException {
+  protected InstanceHandler freshInstanceHandlerFor(final PersistentBean bean)
+      throws FatalFacesException {
     LOG.debug("    instance is " + bean + "; RESOLVER is " + InstanceHandler.RESOLVER);
-    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(bean.getClass(), getDaoVariableName());
+    InstanceHandler handler =
+        (InstanceHandler)InstanceHandler.RESOLVER.freshHandlerFor(
+            bean.getClass(), getDaoVariableName());
     handler.setInstance(bean);
     handler.setViewMode(PersistentBeanHandler.VIEWMODE_DISPLAY);
     LOG.debug("    handler is " + handler);
@@ -413,7 +429,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   private final transient Comparator $handlerComparator =
       new Comparator() {
 
-            public int compare(Object o1, Object o2) {
+            public int compare(final Object o1, final Object o2) {
               InstanceHandler h1 = (InstanceHandler)o1;
               InstanceHandler h2 = (InstanceHandler)o2;
               return getComparator().compare(h1.getInstance(), h2.getInstance());
@@ -423,6 +439,11 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
 
   private List $handlers;
 
+  /**
+   * The name of the suffix .
+   *
+   * <strong>= &quot;_list&quot; + VIEW_ID_SUFFIX;</strong>
+   */
   public static final String LIST_VIEW_ID_SUFFIX = "_list" + VIEW_ID_SUFFIX;
 
   /**
@@ -430,7 +451,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * @param event
    * @throws FatalFacesException
    */
-  public final void navigateToDetail(ActionEvent event) throws FatalFacesException {
+  public final void navigateToDetail(final ActionEvent event) throws FatalFacesException {
     LOG.debug("request to navigate to detail");
     String idString = null;
     try {
@@ -442,18 +463,20 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       // MUDO (jand) this type does not allow for polymorphic navigation!
       // solution: put the type in the HTML page too!
       // same problem as in PersistentBeanConverter!
-      LOG.debug("Created handler for id = " + id +
-                "and type " + getPersistentBeanType() + ": " + handler);
+      LOG.debug("Created handler for id = " + id
+                + "and type " + getPersistentBeanType() + ": " + handler);
       handler.setId(id);
       handler.navigateHere(event);
     }
     catch (ArrayIndexOutOfBoundsException aioobExc) {
-      RobustCurrent.fatalProblem("no parameter " + ID_REQUEST_PARAMETER_NAME +
-                                 " found in HTTP request parameters", aioobExc, LOG);
+      RobustCurrent.fatalProblem(
+          "no parameter " + ID_REQUEST_PARAMETER_NAME
+          + " found in HTTP request parameters", aioobExc, LOG);
     }
     catch (NumberFormatException nfExc) {
-      RobustCurrent.fatalProblem("HTTP request parameter " + ID_REQUEST_PARAMETER_NAME +
-                                 " (" + idString + ") is not a Long", nfExc, LOG);
+      RobustCurrent.fatalProblem(
+          "HTTP request parameter " + ID_REQUEST_PARAMETER_NAME
+          + " (" + idString + ") is not a Long", nfExc, LOG);
     }
   }
 
@@ -464,6 +487,8 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * <p>The fresh instance handler is made available to the JSP/JSF page in request scope,
    *   as a variable with the appropriate name, and we navigate to
    *   {@link InstanceHandler#getViewId()}.</p>
+   *
+   * @throws  FatalFacesException
    */
   public final void navigateToEditNew() throws FatalFacesException {
     PersistentBean fresh = createInstance();
@@ -480,10 +505,13 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    * <p>The fresh handler is made available to the JSP/JSF page in request scope,
    *   as a variable with the appropriate name, and we navigate to
    *   {@link InstanceHandler#getViewId()}.</p>
+   *
+   * @throws  FatalFacesException
    */
-  public final void navigateToEditNew(PersistentBean fresh) throws FatalFacesException {
+  public final void navigateToEditNew(final PersistentBean fresh) throws FatalFacesException {
     assert fresh != null;
-    InstanceHandler handler = (InstanceHandler)InstanceHandler.RESOLVER.handlerFor(fresh.getClass(), getDaoVariableName());
+    InstanceHandler handler =
+      (InstanceHandler)InstanceHandler.RESOLVER.handlerFor(fresh.getClass(), getDaoVariableName());
     handler.setInstance(fresh);
     handler.navigateHere(InstanceHandler.VIEWMODE_EDITNEW);
   }
@@ -499,6 +527,13 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
     return VIEW_ID_PREFIX + typeName + LIST_VIEW_ID_SUFFIX;
   }
 
+  /**
+   * Put this handler in session scope with name
+   * {@link PersistentBeanHandlerResolver#handlerVariableNameFor(Class)
+   *        PersistentBeanHandlerResolver#handlerVariableNameFor(getType())}.
+   *
+   * @post  RESOLVER.putInSessionScope(this);
+   */
   public final void putInSessionScope() {
     RESOLVER.putInSessionScope(this);
   }
@@ -544,13 +579,13 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
    *           this : null;
    * @result (result != null) ? getTime().equals(NOW);
    */
-  public NavigationInstance absorb(NavigationInstance ni) {
+  public NavigationInstance absorb(final NavigationInstance ni) {
     LOG.debug("request to absorb " + ni + " by " + this);
     if (ni == null) {
       return null;
     }
-    else if ((getClass() == ni.getClass()) &&
-              (getPersistentBeanType() == ((CollectionHandler)ni).getPersistentBeanType())) {
+    else if ((getClass() == ni.getClass())
+             && (getPersistentBeanType() == ((CollectionHandler)ni).getPersistentBeanType())) {
       LOG.debug("absorbing");
       resetLastRenderedTime();
       return this;
@@ -570,10 +605,12 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
   public static final String HANDLER_VARNAME_SUFFIX = "_collection";
 
   /**
+   * The resolver.
+   *
    * @invar RESOLVER.getHandlerDefaultClass() == CollectionHandler.class;
    * @invar RESOLVER.getHandlerVarNameSuffix().equals(HANDLER_VARNAME_SUFFIX);
    */
-  public final static PersistentBeanHandlerResolver RESOLVER =
+  public static final PersistentBeanHandlerResolver RESOLVER =
       new PersistentBeanHandlerResolver(DataModelHandler.class,
                                         CollectionHandler.class,
                                         HANDLER_VARNAME_SUFFIX);
