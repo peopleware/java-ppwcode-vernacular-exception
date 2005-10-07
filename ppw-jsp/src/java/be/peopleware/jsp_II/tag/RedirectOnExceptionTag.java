@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.jsp_II.tag;
 
 
@@ -50,12 +55,20 @@ public class RedirectOnExceptionTag extends SimpleTagSupport {
   //------------------------------------------------------------------
 
   /**
-   * The name of the exception type that will be caugth.
+   * The name of the exception type that will be caught.
    */
   public final String getExceptionTypeName() {
     return $exceptionTypeName;
   }
 
+  /**
+   * Returns the Class object associated with the class or interface with
+   * name {@link #getExceptionTypeName()}.
+   *
+   * @return  Class.forName(getExceptionTypeName());
+   * @throws  JspTagException
+   *          The class object cannot be located.
+   */
   public final Class getExceptionType() throws JspTagException {
     try {
       return Class.forName(getExceptionTypeName());

@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.jsp_II.tag;
 
 
@@ -107,7 +112,15 @@ import be.peopleware.jsp_II.JSTLResourceBundleLoadStrategy;
     return pref;
   }
 
-
+  /**
+   * Returns the label corresponding to the given key in the given bundle.
+   *
+   * @param   bundle
+   * @param   key
+   * @pre     bundle != null;
+   * @pre     key != null;
+   * @return  bundle.getResourceBundle().getString(key);
+   */
   public static String i18nlabel(final LocalizationContext bundle,
                                  final String key) {
     assert bundle != null : "Seems that we do not have a bundle set."; //$NON-NLS-1$

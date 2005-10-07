@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.jsp_II.displaytag;
 
 
@@ -34,16 +39,39 @@ public abstract class PersistentBeanDecorator extends TableDecorator {
 
   /*</section>*/
 
+  /**
+  * Returns the current row object.
+  *
+  * @return  getCurrentRowObject();
+  */
   protected final PersistentBean getPersistentBean() {
     return (PersistentBean)getCurrentRowObject();
   }
 
+  /**
+  * Returns the simple name of the type of the current row object,
+  * followed by "Detail.do".
+  *
+  * @return  let
+  *            clazz == getCurrentRowObject().getClass().toString()
+  *          in
+  *            clazz.substring(clazz.lastIndexOf(".") + 1) + "Detail.do";
+  */
   public final String getDetailBaseHref() {
     String clazz = getCurrentRowObject().getClass().toString();
     int index = clazz.lastIndexOf("."); //$NON-NLS-1$
     return clazz.substring(index + 1) + "Detail.do";  //$NON-NLS-1$
   }
 
+  /**
+   * Returns the simple name of the type of the current row object,
+   * followed by "List.do".
+   *
+   * @return  let
+   *            clazz == getCurrentRowObject().getClass().toString()
+   *          in
+   *            clazz.substring(clazz.lastIndexOf(".") + 1) + "List.do";
+   */
   public final String getListBaseHref() {
     String clazz = getCurrentRowObject().getClass().toString();
     int index = clazz.lastIndexOf("."); //$NON-NLS-1$
@@ -90,8 +118,17 @@ public abstract class PersistentBeanDecorator extends TableDecorator {
     return getNumberFormat().format(getListIndex() + 1);
   }
 
-
+  /**
+   * The empty string.
+   *
+   * <strong>= &quot;&quot;</strong>
+   */
   protected static final String EMPTY = ""; //$NON-NLS-1$
+  /**
+   * The separator.
+   *
+   * <strong>= &quot;; &quot;</strong>
+   */
   protected static final String SEPERATOR = "; "; //$NON-NLS-1$
 
   /**
