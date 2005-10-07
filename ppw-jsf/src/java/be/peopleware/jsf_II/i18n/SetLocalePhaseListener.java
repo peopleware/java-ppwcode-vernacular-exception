@@ -72,9 +72,19 @@ public final class SetLocalePhaseListener implements PhaseListener, Serializable
   public static final String FMT_LOCALE = "javax.servlet.jsp.jstl.fmt.locale.session";
 
   /**
-   * Set the {@link UIViewRoot#getLocale()}
+   * Set the {@link UIViewRoot#getLocale()}.
+   *
+   * @post  let
+   *          locale = RobustCurrent.sessionMap().get(FMT_LOCALE)
+   *        in
+   *          locale != null
+   *            ==> RobustCurrent.uiViewRoot().setLocale(locale);
+   * @throws FacesException
+   *         RobustCurrent.sessionMap()
+   * @throws FacesException
+   *         RobustCurrent.uiViewRoot()
    */
-  public void beforePhase(PhaseEvent event) throws FacesException {
+  public void beforePhase(final PhaseEvent event) throws FacesException {
     LOG.debug("before RENDER_RESPONSE: setting locale");
     // get JSTL locale
     Locale locale = (Locale)RobustCurrent.sessionMap().get(FMT_LOCALE);
@@ -85,11 +95,23 @@ public final class SetLocalePhaseListener implements PhaseListener, Serializable
     }
   }
 
-  public final void afterPhase(PhaseEvent event) {
+  /**
+   * Handle a notification that the processing for a particular phase has just
+   * been completed.
+   *
+   * @post true;
+   */
+  public void afterPhase(final PhaseEvent event) {
     // NOP
   }
 
-  public final PhaseId getPhaseId() {
+  /**
+   * Return the identifier of the request processing phase during which this
+   * listener is interested in processing PhaseEvent events.
+   *
+   * @return  PhaseId.RENDER_RESPONSE;
+   */
+  public PhaseId getPhaseId() {
     return PhaseId.RENDER_RESPONSE;
   }
 
