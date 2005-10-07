@@ -35,6 +35,11 @@ public abstract class AbstractNavigationInstance implements NavigationInstance {
   /*<property name="LastRenderedTime">*/
   //------------------------------------------------------------------
 
+  /**
+   * Returns the last time the corresponding page is rendered.
+   *
+   * @basic
+   */
   public final Date getLastRenderedTime() {
     return $lastRenderedTime;
   }

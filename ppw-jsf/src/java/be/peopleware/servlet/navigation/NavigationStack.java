@@ -176,13 +176,13 @@ public class NavigationStack implements Skimmable {
    * @throws FatalFacesException
    *         ni == null;
    */
-  public final void push(NavigationInstance ni) throws FatalFacesException {
+  public final void push(final NavigationInstance ni) throws FatalFacesException {
     LOG.debug("pushing on stack: " + ni);
     if (ni == null) {
       RobustCurrent.fatalProblem("tried to add null to navigation stack", LOG);
     }
     NavigationInstance toPush = ni;
-    if (! isEmpty()) {
+    if (!isEmpty()) {
       NavigationInstance joined = getTop().absorb(ni); // NullPointerException cannot happen
       if (joined != null) {
         pop(); // exception cannot happen
@@ -252,7 +252,7 @@ public class NavigationStack implements Skimmable {
    * @post goBack();
    * @except goBack();
    */
-  public final void goBack(ActionEvent event) throws FacesException {
+  public final void goBack(final ActionEvent event) throws FacesException {
     goBack();
   }
 

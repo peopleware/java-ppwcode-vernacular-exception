@@ -60,7 +60,7 @@ import org.apache.commons.logging.LogFactory;
  *   as a managed map in JSF, as follows:</p>
  * <pre>
  *    &lt;managed-bean&gt;
- *      &lt;managed-bean-name&gt;<samp>my$semantic$class$Fqcn_collection_comparator&lt;/managed-bean-name&gt;
+ *      &lt;managed-bean-name&gt;<samp>my$semantic$class$Fqcn_collection_comparator</samp>&lt;/managed-bean-name&gt;
  *      &lt;managed-bean-class&gt;be.peopleware.jsf_II.util.DynamicComparatorChain&lt;/managed-bean-class&gt;
  *      &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;
  *      &lt;map-entries&gt;
@@ -101,7 +101,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
   /*</section>*/
 
 
-  static private final Log LOG = LogFactory.getLog(DynamicComparatorChain.class);
+  private static final Log LOG = LogFactory.getLog(DynamicComparatorChain.class);
 
 
 
@@ -120,7 +120,8 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
    * turns out to be {@link Comparable}. If not, a {@link ClassCastException}
    * will be thrown.
    */
-  public void addComparator(String propertyName, Comparator comp, boolean ascending) {
+  public void addComparator(final String propertyName, final Comparator comp,
+      final boolean ascending) {
     Entry cce = new Entry(propertyName, comp, ascending);
     $chain.add(cce);
   }
@@ -131,15 +132,15 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
    * its comparison order is reversed. If no comparator is registered
    * under that name, nothing happens.
    */
-  public void bringToFront(String propertyName) {
+  public void bringToFront(final String propertyName) {
     LOG.debug("call to bringToFront; propertyName = " + propertyName);
     ListIterator iter = $chain.listIterator();
     LOG.debug("looking for entry with propertyName = " + propertyName);
     while (iter.hasNext()) {
       Entry cce = (Entry)iter.next();
-      LOG.debug("entry: propertyName = " + cce.getPropertyName() +
-                ", comparator = " + cce.getComparator() +
-                ", ascending = " + cce.isAscending());
+      LOG.debug("entry: propertyName = " + cce.getPropertyName()
+                + ", comparator = " + cce.getComparator()
+                + ", ascending = " + cce.isAscending());
       if (cce.getPropertyName().equals(propertyName)) {
         LOG.debug("match found");
         if (iter.previousIndex() == 0) {
@@ -156,7 +157,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     }
   }
 
-  public final String[] getSortOrder() {
+  public String[] getSortOrder() {
     String[] result = new String[$chain.size()];
     Iterator iter = $chain.iterator();
     int index = 0;
@@ -168,15 +169,15 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     return result;
   }
 
-  public final void setSortOrder(String[] sortOrder) {
-    for(int i = sortOrder.length - 1; i >= 0; i--) {
+  public void setSortOrder(final String[] sortOrder) {
+    for (int i = sortOrder.length - 1; i >= 0; i--) {
       bringToFront(sortOrder[i]);
     }
   }
 
   /**
    * @invar $chain != null;
-   * @invar ! $chain.contains(null);
+   * @invar !$chain.contains(null);
    * @invar (forall Object o; $chain.contains(o); o instanceof Entry);
    */
   private List $chain = new LinkedList();
@@ -188,7 +189,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
    */
   private class Entry implements Comparator, Serializable {
 
-    public Entry(String propertyName, Comparator comp, boolean ascending) {
+    public Entry(final String propertyName, final Comparator comp, final boolean ascending) {
       if (propertyName == null) {
         throw new NullPointerException();
       }
@@ -208,7 +209,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
       return $comparator;
     }
 
-    public final void setComparator(Comparator comp) {
+    public final void setComparator(final Comparator comp) {
       $comparator = comp;
     }
 
@@ -219,12 +220,12 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     }
 
     public void toggleAscending() {
-      $ascending = ! $ascending;
+      $ascending = !$ascending;
     }
 
     private boolean $ascending;
 
-    public int compare(Object o1, Object o2) throws ClassCastException {
+    public int compare(final Object o1, final Object o2) throws ClassCastException {
       if (o1 == o2) {
         return 0;
       }
@@ -248,11 +249,11 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
       }
     }
 
-    private final static String COLLECTION_SIZE = "size";
+    private static final String COLLECTION_SIZE = "size";
 
-    private final static String ARRAY_LENGTH = "length";
+    private static final String ARRAY_LENGTH = "length";
 
-    private Object getNavigatedProperyValueOrNull(Object bean, String propertyName) {
+    private Object getNavigatedProperyValueOrNull(final Object bean, final String propertyName) {
       try {
         int sizeOfNameEnd = propertyName.lastIndexOf(COLLECTION_SIZE);
         if (sizeOfNameEnd < 0) {
@@ -307,7 +308,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
       return null; // make compiler happy
     }
 
-    private int compareProperty(Object o1, Object o2) throws ClassCastException {
+    private int compareProperty(final Object o1, final Object o2) throws ClassCastException {
       assert o1 != null;
       assert o2 != null;
       Object v1 = null;
@@ -346,7 +347,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     }
   }
 
-  public final int compare(Object o1, Object o2) {
+  public int compare(final Object o1, final Object o2) {
     LOG.debug("compare called: o1 = " + o1 + ", o2 = " + o2);
     Iterator iter = $chain.iterator();
     int result = 0;
@@ -360,15 +361,15 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
 
   // Map methods
 
-  public final int size() {
+  public int size() {
     return $chain.size();
   }
 
-  public final boolean isEmpty() {
+  public boolean isEmpty() {
     return $chain.isEmpty();
   }
 
-  public boolean containsKey(Object key) {
+  public boolean containsKey(final Object key) {
     Iterator iter = $chain.iterator();
     while (iter.hasNext()) {
       Entry entry = (Entry)iter.next();
@@ -379,7 +380,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     return false;
   }
 
-  public boolean containsValue(Object value) {
+  public boolean containsValue(final Object value) {
     Iterator iter = $chain.iterator();
     while (iter.hasNext()) {
       Entry entry = (Entry)iter.next();
@@ -390,7 +391,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     return false;
   }
 
-  public Object get(Object key) {
+  public Object get(final Object key) {
     Iterator iter = $chain.iterator();
     while (iter.hasNext()) {
       Entry entry = (Entry)iter.next();
@@ -410,13 +411,13 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
    * @throws ClassCastException
    *         ! comp instanceof Comparator;
    */
-  public Object put(Object propertyName, Object comp) {
+  public Object put(final Object propertyName, final Object comp) {
     Object previousValue = remove(propertyName);
     addComparator((String)propertyName, (Comparator)comp, true);
     return previousValue;
   }
 
-  public Object remove(Object key) {
+  public Object remove(final Object key) {
     ListIterator iter = $chain.listIterator();
     while (iter.hasNext()) {
       Entry entry = (Entry)iter.next();
@@ -428,7 +429,7 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     return null;
   }
 
-  public void putAll(Map t) {
+  public void putAll(final Map t) {
     Iterator iter = t.entrySet().iterator();
     while (iter.hasNext()) {
       Map.Entry tEntry = (Map.Entry)iter.next();
@@ -460,6 +461,10 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     return result;
   }
 
+  /**
+   * Returns a set view of the mappings contained in this map;
+   * the mappings are created .
+   */
   public Set entrySet() {
     Set result = new HashSet();
     Iterator iter = $chain.iterator();
@@ -471,21 +476,49 @@ public final class DynamicComparatorChain implements Comparator, Map, Serializab
     return result;
   }
 
+  /**
+   * A class of map entries, created using an {@link Entry} object.
+   */
   private class MapEntry implements Map.Entry {
 
-    public MapEntry(Entry entry) {
+    /**
+     * Create a new {@link MapEntry} using the given entry.
+     *
+     * @param  entry
+     * @post   new.getKey() == entry.getPropertyName();
+     * @post   new.getValue() == entry.getComparator();
+     */
+    public MapEntry(final Entry entry) {
       $entry = entry;
     }
 
+    /**
+     * Returns the key of the map entry.
+     *
+     * @basic
+     */
     public Object getKey() {
       return $entry.getPropertyName();
     }
 
+    /**
+     * Returns the value of the map entry.
+     *
+     * @basic
+     */
     public Object getValue() {
       return $entry.getComparator();
     }
 
-    public Object setValue(Object value) {
+    /**
+     * Set the given value and return the previous value.
+     *
+     * @pre     value != null
+     *           ==> value instanceof Comparator
+     * @post    new.getValue() == value;
+     * @return  result == getValue();
+     */
+    public Object setValue(final Object value) {
       Comparator previousValue = $entry.getComparator();
       $entry.setComparator((Comparator)value);
       return previousValue;
