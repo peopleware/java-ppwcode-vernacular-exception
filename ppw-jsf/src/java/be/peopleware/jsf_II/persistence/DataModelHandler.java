@@ -87,6 +87,12 @@ public class DataModelHandler extends CollectionHandler {
     return result;
   }
 
+  /**
+   * Skim unneeded data from this instance, if applicable at this time.
+   *
+   * @see   CollectionHandler
+   * @post  new.getDataModel() == null;
+   */
   public void skim() {
     super.skim();
     LOG.debug("datamodel is skimmed");

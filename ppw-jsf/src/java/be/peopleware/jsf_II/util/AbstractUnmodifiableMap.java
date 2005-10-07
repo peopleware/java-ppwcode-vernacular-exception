@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * Common code for maps that are unmodifiable. Methods that modify the map throw an
  * {@link java.lang.UnsupportedOperationException}. Some other methods have
- * a default implementation, but can be overridden by subclasses.</p>
+ * a default implementation, but can be overridden by subclasses.
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
@@ -60,7 +60,7 @@ public abstract class AbstractUnmodifiableMap implements Map, Serializable {
   /**
    * @return keySet().contains(key);
    */
-  public boolean containsKey(Object key) {
+  public boolean containsKey(final Object key) {
     return keySet().contains(key);
   }
 
@@ -88,7 +88,7 @@ public abstract class AbstractUnmodifiableMap implements Map, Serializable {
   /**
    * @return values().contains(value);
    */
-  public boolean containsValue(Object value) {
+  public boolean containsValue(final Object value) {
     return values().contains(value);
   }
 
@@ -114,13 +114,33 @@ public abstract class AbstractUnmodifiableMap implements Map, Serializable {
     return Collections.unmodifiableSet(result);
   }
 
+  /**
+   * A class of map entries. The method {@link #setValue(Object)}
+   * is not supported.
+   */
   protected abstract class EntrySetEntry implements Map.Entry, Comparable, Serializable {
 
-    public final Object setValue(Object value) throws UnsupportedOperationException {
+    /**
+     * Replaces the value corresponding to this entry with the specified
+     * value; not supported.
+     *
+     * @post    false;
+     * @throws  UnsupportedOperationException
+     *          true;
+     */
+    public final Object setValue(final Object value) throws UnsupportedOperationException {
       throw new UnsupportedOperationException();
     }
 
-    public final int compareTo(Object o) {
+    /**
+     * Returns -1 when the given object is not effective; compares the keys
+     * of the objects otherwise.
+     *
+     * @return  o == null
+     *            ? result == -1
+     *            : result == getKey().compareTo(((EntrySetEntry)o).getKey())
+     */
+    public final int compareTo(final Object o) {
       if (o == null) {
         return -1;
       }
@@ -131,20 +151,40 @@ public abstract class AbstractUnmodifiableMap implements Map, Serializable {
 
   }
 
+  /**
+   * A class of map entries containing a key. The method {@link #getValue()}
+   * returns the value in the surrounding map corresponding to that key.
+   */
   protected class DefaultSetEntry extends EntrySetEntry {
 
-    public DefaultSetEntry(Object key) {
+    /**
+     * Create a new {@link DefaultSetEntry} with the given key.
+     *
+     * @param key
+     * @post  new.getKey() == key;
+     */
+    public DefaultSetEntry(final Object key) {
       $key = key;
     }
 
     private Object $key;
 
+    /**
+     * Returns the key.
+     *
+     * @basic
+     */
     public final Object getKey() {
       return $key;
     }
 
+    /**
+     * Returns the value corresponding to the key of this entry.
+     *
+     * @return  get(getKey());
+     */
     public Object getValue() {
-      return get($key);
+      return get(getKey());
     }
 
   }
@@ -152,19 +192,47 @@ public abstract class AbstractUnmodifiableMap implements Map, Serializable {
   /*</property>*/
 
 
-
-  public final Object put(Object key, Object value) throws UnsupportedOperationException {
+  /**
+   * Associates the specified value with the specified key in this map; not supported.
+   *
+   * @post    false;
+   * @throws  UnsupportedOperationException
+   *          true;
+   */
+  public final Object put(final Object key, final Object value)
+      throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }
 
-  public final Object remove(Object key) throws UnsupportedOperationException {
+  /**
+   * Removes the mapping for this key from this map if it is present; not supported.
+   *
+   * @post    false;
+   * @throws  UnsupportedOperationException
+   *          true;
+   */
+  public final Object remove(final Object key) throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }
 
-  public final void putAll(Map t) throws UnsupportedOperationException {
+  /**
+   * Copies all of the mappings from the specified map to this map; not supported.
+   *
+   * @post    false;
+   * @throws  UnsupportedOperationException
+   *          true;
+   */
+  public final void putAll(final Map t) throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }
 
+  /**
+   * Removes all mappings from this map; not supported.
+   *
+   * @post    false;
+   * @throws  UnsupportedOperationException
+   *          true;
+   */
   public final void clear() throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }

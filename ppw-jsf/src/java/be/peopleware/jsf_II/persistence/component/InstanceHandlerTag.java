@@ -32,8 +32,13 @@ public class InstanceHandlerTag extends ViewModeHandlerTag {
 
   //private static final Log LOG = LogFactory.getLog(InstanceHandlerTag.class);
 
+  /**
+   * Return the component type for the component that is or will be bound
+   * to this tag.
+   *
+   * @return  InstanceHandlerTag.class.getName();
+   */
   public String getComponentType() {
     return InstanceHandlerTag.class.getName();
   }
-  
 }
