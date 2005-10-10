@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -132,7 +137,7 @@ public class _Test_Address extends _Test_MutableValue {
 
   /*<section name="instance methods">*/
   //-------------------------------------------------------------------
-  
+
   protected final void test_setStreetAddress_String_() {
     Iterator iterSubject = getCases().iterator();
     while (iterSubject.hasNext()) {
@@ -161,7 +166,7 @@ public class _Test_Address extends _Test_MutableValue {
       unexpectedThrowable(t);
     }
   }
-  
+
   protected final void test_setPostalCode_String_() {
     Iterator iterSubject = getCases().iterator();
     while (iterSubject.hasNext()) {
@@ -190,7 +195,7 @@ public class _Test_Address extends _Test_MutableValue {
       unexpectedThrowable(t);
     }
   }
-  
+
   protected final void test_setCity_String_() {
     Iterator iterSubject = getCases().iterator();
     while (iterSubject.hasNext()) {
@@ -219,7 +224,7 @@ public class _Test_Address extends _Test_MutableValue {
       unexpectedThrowable(t);
     }
   }
-  
+
   protected final void test_setState_String_() {
     Iterator iterSubject = getCases().iterator();
     while (iterSubject.hasNext()) {
