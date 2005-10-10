@@ -135,7 +135,9 @@
       <property name="severity" value="warning"/>
     </module>
     <!-- Bad code -->
-    <module name="EmptyBlock"/>
+    <module name="EmptyBlock">
+      <property name="option" value="text" />
+    </module>
     <module name="EmptyStatement"/>
     <module name="MethodLength">
       <property name="max" value="40"/>
