@@ -20,8 +20,8 @@ import javax.faces.convert.ConverterException;
  * To activate this converter, the following entry has to appear in <kbd>faces-config.xml</kbd>:
  * <pre>
  * &lt;converter&gt;
- *   &lt;converter-for-class&gt;be.peopleware.value_I.NationalNumber&lt;/converter-for-class&gt;
- *   &lt;converter-class&gt;be.peopleware.value_I.NationalNumberConverter&lt;/converter-class&gt;
+ *   &lt;converter-for-class&gt;be.peopleware.value_II.NationalNumber&lt;/converter-for-class&gt;
+ *   &lt;converter-class&gt;be.peopleware.value_II.NationalNumberConverter&lt;/converter-class&gt;
  * &lt;/converter&gt;
  * </pre>
  *

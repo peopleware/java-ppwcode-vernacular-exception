@@ -38,7 +38,7 @@ public class _Test_EnumerationValue extends _Test_ImmutableValue {
   /*</section>*/
 
   public static void main(final String[] args) {
-    Test.main(new String[] {"be.peopleware.value_I._Test_EnumerationValue"}); //$NON-NLS-1$
+    Test.main(new String[] {"be.peopleware.value_II._Test_EnumerationValue"}); //$NON-NLS-1$
   }
 
   protected void testClassMethods() {

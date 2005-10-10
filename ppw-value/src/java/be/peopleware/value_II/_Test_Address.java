@@ -36,7 +36,7 @@ public class _Test_Address extends _Test_MutableValue {
 
 
   public static void main(final String[] args) {
-    Test.main(new String[] {"be.peopleware.value_I._Test_Address"}); //$NON-NLS-1$
+    Test.main(new String[] {"be.peopleware.value_II._Test_Address"}); //$NON-NLS-1$
   }
 
   protected void testClassMethods() {

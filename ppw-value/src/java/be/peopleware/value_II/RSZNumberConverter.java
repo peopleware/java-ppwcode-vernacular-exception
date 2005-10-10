@@ -24,8 +24,8 @@ import be.peopleware.bean_V.PropertyException;
  * To activate this converter, the following entry has to appear in <kbd>faces-config.xml</kbd>:
  * <pre>
  * &lt;converter&gt;
- *   &lt;converter-for-class&gt;be.peopleware.value_I.RSZNumber&lt;/converter-for-class&gt;
- *   &lt;converter-class&gt;be.peopleware.value_I.RSZNumberConverter&lt;/converter-class&gt;
+ *   &lt;converter-for-class&gt;be.peopleware.value_II.RSZNumber&lt;/converter-for-class&gt;
+ *   &lt;converter-class&gt;be.peopleware.value_II.RSZNumberConverter&lt;/converter-class&gt;
  * &lt;/converter&gt;
  * </pre>
  *

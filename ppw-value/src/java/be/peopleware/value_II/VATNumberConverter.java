@@ -20,8 +20,8 @@ import javax.faces.convert.ConverterException;
  * To activate this converter, the following entry has to appear in <kbd>faces-config.xml</kbd>:
  * <pre>
  * &lt;converter&gt;
- *   &lt;converter-for-class&gt;be.peopleware.value_I.VATNumber&lt;/converter-for-class&gt;
- *   &lt;converter-class&gt;be.peopleware.fvb.web.convenants.convert.VATNumberConverter&lt;/converter-class&gt;
+ *   &lt;converter-for-class&gt;be.peopleware.value_II.VATNumber&lt;/converter-for-class&gt;
+ *   &lt;converter-class&gt;be.peopleware.value_II.VATNumberConverter&lt;/converter-class&gt;
  * &lt;/converter&gt;
  * </pre>
  *

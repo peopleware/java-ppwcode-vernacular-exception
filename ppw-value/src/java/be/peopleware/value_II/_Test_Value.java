@@ -36,7 +36,7 @@ public class _Test_Value extends _Test_Object {
 
 
   public static void main(final String[] args) {
-    Test.main(new String[] {"be.peopleware.value_I._Test_Value"}); //$NON-NLS-1$
+    Test.main(new String[] {"be.peopleware.value_II._Test_Value"}); //$NON-NLS-1$
   }
 
   protected void testClassMethods() {
