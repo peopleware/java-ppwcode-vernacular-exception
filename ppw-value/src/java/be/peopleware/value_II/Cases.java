@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -36,14 +41,17 @@ public final class Cases {
 
   /*</section>*/
 
-
-
+  /**
+   * Empty static method, used to activate the loading of this class.
+   *
+   * @post  true;
+   */
   public static void loadClass() {
     // NOP, something to call to load the class
   }
 
  //  NationalNumber
-  private final static StraightList TOL_BE_PEOPLEWARE_VALUE_I_NATIONAL_NUMBER;
+  private static final StraightList TOL_BE_PEOPLEWARE_VALUE_I_NATIONAL_NUMBER;
   static {
     NationalNumber[] nn = new NationalNumber[4];
     try {
@@ -52,7 +60,7 @@ public final class Cases {
       nn[2] = new NationalNumber("700509", "169", "96");
       nn[3] = new NationalNumber("760905", "145", "06");
     }
-    catch(PropertyException exc) {
+    catch (PropertyException exc) {
       assert false : "Shouldn't happen";
     }
     TOL_BE_PEOPLEWARE_VALUE_I_NATIONAL_NUMBER = new ArrayStraightList(nn);
@@ -60,7 +68,7 @@ public final class Cases {
   }
 
   //  Period
-  private final static StraightList TOL_BE_PEOPLEWARE_VALUE_I_PERIOD;
+  private static final StraightList TOL_BE_PEOPLEWARE_VALUE_I_PERIOD;
   static {
     StraightList testValues = null;
     try {
@@ -81,9 +89,9 @@ public final class Cases {
         Period period = new Period();
         try {
           if (
-              date1 == null ||
-              date2 == null ||
-              ( date1 != null && date2 != null && date1.before(date2) )
+              date1 == null
+              || date2 == null
+              || (date1 != null && date2 != null && date1.before(date2))
            ) {
             period.setStartDate(date1);
             period.setEndDate(date2);
@@ -95,13 +103,13 @@ public final class Cases {
             periods.add(period);
           }
         }
-        catch(InvalidPeriodException exc) {
+        catch (InvalidPeriodException exc) {
           assert false : "Shouldn't happen";
         }
       }
     }
     Period[] array = new Period[periods.size()];
-    for(int i = 0;i<array.length;i++) {
+    for (int i = 0; i < array.length; i++) {
       array[i] = (Period)periods.get(i);
     }
     TOL_BE_PEOPLEWARE_VALUE_I_PERIOD = new ArrayStraightList(array);

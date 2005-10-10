@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -64,8 +69,8 @@ public abstract class ResourceBundleBasedEnumerationValueEditor
    * is returned.
    */
   public final String getLabel() {
-    String result
-        = Properties.findKeyWithBasename(getResourceBundleBasename(),
+    String result =
+          Properties.findKeyWithBasename(getResourceBundleBasename(),
                                          new String[] {getLabelKey()},
                                          getResourceBundleLoadStrategy());
     if (result == null) {
@@ -95,8 +100,8 @@ public abstract class ResourceBundleBasedEnumerationValueEditor
     $resourceBundleLoadStrategy = strategy;
   }
 
-  ResourceBundleLoadStrategy $resourceBundleLoadStrategy
-      = new DefaultResourceBundleLoadStrategy();
+  ResourceBundleLoadStrategy $resourceBundleLoadStrategy =
+      new DefaultResourceBundleLoadStrategy();
 
   /*</property>*/
 

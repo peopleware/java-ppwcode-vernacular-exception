@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -75,6 +80,13 @@ public abstract class AbstractEnumerationValueEditor
   /*<property name="tags">*/
   //------------------------------------------------------------------
 
+  /**
+  * If the property value must be one of a set of known tagged values, then
+  * this method should return an array of the tag values.
+  *
+  * @see     PropertyEditorSupport
+  * @return  (String[])getValuesMap().keySet().toArray();
+  */
   public final String[] getTags() {
     return (String[])getValuesMap().keySet().toArray();
   }
@@ -92,7 +104,7 @@ public abstract class AbstractEnumerationValueEditor
    *
    * @protected
    * It would be wise for the implementation of this method to return
-   * a staticically constructed Map.
+   * a statically constructed Map.
    *
    * @basic
    */

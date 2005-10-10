@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.value_II;
 
 
@@ -122,7 +121,8 @@ public final class RSZNumber extends ImmutableValue {
    *                        "INVALID_CHECK", null
    *                 );
    */
-  public RSZNumber(String leftNumber, String middleNumber, String rightNumber) throws PropertyException {
+  public RSZNumber(final String leftNumber, final String middleNumber,
+      final String rightNumber) throws PropertyException {
     initialize(leftNumber, middleNumber, rightNumber);
   }
 
@@ -132,7 +132,7 @@ public final class RSZNumber extends ImmutableValue {
    *
    * @todo contract (see toryt)
    */
-  public RSZNumber(String pattern) throws PropertyException {
+  public RSZNumber(final String pattern) throws PropertyException {
     if (pattern == null) {
       throw new PropertyException(RSZNumber.class, null, "NULL_PATTERN", null);
     }
@@ -144,9 +144,9 @@ public final class RSZNumber extends ImmutableValue {
     }
     String nnString = buffer.toString();
     try {
-      String leftNumber = nnString.substring(0,3);
-      String middleNumber = nnString.substring(3,10);
-      String rightNumber = nnString.substring(10,12);
+      String leftNumber = nnString.substring(0, 3);
+      String middleNumber = nnString.substring(3, 10);
+      String rightNumber = nnString.substring(10, 12);
         // IndexOutOfBoundsException
       initialize(leftNumber, middleNumber, rightNumber);
     }
@@ -164,9 +164,9 @@ public final class RSZNumber extends ImmutableValue {
     try {
       initialize("024", "1234567", "49");
     }
-    catch(PropertyException exc) {
+    catch (PropertyException exc) {
       // shouldn't happen, because valid numbers are given
-      assert false: "Shouldn't happen";
+      assert false : "Shouldn't happen";
     }
   }
 
@@ -175,7 +175,7 @@ public final class RSZNumber extends ImmutableValue {
    * @post    getMiddleNumber().equals(rszNumber.getMiddleNumber());
    * @post    getRightNumber().equals(rszNumber.getRightNumber());
    */
-  public RSZNumber(RSZNumber rszNumber) throws PropertyException {
+  public RSZNumber(final RSZNumber rszNumber) throws PropertyException {
     initialize(
         rszNumber.getLeftNumber(), rszNumber.getMiddleNumber(),
         rszNumber.getRightNumber()
@@ -187,28 +187,32 @@ public final class RSZNumber extends ImmutableValue {
   /**
    * For contract: see first constructor.
    */
-  private void initialize(String leftNumber, String middleNumber, String rightNumber)
-     throws PropertyException {
+  private void initialize(final String leftNumber, final String middleNumber,
+      final String rightNumber) throws PropertyException {
     CompoundPropertyException cpe =
       new CompoundPropertyException(RSZNumber.class, null, null, null);
     if (leftNumber == null) {
       cpe.addElementException(
-          new PropertyException(RSZNumber.class, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
+          new PropertyException(
+              RSZNumber.class, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
       );
     }
     if (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber)) {
       cpe.addElementException(
-          new PropertyException(RSZNumber.class, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              RSZNumber.class, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (middleNumber == null) {
       cpe.addElementException(
-          new PropertyException(RSZNumber.class, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
+          new PropertyException(
+              RSZNumber.class, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
       );
     }
     if (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber)) {
       cpe.addElementException(
-          new PropertyException(RSZNumber.class, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              RSZNumber.class, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (rightNumber == null) {
@@ -218,13 +222,14 @@ public final class RSZNumber extends ImmutableValue {
     }
     if (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber)) {
       cpe.addElementException(
-          new PropertyException(RSZNumber.class, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              RSZNumber.class, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
       );
     }
-    if (leftNumber != null &&
-        middleNumber != null &&
-        rightNumber != null &&
-        !RSZNumber.checkRSZNumber(leftNumber, middleNumber, rightNumber)
+    if (leftNumber != null
+        && middleNumber != null
+        && rightNumber != null
+        && !RSZNumber.checkRSZNumber(leftNumber, middleNumber, rightNumber)
     ) {
       cpe.addElementException(
           new PropertyException(RSZNumber.class, null, "INVALID_CHECK", null)
@@ -242,7 +247,7 @@ public final class RSZNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getLeftNumber() {
+  public String getLeftNumber() {
     return $leftNumber;
   }
 
@@ -260,7 +265,7 @@ public final class RSZNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getMiddleNumber() {
+  public String getMiddleNumber() {
     return $middleNumber;
   }
 
@@ -278,7 +283,7 @@ public final class RSZNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getRightNumber() {
+  public String getRightNumber() {
     return $rightNumber;
   }
 
@@ -289,6 +294,13 @@ public final class RSZNumber extends ImmutableValue {
   private String $rightNumber;
 
   /*</property>*/
+
+  /**
+   * The integer used for checking a RSZ number.
+   *
+   * <strong>= 97</strong>
+   */
+  public static final int CHECK_NUMBER = 97;
 
   /**
    * @param   leftNumber
@@ -305,17 +317,22 @@ public final class RSZNumber extends ImmutableValue {
    * @pre     Pattern.matches(RIGHT_PATTERN, rightNumber);
    * @return  (  Integer.parseInt(rightNumber)
    *             ==
-   *             ( ( 96 - ( (Integer.parseInt(middleNumber) * 100 ) % 97 ) ) == 0)
-   *                 ? (97)
-   *                 : ( 96 - ( (Integer.parseInt(middleNumber) * 100 ) % 97 ) )
+   *             ( CHECK_NUMBER - 1 -
+   *               ( (Integer.parseInt(middleNumber) * 100 ) % CHECK_NUMBER )
+   *             ) == 0
+   *                 ? (CHECK_NUMBER)
+   *                 : ( CHECK_NUMBER - 1 -
+   *                     ( (Integer.parseInt(middleNumber) * 100 ) % CHECK_NUMBER )
+   *                   )
    *          );
    */
-  public static final boolean checkRSZNumber(String leftNumber, String middleNumber, String rightNumber) {
+  public static boolean checkRSZNumber(final String leftNumber,
+      final String middleNumber, final String rightNumber) {
     int middle = Integer.parseInt(middleNumber);
     int right = Integer.parseInt(rightNumber);
-    int modulo = 96 - ( (middle * 100) % 97 );
+    int modulo = CHECK_NUMBER - 1 - ((middle * 100) % CHECK_NUMBER);
     if (modulo == 0) {
-      modulo = 97;
+      modulo = CHECK_NUMBER;
     }
     return (right == modulo);
   }
@@ -326,12 +343,12 @@ public final class RSZNumber extends ImmutableValue {
    *          ((RSZNumber) o).getMiddleNumber().equals(getMiddleNumber()) &&
    *          ((RSZNumber) o).getRightNumber().equals(getRightNumber());
    */
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     return
-      o instanceof RSZNumber &&
-      ((RSZNumber) o).getLeftNumber().equals(getLeftNumber()) &&
-      ((RSZNumber) o).getMiddleNumber().equals(getMiddleNumber()) &&
-      ((RSZNumber) o).getRightNumber().equals(getRightNumber());
+      o instanceof RSZNumber
+      && ((RSZNumber) o).getLeftNumber().equals(getLeftNumber())
+      && ((RSZNumber) o).getMiddleNumber().equals(getMiddleNumber())
+      && ((RSZNumber) o).getRightNumber().equals(getRightNumber());
   }
 
   /**
@@ -340,13 +357,14 @@ public final class RSZNumber extends ImmutableValue {
    *          getRightNumber().hashCode();
    */
   public int hashCode() {
-    return
-      getLeftNumber().hashCode() +
-      getMiddleNumber().hashCode() +
-      getRightNumber().hashCode();
+    return  getLeftNumber().hashCode()
+            + getMiddleNumber().hashCode()
+            + getRightNumber().hashCode();
   }
 
   /**
+   * Return a string representation of the object.
+   *
    * return  getLeftNumber() + " " + getMiddleNumber() + " " + getRightNumber();
    */
   public String toString() {

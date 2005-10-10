@@ -1,10 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
-
 package be.peopleware.value_II;
 
 
@@ -66,9 +64,12 @@ public abstract class AbstractPropertyEditorConverter implements Converter {
   private static final Log LOG =
     LogFactory.getLog(AbstractPropertyEditorConverter.class);
 
+  /**
+   * Default constructor.
+   */
   protected AbstractPropertyEditorConverter() {
-    LOG.debug("creation of new ...PropertyEditorConverter (" +
-              getClass().getName() + ")");
+    LOG.debug("creation of new ...PropertyEditorConverter ("
+              + getClass().getName() + ")");
   }
 
 
@@ -84,15 +85,16 @@ public abstract class AbstractPropertyEditorConverter implements Converter {
    * @throws ConverterException
    *         isLabelRepresenation();
    */
-  public final Object getAsObject(FacesContext context, UIComponent component, String value)
-      throws ConverterException {
+  public final Object getAsObject(final FacesContext context,
+      final UIComponent component, final String value) throws ConverterException {
     assert context != null;
     assert component != null;
-    LOG.debug("request to convert \"" + value + "\" to object for " +
-              component + "(id = " + component.getClientId(context) + ")");
+    LOG.debug("request to convert \"" + value + "\" to object for "
+              + component + "(id = " + component.getClientId(context) + ")");
     if (isLabelRepresentation()) {
       LOG.debug("Cannot convert from String to Object in label-representation-mode");
-      throw new ConverterException("Cannot convert from String to Object in label-representation-mode");
+      throw new ConverterException("Cannot convert from String to Object in "
+          + "label-representation-mode");
     }
     try {
       PropertyEditor editor = getPropertyEditor(context, component); // ConverterException
@@ -118,13 +120,13 @@ public abstract class AbstractPropertyEditorConverter implements Converter {
    * @throws ConverterException
    *         getPropertyEditor(context, component);
    */
-  public final String getAsString(FacesContext context, UIComponent component, Object value)
-      throws ConverterException {
+  public final String getAsString(final FacesContext context,
+      final UIComponent component, final Object value) throws ConverterException {
     assert context != null;
     assert component != null;
     if (LOG.isDebugEnabled()) {
-      LOG.debug("request to convert object \"" + value + "\" to String for " +
-                component + "(id = " + component.getClientId(context) + ")");
+      LOG.debug("request to convert object \"" + value + "\" to String for "
+                + component + "(id = " + component.getClientId(context) + ")");
     }
     PropertyEditor editor = getPropertyEditor(context, component); // ConverterException
     LOG.debug("retrieved PropertyEditor: " + editor);
@@ -145,7 +147,7 @@ public abstract class AbstractPropertyEditorConverter implements Converter {
   /**
    * @post new.isLabelRepresentation() == labelRepresentation;
    */
-  public final void setLabelRepresentation(boolean labelRepresentation) {
+  public final void setLabelRepresentation(final boolean labelRepresentation) {
     $labelRepresentation = labelRepresentation;
   }
 
@@ -160,9 +162,10 @@ public abstract class AbstractPropertyEditorConverter implements Converter {
    * @pre component != null;
    * @basic
    * @throws ConverterException
+   *         true;
    */
-  protected abstract PropertyEditor getPropertyEditor(FacesContext context,
-                                                      UIComponent component)
+  protected abstract PropertyEditor getPropertyEditor(final FacesContext context,
+                                                      final UIComponent component)
       throws ConverterException;
 
 }

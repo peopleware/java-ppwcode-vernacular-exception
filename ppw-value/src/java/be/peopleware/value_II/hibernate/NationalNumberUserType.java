@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.value_II.hibernate;
 
 
@@ -42,6 +41,9 @@ public class NationalNumberUserType implements UserType {
   /*</section>*/
 
   /**
+   * Create a new {@link GenderUserType}.
+   *
+   * @post new.getEnumerationValueEditor() instanceof GenderEditor;
    */
   public NationalNumberUserType() {
     // NOP
@@ -91,11 +93,22 @@ public class NationalNumberUserType implements UserType {
    * Retrieve an instance of the mapped class from a JDBC resultset.
    * Implementors should handle possibility of null values.
    *
-   * @return  An object of the type NationalNumber containing the given string.
+   * @result  resultSet.wasNull()
+   *            ==> result == null;
+   * @result  !resultSet.wasNull()
+   *            ==> result instanceof NationalNumber
+   *                && result.getLeftNumber()
+   *                   == resultSet.getString(names[0]).substring(0, 6)
+   *                && result.getMiddleNumber()
+   *                   == resultSet.getString(names[0]).substring(6, 9)
+   *                && result.getRightNumber()
+   *                   == resultSet.getString(names[0]).substring(9)
    * @throws  HibernateException
-   *          true;
+   *          false;
    * @throws  SQLException
-   *          true;
+   *          resultSet.getString(names[0]);
+   * @throws  SQLException
+   *          resultSet.wasNull();
    */
   public final Object nullSafeGet(final ResultSet resultSet,
                                   final String[] names,
@@ -106,13 +119,13 @@ public class NationalNumberUserType implements UserType {
     String nn = resultSet.getString(names[0]);
 
     if (!(resultSet.wasNull())) {
-      String nn_left = nn.substring(0,6);
-      String nn_middle = nn.substring(6,9);
+      String nn_left = nn.substring(0, 6);
+      String nn_middle = nn.substring(6, 9);
       String nn_right = nn.substring(9);
       try {
         result = new NationalNumber(nn_left, nn_middle, nn_right);
       }
-      catch(PropertyException pExc) {
+      catch (PropertyException pExc) {
         assert false : "Shouldn't happen";
       }
     }
@@ -125,11 +138,26 @@ public class NationalNumberUserType implements UserType {
    * Implementors should handle possibility of null values.
    * A multi-column type should be written to parameters starting from index.
    *
-   * @post    Write a prepared statement for the given national number.
+   * @post    value == null
+   *            ==> the parameter at the given index is set to null
+   * @post    value != null
+   *            ==> the parameter at the given index is set to the concatenation
+   *                of left, middle and right number of the given
+   *                national number
+   *
    * @throws  HibernateException
-   *          true;
+   *          (value != null)
+              && !returnedClass().getName().equals(value.getClass().getName())
    * @throws  SQLException
-   *          true;
+   *          value == null
+   *          && statement.setNull(index, sqlTypes()[0]) throws a SQLException;
+   * @throws  SQLException
+   *          value != null
+   *          && statement.setString(
+   *                 index,
+   *                 ((NationalNumber) value).getLeftNumber()
+   *                 + (NationalNumber) value.getMiddleNumber()
+   *                 + (NationalNumber) value.getRightNumber());
    */
   public final void nullSafeSet(final PreparedStatement statement,
                                 final Object value,
@@ -150,7 +178,7 @@ public class NationalNumberUserType implements UserType {
     }
     else {
       NationalNumber nn = (NationalNumber) value;
-      statement.setString(index, nn.getLeftNumber()+nn.getMiddleNumber()+nn.getRightNumber());
+      statement.setString(index, nn.getLeftNumber() + nn.getMiddleNumber() + nn.getRightNumber());
     }
   }
 }

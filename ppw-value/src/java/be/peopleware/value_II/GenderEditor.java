@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -6,7 +11,7 @@ import java.util.Map;
 
 /**
  * A property editor for properties of type {@link Gender}.
- * This editor is choosen automatically when needed, because it is in the
+ * This editor is chosen automatically when needed, because it is in the
  * same package as the type it is for, with the expected name.
  *
  * <p>Only get and set as text is supported for now. It is all

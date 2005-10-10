@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -7,6 +12,13 @@ import java.util.Map;
 
 
 /**
+ * A property editor for properties of type {@link Country}.
+ * This editor is chosen automatically when needed, because it is in the
+ * same package as the type it is for, with the expected name.
+ *
+ * <p>Only get and set as text is supported for now. It is all
+ *   that is needed for beans used in web application.</p>
+ *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
@@ -35,6 +47,12 @@ public class CountryEditor
     return Country.class;
   }
 
+  /**
+   * A map containing all possible values for the value type
+   * {@link Country}.
+   *
+   * @return  Country.VALUES;
+   */
   public final Map getValuesMap() {
     return Country.VALUES;
   }

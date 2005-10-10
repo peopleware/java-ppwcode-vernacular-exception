@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II.hibernate;
 
 
@@ -105,8 +110,20 @@ public class AbstractEnumerationUserType implements UserType {
   }
 
   /**
-   * @return the object returned by the property editor for
-   *          the string in the field with <code>names[0]</code>.
+   * Retrieve an instance of the mapped class from a JDBC resultset.
+   * Implementors should handle possibility of null values.
+   *
+   * @result  resultSet.wasNull()
+   *            ==> result == null;
+   * @result  !resultSet.wasNull()
+   *            ==> result == the object returned by the property editor for
+   *                          the string in the field with <code>names[0]</code>.
+   * @throws  HibernateException
+   *          Hibernate.STRING.nullSafeGet(resultSet, names[0]);
+   * @throws  SQLException
+   *          Hibernate.STRING.nullSafeGet(resultSet, names[0]);
+   * @throws  SQLException
+   *          resultSet.wasNull();
    */
   public final Object nullSafeGet(final ResultSet resultSet,
                                   final String[] names,
@@ -121,6 +138,26 @@ public class AbstractEnumerationUserType implements UserType {
     return result;
   }
 
+  /**
+   * Write an instance of the mapped class to a prepared statement.
+   *
+   * @post    value == null
+   *            ==> the parameter at the given index is set to null
+   * @post    value != null
+   *            ==> the parameter at the given index is set to the string
+   *                representation of the given value as returned by the
+   *                enumeration value editor
+   *
+   * @throws  HibernateException
+   *          (value != null)
+              && !returnedClass().getName().equals(value.getClass().getName())
+   * @throws  SQLException
+   *          value == null
+   *          && statement.setNull(index, Types.VARCHAR) throws a SQLException;
+   * @throws  SQLException
+   *          value != null
+   *          && statement.setString(index, getEnumerationValueEditor().getAsText());
+   */
   public final void nullSafeSet(final PreparedStatement statement,
                                 final Object value,
                                 final int index)

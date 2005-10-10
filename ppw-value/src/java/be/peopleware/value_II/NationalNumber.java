@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.value_II;
 
 
@@ -120,7 +119,8 @@ public final class NationalNumber extends ImmutableValue {
    *                        "INVALID_CHECK", null
    *                 );
    */
-  public NationalNumber(String leftNumber, String middleNumber, String rightNumber) throws PropertyException {
+  public NationalNumber(final String leftNumber, final String middleNumber,
+      final String rightNumber) throws PropertyException {
     initialize(leftNumber, middleNumber, rightNumber);
   }
 
@@ -133,9 +133,9 @@ public final class NationalNumber extends ImmutableValue {
     try {
       initialize("000000", "000", "97");
     }
-    catch(PropertyException exc) {
+    catch (PropertyException exc) {
       // shouldn't happen, because valid numbers are given
-      assert false: "Shouldn't happen";
+      assert false : "Shouldn't happen";
     }
   }
 
@@ -144,7 +144,7 @@ public final class NationalNumber extends ImmutableValue {
    * @post    getMiddleNumber().equals(nationalNumber.getMiddleNumber());
    * @post    getRightNumber().equals(nationalNumber.getRightNumber());
    */
-  public NationalNumber(NationalNumber nationalNumber) throws PropertyException {
+  public NationalNumber(final NationalNumber nationalNumber) throws PropertyException {
     initialize(
         nationalNumber.getLeftNumber(), nationalNumber.getMiddleNumber(),
         nationalNumber.getRightNumber()
@@ -156,44 +156,50 @@ public final class NationalNumber extends ImmutableValue {
   /**
    * For contract: see first constructor.
    */
-  private void initialize(String leftNumber, String middleNumber, String rightNumber)
-     throws PropertyException {
+  private void initialize(final String leftNumber, final String middleNumber,
+      final String rightNumber) throws PropertyException {
     CompoundPropertyException cpe =
       new CompoundPropertyException(NationalNumber.class, null, null, null);
     if (leftNumber == null) {
       cpe.addElementException(
-          new PropertyException(NationalNumber.class, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
+          new PropertyException(
+              NationalNumber.class, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
       );
     }
     if (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber)) {
       cpe.addElementException(
-          new PropertyException(NationalNumber.class, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              NationalNumber.class, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (middleNumber == null) {
       cpe.addElementException(
-          new PropertyException(NationalNumber.class, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
+          new PropertyException(
+              NationalNumber.class, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
       );
     }
     if (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber)) {
       cpe.addElementException(
-          new PropertyException(NationalNumber.class, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              NationalNumber.class, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (rightNumber == null) {
       cpe.addElementException(
-          new PropertyException(NationalNumber.class, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
+          new PropertyException(
+              NationalNumber.class, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
       );
     }
     if (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber)) {
       cpe.addElementException(
-          new PropertyException(NationalNumber.class, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              NationalNumber.class, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
       );
     }
-    if (leftNumber != null &&
-        middleNumber != null &&
-        rightNumber != null &&
-        !NationalNumber.checkNationalNumber(leftNumber, middleNumber, rightNumber)
+    if (leftNumber != null
+        && middleNumber != null
+        && rightNumber != null
+        && !NationalNumber.checkNationalNumber(leftNumber, middleNumber, rightNumber)
     ) {
       cpe.addElementException(
           new PropertyException(NationalNumber.class, null, "INVALID_CHECK", null)
@@ -211,7 +217,7 @@ public final class NationalNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getLeftNumber() {
+  public  String getLeftNumber() {
     return $leftNumber;
   }
 
@@ -229,7 +235,7 @@ public final class NationalNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getMiddleNumber() {
+  public  String getMiddleNumber() {
     return $middleNumber;
   }
 
@@ -247,7 +253,7 @@ public final class NationalNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getRightNumber() {
+  public String getRightNumber() {
     return $rightNumber;
   }
 
@@ -259,8 +265,19 @@ public final class NationalNumber extends ImmutableValue {
 
   /*</property>*/
 
+  /**
+   * Two billion.
+   *
+   * <strong>= 2000000000</strong>
+   */
   public static final int TWO_BILLION = 2000000000;
-  
+  /**
+   * The integer used for checking a national number.
+   *
+   * <strong>= 97</strong>
+   */
+  public static final int CHECK_NUMBER = 97;
+
   /**
    * @param   leftNumber
    *          The left part of a national number.
@@ -274,32 +291,45 @@ public final class NationalNumber extends ImmutableValue {
    * @pre     Pattern.matches(MIDDLE_PATTERN, middleNumber);
    * @pre     rightNumber != null;
    * @pre     Pattern.matches(RIGHT_PATTERN, rightNumber);
-   * @return  (97 - Integer.parseInt(leftNumber + middleNumber) % 97) == (Integer.parseInt(rightNumber))
-   *          || (97 - (Integer.parseInt(leftNumber + middleNumber) + TWO_BILLION) % 97) == (Integer.parseInt(rightNumber));
+   * @return  ( (CHECK_NUMBER - Integer.parseInt(leftNumber + middleNumber) % CHECK_NUMBER)
+   *              ==
+   *            (Integer.parseInt(rightNumber))
+   *          )
+   *          ||
+   *          ( ( CHECK_NUMBER
+   *              -
+   *              (Integer.parseInt(leftNumber + middleNumber) + TWO_BILLION) % CHECK_NUMBER
+   *            )
+   *              ==
+   *            (Integer.parseInt(rightNumber))
+   *          );
    */
-  public static final boolean checkNationalNumber(String leftNumber, String middleNumber, String rightNumber) {
-    return checkBefore2000(leftNumber, middleNumber, rightNumber) || checkAfter2000(leftNumber, middleNumber, rightNumber);
+  public static boolean checkNationalNumber(final String leftNumber,
+        final String middleNumber, final String rightNumber) {
+    return checkBefore2000(leftNumber, middleNumber, rightNumber)
+           || checkAfter2000(leftNumber, middleNumber, rightNumber);
   }
 
-  private static final boolean checkAfter2000(String leftNumber, String middleNumber, String rightNumber) {
+  private static boolean checkAfter2000(final String leftNumber,
+      final String middleNumber, final String rightNumber) {
     String left = leftNumber + middleNumber;
     int first = Integer.parseInt(left);
     int second = Integer.parseInt(rightNumber);
-    return (97 - ((first + TWO_BILLION) % 97)) == second;
+    return (CHECK_NUMBER - ((first + TWO_BILLION) % CHECK_NUMBER)) == second;
   }
-  
-  private static final boolean checkBefore2000(String leftNumber, String middleNumber, String rightNumber) {
+
+  private static boolean checkBefore2000(final String leftNumber,
+      final String middleNumber, final String rightNumber) {
     String left = leftNumber + middleNumber;
     int first = Integer.parseInt(left);
     int second = Integer.parseInt(rightNumber);
-    return (97 - (first % 97)) == second;
+    return (CHECK_NUMBER - (first % CHECK_NUMBER)) == second;
   }
-  
+
   /**
-   * @return 
-   *   The date of birth from this national number.
+   * @return  The date of birth from this national number.
    */
-  public final Date getDateOfBirth() {
+  public Date getDateOfBirth() {
     int year = Integer.parseInt(getLeftNumber().substring(0, 2));
     int month = Integer.parseInt(getLeftNumber().substring(2, 4)) - 1;
     int day = Integer.parseInt(getLeftNumber().substring(4, 6));
@@ -307,34 +337,36 @@ public final class NationalNumber extends ImmutableValue {
     Calendar date = new GregorianCalendar(year, month, day);
     return date.getTime();
   }
-  
+
   /**
-   * @return  o instanceof NationalNumber &&
-   *          ((NationalNumber) o).getLeftNumber().equals(getLeftNumber()) &&
-   *          ((NationalNumber) o).getMiddleNumber().equals(getMiddleNumber()) &&
-   *          ((NationalNumber) o).getRightNumber().equals(getRightNumber());
+   * @return  o instanceof NationalNumber
+   *          && ((NationalNumber) o).getLeftNumber().equals(getLeftNumber())
+   *          && ((NationalNumber) o).getMiddleNumber().equals(getMiddleNumber())
+   *          && ((NationalNumber) o).getRightNumber().equals(getRightNumber());
    */
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     return
-      o instanceof NationalNumber &&
-      ((NationalNumber) o).getLeftNumber().equals(getLeftNumber()) &&
-      ((NationalNumber) o).getMiddleNumber().equals(getMiddleNumber()) &&
-      ((NationalNumber) o).getRightNumber().equals(getRightNumber());
+      o instanceof NationalNumber
+      && ((NationalNumber) o).getLeftNumber().equals(getLeftNumber())
+      && ((NationalNumber) o).getMiddleNumber().equals(getMiddleNumber())
+      && ((NationalNumber) o).getRightNumber().equals(getRightNumber());
   }
 
   /**
-   * @return  getLeftNumber().hashCode() +
-   *          getMiddleNumber().hashCode() +
-   *          getRightNumber().hashCode();
+   * @return  getLeftNumber().hashCode()
+   *          + getMiddleNumber().hashCode()
+   *          + getRightNumber().hashCode();
    */
   public int hashCode() {
-    return 
-      getLeftNumber().hashCode() +
-      getMiddleNumber().hashCode() +
-      getRightNumber().hashCode();
+    return
+      getLeftNumber().hashCode()
+      + getMiddleNumber().hashCode()
+      + getRightNumber().hashCode();
   }
 
   /**
+   * Returns a string representation of the object.
+   *
    * return  getLeftNumber() + " " + getMiddleNumber() + " " + getRightNumber();
    */
   public String toString() {

@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -67,6 +72,9 @@ public final class Country extends EnumerationValue {
 
   /*</construction>*/
 
+  /**
+   * A map containing all possible values for this value type.
+   */
   public static final Map VALUES = countriesGenerator();
 
   private static Map countriesGenerator() {

@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -88,6 +93,9 @@ public class Role extends EnumerationValue {
    */
   public static final Role ADMINISTRATOR = new Role(ADMINISTRATOR_STRING);
 
+  /**
+   * A map containing all possible values for this value type.
+   */
   public static final Map VALUES = generateValues();
 
   private static Map generateValues() {

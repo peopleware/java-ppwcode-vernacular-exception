@@ -35,8 +35,21 @@ import be.peopleware.bean_V.PropertyException;
  */
 public class RSZNumberConverter implements Converter {
 
-  public Object getAsObject(FacesContext context, UIComponent component, String value)
-      throws ConverterException {
+  /**
+   * Convert the specified string value, which is associated with the
+   * specified UIComponent, into a model data object that is appropriate for
+   * being stored during the Apply Request Values phase of the request
+   * processing lifecycle.
+   *
+   * @result  value == null || value.length == 0
+   *            ==> result == null;
+   * @result  result == a new RSZ number created using the given string;
+   * @throws  ConverterException
+   *          The RSZ number could not be created from the given string.
+   * @todo  formal comment
+   */
+  public Object getAsObject(final FacesContext context, final UIComponent component,
+      final String value) throws ConverterException {
     if ((value == null) || (value.length() == 0)) {
       return null;
     }
@@ -50,14 +63,32 @@ public class RSZNumberConverter implements Converter {
     }
   }
 
-  public final static String EMPTY = "";
+  /**
+   * The empty string.
+   *
+   * <strong>= &quot;&quot;</strong>
+   */
+  public static final String EMPTY = "";
 
-  public String getAsString(FacesContext context, UIComponent component, Object value)
-      throws ConverterException {
+  /**
+   * Convert the specified model object value, which is associated with the
+   * specified UIComponent, into a String that is suitable for being included
+   * in the response generated during the Render Response phase of the request
+   * processing lifecycle.
+   *
+   * @result  value == null
+   *            ==> result == EMPTY;
+   * @result  value != null && value instanceof RSZNumber
+   *            ==> result == ((RSZNumber)value).toString();
+   * @throws  ConverterException
+   *          value != null && !(value instanceof RSZNumber)
+   */
+  public String getAsString(final FacesContext context, final UIComponent component,
+      final Object value) throws ConverterException {
     if (value == null) {
       return EMPTY;
     }
-    if (! (value instanceof RSZNumber)) {
+    if (!(value instanceof RSZNumber)) {
       throw new ConverterException("value is not a RSZNumber");
     }
     return ((RSZNumber)value).toString();

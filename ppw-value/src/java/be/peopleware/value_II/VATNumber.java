@@ -1,13 +1,15 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.value_II;
 
 
 import java.util.regex.Pattern;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.bean_V.CompoundPropertyException;
 import be.peopleware.bean_V.PropertyException;
@@ -39,6 +41,8 @@ public final class VATNumber extends ImmutableValue {
   /** {@value} */
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /*</section>*/
+
+  private static final Log LOG = LogFactory.getLog(VATNumber.class);
 
   // @mudo (nsmeets) Are these patterns correct? We cannot find the correct
   //       patterns in the FVB documentation.
@@ -120,7 +124,8 @@ public final class VATNumber extends ImmutableValue {
    *                        "INVALID_CHECK", null
    *                 );
    */
-  public VATNumber(String leftNumber, String middleNumber, String rightNumber) throws PropertyException {
+  public VATNumber(final String leftNumber, final String middleNumber,
+      final String rightNumber) throws PropertyException {
     initialize(leftNumber, middleNumber, rightNumber);
   }
 
@@ -130,7 +135,7 @@ public final class VATNumber extends ImmutableValue {
    *
    * @todo contract & Toryt
    */
-  public VATNumber(String pattern) throws PropertyException {
+  public VATNumber(final String pattern) throws PropertyException {
     if (pattern == null) {
       throw new PropertyException(VATNumber.class, null, "NULL_PATTERN", null);
     }
@@ -142,9 +147,9 @@ public final class VATNumber extends ImmutableValue {
     }
     String nnString = buffer.toString();
     try {
-      String leftNumber = nnString.substring(0,3);
-      String middleNumber = nnString.substring(3,6);
-      String rightNumber = nnString.substring(6,9);
+      String leftNumber = nnString.substring(0, 3);
+      String middleNumber = nnString.substring(3, 6);
+      String rightNumber = nnString.substring(6, 9);
           // IndexOutOfBoundsException
       initialize(leftNumber, middleNumber, rightNumber);
     }
@@ -162,9 +167,9 @@ public final class VATNumber extends ImmutableValue {
     try {
       initialize("123", "456", "749");
     }
-    catch(PropertyException exc) {
+    catch (PropertyException exc) {
       // shouldn't happen, because valid numbers are given
-      assert false: "Shouldn't happen";
+      assert false : "Shouldn't happen";
     }
   }
 
@@ -173,7 +178,7 @@ public final class VATNumber extends ImmutableValue {
    * @post    getMiddleNumber().equals(vatNumber.getMiddleNumber());
    * @post    getRightNumber().equals(vatNumber.getRightNumber());
    */
-  public VATNumber(VATNumber vatNumber) throws PropertyException {
+  public VATNumber(final VATNumber vatNumber) throws PropertyException {
     initialize(
         vatNumber.getLeftNumber(), vatNumber.getMiddleNumber(),
         vatNumber.getRightNumber()
@@ -185,44 +190,50 @@ public final class VATNumber extends ImmutableValue {
   /**
    * For contract: see first constructor.
    */
-  private void initialize(String leftNumber, String middleNumber, String rightNumber)
-     throws PropertyException {
+  private void initialize(final String leftNumber, final String middleNumber,
+      final String rightNumber) throws PropertyException {
     CompoundPropertyException cpe =
       new CompoundPropertyException(VATNumber.class, null, null, null);
     if (leftNumber == null) {
       cpe.addElementException(
-          new PropertyException(VATNumber.class, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
+          new PropertyException(
+              VATNumber.class, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
       );
     }
     if (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber)) {
       cpe.addElementException(
-          new PropertyException(VATNumber.class, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              VATNumber.class, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (middleNumber == null) {
       cpe.addElementException(
-          new PropertyException(VATNumber.class, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
+          new PropertyException(
+              VATNumber.class, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
       );
     }
     if (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber)) {
       cpe.addElementException(
-          new PropertyException(VATNumber.class, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              VATNumber.class, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
       );
     }
     if (rightNumber == null) {
       cpe.addElementException(
-          new PropertyException(VATNumber.class, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
+          new PropertyException(
+              VATNumber.class, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
       );
     }
     if (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber)) {
       cpe.addElementException(
-          new PropertyException(VATNumber.class, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
+          new PropertyException(
+              VATNumber.class, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
       );
     }
-    if (leftNumber != null &&
-        middleNumber != null &&
-        rightNumber != null &&
-        !VATNumber.checkVATNumber(leftNumber, middleNumber, rightNumber)
+    if (leftNumber != null
+        && middleNumber != null
+        && rightNumber != null
+        && !VATNumber.checkVATNumber(leftNumber, middleNumber, rightNumber)
     ) {
       cpe.addElementException(
           new PropertyException(VATNumber.class, null, "INVALID_CHECK", null)
@@ -240,7 +251,7 @@ public final class VATNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getLeftNumber() {
+  public String getLeftNumber() {
     return $leftNumber;
   }
 
@@ -258,7 +269,7 @@ public final class VATNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getMiddleNumber() {
+  public String getMiddleNumber() {
     return $middleNumber;
   }
 
@@ -276,7 +287,7 @@ public final class VATNumber extends ImmutableValue {
   /**
    * @basic
    */
-  public final String getRightNumber() {
+  public String getRightNumber() {
     return $rightNumber;
   }
 
@@ -287,6 +298,13 @@ public final class VATNumber extends ImmutableValue {
   private String $rightNumber;
 
   /*</property>*/
+
+  /**
+   * The integer used for checking a VAT number.
+   *
+   * <strong>= 97</strong>
+   */
+  public static final int CHECK_NUMBER = 97;
 
   /**
    * @param   leftNumber
@@ -304,93 +322,110 @@ public final class VATNumber extends ImmutableValue {
    * @return  (  (  Integer.parseInt(leftNumber + middleNumber + rightNumber.substring(0,1))
    *                +
    *                Integer.parseInt(rightNumber.substring(1))
-   *             ) % 97
+   *             ) % CHECK_NUMBER
    *             == 0
    *          );
    */
-  public static final boolean checkVATNumber(String leftNumber, String middleNumber, String rightNumber) {
-    String first7String = leftNumber + middleNumber + rightNumber.substring(0,1);
+  public static boolean checkVATNumber(final String leftNumber,
+      final String middleNumber, final String rightNumber) {
+    String first7String = leftNumber + middleNumber + rightNumber.substring(0, 1);
     String last2String = rightNumber.substring(1);
     int first7Int = Integer.parseInt(first7String);
     int last2Int = Integer.parseInt(last2String);
-    return ((first7Int + last2Int) % 97) == 0;
+    return ((first7Int + last2Int) % CHECK_NUMBER) == 0;
   }
 
   /**
-   * @return  o instanceof VATNumber &&
-   *          ((VATNumber) o).getLeftNumber().equals(getLeftNumber()) &&
-   *          ((VATNumber) o).getMiddleNumber().equals(getMiddleNumber()) &&
-   *          ((VATNumber) o).getRightNumber().equals(getRightNumber());
+   * Indicates whether some other object is "equal to" this one.
+   *
+   * @return  o instanceof VATNumber
+   *          && ((VATNumber) o).getLeftNumber().equals(getLeftNumber())
+   *          && ((VATNumber) o).getMiddleNumber().equals(getMiddleNumber())
+   *          && ((VATNumber) o).getRightNumber().equals(getRightNumber());
    */
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     return
-      o instanceof VATNumber &&
-      ((VATNumber) o).getLeftNumber().equals(getLeftNumber()) &&
-      ((VATNumber) o).getMiddleNumber().equals(getMiddleNumber()) &&
-      ((VATNumber) o).getRightNumber().equals(getRightNumber());
+      o instanceof VATNumber
+      && ((VATNumber) o).getLeftNumber().equals(getLeftNumber())
+      && ((VATNumber) o).getMiddleNumber().equals(getMiddleNumber())
+      && ((VATNumber) o).getRightNumber().equals(getRightNumber());
   }
 
   /**
-   * @return  getLeftNumber().hashCode() +
-   *          getMiddleNumber().hashCode() +
-   *          getRightNumber().hashCode();
+   * Returns a hash code value for the object.
+   *
+   * @return  getLeftNumber().hashCode()
+   *          + getMiddleNumber().hashCode()
+   *          + getRightNumber().hashCode();
    */
   public int hashCode() {
     return
-      getLeftNumber().hashCode() +
-      getMiddleNumber().hashCode() +
-      getRightNumber().hashCode();
+      getLeftNumber().hashCode()
+      + getMiddleNumber().hashCode()
+      + getRightNumber().hashCode();
   }
 
   /**
+   * Returns a string representatino of the object.
+   *
    * return  getLeftNumber() + " " + getMiddleNumber() + " " + getRightNumber();
    */
   public String toString() {
     return getLeftNumber() + " " + getMiddleNumber() + " " + getRightNumber();
   }
 
-  public static void main(String args[])  {
-    System.out.println("in main");
-    String left, middle, right;
+  /**
+   * For debugging only.
+   */
+  public static void main(final String[] args)  {
+    LOG.debug("in main");
+    String left;
+    String middle;
+    String right;
     left = "123"; middle = "456"; right = "749";
     try {
       new VATNumber(left, middle, right);
-      System.out.println("Created VAT number ("+left+", "+middle+", "+right+")");
+      LOG.debug("Created VAT number (" + left + ", " + middle + ", " + right + ")");
     }
-    catch(PropertyException exc) {
-      System.out.println("Error when creating VAT number ("+left+", "+middle+", "+right+"):"+exc);
+    catch (PropertyException exc) {
+      LOG.debug("Error when creating VAT number (" + left + ", " + middle + ", "
+          + right + "):" + exc);
     }
     left = "222"; middle = "333"; right = "403";
     try {
       new VATNumber(left, middle, right);
-      System.out.println("Created VAT number ("+left+", "+middle+", "+right+")");
+      LOG.debug("Created VAT number (" + left + ", " + middle + ", " + right + ")");
     }
-    catch(PropertyException exc) {
-      System.out.println("Error when creating VAT number ("+left+", "+middle+", "+right+"):"+exc);
+    catch (PropertyException exc) {
+      LOG.debug("Error when creating VAT number (" + left + ", " + middle + ", "
+          + right + "):" + exc);
     }
     left = "999"; middle = "888"; right = "767";
     try {
       new VATNumber(left, middle, right);
-      System.out.println("Created VAT number ("+left+", "+middle+", "+right+")");
+      LOG.debug("Created VAT number (" + left + ", " + middle + ", " + right + ")");
     }
-    catch(PropertyException exc) {
-      System.out.println("Error when creating VAT number ("+left+", "+middle+", "+right+"):"+exc);
+    catch (PropertyException exc) {
+      LOG.debug("Error when creating VAT number (" + left + ", " + middle + ", "
+          + right + "):" + exc);
     }
     left = "123"; middle = "456"; right = "750";
     try {
       new VATNumber(left, middle, right);
-      System.out.println("Created VAT number ("+left+", "+middle+", "+right+")");
+      LOG.debug("Created VAT number (" + left + ", " + middle + ", " + right + ")");
     }
-    catch(PropertyException exc) {
-      System.out.println("Error when creating VAT number ("+left+", "+middle+", "+right+"):"+exc);
+    catch (PropertyException exc) {
+      LOG.debug("Error when creating VAT number (" + left + ", " + middle + ", "
+          + right + "):" + exc);
     }
     left = "1234"; middle = "56"; right = "789";
     try {
       new VATNumber(left, middle, right);
-      System.out.println("Created VAT number ("+left+", "+middle+", "+right+")");
+      LOG.debug("Created VAT number (" + left + ", " + middle + ", " + right + ")");
     }
-    catch(PropertyException exc) {
-      System.out.println("Error when creating VAT number ("+left+", "+middle+", "+right+"):"+exc);
+    catch (PropertyException exc) {
+      LOG.debug("Error when creating VAT number (" + left + ", " + middle
+          + ", " + right + "):" + exc);
     }
   }
 }

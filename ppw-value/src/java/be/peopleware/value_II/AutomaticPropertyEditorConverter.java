@@ -1,10 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
-
 package be.peopleware.value_II;
 
 
@@ -62,7 +60,8 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
 
 
   /**
-   * A {@link PropertyEditor} for the {@link ValueBinding#getType(FacesContext) type of the value binding}
+   * A {@link PropertyEditor} for the
+   * {@link ValueBinding#getType(FacesContext) type of the value binding}
    * is requested from the {@link PropertyEditorManager}. If no such
    * editor is found, a {@link ConverterException} is thrown.
    * If the retrieved {@link PropertyEditor} is of type,
@@ -72,11 +71,14 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
    *
    * @basic
    * @throws ConverterException
-   *         PropertyEditorManager.findEditor(component.getValueBinding("value").getType(context)) == null;
-   *         no {@link PropertyEditor} found for the type of the value binding of <code>component</code>
+   *         PropertyEditorManager.findEditor(
+   *           component.getValueBinding("value").getType(context)
+   *         ) == null;
+   *         No {@link PropertyEditor} found for the type of the value binding
+   *         of <code>component</code>
    */
-  protected PropertyEditor getPropertyEditor(FacesContext context, UIComponent component)
-      throws ConverterException {
+  protected PropertyEditor getPropertyEditor(final FacesContext context,
+      final UIComponent component) throws ConverterException {
     assert component != null;
     assert context != null;
     if ($propertyEditor == null) {
@@ -100,16 +102,16 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
           if ($propertyEditor instanceof DisplayLocaleBasedEnumerationValueEditor) {
             assert $propertyEditor != null;
             Locale displayLocale = context.getViewRoot().getLocale();
-            LOG.debug("PropertyEditor is of type DisplayLocaleBasedEnumerationValueEditor; " +
-                      "setting display locale to " + displayLocale);
+            LOG.debug("PropertyEditor is of type DisplayLocaleBasedEnumerationValueEditor; "
+                      + "setting display locale to " + displayLocale);
             ((DisplayLocaleBasedEnumerationValueEditor)$propertyEditor).
                 setDisplayLocale(displayLocale);
           }
         }
       }
       catch (NullPointerException npExc) {
-        new ConverterException("Could not retrieve target type from component, " +
-                               "because there is no value binding");
+        new ConverterException("Could not retrieve target type from component, "
+                               + "because there is no value binding");
       }
       catch (EvaluationException eExc) { // and PropertyNotFoundException
         new ConverterException("Could not retrieve target type from component", eExc);

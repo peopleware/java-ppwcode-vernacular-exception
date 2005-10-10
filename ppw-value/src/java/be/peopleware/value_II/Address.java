@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -86,10 +91,10 @@ public class Address extends MutableValue implements Serializable {
     $postalCode.setString(postalCode);
   }
 
-  private ConstrainedString $postalCode
-      = new ConstrainedString(this,
-                              "postalCode", //$NON-NLS-1$
-                              POSTAL_CODE_MAX_LENGTH);
+  private ConstrainedString $postalCode =
+      new ConstrainedString(this,
+                            "postalCode", //$NON-NLS-1$
+                            POSTAL_CODE_MAX_LENGTH);
 
   /*</property>*/
 
@@ -125,8 +130,8 @@ public class Address extends MutableValue implements Serializable {
     $streetAddress.setString(streetAddress);
   }
 
-  private ConstrainedString $streetAddress
-      = new ConstrainedString(this,
+  private ConstrainedString $streetAddress =
+        new ConstrainedString(this,
                               "streetAddress", //$NON-NLS-1$
                               STREET_ADDRESS_MAX_LENGTH);
 
@@ -162,8 +167,8 @@ public class Address extends MutableValue implements Serializable {
     $city.setString(city);
   }
 
-  private ConstrainedString $city
-    = new ConstrainedString(this,
+  private ConstrainedString $city =
+      new ConstrainedString(this,
                             "city", //$NON-NLS-1$
                             CITY_MAX_LENGTH);
 
@@ -199,8 +204,8 @@ public class Address extends MutableValue implements Serializable {
     $state.setString(state);
   }
 
-  private ConstrainedString $state
-    = new ConstrainedString(this,
+  private ConstrainedString $state =
+      new ConstrainedString(this,
                             "state", //$NON-NLS-1$
                             STATE_MAX_LENGTH);
 
@@ -232,17 +237,34 @@ public class Address extends MutableValue implements Serializable {
   private Country $country;
 
   /*</property>*/
-  
-  
+
+  /**
+   * Returns true when this address is empty; returns false otherwise.
+   *
+   * @return  (  ((getStreetAddress() == null) || getStreetAddress().equals(EMPTY))
+   *             && ((getPostalCode() == null) || getPostalCode().equals(EMPTY))
+   *             && ((getCity() == null) || getCity().equals(EMPTY))
+   *             && ((getState() == null) || getState().equals(EMPTY))
+   *             && ((getCountry() == null)
+   *                 || getCountry().toString().equals(EMPTY)
+   *                 || (getCountry().toString().equals(" "))
+   *                )
+   *          );
+   */
   public final boolean isEmpty() {
     return (((getStreetAddress() == null) || getStreetAddress().equals(EMPTY))
             && ((getPostalCode() == null) || getPostalCode().equals(EMPTY))
             && ((getCity() == null) || getCity().equals(EMPTY))
             && ((getState() == null) || getState().equals(EMPTY))
             && ((getCountry() == null) || getCountry().toString().equals(EMPTY)
-                || (getCountry().toString() == " ")));  //$NON-NLS-1$
+                || (getCountry().toString().equals(" "))));  //$NON-NLS-1$
   }
-  
+
+  /**
+   * Returns a hash code value for the object.
+   *
+   * @mudo  formal comment
+   */
   public final int hashCode() {
     return $streetAddress.hashCode()
            + $postalCode.hashCode()
@@ -269,6 +291,9 @@ public class Address extends MutableValue implements Serializable {
     return result;
   }
 
+  /**
+   * Returns a string representation of the object.
+   */
   public String toString() {
     String countryToString = "";  //$NON-NLS-1$
     if ($country != null) {
@@ -284,7 +309,7 @@ public class Address extends MutableValue implements Serializable {
              + ", country: " + countryToString //$NON-NLS-1$
            + "]"; //$NON-NLS-1$
   }
-  
+
   /**
    * @see       java.lang.Object#clone()
    */

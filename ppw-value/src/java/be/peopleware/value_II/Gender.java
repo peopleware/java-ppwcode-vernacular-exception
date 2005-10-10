@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 import java.util.Collections;
@@ -63,6 +68,9 @@ public final class Gender extends EnumerationValue {
    */
   public static final Gender FEMALE = new Gender(FEMALE_STRING);
 
+  /**
+   * A map containing all possible values for this value type.
+   */
   public static final Map VALUES = generateValues();
 
   private static Map generateValues() {

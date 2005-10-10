@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II.web;
 
 
@@ -47,17 +52,20 @@ public class RegisterPropertyEditors implements ServletContextListener {
    * {@link PropertyEditor} lookup path.
    */
   public void contextInitialized(final ServletContextEvent event) {
-    LOG.debug("registering ppw-value library in PropertyEditorManager " +
-              "PropertyEditor lookup path");
+    LOG.debug("registering ppw-value library in PropertyEditorManager "
+              + "PropertyEditor lookup path");
     Values.registerPropertyEditors();
     if (LOG.isDebugEnabled()) {
-      LOG.debug("PropertyEditorManager PropertyEditor lookup path: " +
-                PropertyEditorManager.getEditorSearchPath());
+      LOG.debug("PropertyEditorManager PropertyEditor lookup path: "
+                + PropertyEditorManager.getEditorSearchPath());
     }
   }
 
   /**
-   * NOP
+   * Notification that the servlet context is about to be shut down.
+   * No operation.
+   *
+   * @post  true;
    */
   public void contextDestroyed(final ServletContextEvent event) {
     // NOP

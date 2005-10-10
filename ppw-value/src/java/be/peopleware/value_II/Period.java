@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.value_II;
 
 import java.util.Date;
@@ -152,9 +151,9 @@ public class Period extends MutableValue implements Comparable {
    *                    .equals("The current start date is not before the given end date.");
    */
   public void setEndDate(final Date endDate) throws InvalidPeriodException {
-    if (  getStartDate() != null
-            && endDate != null
-            && !getStartDate().before(endDate)
+    if (getStartDate() != null
+          && endDate != null
+          && !getStartDate().before(endDate)
     ) {
       throw new InvalidPeriodException(
           getStartDate(), endDate,
@@ -201,20 +200,20 @@ public class Period extends MutableValue implements Comparable {
    *             ? o.getEndDate() == null
    *             : getEndDate().equals(o.getEndDate());
    */
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (!(o instanceof Period)) {
       return false;
     }
     Period other = (Period) o;
     return
-      ( (getStartDate() == null)
-           ? (other.getStartDate() == null)
-           : (getStartDate().equals(other.getStartDate()))
+      ((getStartDate() == null)
+          ? (other.getStartDate() == null)
+          : (getStartDate().equals(other.getStartDate()))
       )
       &&
-      ( (getEndDate() == null)
-           ? (other.getEndDate() == null)
-           : (getEndDate().equals(other.getEndDate()))
+      ((getEndDate() == null)
+          ? (other.getEndDate() == null)
+          : (getEndDate().equals(other.getEndDate()))
       );
   }
 
@@ -231,14 +230,14 @@ public class Period extends MutableValue implements Comparable {
    */
   public int hashCode() {
     return
-      ( (getStartDate() == null)
-          ? 0
-          : getStartDate().hashCode()
+      ((getStartDate() == null)
+         ? 0
+         : getStartDate().hashCode()
       )
       +
-      ( (getEndDate() == null)
-          ? 0
-          : getEndDate().hashCode()
+      ((getEndDate() == null)
+         ? 0
+         : getEndDate().hashCode()
       );
   }
 
@@ -274,13 +273,25 @@ public class Period extends MutableValue implements Comparable {
     if (startDate != null && endDate != null) {
         long differenceInMillis =
           endDate.getTime() - startDate.getTime();
-        return differenceInMillis /(24*60*60*1000);
+        return differenceInMillis / (24 * 60 * 60 * 1000);
     }
     return -1;
   }
 
-  public int compareTo(Object o) {
-    Period p= (Period)o; // ClassCastException ok
+  /**
+   * Compares this object with the specified object for order.
+   *
+   * @result  getStartDate() == null && ((Period)o).getStartDate() == null
+   *            ==> result == 0;
+   * @result  getStartDate() == null && ((Period)o).getStartDate() != null
+   *            ==> result == -1;
+   * @result  getStartDate() != null && ((Period)o).getStartDate() == null
+   *            ==> result == 1;
+   * @result  getStartDate() != null && ((Period)o).getStartDate() != null
+   *            ==> getStartDate().compareTo(((Period)o).getStartDate());
+   */
+  public int compareTo(final Object o) {
+    Period p = (Period)o; // ClassCastException ok
     if (getStartDate() == null) {
       if (p.getStartDate() == null) { // NullPointerException ok
         return 0;
@@ -304,12 +315,12 @@ public class Period extends MutableValue implements Comparable {
    * @return (date == null) && (getStartDate() == null) && (getEndDate() == null) &&
    *            (! date.before(getStartDate())) && (! date.after(getEndDate()));
    */
-  public final boolean containsInclusive(Date date) {
+  public final boolean containsInclusive(final Date date) {
     if ((date == null) || (getStartDate() == null) || (getEndDate() == null)) {
       return false;
     }
     else {
-      return (! date.before(getStartDate())) && (! date.after(getEndDate()));
+      return (!date.before(getStartDate())) && (!date.after(getEndDate()));
     }
   }
 
@@ -321,12 +332,12 @@ public class Period extends MutableValue implements Comparable {
    * @return (date == null) && (getStartDate() == null) && (getEndDate() == null) &&
    *            (! date.before(getStartDate())) && date.before(getEndDate());
    */
-  public final boolean containsLeftInclusive(Date date) {
+  public final boolean containsLeftInclusive(final Date date) {
     if ((date == null) || (getStartDate() == null) || (getEndDate() == null)) {
       return false;
     }
     else {
-      return (! date.before(getStartDate())) && date.before(getEndDate());
+      return (!date.before(getStartDate())) && date.before(getEndDate());
     }
   }
 

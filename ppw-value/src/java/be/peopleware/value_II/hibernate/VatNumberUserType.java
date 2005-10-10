@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.value_II.hibernate;
 
 
@@ -42,6 +41,7 @@ public class VatNumberUserType implements UserType {
   /*</section>*/
 
   /**
+   * Create a new {@link VatNumberUserType}.
    */
   public VatNumberUserType() {
     // NOP
@@ -91,11 +91,18 @@ public class VatNumberUserType implements UserType {
    * Retrieve an instance of the mapped class from a JDBC resultset.
    * Implementors should handle possibility of null values.
    *
-   * @return  An object of the type NationalNumber containing the given string.
+   * @result  resultSet.wasNull()
+   *            ==> result == null;
+   * @result  !resultSet.wasNull()
+   *            ==> a VAT number is created from the given string
    * @throws  HibernateException
-   *          true;
+   *          The VATNumber cannot be created from the given string.
+   *          (new VATNumber(resultSet.getString(names[0])) throws a
+   *           PropertyException)
    * @throws  SQLException
-   *          true;
+   *          resultSet.getString(names[0]);
+   * @throws  SQLException
+   *          resultSet.wasNull();
    */
   public final Object nullSafeGet(final ResultSet resultSet,
                                   final String[] names,
@@ -111,24 +118,38 @@ public class VatNumberUserType implements UserType {
       }
       // else, result stays null (NULL in DB)
     }
-    catch(PropertyException pExc) {
+    catch (PropertyException pExc) {
       throw new HibernateException("could not convert string \""
                                    + dbValue + "\" from DB to VATNumber", pExc);
     }
     return result;
   }
 
-
   /**
    * Write an instance of the mapped class to a prepared statement.
    * Implementors should handle possibility of null values.
    * A multi-column type should be written to parameters starting from index.
    *
-   * @post    Write a prepared statement for the given national number.
+   * @post    value == null
+   *            ==> the parameter at the given index is set to null
+   * @post    value != null
+   *            ==> the parameter at the given index is set to the concatenation
+   *                of left, middle and right number of the given
+   *                VAT number
+   *
    * @throws  HibernateException
-   *          true;
+   *          (value != null)
+              && !returnedClass().getName().equals(value.getClass().getName())
    * @throws  SQLException
-   *          true;
+   *          value == null
+   *          && statement.setNull(index, Types.VARCHAR) throws a SQLException;
+   * @throws  SQLException
+   *          value != null
+   *          && statement.setString(
+   *                 index,
+   *                 ((VATNumber) value).getLeftNumber()
+   *                 + (VATNumber) value.getMiddleNumber()
+   *                 + (VATNumber) value.getRightNumber());
    */
   public final void nullSafeSet(final PreparedStatement statement,
                                 final Object value,

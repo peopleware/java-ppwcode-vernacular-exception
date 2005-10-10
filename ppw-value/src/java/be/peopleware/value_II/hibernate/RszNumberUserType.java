@@ -1,9 +1,8 @@
 /*<license>
-  Copyright 2004-2005, PeopleWare n.v.
+  Copyright 2004, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
-
 package be.peopleware.value_II.hibernate;
 
 
@@ -44,6 +43,7 @@ public class RszNumberUserType implements UserType {
   /*</section>*/
 
   /**
+   * Create a new {@link RszNumberUserType}.
    */
   public RszNumberUserType() {
     // NOP
@@ -93,11 +93,18 @@ public class RszNumberUserType implements UserType {
    * Retrieve an instance of the mapped class from a JDBC resultset.
    * Implementors should handle possibility of null values.
    *
-   * @return  An object of the type RSZNumber containing the given string.
+   * @result  resultSet.wasNull()
+   *            ==> result == null;
+   * @result  !resultSet.wasNull()
+   *            ==> a RSZ number is created from the given string
    * @throws  HibernateException
-   *          true;
+   *          The RSZNumber cannot be created from the given string.
+   *          (new RSZNumber(resultSet.getString(names[0])) throws a
+   *           PropertyException)
    * @throws  SQLException
-   *          true;
+   *          resultSet.getString(names[0]);
+   * @throws  SQLException
+   *          resultSet.wasNull();
    */
   public final Object nullSafeGet(final ResultSet resultSet,
                                   final String[] names,
@@ -118,17 +125,31 @@ public class RszNumberUserType implements UserType {
     return result;
   }
 
-
   /**
    * Write an instance of the mapped class to a prepared statement.
    * Implementors should handle possibility of null values.
    * A multi-column type should be written to parameters starting from index.
    *
-   * @post    Write a prepared statement for the given RSZ number.
+   * @post    value == null
+   *            ==> the parameter at the given index is set to null
+   * @post    value != null
+   *            ==> the parameter at the given index is set to the concatenation
+   *                of left, middle and right number of the given
+   *                RSZ number
+   *
    * @throws  HibernateException
-   *          true;
+   *          (value != null)
+              && !returnedClass().getName().equals(value.getClass().getName())
    * @throws  SQLException
-   *          true;
+   *          value == null
+   *          && statement.setNull(index, Types.VARCHAR) throws a SQLException;
+   * @throws  SQLException
+   *          value != null
+   *          && statement.setString(
+   *                 index,
+   *                 ((RSZNumber) value).getLeftNumber()
+   *                 + (RSZNumber) value.getMiddleNumber()
+   *                 + (RSZNumber) value.getRightNumber());
    */
   public final void nullSafeSet(final PreparedStatement statement,
                                 final Object value,

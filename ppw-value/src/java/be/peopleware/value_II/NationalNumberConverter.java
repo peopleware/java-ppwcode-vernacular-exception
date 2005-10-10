@@ -33,8 +33,29 @@ import javax.faces.convert.ConverterException;
  */
 public class NationalNumberConverter implements Converter {
 
-  public Object getAsObject(FacesContext context, UIComponent component, String value)
-      throws ConverterException {
+  /**
+   * Convert the specified string value, which is associated with the
+   * specified UIComponent, into a model data object that is appropriate for
+   * being stored during the Apply Request Values phase of the request
+   * processing lifecycle.
+   *
+   * @result  value == null || value.length == 0
+   *            ==> result == null;
+   * @result  let
+   *            nnString = the given string, where all the following characters
+   *                       are removed : [ -/|*:]+
+   *          in
+   *            value != null && value.length > 0
+   *            ==> result instanceof NationalNumber
+   *                && result.getLeftNumber().equals(nnString.subString(0, 6))
+   *                && result.getMiddleNumber().equals(nnString.subString(6, 9))
+   *                && result.getRightNumber().equals(nnString.subString(9, 11));
+   * @throws  ConverterException
+   *          The national number cannot be created from the given string.
+   *          See: {@link NationalNumber#NationalNumber(String, String, String)}
+   */
+  public Object getAsObject(final FacesContext context, final UIComponent component,
+      final String value) throws ConverterException {
     NationalNumber nn = null;
     if ((value == null) || (value.length() == 0)) {
       return null;
@@ -47,9 +68,9 @@ public class NationalNumberConverter implements Converter {
           buffer.append(array[i]);
         }
         String nnString = buffer.toString();
-        String leftNumber = nnString.substring(0,6);
-        String middleNumber = nnString.substring(6,9);
-        String rightNumber = nnString.substring(9,11);
+        String leftNumber = nnString.substring(0, 6);
+        String middleNumber = nnString.substring(6, 9);
+        String rightNumber = nnString.substring(9, 11);
         nn = new NationalNumber(leftNumber, middleNumber, rightNumber);
         return nn;
       }
@@ -59,14 +80,32 @@ public class NationalNumberConverter implements Converter {
     }
   }
 
-  public final static String EMPTY = "";
+  /**
+   * The empty string.
+   *
+   * <strong>= &quot;&quot;</strong>
+   */
+  public static final String EMPTY = "";
 
-  public String getAsString(FacesContext context, UIComponent component, Object value)
-      throws ConverterException {
+  /**
+   * Convert the specified model object value, which is associated with the
+   * specified UIComponent, into a String that is suitable for being included
+   * in the response generated during the Render Response phase of the request
+   * processing lifecycle.
+   *
+   * @result  value == null
+   *            ==> result == EMPTY;
+   * @result  value != null && value instanceof NationalNumber
+   *            ==> result == ((NationalNumber)value).toString();
+   * @throws  ConverterException
+   *          value != null && !(value instanceof NationalNumber)
+   */
+  public String getAsString(final FacesContext context, final UIComponent component,
+      final Object value) throws ConverterException {
     if (value == null) {
       return EMPTY;
     }
-    if (! (value instanceof NationalNumber)) {
+    if (!(value instanceof NationalNumber)) {
       throw new ConverterException("value is not a NationalNumber");
     }
     return ((NationalNumber)value).toString();

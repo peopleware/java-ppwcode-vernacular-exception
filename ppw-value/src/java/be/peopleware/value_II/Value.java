@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 import java.io.Serializable;
@@ -48,7 +53,12 @@ public abstract class Value implements Serializable {
 
   /*</section>*/
 
-  protected final String EMPTY = ""; //$NON-NLS-1$
+  /**
+   * The empty string.
+   *
+   * <strong>= &quot;&quot;</strong>
+   */
+  public static final String EMPTY = ""; //$NON-NLS-1$
 
   /*<construction>*/
   //------------------------------------------------------------------

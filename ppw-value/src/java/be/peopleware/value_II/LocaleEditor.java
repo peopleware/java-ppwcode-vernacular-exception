@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -54,6 +59,20 @@ public class LocaleEditor
     LOCALE_MAP.put(" ", new Locale(" "));  //$NON-NLS-1$ //$NON-NLS-2$
   }
 
+  /**
+   * A map containing all available locales ({@link Locale#getAvailableLocales()}).
+   *
+   * @result  result != null;
+   * @result  result.size() == Locale.getAvailableLocales().length;
+   * @result  (forAll int i;
+   *              0 <= i < Locale.getAvailableLocales().length;
+   *              result.containsKey(Locale.getAvailableLocales()[i].toString()));
+   * @result  (forAll int i;
+   *              0 <= i < Locale.getAvailableLocales().length;
+   *              result.get(Locale.getAvailableLocales()[i].toString())
+   *              == Locale.getAvailableLocales()[i]
+   *          );
+   */
   public final Map getValuesMap() {
     return LOCALE_MAP;
   }

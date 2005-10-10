@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 import java.beans.PropertyEditor;
@@ -71,8 +76,8 @@ public abstract class Values {
    *        The result to make <code>true</code>.
    * @return ! p ==> ! result;
    */
-  public static boolean assertAtLeast(boolean p, boolean result) {
-    return p || (! result);
+  public static boolean assertAtLeast(final boolean p, final boolean result) {
+    return p || (!result);
   }
 
   /**

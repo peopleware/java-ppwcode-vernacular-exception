@@ -1,3 +1,8 @@
+/*<license>
+  Copyright 2004, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 package be.peopleware.value_II;
 
 
@@ -178,6 +183,11 @@ public class ConstrainedString extends Delegate implements Serializable {
            && (getMaxLength() == ((ConstrainedString)other).getMaxLength());
   }
 
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return  getString();
+   */
   public String toString() {
     return getString();
   }
