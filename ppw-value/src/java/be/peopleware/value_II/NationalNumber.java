@@ -144,11 +144,16 @@ public final class NationalNumber extends ImmutableValue {
    * @post    getMiddleNumber().equals(nationalNumber.getMiddleNumber());
    * @post    getRightNumber().equals(nationalNumber.getRightNumber());
    */
-  public NationalNumber(final NationalNumber nationalNumber) throws PropertyException {
-    initialize(
-        nationalNumber.getLeftNumber(), nationalNumber.getMiddleNumber(),
-        nationalNumber.getRightNumber()
-    );
+  public NationalNumber(final NationalNumber nationalNumber) {
+    try {
+      initialize(
+          nationalNumber.getLeftNumber(), nationalNumber.getMiddleNumber(),
+          nationalNumber.getRightNumber()
+      );
+    }
+    catch (PropertyException exc) {
+      assert false : "Shouldn't happen.";
+    }
   }
 
   /*</construction */

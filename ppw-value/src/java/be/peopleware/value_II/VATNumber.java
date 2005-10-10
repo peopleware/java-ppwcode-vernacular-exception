@@ -178,11 +178,16 @@ public final class VATNumber extends ImmutableValue {
    * @post    getMiddleNumber().equals(vatNumber.getMiddleNumber());
    * @post    getRightNumber().equals(vatNumber.getRightNumber());
    */
-  public VATNumber(final VATNumber vatNumber) throws PropertyException {
-    initialize(
-        vatNumber.getLeftNumber(), vatNumber.getMiddleNumber(),
-        vatNumber.getRightNumber()
-    );
+  public VATNumber(final VATNumber vatNumber) {
+    try {
+      initialize(
+          vatNumber.getLeftNumber(), vatNumber.getMiddleNumber(),
+          vatNumber.getRightNumber()
+      );
+    }
+    catch (PropertyException exc) {
+      assert false : "Shouldn't happen.";
+    }
   }
 
   /*</construction */

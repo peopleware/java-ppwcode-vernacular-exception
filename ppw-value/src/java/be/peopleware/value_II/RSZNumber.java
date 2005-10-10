@@ -175,11 +175,16 @@ public final class RSZNumber extends ImmutableValue {
    * @post    getMiddleNumber().equals(rszNumber.getMiddleNumber());
    * @post    getRightNumber().equals(rszNumber.getRightNumber());
    */
-  public RSZNumber(final RSZNumber rszNumber) throws PropertyException {
-    initialize(
-        rszNumber.getLeftNumber(), rszNumber.getMiddleNumber(),
-        rszNumber.getRightNumber()
-    );
+  public RSZNumber(final RSZNumber rszNumber) {
+    try {
+      initialize(
+          rszNumber.getLeftNumber(), rszNumber.getMiddleNumber(),
+          rszNumber.getRightNumber()
+      );
+    }
+    catch (PropertyException exc) {
+      assert false : "Shouldn't happen";
+    }
   }
 
   /*</construction */
