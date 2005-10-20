@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="ppw-project-settings/pom.css"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/3.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/3.0.0 http://maven.apache.org/maven-v3_0_0.xsd">
   <extend>../ppw-project-settings/project.xml</extend>
   <artifactId>ppw-libraries</artifactId>
   <groupId>ppw-libraries</groupId>
