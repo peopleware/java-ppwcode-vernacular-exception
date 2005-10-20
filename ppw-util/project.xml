@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="ppw-libraries-settings/pom.css"?>
+<project xmlns="http://maven.apache.org/POM/3.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/3.0.0 http://maven.apache.org/maven-v3_0_0.xsd">
+  <extend>../ppw-libraries-settings/project.xml</extend>
+  <pomVersion>3</pomVersion>
+  <name>PeopleWare Utility Library I</name>
+  <groupId>ppw-libraries</groupId>
+  <artifactId>ppw-util-I</artifactId>
+  <shortDescription>General utility code.</shortDescription>
+  <description>
+    In this project, code is gathered that actually should have been part of the
+    JDK. These are small code snippets, sometimes static methods, sometimes OO classes
+    that encapsulate algorithms or other tedious work that are often used in our Java
+    programs.
+    Since it is hard to get such code into the JDK, we take the stance that this code
+    should actually be in the Apache Jakarta Commons library. As much as possible, we will
+    mimic the code structure of Commons. We will try to get this
+    code out of this library into Commons, but that will be a slow process in itself.
+    Pieces of code that are moved out will become deprecated here.
+    Code in this library should never, ever, depend on anything else than the JDK
+    and (minimal) Commons libraries.
+  </description>
+  <inceptionYear>2005</inceptionYear>
+  <currentVersion>1.0.0-1.0</currentVersion>
+  <package>be.peopleware.util_I</package>
+  <!--  <logo>http://maven.apache.org/images/maven.jpg</logo> -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jand</id>
+      <email>Jan.Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+    </developer>
+  </developers>
+  <contributors>
+  </contributors>
+  <dependencies>
+    <!--
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
+      <type>jar</type>
+    </dependency>
+    -->
+  </dependencies>
+</project>
+
