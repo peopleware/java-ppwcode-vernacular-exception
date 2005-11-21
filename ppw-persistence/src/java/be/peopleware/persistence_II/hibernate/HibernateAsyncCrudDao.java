@@ -161,13 +161,10 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     try {
       $tx.commit();
       $tx = null;
-      Iterator iter = $deleted.iterator();
-      while (iter.hasNext()) {
-        PersistentBean iterPo = (PersistentBean)iter.next();
-        iterPo.setId(null);
-      }
-      setInTransaction(false);
+      resetId($deleted);
       $deleted = new HashSet();
+      $created = new HashSet();
+      setInTransaction(false);
       LOG.debug("Commit completed.");
     }
     catch (HibernateException hExc) {
@@ -181,6 +178,25 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
   }
 
   /**
+   * Reset the id of the {@link PersistentBean PersistentBeans} in
+   * <code>persistentBeans</code> to <code>null</code>.
+   *
+   * @pre persistentBeans != null;
+   * @pre cC:instanceof(persistentBeans, PersistentBean);
+   */
+  private void resetId(Set persistentBeans) {
+    assert persistentBeans != null;
+    Iterator iter = persistentBeans.iterator();
+    while (iter.hasNext()) {
+      PersistentBean iterPo = (PersistentBean)iter.next();
+      iterPo.setId(null);
+    }
+  }
+
+  /**
+   * For {@link #isCreated(PersistentBean) created} persistent beans, the
+   * {@link PersistentBean#getId()} is reset to <code>null</code> (part of rollback).
+   *
    * @throws    TechnicalException
    *            isInTransaction();
    */
@@ -192,6 +208,8 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     assert $tx != null;
     try {
       $tx.rollback();
+      resetId($created);
+      // $deleted objects get to keep there original id, as they are not really deleted
     }
     catch (HibernateException hExc) {
       throw new TechnicalException("could not rollback "
@@ -203,10 +221,16 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
       $tx = null;
       setInTransaction(false);
       $deleted = new HashSet();
+      $created = new HashSet();
     }
   }
 
   /**
+   * After this method, <code>pb</code> will have an fresh id. Only during commit will
+   * this <code>pb</code> actually be created in the DB, so if that fails, we need
+   * to call {@link #cancelTransaction()}. This will reset the id to <code>null</code>.
+   *
+   * @post isCreated(pb);
    * @throws    TechnicalException
    *            !isInTransaction()
    *            || getSession() == null
@@ -235,6 +259,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
       pb.checkCivility(); // CompoundPropertyException
       LOG.trace("Normalization of \"" + pb + "\" done."); //$NON-NLS-2$
       getSession().save(pb);
+      $created.add(pb);
       LOG.debug("Creating succesfull. Id = " + pb.getId());
     }
     catch (HibernateException hExc) {
@@ -452,6 +477,34 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     LOG.debug("Deletion succeeded.");
   }
 
+
+
+  /*<property name="created">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Returns true when the given persistent bean has been created (i.e.,
+   * has been used as a parameter in {@link #createPersistentBean(PersistentBean)});
+   * returns false otherwise.
+   *
+   * @param  pb
+   * @basic
+   */
+  public boolean isCreated(final PersistentBean pb) {
+    return $created.contains(pb);
+  }
+
+  /**
+   * @invar $created != null;
+   * @invar ! $created.contains(null);
+   * @invar (forall Object o; $created.contains(o); o instanceof PersistentBean);
+   */
+  private Set $created = new HashSet();
+
+  /*</property>*/
+
+
+
   /*<property name="deleted">*/
   //------------------------------------------------------------------
 
@@ -474,6 +527,8 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
   private Set $deleted = new HashSet();
 
   /*</property>*/
+
+
 
  /*<property name="inTransaction">*/
  //------------------------------------------------------------------
