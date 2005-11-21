@@ -76,6 +76,7 @@ public abstract class AbstractHibernateTest extends TestCase {
   public void closeSession() {
     try {
       $session.close();
+      $session = null;
     }
     catch (HibernateException hExc) {
       hExc.printStackTrace();
@@ -196,8 +197,6 @@ public abstract class AbstractHibernateTest extends TestCase {
   }
 
   private Session $session;
-
-
 
   public Transaction getTransaction() {
     return $tx;
