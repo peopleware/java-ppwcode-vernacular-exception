@@ -338,7 +338,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     assert pb != null;
     assert pd != null;
     PersistentBean result = null;
-    if (pd.getPropertyType().isAssignableFrom(PersistentBean.class)) {
+    if (PersistentBean.class.isAssignableFrom(pd.getPropertyType())) {
       Method rm = pd.getReadMethod();
       if (rm != null) {
         // found a property that returns a related bean; get it
