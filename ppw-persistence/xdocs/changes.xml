@@ -11,6 +11,18 @@
   </properties>
   <body>
 
+    <release version="II v1.2.0/3.1" date="2005-11-22" description="Correct resetting of id after failed creation.">
+      <action dev="jand" type="fix">
+        Now, HibernateAsyncCrudDao.cancelTransaction correctly resets the id's to null of all created
+        objects (which failed). Previously, we didn't realize that Hibernate already sets the new id during
+        save, and only save during commit, and does not reset the id. Now, on failure,
+        we reset the id of all created objects, also through cascade, to null.
+      </action>
+      <action dev="jand" type="add">
+        The method isCreated was added to the interface AsyncCrudDao.
+      </action>
+    </release>
+
     <release version="II v1.1.0/3.0" date="2005-09-09" description="More debug information added.">
       <action dev="dvankeer" type="update">
         Added more information on type invariant failured. Added failedcontidion to debug information

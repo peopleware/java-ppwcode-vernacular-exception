@@ -95,6 +95,10 @@ public class RamStorageAsyncCrudDao extends AbstractRamStorageDao implements Asy
     $toDelete.add(arg0);
   }
 
+  public final boolean isCreated(final PersistentBean arg0) {
+    return $toCreate.contains(arg0);
+  }
+
   public final boolean isDeleted(final PersistentBean arg0) {
     return $toDelete.contains(arg0);
   }

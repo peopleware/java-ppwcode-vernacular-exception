@@ -143,6 +143,10 @@ public interface AsyncCrudDao extends Dao {
    * <p>Before a record for <code>pb</code> is created in the persistent
    *   storage, first <code>pb.normalize()</code> is called,
    *   and we check whether <code>pb.isCivilized()</code>.
+   * <p>This method cascades creation of necessary: all {@link PersistentBean PersistentBeans}
+   *   that are reachable via public properties from <code>pb</code>,
+   *   whose {@link PersistentBean#getId() id} is <code>null</code>,
+   *   recursively, are also created.</p>
    *
    * @post   isInTransaction();
    *         This cannot be made true by this method when it is
@@ -162,6 +166,7 @@ public interface AsyncCrudDao extends Dao {
    *         implementer is to throw an exception when this occurs.
    * @post   (new pb).getId() != null;
    * @post   new pb.hasSameValues(pb);
+   * @post   new.isCreated(pb);
    * @throws CompoundPropertyException
    *         pb.getWildExceptions();
    *         The operation was stopped for a semantic reason (! pb.isCivilized()).
@@ -337,6 +342,11 @@ public interface AsyncCrudDao extends Dao {
    */
   void deletePersistentBean(final PersistentBean pb) throws TechnicalException;
 
+
+  /**
+   * @basic
+   */
+  boolean isCreated(final PersistentBean pb);
 
   /**
    * @basic

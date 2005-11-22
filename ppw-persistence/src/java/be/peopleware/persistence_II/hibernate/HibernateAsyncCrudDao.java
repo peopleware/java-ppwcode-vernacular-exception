@@ -6,8 +6,14 @@
 package be.peopleware.persistence_II.hibernate;
 
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import net.sf.hibernate.HibernateException;
@@ -15,6 +21,7 @@ import net.sf.hibernate.QueryException;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.Transaction;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -254,21 +261,109 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
                                    null);
     }
     try {
-      LOG.trace("Normalizing  \"" + pb + "\" ..."); //$NON-NLS-2$
-      pb.normalize();
-      pb.checkCivility(); // CompoundPropertyException
-      LOG.trace("Normalization of \"" + pb + "\" done."); //$NON-NLS-2$
+      LOG.trace("Gather all beans to be created, taking into account cascade");
+      List allToBeCreated = relatedFreshPersistentBeans(pb);
+      // we need to normalize and check all these beans
+      Iterator iter = allToBeCreated.iterator();
+      while (iter.hasNext()) {
+        PersistentBean current = (PersistentBean)iter.next();
+        LOG.trace("Normalizing  \"" + current + "\" and checking civility ...");
+        current.normalize();
+        current.checkCivility(); // CompoundPropertyException
+// MUDO (jand) package all PropertyExceptions for all beans together; don't stop after one!!!
+        LOG.trace("\"" + current + "\" checks out ok");
+      }
       getSession().save(pb);
-      $created.add(pb);
-      LOG.debug("Creating succesfull. Id = " + pb.getId());
+        // cascade done by Hibernate; all elements of allToBeCreated are created
+// IDEA (jand) by doing the cascade ourselfs, we might be able to get better exceptions
+      $created.addAll(allToBeCreated);
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("Creating succesfull.");
+        iter = allToBeCreated.iterator();
+        while (iter.hasNext()) {
+          PersistentBean current = (PersistentBean)iter.next();
+          LOG.debug("    generated " + current.getId() + " as id for " + current);
+        }
+      }
     }
     catch (HibernateException hExc) {
       LOG.debug("Creation of new record failed.");
-      handleHibernateException(hExc,
-                               "Creating",
-                               pb);
+      handleHibernateException(hExc, "Creating", pb);
     }
     assert pb.getId() != null;
+  }
+
+  /**
+   * <code>pb</code> is part of the result
+   *
+   * @todo move method static as utility method
+   * @pre pb != null;
+   * @pre pb.getId() == null;
+   */
+  private List relatedFreshPersistentBeans(PersistentBean pb) {
+    assert pb != null;
+    assert pb.getId() == null;
+    List result = new LinkedList();
+    result.add(pb);
+    int current = 0;
+    while (current < result.size()) {
+      PersistentBean currentPb = (PersistentBean)result.get(current);
+      current++;
+      PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(currentPb);
+      for (int i = 0; i < pds.length; i++) {
+        PersistentBean related = relatedPeristentBean(currentPb, pds[i]);
+        if ((related != null) && (related.getId() == null) &&  (! result.contains(related))) {
+            /* if it is a fresh bean and it is the first time that we encounter it,
+             * it is to be part of the result;
+             * we also need to process it further: remember it on the agenda */
+          result.add(related); // adds at the end of the list; size++
+        }
+      }
+    }
+    return Collections.unmodifiableList(result);
+  }
+
+  /**
+   * The value if the property <code>pd</code> of <code>pb</code>, if
+   * <ul>
+   *    <li>it is readable</li>
+   *    <li>it is a {@link PersistentBean}
+   * </ul>
+   * <code>null</code> otherwise 9also if there is an exception reading).
+   *
+   * @pre pb != null;
+   * @pre pd != null;
+   */
+  private PersistentBean relatedPeristentBean(PersistentBean pb, PropertyDescriptor pd) {
+    assert pb != null;
+    assert pd != null;
+    PersistentBean result = null;
+    if (pd.getPropertyType().isAssignableFrom(PersistentBean.class)) {
+      Method rm = pd.getReadMethod();
+      if (rm != null) {
+        // found a property that returns a related bean; get it
+        try {
+          result = (PersistentBean)rm.invoke(pb, null);
+        }
+        catch (IllegalArgumentException iaExc) {
+          assert false : "Should not happen, since there are no " //$NON-NLS-1$
+                         + "arguments, and the implicit argument is " //$NON-NLS-1$
+                         + "not null and of the correct type"; //$NON-NLS-1$
+        }
+        catch (IllegalAccessException e) {
+          assert false : "IllegalAccessException should not happen: " + e;
+        }
+        catch (InvocationTargetException e) {
+          assert false : "InvocationTargetException should not happen: " + e;
+        }
+        catch (NullPointerException e) {
+          assert false : "NullPointerException should not happen: " + e;
+        }
+        /* ExceptionInInitializerError can occur with invoke, but we do not
+         take into account errors */
+      }
+    }
+    return result;
   }
 
   /**
@@ -424,6 +519,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
       }
       pb.normalize();
       pb.checkCivility(); // CompoundPropertyException
+// MUDO (jand) normalize and checkCivility off all reachable PB's (cascade)
       if (LOG.isTraceEnabled()) {
         LOG.trace("Normalization of \"" + pb + "\" done."); //$NON-NLS-2$
       }
@@ -464,6 +560,7 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
     try {
       getSession().delete(pb);
       $deleted.add(pb);
+// MUDO (jand) take into account cascade delete
     }
     catch (HibernateException hExc) {
       LOG.debug("Deletion failed.");
