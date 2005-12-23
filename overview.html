@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>PeopleWare Exception Library II</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+
+<body>
+<h1>Exceptions Are Important</h1>
+<p>One of the badly understood features of modern object oriented programming
+  languages is the importance of <dfn>exceptions</dfn> and how to deal with them. In comparison
+  to a
+  complete application, the nominal flow of an application only takes a relatively
+  small part of the development effort. The true development cost of an application
+  is in the code that deals with <dfn>exceptional conditions</dfn>. This is especially true
+  for a web application. In essence, in all security sensitive applications,
+  undetermined behavior is the major risk. If we do not deal with exceptional
+  conditions, it
+  means that anything can happen in these conditions, making the application
+  inherently unsave. And in web applications,
+  based on the very simple, stateless HTTP protocol, there are so much more exceptional
+  conditions than in a desktop application.</p>
+<h2>My Application Works (If Nothing Unexpected Happens)</h2>
+<p>One popular approach to exception handling is to let them all propagate to
+  the final layer, where the user is then presented with an error dialog or an
+  error page. This is surely the cheapest way of dealing with exceptions: the
+  application essentially crashes, and the user is left  hanging out to dry.
+  This approach is only acceptable in the most simple of demo applications, to
+  show
+  some nominal functionality quickly (and even then you are cheating your audience).
+  Where in desktop application this approach will annoy
+  the user, in web applications, you are potentially creating a security hole
+  and the possibility for corruption of your back-end data. In a web application,
+  the end user will probably use his back-button, and try something else. However,
+  since the previous outcome was unexpected, the application is now in an undetermined
+  state, and we cannot know for sure even how our nominal code will act when
+  called in this state (in practice, the session scope is no longer to be trusted).
+  From this example it should be clear that, in many cases, a real crash of the
+  application is often the best possible outcome, to avoid uncontrolled access
+  and data corruption.</p>
+<h2>Exceptions Are Bothering My Style</h2>
+<p>Now, if you choose this popular approach of letting all exceptions propagate
+  to the final layer, working with checked exceptions is cumbersome: each method
+  has to declare that it throws the possible exceptions we just want to propagate
+  anyway. So, in this frame of mind, an aversion against checked exceptions comes
+  naturally. Hence, another popular practice has become for frameworks and libraries
+  to use unchecked exceptions (e.g., the JSF specification and Hibernate 3).
+  As we shall see below, this might be an acceptable approach for some kinds
+  of exceptional conditions, but certainly not for semantic exceptional conditions.</p>
+<h1>Kinds of Exceptional Conditions</h1>
+<p>Yet, it is not so hard to deal with exceptions properly. The first step in
+  dealing with exceptions is to understand the different kind of <dfn>exceptional
+  conditions</dfn> that can occur during execution of your program. In essence, an
+  <dfn>exceptional condition</dfn> is anything that is not explicitly forbidden (<dfn>precondition</dfn>)
+  that keeps your code from reaching its nominal effect (<dfn>postcondition</dfn>). Calling
+  code in violation of preconditions is not an exceptional condition, but a <dfn>programming
+  error</dfn>.</p>
+<p>Any method tries to reach its nominal postcondition (which is oftern not completely
+  deterministic in an environment with dynamic binding like an
+  object oriented programming
+    language). That is its reason for
+  being. During its execution, it might encounter exceptional conditions. When
+  this happens, the method can decide either to work around this condition, and
+  still reach its nominal postcondition, or it can decide to give up. In the
+  first case, the condition actually is not considered exceptional. In the
+  latter case, execution of code should be halted in a controlled fashion. This
+  means
+  that
+  nothing in
+  the
+  state
+  of
+  the
+  program
+  should
+  have changed:
+  it should be as if the method that cannot reach its nominal postcondition,
+  was never called in the first place. The method should be <dfn>atomic</dfn>:
+  either it reaches its
+  nominal effect, or it does nothing. Furthermore, the caller of the method should
+  be warned about the success or failure of the method call.</p>
+<p> Throwing an <dfn>exception</dfn> is the ideal way for a method
+  to signal that it cannot reach its nominal effect as described by the postcondition.
+  After detection of the exceptional condition, nominal execution stops, and
+  the method makes sure that nothing is
+     changed to the overall state of the system (either because the method didn't
+    make a change yet, or because the method rolls back all changes it made).
+  Then, it signals its failure by throwing an exception.<br />
+  If a method cannot reach
+  its postcondition, and it is impossible for the method to behave in
+    an atomic way, the caller should be aware of this. The calling method itself
+    should
+    be atomic too, and if the called method cannot do this, than the calling
+    method gets the burden. If this is a problem for the calling method too,
+  while unwinding the call stack, we finally reach the main method (or it's equivalent
+    in a web application). Here we have only 1 recourse: quit the application
+  gracefully.</p>
+<p>Now, what are the possible reasons why a correctly implemented method, if
+  called in acceptable conditions, i.e., not in violation of its preconditions,
+  cannot
+  reach its nominal
+  postcondition?
+  We discern 2 major types of conditions:</p>
+<ol>
+  <li>The current state of the system, in particular the state of the prime object
+    and the explicit actual arguments of the method call, is examined by the
+    code of the method, and the method decided that it can (or will) not implement
+    the postcondition in these circumstances for <dfn>semantic reasons</dfn>.<br />
+    E.g., we want to withdraw money from an account, and the requested amount
+    is larger than the balance. Or, the first name of a person is mandatory,
+    and we want to set the first name of a person from an actual argument, and
+    the argument
+    is <code>null</code>.<br />
+  This kind of exceptional conditions we will call <dfn>semantic exceptional
+  conditions</dfn>.  </li>
+  <li>The method could not reach the postcondition for a <dfn>technical reason</dfn> outside
+    the system.<br />
+    E.g., we are saving data to a database, and the connection fails (maybe somebody
+    tripped over a network cable). Or, we need to access a webservice, and we
+    can't resolve the domain name (maybe our DNS server is down). Or, as a final
+    example, the postcondition cannot be reached because the system runs out
+    of memory.<br />
+    This kind of exceptional conditions
+    we call <dfn>technical exceptional conditions</dfn>.</li>
+</ol>
+<p>The above examples obviously are based on the premise that network connection
+  stability, network administrator clumsiness and the amount of RAM in the machine
+  are outside the system we are developing. If you consider such occurences to
+  be within the system, you either do not consider them exceptional, and consequentially
+  have dealt with them in the nominal flow of your code, or you consider
+  the conditions to be of a semantic nature. If not, you have a <dfn>programming
+  error</dfn>.</p>
+<h1>Programming Errors</h1>
+<p><dfn>Programming errors</dfn> are not exceptional conditions, not in the sense
+  that we make mistakes a lot, but in the sense that exceptional conditions are
+  still <dfn>expected conditions</dfn>. Sadly, software requires the programmer
+  to take into account <em>all possible conditions</em> that can occur during
+  the execution of his code, exhaustively, for the code to have a chance to be
+  correct. <dfn>Correctness</dfn> of code is defined as the mathematical guarantee
+  that, if a method is called within the boundaries set by its preconditions, <em>all</em> method
+  calls will result in either, a nominal end to the method call and a state change
+  that at least incorporates the effect described by the postcondition, or, an
+  exception being thrown. A programming error is anything that (potentially)
+  causes different behavior.</p>
+<p>For a method to be able to guarantee this, it must take into account in its
+  implementation all possible conditions that can occur during execution, that
+  do not violate preconditions. In other words, <em>all</em> possible conditions
+  must be exhaustively known, and either be listed in the preconditions as unacceptable
+  for the method, or be dealt with in the code. The latter can mean reaching
+  the nominal effect in those conditions, or throwing an exception.<br />
+  So, if a method
+  behaves weird when it is called in violation of its preconditions, this is
+  not a bug in the implementation of the method. Actually, as method
+  implementors, we don't care about this. Calling a method in violation of its
+  preconditions is a programming error in the implementation of the <em>calling</em> method,
+not of the called method.</p>
+<p>The point I'm trying to make is, that if a condition can occur during execution
+    of a method that was <em>not</em> taken into account either in the preconditions
+    or in the code, i.e., it is an <dfn>unexpected condition</dfn>, you have
+    made a <dfn>programming error</dfn>. Since you didn't expect the condition,
+    you didn't reason about how your code would behave when it occurs, and as
+    a consequence
+    the state of the entire system has become <dfn>undetermined</dfn>: we don't
+    know where we are anymore, and anything we do now will have unpredictable
+    consequences. If you look at it as having forgotten to list the condition
+    in the method's
+    preconditions, it is clear that the calling method will be quite surprised,
+    and since it has no clue what happened, it cannot react.<br />
+  An <dfn>unexpected
+    condition</dfn>  is different from an <dfn>expected exceptional condition</dfn>.
+    We have reasoned about <dfn>expected conditions</dfn>, and some we have defined
+    as being outside our scope, and we have documented that in preconditions,
+    some we have defined exceptional (i.e., we will not try to reach the nominal
+    effect under these conditions), and some we deal with inside the nominal
+    flow of our code.</p>
+<p>Note that encountering unexpected conditions is not the only kind of programming
+  error possible. You can, e.g., also blatantly fail to reach your postcondition,
+  when you typed a <code>-</code> where a <code>+</code> was in order. But it
+  is a very important kind, because it is very difficult to always be exhaustively
+  aware of all possible conditions.</p>
+<p>Very many unexpected conditions will turn up as unexpected exceptions in Java,
+  like a <code>NullPointerException</code> (we didn't take into account the situation
+  where the parameter is <code>null</code>), or an <code>ArithmeticException</code> (we
+  forgot the nominator variable could be <code>0</code> in a division). But also not taking
+  into account a possible <code>ExceptionInInitializerError</code> when calling <code>java.lang.reflect.Method.invoke()</code>  on a constructor, or not taking into account a possible <code>SQLException</code> when executing
+  a SQL statement using <code>java.sql.Statement.execute()</code> are programming errors of
+  the same kind.</p>
+<p> Exceptions raised in this fashion should not concern a theory of dealing
+  with exceptions in correct programs. However, as it stands, we do get them
+  for free,
+    and in a modern language like Java or C# much more than in older languages
+  like C, C++ or Delphi. Many programming errors that would go unnoticed at first
+  in older-generation programming languages, at least are signalled immediately
+  in the current generation. This is a very good thing, because the system becomes
+  undefined once we executed the buggy code, and anything we do after that makes
+  things worse, potentially corrupts our data, or opens up security holes. So,
+  while talking about exceptions, it is not a bad thing to take these occurences
+  into account, and to formulate a strategy for dealing with them.</p>
+<p>First of all, consider the fact that it is very hard to always be exhaustively
+  aware of all possible conditions. As humans, we can manage conditions that
+  are considered to be part of the nominal flow of methods we use. Being exhaustively
+  aware of all exceptional conditions for the methods we use, or there preconditions,
+  is much more difficult. Now, in these modern languages, we can define the exceptional
+  conditions (and in some languages even the preconditions, but not in Java)
+  of methods we use with <em>a language construct</em> of which the compiler
+  is aware. This means that, while we are programming our code, the compiler
+  in the IDE will exhaustively list for us all possible exceptional conditions,
+  and bar us from delivering code that does not explicitly deals with these conditions
+  in some way. At least, that is, if the exceptional conditions are listed as <dfn>checked
+  exceptions</dfn> in the signature of the methods we use. This computer assistance
+  is an enormous help in trying to get correctness!<br />
+  With this in mind, maybe you can understand <em>my</em> aversion against unchecked
+  exceptions. When the methods I use only list unchecked exceptions, my IDE can't
+  help me in being aware of all possible conditions, and I must revert to looking
+  things up by hand in Javadoc. The loss in effici&euml;ncy is enormous.</p>
+<p>Secondly, exceptions raised as the result of a programming error are a mechanism
+  that allow us to efficiently do what is the only thing we can do when these
+  errors do make it to production software: gracefully quit the application a.s.a.p.,
+  before more harm is done.</p>
+<h1>What to Do?</h1>
+<p>Now that we have discerned different kinds of exceptions, we
+  need to contemplate what we want to do when they occur.</p>
+<p>When a <dfn>semantic exception</dfn> occurs,
+  we want to block the operation and warn the end user, so that he can change
+  his behavior and continue working with the program. In my experience, a semantic
+  exception occurs in an interactive program
+  when the
+  end
+  user provided
+  faulty
+  input or
+  performed an illegal operation (of course, a really good user interface would
+  prohibit the user action in these conditions in the first place, but with a
+  classic webapplication that is very hard). In a batch program, a semantic
+  exception would only occur with corrupt
+  or
+  incomplete
+  input. I
+  cannot imagine
+  any other final reason for an semantic exception then these, but
+  please report anything I might have missed. In both cases, it is important
+  that the user gets feedback about what he did wrong, for him to be able to
+   correct his input or behavior.</p>
+<p>When a <dfn>technical exception</dfn> occurs, there is little
+  we can do. Since these conditions are, per definition, considered to be outside
+  the system, we do not want to deal with them (otherwise, we would consider
+  them part of the system). By placing them outside of the system, we are saying
+  that we only guarantee correct behavior of our application when they do not
+  occur.</p>
+<p>That sounds like preconditions!</p>
+<p>when to throw</p>
+<p>what to do when catch</p>
+<p>In essence, when a semantic exceptional condition occurs, we want to inform
+    the user and let hem try again. When a technical exceptional condition occurs,
+    we want to inform the user of that fact, make clear that it has nothing to
+    do with him, but we also want to notify the persons that are responsible
+  for solving the technical problem, asap. The user cannot continue until the
+  problem
+    is fixed, and we exit the application gracefully.</p>
+<p>difference between programming error and technical exception is audience:
+  programmer vs. administrator</p>
+<p>semantic: audience is end user</p>
+<p>we don't know that something is a programming error! so we can't throw them,
+  only decide what to do them when we get one; difficult to recognize</p>
+<p>&nbsp;</p>
+<p>Hey! That is the reasoning above about I don't care!</p>
+<h1>Delivering Correct Software</h1>
+<p>I must presume that we all want to deliver correct software. But we all know
+  that is not trivial to. What is a good strategy to handle programming errors?</p>
+<p>First of all, we should have a strategy that is aimed at discovering programming
+  errors when the software is still in the hands of the programmers, before it
+  is delivered. Secondly, we should have a strategy for dealing with programming
+  errors that still remain in the software after it is deployed, despite our
+  efforts.</p>
+<p>usual things, prove, peer review, unit testing, integration testing, testing,</p>
+<p>acceptance
+    testing by selected audience</p>
+<p>For dealing with programming errors that still surface when the software is
+  deployed, we take into account the fact that this will be a rare occurence.
+  So we should not put too many effort in it. In this case it sadly is the end-user
+  that is confronted with the error, so we need some blabla.</p>
+<p>assert good enough; disable when you feel safe.</p>
+<p>assert is good!!!!</p>
+<h1>Checked Exceptions, Unchecked Exceptions and Errors</h1>
+<p>Unchecked exceptions (and that includes errors) should be used to signal programming
+  errors or technical exceptional conditions.</p>
+<p>Problem is that that cannot be defined from the standpoint of the called method
+  or operation: it can be called in different modes, and sometimes these are
+  semantic or technical or error: the caller decides that, not the callee.</p>
+</body>
+</html>
