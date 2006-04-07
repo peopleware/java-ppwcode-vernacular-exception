@@ -50,7 +50,43 @@ public final class Cases {
     // NOP, something to call to load the class
   }
 
- //  NationalNumber
+  // VATNumber
+  private static final StraightList TOL_BE_PEOPLEWARE_VALUE_II_VATNUMBER;
+
+  static {
+    VATNumber[] vatnrs = new VATNumber[2];
+    try {
+      vatnrs[0] = new VATNumber();
+      vatnrs[1] = new VATNumber("680334244");
+    }
+    catch (PropertyException e) {
+      assert false : "PropertyException should not happen: " + e;
+    }
+    TOL_BE_PEOPLEWARE_VALUE_II_VATNUMBER = new ArrayStraightList(vatnrs);
+    org.toryt.Cases.addTol(VATNumber.class, TOL_BE_PEOPLEWARE_VALUE_II_VATNUMBER);
+  }
+
+
+
+  // RSZNumber
+  private static final StraightList TOL_BE_PEOPLEWARE_VALUE_II_RSZNUMBER;
+
+  static {
+    RSZNumber[] rsznrs = new RSZNumber[2];
+    try {
+      rsznrs[0] = new RSZNumber();
+      rsznrs[1] = new RSZNumber("026178217129");
+    }
+    catch (PropertyException e) {
+      assert false : "PropertyException should not happen: " + e;
+    }
+    TOL_BE_PEOPLEWARE_VALUE_II_RSZNUMBER = new ArrayStraightList(rsznrs);
+    org.toryt.Cases.addTol(RSZNumber.class, TOL_BE_PEOPLEWARE_VALUE_II_RSZNUMBER);
+  }
+
+
+
+  //  NationalNumber
   private static final StraightList TOL_BE_PEOPLEWARE_VALUE_I_NATIONAL_NUMBER;
   static {
     NationalNumber[] nn = new NationalNumber[4];
@@ -66,6 +102,8 @@ public final class Cases {
     TOL_BE_PEOPLEWARE_VALUE_I_NATIONAL_NUMBER = new ArrayStraightList(nn);
     org.toryt.Cases.addTol(NationalNumber.class, TOL_BE_PEOPLEWARE_VALUE_I_NATIONAL_NUMBER);
   }
+
+
 
   //  Period
   private static final StraightList TOL_BE_PEOPLEWARE_VALUE_I_PERIOD;
