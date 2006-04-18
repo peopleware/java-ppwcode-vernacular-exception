@@ -472,13 +472,13 @@ public class _Contract_EnterpriseNumber extends ClassContract {
                                                             "1222-333-424",
                                                             "9999-888-762"})};
 
-  private static StraightList[] VARIOUS_STRINGS =
-    new StraightList[] {new ArrayStraightList( new String[] {"0123-456-749"}),
-                        new ArrayStraightList( new String[] {"1222-333-424"}),
-                        new ArrayStraightList( new String[] {"9999-888-762"}),
-                        new ArrayStraightList( new String[] {"0123-456-743"}),
-                        new ArrayStraightList( new String[] {"1W98-3R3-4D4"}),
-                        new ArrayStraightList( new String[] {"99994-88-762"})};
+//  private static StraightList[] VARIOUS_STRINGS =
+//    new StraightList[] {new ArrayStraightList( new String[] {"0123-456-749"}),
+//                        new ArrayStraightList( new String[] {"1222-333-424"}),
+//                        new ArrayStraightList( new String[] {"9999-888-762"}),
+//                        new ArrayStraightList( new String[] {"0123-456-743"}),
+//                        new ArrayStraightList( new String[] {"1W98-3R3-4D4"}),
+//                        new ArrayStraightList( new String[] {"99994-88-762"})};
 
   private static StraightList[] VARIOUS_STRING_COMBINATIONS =
     new StraightList[] {new ArrayStraightList( new String[] {"0123", "1222", "9999", null, "1hh7", "889", "78556"}),
