@@ -50,6 +50,25 @@ public final class Cases {
     // NOP, something to call to load the class
   }
 
+  // EnterpriseNumber
+  private static final StraightList TOL_BE_PEOPLEWARE_VALUE_II_ENTERPRISE_NUMBER;
+
+  static {
+    EnterpriseNumber[] enrs = new EnterpriseNumber[3];
+    try {
+      enrs[0] = new EnterpriseNumber("0123-456-749");
+      enrs[1] = new EnterpriseNumber("1222-333-424");
+      enrs[1] = new EnterpriseNumber("9999-888-762");
+   }
+    catch (PropertyException e) {
+      assert false : "PropertyException should not happen: " + e;
+    }
+    TOL_BE_PEOPLEWARE_VALUE_II_ENTERPRISE_NUMBER = new ArrayStraightList(enrs);
+    org.toryt.Cases.addTol(EnterpriseNumber.class, TOL_BE_PEOPLEWARE_VALUE_II_ENTERPRISE_NUMBER);
+  }
+
+
+
   // VATNumber
   private static final StraightList TOL_BE_PEOPLEWARE_VALUE_II_VATNUMBER;
 
