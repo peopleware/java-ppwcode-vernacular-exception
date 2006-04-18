@@ -165,6 +165,122 @@ public class _Contract_EnterpriseNumber extends ClassContract {
     );
 
     addConstructorContract(
+       new ConstructorContract(this, EnterpriseNumber.class, "EnterpriseNumber(java.lang.String)") {
+         public String[] getFormalParameters() {
+           return new String[] {"pattern"};
+         }
+
+         {
+           // no preconditions
+           // postconditions
+           addPostcondition(new Condition() {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               String pattern = (String)context.get("pattern");
+               return validatePattern(pattern) &&
+                      subject.getLeftNumber().equals(leftNumberFromPattern(pattern));
+             }
+             public String toString() {
+               return "validatePattern(pattern) && subject.getLeftNumber().equals(leftNumberFromPattern(pattern));";
+             }
+           });
+
+           addPostcondition(new Condition() {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               String pattern = (String)context.get("pattern");
+               return validatePattern(pattern) &&
+                      subject.getMiddleNumber().equals(middleNumberFromPattern(pattern));
+             }
+             public String toString() {
+               return "validatePattern(pattern) && subject.getMiddleNumber().equals(middleNumberFromPattern(pattern));";
+             }
+           });
+
+           addPostcondition(new Condition() {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               String pattern = (String)context.get("pattern");
+               return validatePattern(pattern) &&
+                      subject.getRightNumber().equals(rightNumberFromPattern(pattern));
+             }
+             public String toString() {
+               return "validatePattern(pattern) && subject.getRightNumber().equals(rightNumberFromPattern(pattern));";
+             }
+           });
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+               String pattern = (String)context.get("pattern");
+               return (pattern == null) && pExc.reportsOn(subject, null, "NUMBER_PATTERN", null);
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+               String pattern = (String)context.get("pattern");
+               return (pattern != null) &&
+                      (pattern.length() < 10) &&
+                      (pExc.getOrigin() == subject) &&
+                      (pExc.getPropertyName() == null) &&
+                      pExc.getMessage().equals("PATTERN_TOO_SHORT") &&
+                      (pExc.getCause() instanceof IndexOutOfBoundsException);
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+               String pattern = (String)context.get("pattern");
+               return (pattern != null) && (pattern.length() >= 10) &&
+                      (! Pattern.matches(EnterpriseNumber.LEFT_PATTERN, leftNumberFromPattern(pattern))) &&
+                      pExc.reportsOn(subject, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null);
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+               String pattern = (String)context.get("pattern");
+               return (pattern != null) && (pattern.length() >= 10) &&
+                      (! Pattern.matches(EnterpriseNumber.MIDDLE_PATTERN, middleNumberFromPattern(pattern))) &&
+                      pExc.reportsOn(subject, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null);
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+               String pattern = (String)context.get("pattern");
+               return (pattern != null) && (pattern.length() >= 10) &&
+                      (! Pattern.matches(EnterpriseNumber.RIGHT_PATTERN, rightNumberFromPattern(pattern))) &&
+                      pExc.reportsOn(subject, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null);
+             }});
+
+           addExceptionCondition(new ExceptionCondition(PropertyException.class) {
+             public boolean validate(Map context) {
+               EnterpriseNumber subject = (EnterpriseNumber)context.get(SUBJECT_KEY);
+               PropertyException pExc = (PropertyException)context.get(EXCEPTION_KEY);
+               String pattern = (String)context.get("pattern");
+               return (pattern != null) && (pattern.length() >= 10) &&
+                      (! validatePattern(pattern)) &&
+                      pExc.reportsOn(subject, null, "INVALID_CHECK", null);
+             }});
+
+           close();
+         }
+
+         public StraightList getTestCases() throws TorytException {
+           return new LazyCombinationStraightList(
+               new String[] {"pattern"}, VARIOUS_STRINGS);
+         }
+       }
+     );
+
+    addConstructorContract(
         new ConstructorContract(this, EnterpriseNumber.class, "EnterpriseNumber()") {
           {
             // no preconditions
@@ -472,13 +588,13 @@ public class _Contract_EnterpriseNumber extends ClassContract {
                                                             "1222-333-424",
                                                             "9999-888-762"})};
 
-//  private static StraightList[] VARIOUS_STRINGS =
-//    new StraightList[] {new ArrayStraightList( new String[] {"0123-456-749"}),
-//                        new ArrayStraightList( new String[] {"1222-333-424"}),
-//                        new ArrayStraightList( new String[] {"9999-888-762"}),
-//                        new ArrayStraightList( new String[] {"0123-456-743"}),
-//                        new ArrayStraightList( new String[] {"1W98-3R3-4D4"}),
-//                        new ArrayStraightList( new String[] {"99994-88-762"})};
+  private static StraightList[] VARIOUS_STRINGS =
+    new StraightList[] {new ArrayStraightList(new String[] {"0123-456-749",
+                                                            "1222-333-424",
+                                                            "9999-888-762",
+                                                            "0123-456-743",
+                                                            "1W98-3R3-4D4",
+                                                            "99994-88-762"})};
 
   private static StraightList[] VARIOUS_STRING_COMBINATIONS =
     new StraightList[] {new ArrayStraightList( new String[] {"0123", "1222", "9999", null, "1hh7", "889", "78556"}),
@@ -516,4 +632,43 @@ public class _Contract_EnterpriseNumber extends ClassContract {
             return subject;
           }
     };
+
+  public static String leftNumberFromPattern(String pattern) throws IndexOutOfBoundsException {
+    return normalizePattern(pattern).substring(0, 4);
+  }
+
+  public static String middleNumberFromPattern(String pattern) throws IndexOutOfBoundsException {
+    return normalizePattern(pattern).substring(4, 7);
+  }
+
+  public static String rightNumberFromPattern(String pattern) throws IndexOutOfBoundsException {
+    return normalizePattern(pattern).substring(7, 10);
+  }
+
+  public static boolean validatePattern(String pattern) {
+    if (pattern == null) {
+      return false;
+    }
+    String normalized = normalizePattern(pattern);
+    if (normalized == null) {
+      return false;
+    }
+    if (! Pattern.matches("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", normalized)) {
+      return false;
+    }
+    int base = Integer.parseInt(normalized.substring(0, 8));
+    int check = Integer.parseInt(normalized.substring(8, 10));
+    return ((base + check) % EnterpriseNumber.CHECK_NUMBER) == 0;
+  }
+
+  public static String normalizePattern(String pattern) {
+    String[] array = pattern.split("[ -/|*:]+");
+    // PatternSyntaxException: cannot happen
+    StringBuffer buffer = new StringBuffer("");
+    for (int i = 0; i < array.length; i++) {
+      buffer.append(array[i]);
+    }
+    return buffer.toString();
+  }
+
 }
