@@ -199,47 +199,51 @@ public final class VATNumber extends ImmutableValue {
       final String rightNumber) throws PropertyException {
     CompoundPropertyException cpe =
       new CompoundPropertyException(VATNumber.class, null, null, null);
+    boolean allPatternsOk = true;
     if (leftNumber == null) {
       cpe.addElementException(
           new PropertyException(
               VATNumber.class, "leftNumber", "LEFT_NUMBER_IS_NULL", null)
       );
+      allPatternsOk = false;
     }
     if (leftNumber != null && !Pattern.matches(LEFT_PATTERN, leftNumber)) {
       cpe.addElementException(
           new PropertyException(
               VATNumber.class, "leftNumber", "LEFT_NUMBER_INVALID_PATTERN", null)
       );
+      allPatternsOk = false;
     }
     if (middleNumber == null) {
       cpe.addElementException(
           new PropertyException(
               VATNumber.class, "middleNumber", "MIDDLE_NUMBER_IS_NULL", null)
       );
+      allPatternsOk = false;
     }
     if (middleNumber != null && !Pattern.matches(MIDDLE_PATTERN, middleNumber)) {
       cpe.addElementException(
           new PropertyException(
               VATNumber.class, "middleNumber", "MIDDLE_NUMBER_INVALID_PATTERN", null)
       );
+      allPatternsOk = false;
     }
     if (rightNumber == null) {
       cpe.addElementException(
           new PropertyException(
               VATNumber.class, "rightNumber", "RIGHT_NUMBER_IS_NULL", null)
       );
+      allPatternsOk = false;
     }
     if (rightNumber != null && !Pattern.matches(RIGHT_PATTERN, rightNumber)) {
       cpe.addElementException(
           new PropertyException(
               VATNumber.class, "rightNumber", "RIGHT_NUMBER_INVALID_PATTERN", null)
       );
+      allPatternsOk = false;
     }
-    if (leftNumber != null
-        && middleNumber != null
-        && rightNumber != null
-        && !VATNumber.checkVATNumber(leftNumber, middleNumber, rightNumber)
-    ) {
+    if (allPatternsOk &&
+        (! VATNumber.checkVATNumber(leftNumber, middleNumber, rightNumber))) {
       cpe.addElementException(
           new PropertyException(VATNumber.class, null, "INVALID_CHECK", null)
       );
@@ -249,6 +253,8 @@ public final class VATNumber extends ImmutableValue {
     $middleNumber = middleNumber;
     $rightNumber  = rightNumber;
   }
+
+
 
   /*<property name="leftNumber">*/
   //------------------------------------------------------------------
@@ -268,6 +274,8 @@ public final class VATNumber extends ImmutableValue {
 
   /*</property>*/
 
+
+
   /*<property name="middleNumber">*/
   //------------------------------------------------------------------
 
@@ -286,6 +294,8 @@ public final class VATNumber extends ImmutableValue {
 
   /*</property>*/
 
+
+
   /*<property name="rightNumber">*/
   //------------------------------------------------------------------
 
@@ -303,6 +313,8 @@ public final class VATNumber extends ImmutableValue {
   private String $rightNumber;
 
   /*</property>*/
+
+
 
   /**
    * The integer used for checking a VAT number.
@@ -333,6 +345,12 @@ public final class VATNumber extends ImmutableValue {
    */
   public static boolean checkVATNumber(final String leftNumber,
       final String middleNumber, final String rightNumber) {
+    assert leftNumber != null;
+    assert Pattern.matches(LEFT_PATTERN, leftNumber);
+    assert middleNumber != null;
+    assert Pattern.matches(MIDDLE_PATTERN, middleNumber);
+    assert rightNumber != null;
+    assert Pattern.matches(RIGHT_PATTERN, rightNumber);
     String first7String = leftNumber + middleNumber + rightNumber.substring(0, 1);
     String last2String = rightNumber.substring(1);
     int first7Int = Integer.parseInt(first7String);
