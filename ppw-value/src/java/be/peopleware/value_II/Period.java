@@ -279,6 +279,14 @@ public class Period extends MutableValue implements Comparable {
   }
 
   /**
+   * @return  ((getStartDate() != null) && (getEndDate() != null)) ? -1 : getNbDaysInPeriod() + 1;
+   */
+  public long getNbDaysInPeriodInclusive() {
+    long ndip = getNbDaysInPeriod();
+    return (ndip == -1) ? -1 : ndip + 1;
+  }
+
+  /**
    * Compares this object with the specified object for order.
    *
    * @result  getStartDate() == null && ((Period)o).getStartDate() == null

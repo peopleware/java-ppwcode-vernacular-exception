@@ -380,6 +380,37 @@ public class _Contract_Period extends ClassContract {
       }
 
     });
+    addInstanceMethodContract(
+        new MutatorContract(
+            this, Period.class,
+            "getNbDaysInPeriodInclusive()") {
+
+      public String[] getFormalParameters() {
+        return new String[] {};
+      }
+
+      {
+        // no preconditions
+        // postconditions
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            Period subject = (Period)context.get(SUBJECT_KEY);
+            long result = ((Long) context.get(RESULT_KEY)).longValue();
+            return result
+                   == (((subject.getStartDate() != null) && (subject.getEndDate() != null)) ?
+                       -1 :
+                       subject.getNbDaysInPeriod() + 1);
+          }});
+        close();
+      }
+
+      public StraightList getTestCases() throws TorytException {
+        return new LazyCombinationStraightList(
+              new String[] {SUBJECT_KEY},
+              new StraightList[] {getCases()});
+      }
+
+    });
     // basic inspectors
     addBasicInspector("getStartDate()");
     addBasicInspector("getEndDate()");
