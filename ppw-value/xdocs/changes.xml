@@ -12,9 +12,21 @@
   </properties>
   <body>
 
-    <release version="II v1.3.0/1.2" date="2005-09-30" description="new RSZ and VAT constructor">
+    <release version="II v1.6.0/1.3" date="2006-04-19" description="Period duration, EnterpriseNumber messages">
+      <action dev="jand" type="add">
+        Inclusive duration method in Period.
+      </action>
+      <action dev="jand" type="add">
+        French messages for EnterpriseNumbers.
+      </action>
+    </release>
+
+    <release version="II v1.5.0/1.3" date="2006-04-18" description="EnterpriseNumber, fixes in RSZ and VAT">
+      <action dev="jand" type="add">
+        EnterpriseNumber, -Converter and -UserType
+      </action>
       <action dev="jand" type="fix">
-        Fixed problem in new VAT and RSZ numbers constructor.
+        Fixed problem in VAT and RSZ numbers classes in initialization check.
       </action>
     </release>
 
