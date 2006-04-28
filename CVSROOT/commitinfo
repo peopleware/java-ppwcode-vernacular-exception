@@ -1,6 +1,6 @@
 # The "commitinfo" file is used to control pre-commit checks.
-# The filter on the right is invoked with the repository and a list 
-# of files to check.  A non-zero exit of the filter program will 
+# The filter on the right is invoked with the repository and a list
+# of files to check.  A non-zero exit of the filter program will
 # cause the commit to be aborted.
 #
 # The first entry on a line is a regular expression which is tested
@@ -14,5 +14,20 @@
 # If the name "ALL" appears as a regular expression it is always used
 # in addition to the first matching regex or "DEFAULT".
 
-ALL /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+Index /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-bean /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-exception /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-i18n /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-jsf /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-jsp /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-libraries-settings /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-persistence /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-servlet /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-struts /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-test /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-util /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-value /ppw/sysadmin/cvstools/bin/activitymail.pl -l
+ppw-value-hibernate /ppw/sysadmin/cvstools/bin/activitymail.pl -l
 
+# no mails for toryt
+# toryt

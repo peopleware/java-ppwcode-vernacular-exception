@@ -25,6 +25,20 @@
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
-ALL /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | Java Libraries: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+Index /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | Java Libraries Index: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-bean /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-bean: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-exception /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-exception: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-i18n /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-i18n: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-jsf /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-jsf: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-jsp /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-jsp: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-libraries-settings /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | Java Libraries Maven Settings: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-persistence /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-persistence: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-servlet /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-servlet: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-struts /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-struts: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-test /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-test: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-util /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-util: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-value /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-value: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
+ppw-value-hibernate /ppw/sysadmin/cvstools/bin/activitymail.pl -cf %{sVv} -m "CVS | ppw-value-hibernate: " -t "`/ppw/sysadmin/cvstools/bin/projectEmailAddresses.sh javalibs`"
 
-
+# no mails for toryt
+# toryt
