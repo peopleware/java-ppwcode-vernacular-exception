@@ -95,6 +95,38 @@
 
   </goal>
 
+  <goal name="toryt:test"
+    description="Run the Toryt tests"
+    prereqs="toryt:compile">
+
+    <echo>Running Toryt tests.</echo>
+
+    <j:if test="${empty(pom.package)}">
+      <echo>No package set.</echo>
+      <j:set var="maven.toryt.package" value=""/>
+    </j:if>
+
+    <j:if test="${! empty(pom.package)}">
+      <echo>Project contract: ${pom.package}._Project_Contract_</echo>
+
+      <java className="org.toryt.main.SimpleCli"
+            fork="yes">
+        <arg value="-c${pom.package}._Project_Contract_" />
+        <arg value="-f20" />
+        <assertions>
+          <enable />
+        </assertions>
+        <classpath>
+          <pathelement path="${maven.toryt.dest}"/>
+          <pathelement path="${maven.build.dest}"/>
+          <path refid="maven.dependency.classpath"/>
+        </classpath>
+      </java>
+    </j:if>
+
+  </goal>
+
+
 
  <!-- Set up the jar command so it includes tld, jsp tagfiles, properties
        and betwixt files -->
