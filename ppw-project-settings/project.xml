@@ -23,7 +23,7 @@
     <dependency>
       <groupId>lint4j</groupId>
       <artifactId>jutils-lint4j-plugin</artifactId>
-      <version>1.2</version>
+      <version>1.3</version>
       <type>plugin</type>
     </dependency>
   </dependencies>
