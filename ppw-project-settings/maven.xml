@@ -6,7 +6,15 @@
          xmlns:ant="jelly:ant">
 
   <!-- Generic goal to deploy site, jar and distribution at once -->
-  <goal name="release" prereqs="clean,site:deploy,jar:deploy,dist:deploy" />
+  <goal name="release" prereqs="clean">
+    <attainGoal name="pom:deploy" />
+    <attainGoal name="jar:deploy" />
+    <u:available file="${maven.war.src}">
+      <attainGoal name="war:deploy" />
+    </u:available>
+    <attainGoal name="site:deploy" />
+    <attainGoal name="dist:deploy" />
+  </goal>
 
 
   <!--
@@ -243,6 +251,92 @@
         <include name="**/*.txt" />
       </fileset>
     </copy>
+  </preGoal>
+
+
+
+  <!-- hbm2ddl: DDL Schema generation from Hibernate hbm files -->
+  <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+  <j:set var="maven.hbm2ddl.build.dest" value="${basedir}/target/schema"/>
+  <j:set var="maven.hbm2ddl.docs.dest" value="${basedir}/target/docs"/>
+  <j:set var="maven.hbm2ddl.config.path" value="${maven.src.dir}/java/hibernate.cfg.xml"/>
+  <j:set var="maven.hbm2ddl.dbschema.path" value="${maven.hbm2ddl.build.dest}/${pom.artifactId}.schema.sql" />
+
+
+  <goal name="hbm2ddl:prepare-filesystem"
+    description="Create the directory structure needed for SQL database schema (DDL) generation from Hibernate .hbm files">
+    <u:available file="${maven.hbm2ddl.config.path}">
+      <mkdir dir="${maven.hbm2ddl.build.dest}" />
+    </u:available>
+  </goal>
+
+  <goal name="hbm2ddl:copy-hibernate-files">
+    <!-- copy all xml files for inclusion in war -->
+    <u:available file="${maven.hbm2ddl.config.path}">
+      <echo message="Copying Hibernate files to ${maven.build.dest}" />
+      <copy todir="${maven.build.dest}">
+        <fileset dir="${maven.src.dir}/java">
+          <include name="**/hibernate.cfg.xml" />
+          <include name="**/*.hbm.xml" />
+        </fileset>
+      </copy>
+    </u:available>
+  </goal>
+
+  <!-- Schema generation -->
+  <goal name="hbm2ddl:generate"
+    description="Generate SQL database schema (DDL) from Hibernate .hbm files"
+    prereqs="java:compile,hbm2ddl:copy-hibernate-files,hbm2ddl:prepare-filesystem">
+    <echo>Generate SQL database schema (DDL) from Hibernate .hbm files</echo>
+    <echo>Hibernate config file: ${maven.hbm2ddl.config.path}</echo>
+    <echo>Destination file: ${maven.hbm2ddl.dbschema.path}</echo>
+    <u:available file="${maven.hbm2ddl.config.path}">
+      <ant:taskdef name="schemaexport"
+        classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask">
+        <classpath>
+          <pathelement path="${maven.build.dest}"/>
+          <path refid="maven.dependency.classpath"/>
+        </classpath>
+      </ant:taskdef>
+      <echo>Task defined</echo>
+      <ant:schemaexport config="${maven.hbm2ddl.config.path}"
+                        quiet="no"
+                        text="yes"
+                        drop="no"
+                        delimiter=";"
+                        output="${maven.hbm2ddl.dbschema.path}">
+<!-- MUDO sadly, this fails here with a NullPointerException; the ant build file works -->
+      </ant:schemaexport>
+    </u:available>
+  </goal>
+
+
+  <!-- include the schema ddl in the site;
+       refer to it in navigation as
+    <item name="Database Schemata" href="schema/" />
+   -->
+  <goal name="hbm2ddl:site-prepare-filesystem"
+    description="Create the site directory structure needed for SQL database schema (DDL) generation from Hibernate .hbm files">
+    <u:available file="${maven.hbm2ddl.config.path}">
+      <mkdir dir="${maven.hbm2ddl.docs.dest}/schema" />
+    </u:available>
+  </goal>
+
+  <goal name="hbm2ddl:site" prereqs="hbm2ddl:generate,hbm2ddl:site-prepare-filesystem">
+    <u:available file="${maven.hbm2ddl.config.path}">
+      <echo message="Copying SQL DDL schema to docs" />
+      <copy todir="${maven.hbm2ddl.docs.dest}/schema">
+        <fileset dir="${maven.hbm2ddl.build.dest}">
+          <include name="**/*.sql" />
+        </fileset>
+      </copy>
+    </u:available>
+  </goal>
+
+  <!-- include SQL schema in site -->
+  <preGoal name="xdoc:copy-user-resources">
+    <attainGoal name="hbm2ddl:site" />
   </preGoal>
 
 </project>
