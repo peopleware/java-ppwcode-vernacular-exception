@@ -69,6 +69,7 @@
   <reports>
     <report>maven-license-plugin</report>
     <report>maven-javadoc-plugin</report>
+    <report>maven-jxr-plugin</report>
     <report>maven-faq-plugin</report>
     <report>maven-jdepend-plugin</report>
     <report>maven-changes-plugin</report>
