@@ -12,6 +12,14 @@
   </properties>
   <body>
 
+    <release version="V v1.0.0/1.1" date="2006-05-22"
+      description="Picture of J.J Rousseau">
+      <action dev="jand" type="fix">
+        Link to picture of J.J. Rousseau, from Wikipedia failed. Now we have the picture in the project.
+        The painting and the photo of the painting is in the public domain.
+      </action>
+    </release>
+
     <release version="V v1.0.0/1.0" date="2005-09-05"
       description="RousseauBean is changed into an interface">
       <action dev="nsmeets" type="add">
