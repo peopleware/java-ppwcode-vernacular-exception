@@ -12,6 +12,14 @@
   </properties>
   <body>
 
+    <release version="II v1.7.0/2.0" date="2006-05-26" description="AutomaticPropertyConverter and arrays">
+      <action dev="jand" type="update">
+        The AutomaticPropertyConverter now will use the component type of arrays, if the
+        JSF component has a value binding to an array property. This enables us to use
+        this converter also for SelectMany... components.
+      </action>
+    </release>
+
     <release version="II v1.6.0/1.3" date="2006-04-19" description="Period duration, EnterpriseNumber messages">
       <action dev="jand" type="add">
         Inclusive duration method in Period.

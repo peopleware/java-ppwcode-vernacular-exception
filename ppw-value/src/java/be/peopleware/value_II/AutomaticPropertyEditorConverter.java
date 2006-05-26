@@ -89,6 +89,14 @@ public class AutomaticPropertyEditorConverter extends AbstractPropertyEditorConv
           /* throws EvaluationException < PropertyNotFoundException
              throws NullPointerException, not  for component == null, context == null
              or "value" == null, but because their might not be a value binding */
+        if (targetType.isArray()) {
+          LOG.debug("target type " + targetType + " is an array. Converting " +
+                    "arrays makes no sense, we probably want to convert elements " +
+                    "of the array (and the component is a compound handling " +
+                    "component, like selectMany). We'll look for a converter for the " +
+                    "component type.");
+          targetType = targetType.getComponentType();
+        }
         // try to find a property editor for target type
         LOG.debug("target type of component value binding \"value\": " + targetType);
         $propertyEditor = PropertyEditorManager.findEditor(targetType);
