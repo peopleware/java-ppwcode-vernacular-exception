@@ -285,6 +285,7 @@
   </goal>
 
   <!-- Schema generation -->
+<!--
   <goal name="hbm2ddl:generate"
     description="Generate SQL database schema (DDL) from Hibernate .hbm files"
     prereqs="java:compile,hbm2ddl:copy-hibernate-files,hbm2ddl:prepare-filesystem">
@@ -306,11 +307,11 @@
                         drop="no"
                         delimiter=";"
                         output="${maven.hbm2ddl.dbschema.path}">
-<!-- MUDO sadly, this fails here with a NullPointerException; the ant build file works -->
+<!++ MUDO sadly, this fails here with a NullPointerException; the ant build file works ++>
       </ant:schemaexport>
     </u:available>
   </goal>
-
+-->
 
   <!-- include the schema ddl in the site;
        refer to it in navigation as
@@ -323,7 +324,7 @@
     </u:available>
   </goal>
 
-  <goal name="hbm2ddl:site" prereqs="hbm2ddl:generate,hbm2ddl:site-prepare-filesystem">
+  <goal name="hbm2ddl:site" prereqs="hbm2ddl:site-prepare-filesystem">
     <u:available file="${maven.hbm2ddl.config.path}">
       <echo message="Copying SQL DDL schema to docs" />
       <copy todir="${maven.hbm2ddl.docs.dest}/schema">
