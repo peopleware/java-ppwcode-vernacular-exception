@@ -24,7 +24,7 @@
     <exclude name="BeanMembersShouldSerialize" />
     <exclude name="MissingSerialVersionUID" />
   </rule>
-  <rule> ref="rulesets/javabeans.xml/BeanMembersShouldSerialize">
+  <rule ref="rulesets/javabeans.xml/BeanMembersShouldSerialize">
     <prefix>$</prefix>
   </rule>
   <rule ref="rulesets/junit.xml" />
