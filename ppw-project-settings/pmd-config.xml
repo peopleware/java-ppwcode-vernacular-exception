@@ -20,6 +20,8 @@
   </rule>
   <rule ref="rulesets/finalizers.xml" />
   <rule ref="rulesets/imports.xml" />
+  <!-- don't activate JavaBeans rules; BeanMembersShouldSerialize complains too much,
+    and MissingSerialVersionUID is not relevant
   <rule ref="rulesets/javabeans.xml">
     <exclude name="BeanMembersShouldSerialize" />
     <exclude name="MissingSerialVersionUID" />
@@ -27,6 +29,7 @@
   <rule ref="rulesets/javabeans.xml/BeanMembersShouldSerialize">
     <prefix>$</prefix>
   </rule>
+  -->
   <rule ref="rulesets/junit.xml" />
   <rule ref="rulesets/logging-java.xml" />
   <rule ref="rulesets/logging-jakarta-commons.xml" />
