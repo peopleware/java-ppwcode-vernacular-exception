@@ -46,8 +46,8 @@
       <property name="severity" value="warning"/>
     </module>
     <!--
-		  ImportOrder
-		  -->
+      ImportOrder
+      -->
     <!-- Naming -->
     <module name="PackageName">
       <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*(_[IVXLCDM]*)*)*$"/>
@@ -109,6 +109,8 @@
       <property name="severity" value="warning"/>
     </module>
     <module name="OperatorWrap">
+      <property name="tokens" value="BAND, BOR, BSR, BXOR, COLON, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR"/>
+      <property name="option" value="eol"/>
       <property name="severity" value="warning"/>
     </module>
     <module name="OperatorWrap">
@@ -276,20 +278,20 @@
       <property name="tokens" value="VARIABLE_DEF"/>
     </module>
     <!-- what we have choosen NOT to check
-		  AbstractClassName
+      AbstractClassName
       AvoidNestedBlocks
-		  ArrayTrailingComma
-		  AvoidInlineConditionals
-		  UncommentedMain
-		  TrailingComment
-		  BooleanExpressionComplexity
-		  DesignForExtension
-		  CovariantEquals :: don't understand it
-		  FinalLocalVariable
-		  IllegalInstantiation
-		  IllegalToken
-		  IllegalTokenText
-		  RedundantThrows
+      ArrayTrailingComma
+      AvoidInlineConditionals
+      UncommentedMain
+      TrailingComment
+      BooleanExpressionComplexity
+      DesignForExtension
+      CovariantEquals :: don't understand it
+      FinalLocalVariable
+      IllegalInstantiation
+      IllegalToken
+      IllegalTokenText
+      RedundantThrows
       SuperFinalize
       JUnitTestCase
       ReturnCount
