@@ -17,6 +17,7 @@
   <rule ref="rulesets/coupling.xml" />
   <rule ref="rulesets/design.xml">
     <exclude name="ConfusingTernary" />
+    <exclude name="AvoidSynchronizedAtMethodLevel" />
   </rule>
   <rule ref="rulesets/finalizers.xml" />
   <rule ref="rulesets/imports.xml" />
