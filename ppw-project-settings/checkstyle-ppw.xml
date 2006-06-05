@@ -87,7 +87,14 @@
     <module name="NoWhitespaceAfter">
       <property name="severity" value="warning"/>
     </module>
-    <module name="NoWhitespaceBefore">
+    <module name="NoWhitespaceAfter">
+      <property name="tokens" value="ARRAY_INIT, DOT"/>
+      <property name="allowLineBreaks" value="true"/>
+      <property name="severity" value="warning"/>
+    </module>
+    <module name="NoWhitespaceAfter">
+      <property name="tokens" value="BNOT, DEC, INC, UNARY_MINUS, UNARY_PLUS"/>
+      <property name="allowLineBreaks" value="false"/>
       <property name="severity" value="warning"/>
     </module>
     <module name="NoWhitespaceBefore">
