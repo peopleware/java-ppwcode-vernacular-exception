@@ -26,7 +26,13 @@
       </action>
     </release>
 
-    <release version="II v1.0.1/1.0" date="2005-09-30" description="Changed the UIInstanceHandler#decode method.">
+   <release version="II v1.1.1/1.0" date="2005-10-24" description="Code clean-up.">
+      <action dev="nsmeets" type="update">
+        Code clean-up, using checkstyle document.
+      </action>
+    </release>
+
+   <release version="II v1.0.1/1.0" date="2005-09-30" description="Changed the UIInstanceHandler#decode method.">
       <action dev="nsmeets" type="add">
         Changed the UIInstanceHandler#decode method so that it takes care of view mode 'deleted'.
       </action>
@@ -34,13 +40,13 @@
 
     <release version="II v1.0.0/1.0" date="2005-09-28" description="complete refactor">
       <action dev="jand" type="add">
-        Complete refactor.
+      	Complete refactor.
       </action>
     </release>
 
     <release version="I v1.0.0/1.0" date="2005-01-05" description="First release">
       <action dev="dvankeer" type="add">
-        First release with this version number scheme.
+      	First release with this version number scheme.
       </action>
     </release>
 
