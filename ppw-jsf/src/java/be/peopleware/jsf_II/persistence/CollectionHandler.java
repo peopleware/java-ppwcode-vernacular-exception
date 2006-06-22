@@ -117,7 +117,7 @@ public abstract class CollectionHandler extends PersistentBeanHandler {
       $storedInstances = loadAllInstances();
     }
     else {
-      LOG.debug("returing stored instances");
+      LOG.debug("returning stored instances");
     }
     return getStoredInstances();
   }
