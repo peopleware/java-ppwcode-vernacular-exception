@@ -1,5 +1,5 @@
 /*<license>
-  Copyright 2004, PeopleWare n.v.
+  Copyright 2004-2006, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
@@ -8,6 +8,7 @@
 package be.peopleware.servlet.navigation;
 
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -107,7 +108,7 @@ import be.peopleware.servlet.sessionMopup.Skimmable;
  * @invar getSize() >= 0;
  * @invar isEmpty() ? getTop() == null;
  */
-public class NavigationStack implements Skimmable {
+public class NavigationStack implements Skimmable, Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -182,7 +183,7 @@ public class NavigationStack implements Skimmable {
       RobustCurrent.fatalProblem("tried to add null to navigation stack", LOG);
     }
     NavigationInstance toPush = ni;
-    if (!isEmpty()) {
+    if (! isEmpty()) {
       NavigationInstance joined = getTop().absorb(ni); // NullPointerException cannot happen
       if (joined != null) {
         pop(); // exception cannot happen
@@ -212,6 +213,8 @@ public class NavigationStack implements Skimmable {
   }
 
   /**
+   * {@link NavigationInstance}s are {@link Serializable}.
+   *
    * @toryt-cC org.toryt.contract.Collections;
    * @invar $stack != null;
    * @invar cC:noNull($stack);

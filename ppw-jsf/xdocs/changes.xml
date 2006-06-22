@@ -10,7 +10,23 @@
   </properties>
   <body>
 
-   <release version="II v1.0.1/1.0" date="2005-09-30" description="Changed the UIInstanceHandler#decode method.">
+    <release version="II v1.0.2/1.0" date="2006-06-22" description="Serializability">
+      <action dev="jand" type="fix">
+        NavigationStack is now Serializable, is it always should have been.
+        For this to be possible, NavigationInstances have to be Serializable too,
+        as they always should have been. This change cannot break existing correct
+        applications, since NavigationInstances always should have been Serializable.
+        If there are existing applications that add non-serializable NavigationInstances
+        to the stack, this will show up as an exception when the application is
+        serialized. This will have been the case with such applications before
+        since those NavigationInstances will always have existed in sessions scope.
+      </action>
+      <action  dev="nsmeets" type="fix">
+        Code clean-up.
+      </action>
+    </release>
+
+    <release version="II v1.0.1/1.0" date="2005-09-30" description="Changed the UIInstanceHandler#decode method.">
       <action dev="nsmeets" type="add">
         Changed the UIInstanceHandler#decode method so that it takes care of view mode 'deleted'.
       </action>
@@ -18,13 +34,13 @@
 
     <release version="II v1.0.0/1.0" date="2005-09-28" description="complete refactor">
       <action dev="jand" type="add">
-      	Complete refactor.
+        Complete refactor.
       </action>
     </release>
 
     <release version="I v1.0.0/1.0" date="2005-01-05" description="First release">
       <action dev="dvankeer" type="add">
-      	First release with this version number scheme.
+        First release with this version number scheme.
       </action>
     </release>
 

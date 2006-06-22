@@ -1,5 +1,5 @@
 /*<license>
-  Copyright 2004, PeopleWare n.v.
+  Copyright 2004-2006, PeopleWare n.v.
   NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
   TO SELECTED PARTIES.
 </license>*/
@@ -8,6 +8,7 @@
 package be.peopleware.servlet.navigation;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.faces.FacesException;
@@ -23,7 +24,7 @@ import javax.faces.FacesException;
  *   different implementations can be used for different strategies. This package
  *   offers a number of concrete implementations, for use cases that are
  *   supported elsewhere in this library, but application developers can develop
- *   more.</p>
+ *   more. <em>NavigationInstances must be serializable though.</em></p>
  * <p>Possbible implementations are not limited to JSF navigation, although
  *   the concrete implementations in this package do depend on JSF.</p>
  * <p>Absorption is inspired by {@link javax.swing.undo.UndoableEdit}.</p>
@@ -31,7 +32,7 @@ import javax.faces.FacesException;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-public interface NavigationInstance {
+public interface NavigationInstance extends Serializable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
