@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.ObjectNotFoundException;
 import net.sf.hibernate.Query;
@@ -19,6 +20,10 @@ import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.Transaction;
 import net.sf.hibernate.cfg.Configuration;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import be.peopleware.persistence_II.PersistentBean;
 
 
@@ -44,7 +49,7 @@ public abstract class AbstractHibernateTest extends TestCase {
   /*</section>*/
 
 
-//  private static final Log LOG = LogFactory.getLog(AbstractHibernateTest.class);
+  private static final Log _LOG = LogFactory.getLog(AbstractHibernateTest.class);
 
   private static SessionFactory $sessionFactory;
 
@@ -52,10 +57,12 @@ public abstract class AbstractHibernateTest extends TestCase {
       "/hibernate_junit.cfg.xml";
 
   static {
+    _LOG.debug("reading Hibernate config from " + JUNIT_CONFIG_FILE_LOCATION);
     Configuration configuration = new Configuration();
     try {
       configuration.configure(JUNIT_CONFIG_FILE_LOCATION);
       $sessionFactory = configuration.buildSessionFactory();
+      _LOG.debug("Hibernate config read ok.");
     }
     catch (HibernateException hExc) {
       hExc.printStackTrace();
@@ -169,9 +176,14 @@ public abstract class AbstractHibernateTest extends TestCase {
   }
 
   public Set retrieve(final Class persistentObjectType) {
+    Criteria crit = $session.createCriteria(persistentObjectType);
+    return retrieve(crit);
+  }
+
+  public Set retrieve(final Criteria criteria) {
     Set results = new HashSet();
     try {
-      results.addAll($session.createCriteria(persistentObjectType).list());
+      results.addAll(criteria.list());
     }
     catch (HibernateException hExc) {
       hExc.printStackTrace();
