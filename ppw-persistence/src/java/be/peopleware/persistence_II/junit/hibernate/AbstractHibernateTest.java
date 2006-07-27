@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.hibernate.HibernatePagingList;
 
 
 /**
@@ -178,6 +179,21 @@ public abstract class AbstractHibernateTest extends TestCase {
   public Set retrieve(final Class persistentObjectType) {
     Criteria crit = $session.createCriteria(persistentObjectType);
     return retrieve(crit);
+  }
+
+  public final static int PAGE_SIZE = 100;
+
+  public HibernatePagingList retrievePages(final Class persistentObjectType) {
+    try {
+      Query cq = $session.createQuery("select count(*) from " + persistentObjectType.getName());
+      Query q = $session.createQuery("select pb from " + persistentObjectType.getName() + " as pb order by id asc");
+      return new HibernatePagingList(q, cq, 100);
+    }
+    catch (HibernateException hExc) {
+      hExc.printStackTrace();
+      fail("Failed to retrieve objects from database");
+      return null;
+    }
   }
 
   public Set retrieve(final Criteria criteria) {

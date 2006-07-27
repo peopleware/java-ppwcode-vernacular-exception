@@ -8,9 +8,10 @@ package be.peopleware.persistence_II.junit.hibernate;
 
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ import org.toryt.Contracts;
 import be.peopleware.bean_V.CompoundPropertyException;
 import be.peopleware.bean_V.PropertyException;
 import be.peopleware.persistence_II.PersistentBean;
+import be.peopleware.persistence_II.hibernate.HibernatePagingList;
 
 
 /**
@@ -82,39 +84,35 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
   /*</property>*/
 
   /**
-   * The number of persistent beans that is tested when logging is debug enabled.
-   *
-   * <strong>= {@value}</strong>
-   */
-  public static final int NB_TESTS_DEBUG = 100;
-
-  /**
    * Tests all instances of {@link #getClassUnderTest()} in the underlying
    * storage.
    * The method {@link #validatePersistentBean(PersistentBean)} is used to test
    * the persistent beans.
-   * When logging is debug enabled, the number of persistent beans that is tested is
-   * limited to NB_TESTS_DEBUG.
+   * When logging is debug enabled, we only retrieve and test 1 page.
    */
   public void testAlInstances() {
     LOG.debug("Opening Hibernate session and starting a new transaction.");
     openSession();
-    LOG.info("Retrieving instances of " + getClassUnderTest() + " from database in a new session.");
-    Collection pbs = loadInstancesToTest();
-    LOG.info("Retrieved " + pbs.size() + " PersistentBeans.");
-    Iterator iter = pbs.iterator();
+    LOG.info("Creating paging set to retrieve instances of " + getClassUnderTest() + " from database in a new session.");
+    ListIterator pages = loadInstancesToTest().listIterator();
     int count = 0;
-    while (iter.hasNext()) {
-      count++;
-      if (LOG.isDebugEnabled() && (count > NB_TESTS_DEBUG)) {
-        LOG.debug("limiting checks to " + NB_TESTS_DEBUG + " instances when debug is enabled");
+    while (pages.hasNext()) {
+      if (LOG.isDebugEnabled() && pages.hasNext() && (pages.nextIndex() > 1)) {
+        LOG.debug("limiting checks to 1 page when debug is enabled");
         break;
       }
-      if (LOG.isWarnEnabled() && (count % 5000 == 0)) {
-        LOG.info("instances processed: " + count);
+      LOG.info("Retrieving instances of page " + pages.nextIndex() + " of "+ getClassUnderTest() + " from database.");
+      List pbs = (List)pages.next();
+      LOG.info("Retrieved " + pbs.size() + " PersistentBeans.");
+      Iterator iter = pbs.iterator();
+      while (iter.hasNext()) {
+        count++;
+        if (LOG.isWarnEnabled() && (count % 500 == 0)) {
+          LOG.warn("instances processed: " + count);
+        }
+        PersistentBean pb = (PersistentBean)iter.next();
+        validatePersistentBean(pb);
       }
-      PersistentBean pb = (PersistentBean)iter.next();
-      validatePersistentBean(pb);
     }
     LOG.debug("Closing session");
     closeSession();
@@ -124,8 +122,8 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
    * Overwrite if you do not wish to test all instances.
    * Session is open.
    */
-  protected Collection loadInstancesToTest() {
-    return retrieve(getClassUnderTest());
+  protected HibernatePagingList loadInstancesToTest() {
+    return retrievePages(getClassUnderTest());
   }
 
   /**

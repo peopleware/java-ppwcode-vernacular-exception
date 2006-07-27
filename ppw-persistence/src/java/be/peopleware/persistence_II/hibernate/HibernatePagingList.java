@@ -11,8 +11,8 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.ListIterator;
 
-import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,20 +55,20 @@ public final class HibernatePagingList extends AbstractSequentialList {
   //------------------------------------------------------------------
 
   /**
-   * @pre criteria != null;
+   * @pre query != null;
    * @pre countCriteria != null;
    * @pre pageSize > 0;
-   * @post new.getCriteria() == criteria;
-   * @post new.getCountCriteria() == countCriteria;
+   * @post new.getQuery() == query;
+   * @post new.getCountQuery() == countQuery;
    * @post new.getPageSize() == pageSize;
    * @throws HibernateException
    */
-  public HibernatePagingList(Criteria criteria, Criteria countCriteria, int pageSize) throws HibernateException {
+  public HibernatePagingList(Query query, Query countQuery, int pageSize) throws HibernateException {
     assert pageSize > 0;
-    assert criteria != null;
-    assert countCriteria != null;
-    $criteria = criteria;
-    $countCriteria = countCriteria;
+    assert query != null;
+    assert countQuery != null;
+    $query = query;
+    $countQuery = countQuery;
     $pageSize = pageSize;
     initRecordCount();
     initSize();
@@ -78,46 +78,53 @@ public final class HibernatePagingList extends AbstractSequentialList {
 
 
 
-  /*<property name="criteria">*/
+  /*<property name="query">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Criteria getCriteria() {
-    return $criteria;
+  public final Query getQuery() {
+    return $query;
   }
 
   /**
-   * @invar $criteria != null;
+   * @invar $query != null;
    */
-  private Criteria $criteria;
+  private Query $query;
 
   /*</property>*/
 
 
 
-  /*<property name="countCriteria">*/
+  /*<property name="countQuery">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Criteria getCountCriteria() {
-    return $countCriteria;
+  public final Query getCountQuery() {
+    return $countQuery;
   }
+
+//  private void initCountQuery() {
+//    String q = $query.getQueryString();
+//    int fromPos = q.indexOf("from");
+//    String partialCq = q.substring(fromPos);
+//    $countQuery = $query.ge
+//  }
 
   private int retrieveRecordCount() throws HibernateException {
     LOG.debug("retrieving record count");
-    int result = ((Integer)$countCriteria.uniqueResult()).intValue();
+    int result = ((Integer)$countQuery.uniqueResult()).intValue();
     LOG.debug("record count is " + result);
     return result;
   }
 
   /**
-   * @invar $countCriteria != null;
+   * @invar $countQuery != null;
    */
-  private Criteria $countCriteria;
+  private Query $countQuery;
 
   /*</property>*/
 
@@ -306,7 +313,7 @@ public final class HibernatePagingList extends AbstractSequentialList {
      * for the first retrieval, or for the first or last page
      */
     public Object previous() throws ConcurrentModificationException {
-      int pageToRetrieve = $nextPage - 2;
+      int pageToRetrieve = $nextPage - 1;
       LOG.debug("retrieving previous page (" + pageToRetrieve + ")");
       try {
         validateCount();
@@ -350,9 +357,9 @@ public final class HibernatePagingList extends AbstractSequentialList {
       int retrieveSize = getPageSize() + (isFirstPage ? 0 : 1) + (isLastPage ? 0 : 1);
       int realStartOfPage = pageToRetrieve * getPageSize();
       int startOfPage = isFirstPage ? realStartOfPage : realStartOfPage - 1;
-      $criteria.setMaxResults(retrieveSize); // first and last record is for check only (depending on booleans)
-      $criteria.setFirstResult(startOfPage);
-      List page = $criteria.list();
+      $query.setMaxResults(retrieveSize); // first and last record is for check only (depending on booleans)
+      $query.setFirstResult(startOfPage);
+      List page = $query.list();
       LOG.debug("page retrieved successfully");
       if (page.isEmpty()) {
         throw new ConcurrentModificationException("page is empty: resultset for this query changed since last DB access");
