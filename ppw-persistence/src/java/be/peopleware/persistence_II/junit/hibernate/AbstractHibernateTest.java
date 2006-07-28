@@ -20,6 +20,7 @@ import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.Transaction;
 import net.sf.hibernate.cfg.Configuration;
+import net.sf.hibernate.expression.Order;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -181,13 +182,18 @@ public abstract class AbstractHibernateTest extends TestCase {
     return retrieve(crit);
   }
 
-  public final static int PAGE_SIZE = 100;
+  public final static int DEFAULT_PAGE_SIZE = 1000;
+
+  public int getPageSize() {
+    return DEFAULT_PAGE_SIZE;
+  }
 
   public HibernatePagingList retrievePages(final Class persistentObjectType) {
     try {
       Query cq = $session.createQuery("select count(*) from " + persistentObjectType.getName());
-      Query q = $session.createQuery("select pb from " + persistentObjectType.getName() + " as pb order by id asc");
-      return new HibernatePagingList(q, cq, 100);
+      Criteria crit = $session.createCriteria(persistentObjectType);
+      crit.addOrder(Order.asc("id"));
+      return new HibernatePagingList(crit, cq, getPageSize());
     }
     catch (HibernateException hExc) {
       hExc.printStackTrace();

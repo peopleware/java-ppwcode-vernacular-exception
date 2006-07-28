@@ -11,6 +11,7 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.ListIterator;
 
+import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Query;
 
@@ -56,7 +57,7 @@ public final class HibernatePagingList extends AbstractSequentialList {
 
   /**
    * @pre query != null;
-   * @pre countCriteria != null;
+   * @pre countQuery != null;
    * @pre pageSize > 0;
    * @post new.getQuery() == query;
    * @post new.getCountQuery() == countQuery;
@@ -74,6 +75,25 @@ public final class HibernatePagingList extends AbstractSequentialList {
     initSize();
   }
 
+  /**
+   * @pre criteria != null;
+   * @pre countCriteria != null;
+   * @pre pageSize > 0;
+   * @post new.getQuery() == query;
+   * @post new.getCountQuery() == countQuery;
+   * @post new.getPageSize() == pageSize;
+   * @throws HibernateException
+   */
+  public HibernatePagingList(Criteria criteria, Query countQuery, int pageSize) throws HibernateException {
+    assert pageSize > 0;
+    assert criteria != null;
+    assert countQuery != null;
+    $criteria = criteria;
+    $countQuery = countQuery;
+    $pageSize = pageSize;
+    initRecordCount();
+    initSize();
+  }
   /*</construction>*/
 
 
@@ -92,6 +112,25 @@ public final class HibernatePagingList extends AbstractSequentialList {
    * @invar $query != null;
    */
   private Query $query;
+
+  /*</property>*/
+
+
+
+  /*<property name="criteria">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  public final Criteria getCriteria() {
+    return $criteria;
+  }
+
+  /**
+   * @invar $criteria != null;
+   */
+  private Criteria $criteria;
 
   /*</property>*/
 
@@ -251,7 +290,7 @@ public final class HibernatePagingList extends AbstractSequentialList {
      * @return nextIndex() < size() - 1;
      */
     public final boolean hasNext() {
-      return $nextPage < size() - 1;
+      return $nextPage < size();
     }
 
     /**
@@ -357,13 +396,34 @@ public final class HibernatePagingList extends AbstractSequentialList {
       int retrieveSize = getPageSize() + (isFirstPage ? 0 : 1) + (isLastPage ? 0 : 1);
       int realStartOfPage = pageToRetrieve * getPageSize();
       int startOfPage = isFirstPage ? realStartOfPage : realStartOfPage - 1;
-      $query.setMaxResults(retrieveSize); // first and last record is for check only (depending on booleans)
-      $query.setFirstResult(startOfPage);
-      List page = $query.list();
+      List page = null;
+      if ($criteria != null) {
+        page = retrievePageCriteria(retrieveSize, startOfPage);
+      }
+      else if ($query !=  null) {
+        page = retrievePageQuery(retrieveSize, startOfPage);
+      }
+      else {
+        assert false : "Cannot happen";
+      }
       LOG.debug("page retrieved successfully");
       if (page.isEmpty()) {
         throw new ConcurrentModificationException("page is empty: resultset for this query changed since last DB access");
       }
+      return page;
+    }
+
+    private List retrievePageCriteria(int retrieveSize, int startOfPage) throws HibernateException {
+      $criteria.setMaxResults(retrieveSize); // first and last record is for check only (depending on booleans)
+      $criteria.setFirstResult(startOfPage);
+      List page = $criteria.list();
+      return page;
+    }
+
+    private List retrievePageQuery(int retrieveSize, int startOfPage) throws HibernateException {
+      $query.setMaxResults(retrieveSize); // first and last record is for check only (depending on booleans)
+      $query.setFirstResult(startOfPage);
+      List page = $query.list();
       return page;
     }
 
@@ -403,7 +463,8 @@ public final class HibernatePagingList extends AbstractSequentialList {
       LOG.debug("validating overlap: expectedKey = " + expectedKey + " for position = " + overlapPosition);
       if ($expectedLastPkOfPreviousPage != null) {
         PersistentBean pb = (PersistentBean)page.get(overlapPosition);
-        if (! $expectedLastPkOfPreviousPage.equals(pb.getId())) {
+        LOG.debug("actual id = " + pb.getId());
+        if (! expectedKey.equals(pb.getId())) {
           throw new ConcurrentModificationException("resultset for this query changed since last DB access");
         }
       }
@@ -419,6 +480,7 @@ public final class HibernatePagingList extends AbstractSequentialList {
         int lastIndex = page.size() - 1;
         PersistentBean pb = (PersistentBean)page.get(lastIndex);
         $expectedFirstPkOfNextPage = pb.getId();
+        LOG.debug("new $expectedFirstPkOfNextPage: " + $expectedFirstPkOfNextPage);
         page.remove(lastIndex);
       }
       else {
@@ -427,6 +489,7 @@ public final class HibernatePagingList extends AbstractSequentialList {
       if (! isFirstPage) {
         PersistentBean pb = (PersistentBean)page.get(0);
         $expectedLastPkOfPreviousPage = pb.getId();
+        LOG.debug("new $expectedLastPkOfPreviousPage: " + $expectedLastPkOfPreviousPage);
         page.remove(0);
       }
       else {

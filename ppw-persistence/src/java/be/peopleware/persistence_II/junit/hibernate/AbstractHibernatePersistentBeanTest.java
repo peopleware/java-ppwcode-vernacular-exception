@@ -97,7 +97,7 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
     ListIterator pages = loadInstancesToTest().listIterator();
     int count = 0;
     while (pages.hasNext()) {
-      if (LOG.isDebugEnabled() && pages.hasNext() && (pages.nextIndex() > 1)) {
+      if (LOG.isDebugEnabled() && pages.hasNext() && (pages.nextIndex() > 0)) {
         LOG.debug("limiting checks to 1 page when debug is enabled");
         break;
       }
