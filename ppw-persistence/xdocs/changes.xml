@@ -11,6 +11,17 @@
   </properties>
   <body>
 
+    <release version="II v2.0.0/3.1" date="2006-07-28" description="Paging.">
+      <action dev="jand" type="add">
+        Added a class that does paging retrieve for Hibernate.
+      </action>
+      <action dev="jand" type="add">
+        JUnit Hibernate tests now do testAllInstances with paging. A protected
+        method that was introduced recently, was changed (this might break compatibility
+        for some classes, but it was rarely used, and the change is easy).
+      </action>
+    </release>
+
     <release version="II v1.2.0/3.1" date="2005-11-22" description="Correct resetting of id after failed creation.">
       <action dev="jand" type="fix">
         Now, HibernateAsyncCrudDao.cancelTransaction correctly resets the id's to null of all created
