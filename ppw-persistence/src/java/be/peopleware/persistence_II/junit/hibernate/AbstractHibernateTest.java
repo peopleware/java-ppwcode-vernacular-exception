@@ -25,6 +25,7 @@ import net.sf.hibernate.expression.Order;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import be.peopleware.exception_I.TechnicalException;
 import be.peopleware.persistence_II.PersistentBean;
 import be.peopleware.persistence_II.hibernate.HibernatePagingList;
 
@@ -196,6 +197,11 @@ public abstract class AbstractHibernateTest extends TestCase {
       return new HibernatePagingList(crit, cq, getPageSize());
     }
     catch (HibernateException hExc) {
+      hExc.printStackTrace();
+      fail("Failed to retrieve objects from database");
+      return null;
+    }
+    catch (TechnicalException hExc) {
       hExc.printStackTrace();
       fail("Failed to retrieve objects from database");
       return null;
