@@ -95,21 +95,12 @@ public abstract class AbstractHibernatePersistentBeanTest extends AbstractHibern
     openSession();
     LOG.info("Creating paging set to retrieve instances of " + getClassUnderTest() + " from database in a new session.");
     ListIterator pages = loadInstancesToTest().listIterator();
-    int count = 0;
-    while (pages.hasNext()) {
-      if (LOG.isDebugEnabled() && pages.hasNext() && (pages.nextIndex() > 0)) {
-        LOG.debug("limiting checks to 1 page when debug is enabled");
-        break;
-      }
+    if (pages.hasNext()) {
       LOG.info("Retrieving instances of page " + pages.nextIndex() + " of "+ getClassUnderTest() + " from database.");
       List pbs = (List)pages.next();
       LOG.info("Retrieved " + pbs.size() + " PersistentBeans.");
       Iterator iter = pbs.iterator();
       while (iter.hasNext()) {
-        count++;
-        if (LOG.isWarnEnabled() && (count % 500 == 0)) {
-          LOG.warn("instances processed: " + count);
-        }
         PersistentBean pb = (PersistentBean)iter.next();
         validatePersistentBean(pb);
       }

@@ -183,7 +183,7 @@ public abstract class AbstractHibernateTest extends TestCase {
     return retrieve(crit);
   }
 
-  public final static int DEFAULT_PAGE_SIZE = 1000;
+  public final static int DEFAULT_PAGE_SIZE = 100;
 
   public int getPageSize() {
     return DEFAULT_PAGE_SIZE;
