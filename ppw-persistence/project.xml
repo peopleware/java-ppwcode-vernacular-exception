@@ -9,7 +9,7 @@
   <shortDescription>Support for persistency.</shortDescription>
   <description>Support for persistency.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>2.0.0-3.1</currentVersion>
+  <currentVersion>2.1.0-3.1</currentVersion>
   <package>be.peopleware.persistence_II</package>
   <repository>
     <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-persistence</developerConnection>

@@ -11,6 +11,12 @@
   </properties>
   <body>
 
+    <release version="II v2.1.0/3.1" date="2006-07-30" description="Paging.">
+      <action dev="jand" type="add">
+        Generalized paging to make Hibernate-independent.
+      </action>
+    </release>
+
     <release version="II v2.0.0/3.1" date="2006-07-28" description="Paging.">
       <action dev="jand" type="add">
         Added a class that does paging retrieve for Hibernate.

@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.persistence_II;
+package be.peopleware.persistence_II.dao;
 
 
 import java.util.AbstractSequentialList;
@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import be.peopleware.exception_I.TechnicalException;
+import be.peopleware.persistence_II.PersistentBean;
 
 
 
