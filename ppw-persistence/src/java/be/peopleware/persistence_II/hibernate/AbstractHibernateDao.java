@@ -41,13 +41,6 @@ public abstract class AbstractHibernateDao implements Dao {
   public static final String CVS_TAG = "$Name$"; //$NON-NLS-1$
   /*</section>*/
 
-  /**
-   * @basic
-   * @init      null;
-   */
-  public abstract Session getSession();
-
-
   protected final void handleHibernateException(final HibernateException hExc,
                                           final String operationName,
                                           final PersistentBean pb)
@@ -87,7 +80,31 @@ public abstract class AbstractHibernateDao implements Dao {
     cpExc.close();
     throw cpExc;
   }
+  
+  
+	/*<property name="session">*/
+	//------------------------------------------------------------------
 
+	/**
+	 * Return the Hibernate session for this Dao.
+	 */
+	public final Session getSession() {
+		return $session;
+	}
+	
+	
+	/**
+	 * @param     session
+	 *            The hibernate session to use for database manipulations.
+	 * @post      new.getSession() == session;
+	 */
+	public void setSession(final Session session) throws TechnicalException {
+		$session = session;
+	}
+	
+	private Session $session;
+
+	/*</property>*/
 
 
 
@@ -132,8 +149,8 @@ public abstract class AbstractHibernateDao implements Dao {
     $sqlExceptionHandler = sqlExceptionHandler;
   }
 
-  protected SqlExceptionHandler $sqlExceptionHandler = new MySqlSqlExceptionHandler();
+	private SqlExceptionHandler $sqlExceptionHandler = new MySqlSqlExceptionHandler();
 
-  /*</property>*/
+	/*</property>*/
 
 }

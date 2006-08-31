@@ -11,6 +11,12 @@
   </properties>
   <body>
 
+    <release version="II v2.2.0/4.0" date="2006-08-31" description="Hibernate sessions in Hibernate Dao support">
+      <action dev="jand" type="add">
+        Added support for Hibernate session reference to Hibernate Dao support:
+      </action>
+    </release>
+
     <release version="II v2.1.0/3.1" date="2006-07-30" description="Paging.">
       <action dev="jand" type="add">
         Generalized paging to make Hibernate-independent.

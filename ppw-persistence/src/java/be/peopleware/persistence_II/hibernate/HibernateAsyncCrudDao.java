@@ -87,15 +87,6 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
   //------------------------------------------------------------------
 
   /**
-   * The hibernate session associated with this dao.
-   *
-   * @basic
-   */
-  public Session getSession() {
-    return $session;
-  }
-
-  /**
    * @param     session
    *            The hibernate session to use for database manipulations.
    * @post      isInTransaction();
@@ -103,18 +94,18 @@ public class HibernateAsyncCrudDao extends AbstractHibernateDao implements Async
    * @throws    IllegalStateException
    *            isInTransAction();
    */
-  public final void setSession(final Session session) throws IllegalStateException {
+  public final void setSession(final Session session) throws TechnicalException {
     if (isInTransaction()) {
-      throw new IllegalStateException("Cannot set session now, "
-                                      + "transaction still in use");
+      throw new TechnicalException("Cannot set session now, "
+                                      + "transaction still in use", null);
     }
-    $session = session;
+    super.setSession(session);
   }
-
-  protected Session $session;
-
+  
   /*</property>*/
-
+  
+  
+  
   /**
    * @invar     isInTransaction() == (tx != null);
    */
