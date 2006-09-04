@@ -10,6 +10,14 @@
   </properties>
   <body>
 
+    <release version="II v1.2.0/1.0" date="2006-09-04" description="instance changed">
+      <action dev="jand" type="add">
+        Added protected method, which is called whenever the instance changes.
+        This is a bare-bones property-changed-event-mechanism, a.k.a, a bare-bones
+        AOP post action.
+      </action>
+    </release>
+
     <release version="II v1.1.2/1.0" date="2006-06-22" description="Serializability">
       <action dev="jand" type="fix">
         NavigationStack is now Serializable, is it always should have been.

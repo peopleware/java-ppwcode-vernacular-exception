@@ -9,7 +9,7 @@
   <shortDescription>Support for JSF.</shortDescription>
   <description>Support for JSF.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>1.1.2-1.0</currentVersion>
+  <currentVersion>1.2.0-1.0</currentVersion>
   <package>be.peopleware.jsf_II</package>
   <repository>
     <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-jsf</developerConnection>

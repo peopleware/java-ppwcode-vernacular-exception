@@ -538,6 +538,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    *   we cannot procede.</p>
    * <p>In the default implementation, {@link #skim()} removes the instances if
    *   {@link #getId()} is not <code>null</code>.
+   * <p>This method calls {@link #instanceChanged()} when a fresh instance is
+   *   retrieved from the persistent storage, and set.</p>
    *
    * @return new.getStoredInstance();
    * @post ((getStoredInstance() == null) && (getId() != null)) ?
@@ -566,6 +568,8 @@ public class InstanceHandler extends PersistentBeanHandler {
         $instance = createInstance();
       }
       LOG.debug("instance = " + $instance);
+      assert $instance.getId().equals(getId());
+      instanceChanged();
     }
     else {
       LOG.debug("returning instance from cache: " + $instance);
@@ -582,6 +586,8 @@ public class InstanceHandler extends PersistentBeanHandler {
   }
 
   /**
+   * This method calls {@link #instanceChanged()} when the new instance is set.
+   *
    * @post new.getStoredInstance() == instance;
    * @post (instance != null) ? new.getId().equals(instance.getId());
    * @throws IllegalArgumentException
@@ -602,6 +608,21 @@ public class InstanceHandler extends PersistentBeanHandler {
       // else, we do NOT set the ID to null
       LOG.debug("instance set to null; id is left untouched (" + getId() + ")");
     }
+    instanceChanged();
+  }
+
+  /**
+   * <p>Called whenever we become aware of the fact that the {@link #getInstance() instance}
+   *   has changed. This is at the end of {@link #setInstance(PersistentBean)}, in
+   *   {@link #getInstance()} when a bean is loaded from DB based on the {@link #getId()},
+   *   in {@link #release()}, {@link #skim()}, and in {@link #editNew(PersistentBean)}.</p>
+   * <p>The instance might be <code>null</code>.</p>
+   * <p>This default implementation does nothing.</p>
+   *
+   * @pre getInstance() != null ? getInstance().getId().equals(getId());
+   */
+  protected void instanceChanged() {
+    // NOP
   }
 
   /**
@@ -683,6 +704,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   private void releaseInstance() {
     $instance = null;
+    instanceChanged();
   }
 
   /**
@@ -883,6 +905,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    *    to the user by throwing an InvalidBeanException.
    * 2. We go to editNew mode.
    *
+   * This method calls {@link #instanceChanged()} when the new instance is set.
+   *
    * @param   instance
    *          The {@link PersistentBean} that should be displayed.
    * @post    new.getInstance() == instance;
@@ -903,6 +927,7 @@ public class InstanceHandler extends PersistentBeanHandler {
     assert getInstance() != null;
     assert getInstance().getId() == null;
     assert getPersistentBeanType().isInstance(instance);
+    instanceChanged();
     setViewMode(VIEWMODE_EDITNEW);
     LOG.debug("Stored new persistent bean successfully");
   }
@@ -1158,6 +1183,7 @@ public class InstanceHandler extends PersistentBeanHandler {
   /**
    * Method to be called after Render Response phase, to clear
    * semantic data from the session.
+   * This method calls {@link #instanceChanged()} when the new instance is set.
    *
    * @post getInstance() == null;
    */
@@ -1517,6 +1543,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    * want to be removed}, they are removed from the backing cache of
    * association handlers. If they are not removed, and are {@link Skimmable},
    * they are {@link Skimmable#skim() skimmed}.
+   * This method calls {@link #instanceChanged()} when the new instance is set.
    */
   public void skim() {
     super.skim();
