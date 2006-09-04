@@ -10,7 +10,7 @@
   </properties>
   <body>
 
-    <release version="II v1.2.0/1.0" date="2006-09-04" description="instance changed">
+    <release version="II v1.2.0/1.1" date="2006-09-04" description="instance changed">
       <action dev="jand" type="add">
         Added protected method, which is called whenever the instance changes.
         This is a bare-bones property-changed-event-mechanism, a.k.a, a bare-bones
