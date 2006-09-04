@@ -10,6 +10,15 @@
   </properties>
   <body>
 
+		<release version="II v1.2.1/1.1" date="2006-09-04" description="instance changed">
+      <action dev="kdewit" type="fix">
+        instanceChanged() method has been modified to be instanceChanged(PersistentBean instance)
+        to give the possibility to the overriding implementation to retrieve the changed value
+        without having to make a separate call to the getInstance() method. Such a call will cause
+        an infite loop to the instanceChanged() method.
+      </action>
+    </release>
+
     <release version="II v1.2.0/1.1" date="2006-09-04" description="instance changed">
       <action dev="jand" type="add">
         Added protected method, which is called whenever the instance changes.

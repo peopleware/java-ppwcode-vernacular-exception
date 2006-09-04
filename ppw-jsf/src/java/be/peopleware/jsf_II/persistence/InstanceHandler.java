@@ -538,8 +538,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    *   we cannot procede.</p>
    * <p>In the default implementation, {@link #skim()} removes the instances if
    *   {@link #getId()} is not <code>null</code>.
-   * <p>This method calls {@link #instanceChanged()} when a fresh instance is
-   *   retrieved from the persistent storage, and set.</p>
+   * <p>This method calls {@link #instanceChanged(PersistentBean instance)} when 
+   *   a fresh instance is retrieved from the persistent storage, and set.</p>
    *
    * @return new.getStoredInstance();
    * @post ((getStoredInstance() == null) && (getId() != null)) ?
@@ -569,7 +569,7 @@ public class InstanceHandler extends PersistentBeanHandler {
       }
       LOG.debug("instance = " + $instance);
       assert $instance.getId().equals(getId());
-      instanceChanged();
+      instanceChanged($instance);
     }
     else {
       LOG.debug("returning instance from cache: " + $instance);
@@ -586,7 +586,8 @@ public class InstanceHandler extends PersistentBeanHandler {
   }
 
   /**
-   * This method calls {@link #instanceChanged()} when the new instance is set.
+   * This method calls {@link #instanceChanged(PersistentBean instance)} when 
+   * the new instance is set.
    *
    * @post new.getStoredInstance() == instance;
    * @post (instance != null) ? new.getId().equals(instance.getId());
@@ -608,7 +609,7 @@ public class InstanceHandler extends PersistentBeanHandler {
       // else, we do NOT set the ID to null
       LOG.debug("instance set to null; id is left untouched (" + getId() + ")");
     }
-    instanceChanged();
+    instanceChanged($instance);
   }
 
   /**
@@ -618,10 +619,15 @@ public class InstanceHandler extends PersistentBeanHandler {
    *   in {@link #release()}, {@link #skim()}, and in {@link #editNew(PersistentBean)}.</p>
    * <p>The instance might be <code>null</code>.</p>
    * <p>This default implementation does nothing.</p>
+   * <p>The {@link PersistentBean} is passed as parameter to prevent calls to
+   * {@link #$instance} both directly or indirectly. A direct or indirect call
+   * to {@link #getInstance()} will cause an infinite loop.</p>
+   * <p>Important : NEVER call {@link #getInstance()} from within the implementation
+   * of an overriding instanceChanged method !!! </p>
    *
    * @pre getInstance() != null ? getInstance().getId().equals(getId());
    */
-  protected void instanceChanged() {
+  protected void instanceChanged(PersistentBean instance) {
     // NOP
   }
 
@@ -704,7 +710,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    */
   private void releaseInstance() {
     $instance = null;
-    instanceChanged();
+    instanceChanged($instance);
   }
 
   /**
@@ -905,7 +911,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    *    to the user by throwing an InvalidBeanException.
    * 2. We go to editNew mode.
    *
-   * This method calls {@link #instanceChanged()} when the new instance is set.
+   * This method calls {@link #instanceChanged(PersistentBean instance)} when 
+   * the new instance is set.
    *
    * @param   instance
    *          The {@link PersistentBean} that should be displayed.
@@ -927,7 +934,7 @@ public class InstanceHandler extends PersistentBeanHandler {
     assert getInstance() != null;
     assert getInstance().getId() == null;
     assert getPersistentBeanType().isInstance(instance);
-    instanceChanged();
+    instanceChanged($instance);
     setViewMode(VIEWMODE_EDITNEW);
     LOG.debug("Stored new persistent bean successfully");
   }
@@ -1543,7 +1550,8 @@ public class InstanceHandler extends PersistentBeanHandler {
    * want to be removed}, they are removed from the backing cache of
    * association handlers. If they are not removed, and are {@link Skimmable},
    * they are {@link Skimmable#skim() skimmed}.
-   * This method calls {@link #instanceChanged()} when the new instance is set.
+   * This method calls {@link #instanceChanged(PersistentBean instance)} when 
+   * the new instance is set.
    */
   public void skim() {
     super.skim();
