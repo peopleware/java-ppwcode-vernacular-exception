@@ -104,6 +104,10 @@ public class PersistentBeanConverter implements Converter {
         result = dao.retrievePersistentBean(id, type);
         LOG.debug("\"" + type + "\" retrieved with id \"" + id + "\"");
       }
+      catch (NumberFormatException nfEx) {
+        LOG.error("\"" + value + "\" is not a number", nfEx);
+        throw new ConverterException("\"" + value + "\" is not a number", nfEx);
+      }
       catch (IdNotFoundException infExc) {
         LOG.error("No \"" + type + "\" found with id \"" + id + "\"");
         throw new ConverterException("No PersistentBean bean found with id " + id);
