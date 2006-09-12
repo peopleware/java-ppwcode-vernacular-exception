@@ -10,7 +10,17 @@
   </properties>
   <body>
 
-		<release version="II v1.2.1/1.1" date="2006-09-04" description="instance changed">
+    <release version="II v1.2.1/1.2" date="2006-09-12" description="NullPointerException bug fixed">
+      <action dev="jand" type="fix">
+        NullPointerException in an assert when we are dealing with a fresh instance.
+        Introduced in II v 1.2.1/1.1. Fixed.
+      </action>
+      <action dev="jand" type="fix">
+        Added catch for NumberFormatException --> ConverterException in PersistentBeanConverter.
+      </action>
+    </release>
+
+    <release version="II v1.2.1/1.1" date="2006-09-04" description="instance changed">
       <action dev="kdewit" type="fix">
         instanceChanged() method has been modified to be instanceChanged(PersistentBean instance)
         to give the possibility to the overriding implementation to retrieve the changed value

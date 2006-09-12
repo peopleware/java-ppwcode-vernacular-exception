@@ -538,7 +538,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    *   we cannot procede.</p>
    * <p>In the default implementation, {@link #skim()} removes the instances if
    *   {@link #getId()} is not <code>null</code>.
-   * <p>This method calls {@link #instanceChanged(PersistentBean instance)} when 
+   * <p>This method calls {@link #instanceChanged(PersistentBean instance)} when
    *   a fresh instance is retrieved from the persistent storage, and set.</p>
    *
    * @return new.getStoredInstance();
@@ -568,7 +568,8 @@ public class InstanceHandler extends PersistentBeanHandler {
         $instance = createInstance();
       }
       LOG.debug("instance = " + $instance);
-      assert $instance.getId().equals(getId());
+      assert $instance != null;
+      assert ($instance.getId() == null) ? (getId() == null) : $instance.getId().equals(getId());
       instanceChanged($instance);
     }
     else {
@@ -586,7 +587,7 @@ public class InstanceHandler extends PersistentBeanHandler {
   }
 
   /**
-   * This method calls {@link #instanceChanged(PersistentBean instance)} when 
+   * This method calls {@link #instanceChanged(PersistentBean instance)} when
    * the new instance is set.
    *
    * @post new.getStoredInstance() == instance;
@@ -911,7 +912,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    *    to the user by throwing an InvalidBeanException.
    * 2. We go to editNew mode.
    *
-   * This method calls {@link #instanceChanged(PersistentBean instance)} when 
+   * This method calls {@link #instanceChanged(PersistentBean instance)} when
    * the new instance is set.
    *
    * @param   instance
@@ -1550,7 +1551,7 @@ public class InstanceHandler extends PersistentBeanHandler {
    * want to be removed}, they are removed from the backing cache of
    * association handlers. If they are not removed, and are {@link Skimmable},
    * they are {@link Skimmable#skim() skimmed}.
-   * This method calls {@link #instanceChanged(PersistentBean instance)} when 
+   * This method calls {@link #instanceChanged(PersistentBean instance)} when
    * the new instance is set.
    */
   public void skim() {
