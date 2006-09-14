@@ -9,27 +9,39 @@ import java.util.Date;
 
 
 /**
- * A period has a start date and an end date.
- * The start date of a period is strictly before the end date (so a period
- * should not be empty).
- * The start date is included in the interval, the end date is not
- * (right half-open interval).
+ * A period with start and end dates, which are only meaningful
+ * to the level of the day. This is different from {@link Period}
+ * in this respect, that human semantics differ between working
+ * with a more accurate time description, or only on the level
+ * of days. If you say &quot;we have meeting from 2 to 4&quot;,
+ * people interpret this as the meeting ending at 4. If you say
+ * &quot;we go on holiday from Monday to Wednesday&quot;, you
+ * will be understood to be back at work Thursday, not Wednesday.
+ * In the former case, the period is a right half-open interval.
+ * In the latter case, the period is a closed interval. Also, a
+ * period of 1 day is possible.
  *
  * The {@link #compareTo(Object) compare method} compares the
  * {@link #getStartDate()}.
  *
- * @author    nsmeets
+ * Normalization can happen at any time, and removes all time
+ * information more accurate than the day from the encapsulated
+ * {@link Date Dates}. This is not guaranteed. In any case,
+ * you should depend on the time part that is more accurate than
+ * the day level in dates returned from instances of this class.
+ *
+ * This class has the same interface as {@link Period}, except
+ * for <code>Period.containsLeftInclusive(Date)}</code>.
+ *
+ * @author    Jan Dockx
  * @author    Peopleware NV
  *
+ * @invar getStartDate() != null ? DateUtil.isDayDate(getStartDate());
+ * @invar getEndDate() != null ? DateUtil.isDayDate(getEndDate());
  * @invar     (getStartDate() != null && getEndDate() != null)
- *                ? getStartDate().before(getEndDate())
- *                : true;
- *
- * @mudo (jand) must be a value, and move to ppw-value; suggest mutable; (add
- *       normalize method and getWildExceptions ?)
- * @mudo (nsmeets) Normalization does not seem to be a good idea.
+ *                ? ! getStartDate().after(getEndDate());
  */
-public class Period extends MutableValue implements Comparable {
+public class DayPeriod extends MutableValue implements Comparable {
 
   /*<section name="Meta Information">*/
   //------------------------------------------------------------------
@@ -53,7 +65,7 @@ public class Period extends MutableValue implements Comparable {
    * @post    getStartDate() == null;
    * @post    getEndDate() == null;
    */
-  public Period() {
+  public DayPeriod() {
     // Since we demand of subtypes of MutableValue that they implement
     // {@link java.io.Serializable}, a default constructor is mandatory.
     // NOP
@@ -73,34 +85,28 @@ public class Period extends MutableValue implements Comparable {
       return null;
     }
     else {
-      return (Date) $startDate.clone();
+      return (Date)$startDate.clone();
     }
   }
 
   /**
    * @param     startDate
    *            The start date to set for this Period.
-   * @post      (startDate == null)
-   *               ? new.getStartDate() == null
-   *               : new.getStartDate().equals(startDate);
+   * @post      startDate == null ? new.getStartDate() == null : new.getStartDate().equals(DateUtil.dayDate(startDate));
    * @throws    InvalidPeriodException pExc
    *            ( startDate != null
    *                && getEndDate() != null
-   *                && !startDate.before(getEndDate())
+   *                && startDate.after(getEndDate())
    *            )
-   *              && (startDate == null)
-   *                    ? (pExc.getStartDate() == null)
-   *                    : (pExc.getStartDate().equals(startDate))
-   *              && (getEndDate() == null)
-   *                    ? (pExc.getEndDate() == null)
-   *                    : (pExc.getEndDate().equals(getEndDate()))
+   *              && sameDay(pExc.getStartDate(), startDate)
+   *              && sameDay(pExc.getEndDate(), getEndDate())
    *              && pExc.getMessage()
    *                    .equals("The given start date is not before the current end date.");
    */
   public void setStartDate(final Date startDate) throws InvalidPeriodException {
     if (startDate != null
             && getEndDate() != null
-            && !startDate.before(getEndDate())
+            && startDate.after(getEndDate())
     ) {
       InvalidPeriodException ipe = new InvalidPeriodException(
           startDate, getEndDate(),
@@ -108,12 +114,14 @@ public class Period extends MutableValue implements Comparable {
       );
       throw ipe;
     }
-    $startDate = startDate;
+    $startDate = DateUtil.dayDate(startDate);
   }
 
   private Date $startDate;
 
   /*</property>*/
+
+
 
   /*<property name="endDate">*/
   //------------------------------------------------------------------
@@ -126,95 +134,67 @@ public class Period extends MutableValue implements Comparable {
       return null;
     }
     else {
-      return (Date) $endDate.clone();
+      return (Date)$endDate.clone();
     }
   }
 
   /**
    * @param     endDate
    *            The end date to set for this Period.
-   * @post      (endDate == null)
-   *               ? new.getEndDate() == null
-   *               : new.getEndDate().equals(endDate);
+   * @post      endDate == null ? new.getEndDate() == null : new.getEndDate().equals(DateUtil.dayDate(endDate));
    * @throws    InvalidPeriodException pExc
    *            ( getStartDate() != null
    *                && endDate != null
-   *                && !getStartDate().before(endDate)
+   *                && getStartDate().after(endDate)
    *            )
-   *              && (getStartDate() == null)
-   *                    ? (pExc.getStartDate() == null)
-   *                    : (pExc.getStartDate().equals(getStartDate()))
-   *              && (endDate == null)
-   *                    ? (pExc.getEndDate() == null)
-   *                    : (pExc.getEndDate().equals(endDate))
+   *              && sameDay(pExc.getStartDate(), getStartDate())
+   *              && sameDay(pExc.getEndDate(), endDate)
    *              && pExc.getMessage()
    *                    .equals("The current start date is not before the given end date.");
    */
   public void setEndDate(final Date endDate) throws InvalidPeriodException {
     if (getStartDate() != null
           && endDate != null
-          && !getStartDate().before(endDate)
+          && getStartDate().after(endDate)
     ) {
       throw new InvalidPeriodException(
           getStartDate(), endDate,
           "The current start date is not before the given end date."
       );
     }
-    $endDate = endDate;
+    $endDate = DateUtil.dayDate(endDate);
   }
 
   private Date $endDate;
 
   /*</property>*/
 
+
+
   /**
-   * @return  result instanceof Period
-   *          &&
-   *          (getStartDate() == null)
-   *              ? result.getStartDate() == null
-   *              : result.getStartDate().equals(getStartDate())
-   *          &&
-   *          (getEndDate() == null)
-   *              ? result.getEndDate() == null
-   *              : result.getEndDate().equals(getEndDate());
+   * @return  result instanceof DayPeriod &&
+   *          sameDay(getStartDate(), result.getStartDate()) &&
+   *          sameDay(getEndDate(), result.getEndDate()) &&
    */
   public Object clone() {
-    Period result = new Period();
-    try {
-      result.setStartDate(getStartDate());
-      result.setEndDate(getEndDate());
-    }
-    catch (InvalidPeriodException PExc) {
-      assert false : "InvalidPeriodException on clone cannot happen.";
-    }
+    DayPeriod result = (DayPeriod)super.clone();
+    result.$startDate = getStartDate();
+    result.$endDate = getEndDate();
     return result;
   }
 
   /**
-   * @return  o instanceof Period &&
-   *          (getStartDate() == null)
-   *             ? o.getStartDate() == null
-   *             : getStartDate().equals(o.getStartDate())
-   *          &&
-   *          (getEndDate() == null)
-   *             ? o.getEndDate() == null
-   *             : getEndDate().equals(o.getEndDate());
+   * @return  o instanceof DayPeriod &&
+   *          sameDay(getStartDate(), o.getStartDate()) &&
+   *          sameDay(getEndDate(), o.getEndDate()) &&
    */
   public boolean equals(final Object o) {
-    if (!(o instanceof Period)) {
+    if (! (o instanceof DayPeriod)) {
       return false;
     }
-    Period other = (Period) o;
-    return
-      ((getStartDate() == null)
-          ? (other.getStartDate() == null)
-          : (getStartDate().equals(other.getStartDate()))
-      )
-      &&
-      ((getEndDate() == null)
-          ? (other.getEndDate() == null)
-          : (getEndDate().equals(other.getEndDate()))
-      );
+    DayPeriod other = (DayPeriod) o;
+    return DateUtil.sameDay($startDate, other.$startDate) &&
+           DateUtil.sameDay($endDate, other.$endDate);
   }
 
   /**
@@ -229,16 +209,8 @@ public class Period extends MutableValue implements Comparable {
    *          );
    */
   public int hashCode() {
-    return
-      ((getStartDate() == null)
-         ? 0
-         : getStartDate().hashCode()
-      )
-      +
-      ((getEndDate() == null)
-         ? 0
-         : getEndDate().hashCode()
-      );
+    return (($startDate == null) ? 0 : $startDate.hashCode()) +
+           (($endDate == null) ? 0 : $endDate.hashCode());
   }
 
   /**
@@ -249,8 +221,8 @@ public class Period extends MutableValue implements Comparable {
    *          ((getEndDate() == null) ? "???" : getEndDate().toString());
    */
   public String toString() {
-    String start = (getStartDate() == null) ? "???" : getStartDate().toString();
-    String end = (getEndDate() == null) ? "???" : getEndDate().toString();
+    String start = ($startDate == null) ? "???" : $startDate.toString();
+    String end = ($endDate == null) ? "???" : $endDate.toString();
     return start + " - " + end;
   }
 
@@ -279,12 +251,11 @@ public class Period extends MutableValue implements Comparable {
   }
 
   /**
-   * @return  ((getStartDate() != null) && (getEndDate() != null)) ? -1 : getNbDaysInPeriod() + 1;
-   * @deprecated Use new class {@link DayPeriod}.
+   * @return  getNbDaysInPeriod();
+   * @deprecated User {@link #getNbDaysInPeriod()} instead. It is the same method.
    */
   public long getNbDaysInPeriodInclusive() {
-    long ndip = getNbDaysInPeriod();
-    return (ndip == -1) ? -1 : ndip + 1;
+    return getNbDaysInPeriod();
   }
 
   /**
@@ -300,7 +271,7 @@ public class Period extends MutableValue implements Comparable {
    *            ==> getStartDate().compareTo(((Period)o).getStartDate());
    */
   public int compareTo(final Object o) {
-    Period p = (Period)o; // ClassCastException ok
+    DayPeriod p = (DayPeriod)o; // ClassCastException ok
     if (getStartDate() == null) {
       if (p.getStartDate() == null) { // NullPointerException ok
         return 0;
@@ -321,46 +292,27 @@ public class Period extends MutableValue implements Comparable {
    * <code>date</code> is in this period, inclusive:
    * <code>date in [getStartDate(), getEndDate()]</code>.
    *
-   * @return (date == null) && (getStartDate() == null) && (getEndDate() == null) &&
-   *            (! date.before(getStartDate())) && (! date.after(getEndDate()));
-   * @deprecated Use new class {@link DayPeriod}.
-   */
-  public final boolean containsInclusive(final Date date) {
-    if ((date == null) || (getStartDate() == null) || (getEndDate() == null)) {
-      return false;
-    }
-    else {
-      return (!date.before(getStartDate())) && (!date.after(getEndDate()));
-    }
-  }
-
-
-  /**
-   * <code>date</code> is in this period, half-inclusive:
-   * <code>date in [getStartDate(), getEndDate()[</code>.
-   *
    * @return contains(date);
    * @deprecated User {@link #contains(Date)} instead.
    */
-  public final boolean containsLeftInclusive(final Date date) {
-    if ((date == null) || (getStartDate() == null) || (getEndDate() == null)) {
-      return false;
-    }
-    else {
-      return (!date.before(getStartDate())) && date.before(getEndDate());
-    }
+  public final boolean containsInclusive(final Date date) {
+    return contains(date);
   }
 
   /**
-   * <code>date</code> is in this period, half-inclusive:
-   * <code>date in [getStartDate(), getEndDate()[</code>.
+   * <code>date</code> is in this period, inclusive:
+   * <code>date in [getStartDate(), getEndDate()]</code>.
    *
    * @return (date == null) && (getStartDate() == null) && (getEndDate() == null) &&
-   *            (! date.before(getStartDate())) && date.before(getEndDate());
+   *            (!date.before(getStartDate())) && (!date.after(getEndDate()));
    */
   public boolean contains(final Date date) {
-    return containsInclusive(date);
-
+    if ((date == null) || ($startDate == null) || ($endDate == null)) {
+      return false;
+    }
+    else {
+      return (!date.before($endDate)) && (!date.after($startDate));
+    }
   }
 
 }
