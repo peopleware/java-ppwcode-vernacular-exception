@@ -17,18 +17,16 @@ import org.toryt.support.straightlist.LazyMappingStraightList;
 import org.toryt.support.straightlist.NullFirstStraightList;
 import org.toryt.support.straightlist.StraightList;
 
-import be.peopleware.value_II.InvalidPeriodException;
-import be.peopleware.value_II.Period;
-
 
 /**
- * A test class for Period.
+ * A test class for {@link DayPeriod}.
  *
- * @author    nsmeets
+ * @author Jan Dockx
+ * @author PeopleWare n.v.
  *
- * @mudo (jand) this contract fails!!
+ * @mudo contract for public int be.peopleware.value_II.DayPeriod.compareTo(java.lang.Object)
  */
-public class _Contract_Period extends ClassContract {
+public class _Contract_DayPeriod extends ClassContract {
 
   /*<section name="Meta Information">*/
   //  ------------------------------------------------------------------
@@ -42,23 +40,23 @@ public class _Contract_Period extends ClassContract {
   public static final String CVS_TAG = "$Name$";
   /*</section>*/
 
-  public _Contract_Period() throws TorytException {
-    super(Period.class);
+  public _Contract_DayPeriod() throws TorytException {
+    super(DayPeriod.class);
 
     // constructors
     addConstructorContract(
-      new ConstructorContract(this, Period.class, "Period()") {
+      new ConstructorContract(this, DayPeriod.class, "DayPeriod()") {
         {
           // no preconditions
           // postconditions
           addPostcondition(new Condition() {
             public boolean validate(Map context) {
-              Period result = (Period)context.get(SUBJECT_KEY);
+              DayPeriod result = (DayPeriod)context.get(SUBJECT_KEY);
               return result.getStartDate() == null;
             }});
           addPostcondition(new Condition() {
             public boolean validate(Map context) {
-              Period result = (Period)context.get(SUBJECT_KEY);
+              DayPeriod result = (DayPeriod)context.get(SUBJECT_KEY);
               return result.getEndDate() == null;
             }});
           close();
@@ -73,7 +71,7 @@ public class _Contract_Period extends ClassContract {
     // instance methods
     addInstanceMethodContract(
         new MutatorContract(
-            this, Period.class,
+            this, DayPeriod.class,
             "setStartDate(java.util.Date)"
         ) {
 
@@ -86,15 +84,15 @@ public class _Contract_Period extends ClassContract {
         // postconditions
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Period subject = (Period)context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod)context.get(SUBJECT_KEY);
             Date startDate = (Date)context.get("startDate");
             return  (startDate == null)
                        ? subject.getStartDate() == null
-                       : subject.getStartDate().equals(startDate);
+                       : subject.getStartDate().equals(DateUtil.dayDate(startDate));
           }});
         addExceptionCondition(new ExceptionCondition(InvalidPeriodException.class) {
           public boolean validate(Map context) {
-            Period subject = (Period)context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod)context.get(SUBJECT_KEY);
             Date startDate = (Date)context.get("startDate");
             InvalidPeriodException pExc = (InvalidPeriodException)context.get(EXCEPTION_KEY);
             return
@@ -102,16 +100,10 @@ public class _Contract_Period extends ClassContract {
                    &&
                    subject.getEndDate() != null
                    &&
-                   !startDate.before(subject.getEndDate())
+                   startDate.after(subject.getEndDate())
                 )
-                &&
-                (startDate == null)
-                                ? (pExc.getStartDate() == null)
-                                : (pExc.getStartDate().equals(startDate))
-                &&
-                (subject.getEndDate() == null)
-                                ? (pExc.getEndDate() == null)
-                                : (pExc.getEndDate().equals(subject.getEndDate()))
+                && DateUtil.sameDay(pExc.getStartDate(), startDate)
+                && DateUtil.sameDay(pExc.getEndDate(), subject.getEndDate())
                 &&
                 pExc.getMessage()
                      .equals("The given start date is not before the current end date.");
@@ -133,7 +125,7 @@ public class _Contract_Period extends ClassContract {
     });
     addInstanceMethodContract(
         new MutatorContract(
-            this, Period.class,
+            this, DayPeriod.class,
             "setEndDate(java.util.Date)"
         ) {
 
@@ -146,27 +138,23 @@ public class _Contract_Period extends ClassContract {
         // postconditions
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Period subject = (Period)context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod)context.get(SUBJECT_KEY);
             Date endDate = (Date)context.get("endDate");
             return  (endDate == null)
                        ? subject.getEndDate() == null
-                       : subject.getEndDate().equals(endDate);
+                       : subject.getEndDate().equals(DateUtil.dayDate(endDate));
           }});
         addExceptionCondition(new ExceptionCondition(InvalidPeriodException.class) {
           public boolean validate(Map context) {
-            Period subject = (Period)context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod)context.get(SUBJECT_KEY);
             Date endDate = (Date)context.get("endDate");
             InvalidPeriodException pExc = (InvalidPeriodException)context.get(EXCEPTION_KEY);
             return  ( subject.getStartDate() != null
                       && endDate != null
-                      && !subject.getStartDate().before(endDate)
+                      && subject.getStartDate().after(endDate)
                     )
-                    && (subject.getStartDate() == null)
-                         ? (pExc.getStartDate() == null)
-                         : (pExc.getStartDate().equals(subject.getStartDate()))
-                    && (endDate == null)
-                         ? (pExc.getEndDate() == null)
-                         : (pExc.getEndDate().equals(endDate))
+                    && DateUtil.sameDay(pExc.getStartDate(), subject.getStartDate())
+                    && DateUtil.sameDay(pExc.getEndDate(), endDate)
                     && pExc.getMessage()
                         .equals("The current start date is not before the given end date.");
           }});
@@ -187,7 +175,7 @@ public class _Contract_Period extends ClassContract {
     });
     addInstanceMethodContract(
         new MutatorContract(
-            this, Period.class,
+            this, DayPeriod.class,
             "clone()") {
 
       public String[] getFormalParameters() {
@@ -198,20 +186,11 @@ public class _Contract_Period extends ClassContract {
         // postconditions
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Period subject = (Period) context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod) context.get(SUBJECT_KEY);
             Object result = context.get(RESULT_KEY);
-            return ( result instanceof Period)
-                     &&
-                     ( subject.getStartDate() == null
-                         ? ((Period)result).getStartDate() == null
-                         : ((Period)result).getStartDate().equals(subject.getStartDate()
-                     )
-                     &&
-                     ( subject.getEndDate() == null
-                         ? ((Period)result).getEndDate() == null
-                         : ((Period)result).getEndDate().equals(subject.getEndDate())
-                     )
-                   );
+            return (result instanceof DayPeriod) &&
+                   DateUtil.sameDay(subject.getStartDate(), ((DayPeriod)result).getStartDate()) &&
+                   DateUtil.sameDay(subject.getEndDate(), ((DayPeriod)result).getEndDate());
           }});
         close();
       }
@@ -225,7 +204,7 @@ public class _Contract_Period extends ClassContract {
     });
     addInstanceMethodContract(
         new MutatorContract(
-            this, Period.class,
+            this, DayPeriod.class,
             "equals(java.lang.Object)") {
 
       public String[] getFormalParameters() {
@@ -236,22 +215,14 @@ public class _Contract_Period extends ClassContract {
         // postconditions
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Period subject = (Period) context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod) context.get(SUBJECT_KEY);
             Object o = context.get("o");
             boolean result = ((Boolean)context.get(RESULT_KEY)).booleanValue();
             return result
                    ==
-                   ( o instanceof Period &&
-                     ( subject.getStartDate() == null
-                          ? ((Period)o).getStartDate() == null
-                          : subject.getStartDate().equals(((Period)o).getStartDate())
-                     )
-                     &&
-                     ( subject.getEndDate() == null
-                          ? ((Period)o).getEndDate() == null
-                          : subject.getEndDate().equals(((Period)o).getEndDate())
-                     )
-                   );
+                   ((o instanceof DayPeriod) &&
+                    DateUtil.sameDay(subject.getStartDate(), ((DayPeriod)o).getStartDate()) &&
+                    DateUtil.sameDay(subject.getEndDate(), ((DayPeriod)o).getEndDate()));
           }});
         close();
       }
@@ -265,7 +236,7 @@ public class _Contract_Period extends ClassContract {
     });
     addInstanceMethodContract(
         new MutatorContract(
-            this, Period.class,
+            this, DayPeriod.class,
             "hashCode()") {
 
       public String[] getFormalParameters() {
@@ -276,7 +247,7 @@ public class _Contract_Period extends ClassContract {
         // postconditions
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Period subject = (Period) context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod) context.get(SUBJECT_KEY);
             int result = ((Integer)context.get(RESULT_KEY)).intValue();
             return result
                    ==
@@ -303,7 +274,7 @@ public class _Contract_Period extends ClassContract {
     });
     addInstanceMethodContract(
         new MutatorContract(
-            this, Period.class,
+            this, DayPeriod.class,
             "toString()") {
 
       public String[] getFormalParameters() {
@@ -314,7 +285,7 @@ public class _Contract_Period extends ClassContract {
         // postconditions
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Period subject = (Period) context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod) context.get(SUBJECT_KEY);
             String result = (String) context.get(RESULT_KEY);
             return result
                     .equals(
@@ -343,7 +314,7 @@ public class _Contract_Period extends ClassContract {
     });
     addInstanceMethodContract(
         new MutatorContract(
-            this, Period.class,
+            this, DayPeriod.class,
             "getNbDaysInPeriod()") {
 
       public String[] getFormalParameters() {
@@ -355,7 +326,7 @@ public class _Contract_Period extends ClassContract {
         // postconditions
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Period subject = (Period)context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod)context.get(SUBJECT_KEY);
             long result = ((Long) context.get(RESULT_KEY)).longValue();
             return result
                    ==
@@ -384,7 +355,7 @@ public class _Contract_Period extends ClassContract {
     });
     addInstanceMethodContract(
         new MutatorContract(
-            this, Period.class,
+            this, DayPeriod.class,
             "getNbDaysInPeriodInclusive()") {
 
       public String[] getFormalParameters() {
@@ -396,12 +367,9 @@ public class _Contract_Period extends ClassContract {
         // postconditions
         addPostcondition(new Condition() {
           public boolean validate(Map context) {
-            Period subject = (Period)context.get(SUBJECT_KEY);
+            DayPeriod subject = (DayPeriod)context.get(SUBJECT_KEY);
             long result = ((Long) context.get(RESULT_KEY)).longValue();
-            return result
-                   == (((subject.getStartDate() != null) && (subject.getEndDate() != null)) ?
-                       -1 :
-                       subject.getNbDaysInPeriod() + 1);
+            return result == subject.getNbDaysInPeriod();
           }});
         close();
       }
@@ -413,16 +381,121 @@ public class _Contract_Period extends ClassContract {
       }
 
     });
+    addInstanceMethodContract(
+        new MutatorContract(
+            this, DayPeriod.class,
+            "containsInclusive(java.util.Date)") {
+
+      public String[] getFormalParameters() {
+        return new String[] {"date"};
+      }
+
+      {
+        // no preconditions
+        // postconditions
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            DayPeriod subject = (DayPeriod)context.get(SUBJECT_KEY);
+            Date date = (Date)context.get("date");
+            boolean result = ((Boolean)context.get(RESULT_KEY)).booleanValue();
+            return result == subject.contains(date);
+          }});
+        close();
+      }
+
+      public StraightList getTestCases() throws TorytException {
+        return new LazyCombinationStraightList(
+              new String[] {SUBJECT_KEY, "date"},
+              new StraightList[] {getCases(),
+                                  new NullFirstStraightList(
+                                        Cases.findTestObjectList(Date.class))});
+      }
+
+    });
+    addInstanceMethodContract(
+        new MutatorContract(
+            this, DayPeriod.class,
+            "contains(java.util.Date)") {
+
+      public String[] getFormalParameters() {
+        return new String[] {"date"};
+      }
+
+      {
+        // no preconditions
+        // postconditions
+        addPostcondition(new Condition() {
+          public boolean validate(Map context) {
+            DayPeriod subject = (DayPeriod)context.get(SUBJECT_KEY);
+            Date date = (Date)context.get("date");
+            boolean result = ((Boolean)context.get(RESULT_KEY)).booleanValue();
+            boolean noNulls = (date != null) && (subject.getStartDate() != null) && (subject.getEndDate() != null);
+            if (noNulls) {
+              Date dayDate = DateUtil.dayDate(date);
+              boolean tooEarly = dayDate.before(subject.getStartDate());
+              boolean tooLate = dayDate.after(subject.getEndDate());
+              boolean expected = ((! tooEarly) && (! tooLate));
+              return (result == expected);
+            }
+            else {
+              return (result == false);
+            }
+          }
+          public String toString() {
+            return "(date != null) && (getStartDate() != null) && (getEndDate() != null) &&" +
+                  " (!date.before(getStartDate())) && (!date.after(getEndDate()));";
+          }
+        });
+        close();
+      }
+
+      public StraightList getTestCases() throws TorytException {
+        return new LazyCombinationStraightList(
+              new String[] {SUBJECT_KEY, "date"},
+              new StraightList[] {getCases(),
+                                  new NullFirstStraightList(
+                                        Cases.findTestObjectList(Date.class))});
+      }
+
+    });
     // basic inspectors
     addBasicInspector("getStartDate()");
     addBasicInspector("getEndDate()");
     // type invariants
     addTypeInvariantCondition(new Condition() {
       public boolean validate(Map context) {
-        Period subject = (Period) context.get(SUBJECT_KEY);
+        DayPeriod subject = (DayPeriod) context.get(SUBJECT_KEY);
+        if (subject.getStartDate() != null) {
+          return DateUtil.isDayDate(subject.getStartDate());
+        }
+        else {
+          return true;
+        }
+      }
+      public String toString() {
+        return "getStartDate() != null ? DateUtil.isDayDate(getStartDate());";
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        DayPeriod subject = (DayPeriod) context.get(SUBJECT_KEY);
+        if (subject.getEndDate() != null) {
+          return DateUtil.isDayDate(subject.getEndDate());
+        }
+        else {
+          return true;
+        }
+      }
+      public String toString() {
+        return "getEndDate() != null ? DateUtil.isDayDate(getEndDate());";
+      }
+    });
+    addTypeInvariantCondition(new Condition() {
+      public boolean validate(Map context) {
+        DayPeriod subject = (DayPeriod) context.get(SUBJECT_KEY);
         return
             (subject.getStartDate() != null && subject.getEndDate() != null)
-                ? subject.getStartDate().before(subject.getEndDate())
+                ? ! subject.getStartDate().after(subject.getEndDate())
                 : true;
       }
     });
@@ -454,7 +527,7 @@ public class _Contract_Period extends ClassContract {
 
           public Object map(Object o) {
             Map m = (Map)o;
-            Period subject = new Period();
+            DayPeriod subject = new DayPeriod();
             try {
               subject.setStartDate((Date) m.get("startDate"));
               subject.setEndDate((Date) m.get("endDate"));

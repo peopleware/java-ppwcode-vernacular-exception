@@ -266,6 +266,8 @@ public class Period extends MutableValue implements Comparable {
    *                  (24*60*60*1000)
    *               )
    *             : -1;
+   *
+   * @deprecated You probably want to use {@link DayPeriod}.
    */
   public long getNbDaysInPeriod() {
     Date startDate = getStartDate();

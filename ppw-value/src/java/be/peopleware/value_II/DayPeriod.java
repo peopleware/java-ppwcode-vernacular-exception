@@ -98,8 +98,8 @@ public class DayPeriod extends MutableValue implements Comparable {
    *                && getEndDate() != null
    *                && startDate.after(getEndDate())
    *            )
-   *              && sameDay(pExc.getStartDate(), startDate)
-   *              && sameDay(pExc.getEndDate(), getEndDate())
+   *              && DateUtil.sameDay(pExc.getStartDate(), startDate)
+   *              && DateUtil.sameDay(pExc.getEndDate(), getEndDate())
    *              && pExc.getMessage()
    *                    .equals("The given start date is not before the current end date.");
    */
@@ -303,15 +303,16 @@ public class DayPeriod extends MutableValue implements Comparable {
    * <code>date</code> is in this period, inclusive:
    * <code>date in [getStartDate(), getEndDate()]</code>.
    *
-   * @return (date == null) && (getStartDate() == null) && (getEndDate() == null) &&
-   *            (!date.before(getStartDate())) && (!date.after(getEndDate()));
+   * @return (date != null) && (getStartDate() != null) && (getEndDate() != null) &&
+   *            (!DateUtil.dayDate(date).before(getStartDate())) && (!DateUtil.dayDate(date).after(getEndDate()));
    */
   public boolean contains(final Date date) {
     if ((date == null) || ($startDate == null) || ($endDate == null)) {
       return false;
     }
     else {
-      return (!date.before($endDate)) && (!date.after($startDate));
+      Date dayDate = DateUtil.dayDate(date);
+      return (!dayDate.before($startDate)) && (!dayDate.after($endDate));
     }
   }
 

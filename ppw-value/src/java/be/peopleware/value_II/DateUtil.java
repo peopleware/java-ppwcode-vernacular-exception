@@ -79,18 +79,23 @@ public class DateUtil {
    * @result date != null ? result.getMilliSeconds() == 0;
    *
    * @mudo don't use deprecated methods in contract
+   * @note This was difficult to get right. Don't change without tests!
    */
   public static Date dayDate(Date date) {
     if (date == null) {
       return null;
     }
     GregorianCalendar cal = new GregorianCalendar();
+    cal.clear();
     cal.setTime(date);
     cal.clear(Calendar.HOUR);
+    cal.clear(Calendar.HOUR_OF_DAY);
+    cal.clear(Calendar.AM_PM);
     cal.clear(Calendar.MINUTE);
     cal.clear(Calendar.SECOND);
     cal.clear(Calendar.MILLISECOND);
-    return cal.getTime();
+    Date result = cal.getTime();
+    return result;
   }
 
   /**
@@ -104,6 +109,7 @@ public class DateUtil {
       GregorianCalendar cal = new GregorianCalendar();
       cal.setTime(date);
       return notSetOr0(cal, Calendar.HOUR) &&
+             notSetOr0(cal, Calendar.HOUR_OF_DAY) &&
              notSetOr0(cal, Calendar.MINUTE) &&
              notSetOr0(cal, Calendar.SECOND) &&
              notSetOr0(cal, Calendar.MILLISECOND);
