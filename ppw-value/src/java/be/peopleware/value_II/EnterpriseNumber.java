@@ -13,7 +13,7 @@ import be.peopleware.bean_V.PropertyException;
 
 
 /**
- * <p><dfn>Enterprise numbers</dfn> (<dfn xml:lang="nl-BE">>ondernemningsnummers</dfn>,
+ * <p><dfn>Enterprise numbers</dfn> (<dfn xml:lang="nl-BE">ondernemningsnummers</dfn>,
  *   <dfn xml:lang="fr-BE">num&eacute;ro d'entreprise</dfn>) uniquely identify enterprises for
  *   the Belgian Federal Government. Other names for <dfn>Enterprise numbers</dfn> are
  *   <dfn xml:lang="nl-BE">KBO-nummers</dfn> or <dfn xml:lang="fr-BE">num&eacute;ro BCE</dfn>.</p>
