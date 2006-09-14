@@ -12,6 +12,12 @@
   </properties>
   <body>
 
+    <release version="II v2.0.0/1.1" date="2006-09-14" description="DayPeriod Toryt cases">
+      <action dev="jand" type="add">
+        Added test cases for DayPeriod.
+      </action>
+    </release>
+
     <release version="II v2.0.0/1.0" date="2006-09-14" description="DayPeriod">
       <action dev="jand" type="add">
         After fighting with Period, it turns out we have 2 semantics in there

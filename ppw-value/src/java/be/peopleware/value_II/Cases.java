@@ -173,4 +173,55 @@ public final class Cases {
     org.toryt.Cases.addTol(Period.class, TOL_BE_PEOPLEWARE_VALUE_I_PERIOD);
   }
 
+
+
+
+  //  DayPeriod
+  private static final StraightList TOL_BE_PEOPLEWARE_VALUE_II_DAY_PERIOD;
+  static {
+    StraightList testValues = null;
+    try {
+      testValues = new NullFirstStraightList(
+                       org.toryt.Cases.findTestObjectList(Date.class)
+                   );
+    }
+    catch (TorytException e) {
+      assert false : "Could not load date TOL";
+    }
+    List periods = new ArrayList();
+    Iterator i1 = testValues.iterator();
+    while (i1.hasNext()) {
+      Date date1 = (Date) i1.next();
+      Iterator i2 = testValues.iterator();
+      while (i2.hasNext()) {
+        Date date2 = (Date) i2.next();
+        DayPeriod period = new DayPeriod();
+        try {
+          if (
+              date1 == null
+              || date2 == null
+              || (date1 != null && date2 != null && (! date1.after(date2)))
+           ) {
+            period.setStartDate(date1);
+            period.setEndDate(date2);
+          }
+          else if (date1 != null && date2 != null && (! date2.after(date1))) {
+            period.setStartDate(date2);
+            period.setEndDate(date1);
+          }
+          periods.add(period);
+        }
+        catch (InvalidPeriodException exc) {
+          assert false : "Shouldn't happen";
+        }
+      }
+    }
+    DayPeriod[] array = new DayPeriod[periods.size()];
+    for (int i = 0; i < array.length; i++) {
+      array[i] = (DayPeriod)periods.get(i);
+    }
+    TOL_BE_PEOPLEWARE_VALUE_II_DAY_PERIOD = new ArrayStraightList(array);
+    org.toryt.Cases.addTol(DayPeriod.class, TOL_BE_PEOPLEWARE_VALUE_II_DAY_PERIOD);
+  }
+
 }
