@@ -12,6 +12,13 @@
   </properties>
   <body>
 
+    <release version="II v2.0.1/1.2" date="2006-09-26" description="DayPeriod days in period">
+      <action dev="jand" type="fix">
+        Fixed bug in specs and implementation of DayPeriod.getNbOfDaysInPeriod. Since this is
+        an inclusive interval, we need to add 1 day.
+      </action>
+    </release>
+
     <release version="II v2.0.0/1.1" date="2006-09-14" description="DayPeriod Toryt cases">
       <action dev="jand" type="add">
         Added test cases for DayPeriod.

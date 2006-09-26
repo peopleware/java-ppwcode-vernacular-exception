@@ -339,7 +339,7 @@ public class _Contract_DayPeriod extends ClassContract {
                             )
                             /
                             (24*60*60*1000)
-                          )
+                          ) + 1
                        : -1
                    );
           }});

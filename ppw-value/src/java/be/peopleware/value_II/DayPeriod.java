@@ -227,6 +227,10 @@ public class DayPeriod extends MutableValue implements Comparable {
   }
 
   /**
+   * This method can never return 0, since period are inclusive,
+   * and the start date can not be later than the end date. Equal
+   * start and end dates return 1.
+   *
    * @return  ( getStartDate() != null &&
    *            getEndDate() != null
    *          )
@@ -236,7 +240,7 @@ public class DayPeriod extends MutableValue implements Comparable {
    *                  )
    *                  /
    *                  (24*60*60*1000)
-   *               )
+   *               ) + 1
    *             : -1;
    */
   public long getNbDaysInPeriod() {
@@ -245,7 +249,7 @@ public class DayPeriod extends MutableValue implements Comparable {
     if (startDate != null && endDate != null) {
         long differenceInMillis =
           endDate.getTime() - startDate.getTime();
-        return differenceInMillis / (24 * 60 * 60 * 1000);
+        return (differenceInMillis / (24 * 60 * 60 * 1000)) + 1;
     }
     return -1;
   }

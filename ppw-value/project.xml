@@ -12,7 +12,7 @@
     the implementation of value types (including enumeration types), are laid out.
     Some common value types are implemented and offered for reuse.</description>
   <inceptionYear>2004</inceptionYear>
-  <currentVersion>2.0.0-1.1</currentVersion>
+  <currentVersion>2.0.1-1.2</currentVersion>
   <package>be.peopleware.value_II</package>
   <repository>
     <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:ppw-value</developerConnection>
