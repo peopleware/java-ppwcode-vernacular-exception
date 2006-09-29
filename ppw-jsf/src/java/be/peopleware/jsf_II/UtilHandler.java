@@ -9,6 +9,7 @@ package be.peopleware.jsf_II;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.faces.FacesException;
 
@@ -52,6 +53,16 @@ public class UtilHandler {
    */
   public Principal getPrincipal() throws FacesException {
     return RobustCurrent.principal();
+  }
+
+  /**
+   * @return RobustCurrent.locale();
+   * @except RobustCurrent.locale();
+   *
+   * @since II 1.3.0-1.2
+   */
+  public Locale getLocale() throws FacesException {
+    return RobustCurrent.locale();
   }
 
 }

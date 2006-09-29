@@ -10,6 +10,12 @@
   </properties>
   <body>
 
+    <release version="II v1.3.0/1.2" date="2006-09-29" description="UtilHandler.getLocale()">
+      <action dev="jand" type="add">
+        Added method to UtilHandler to retrieve current locale.
+      </action>
+    </release>
+
     <release version="II v1.2.1/1.2" date="2006-09-12" description="NullPointerException bug fixed">
       <action dev="jand" type="fix">
         NullPointerException in an assert when we are dealing with a fresh instance.
