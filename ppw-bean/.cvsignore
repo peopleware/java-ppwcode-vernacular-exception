@@ -1,5 +1,0 @@
-*.log
-target
-javadoc*
-.project
-.classpath

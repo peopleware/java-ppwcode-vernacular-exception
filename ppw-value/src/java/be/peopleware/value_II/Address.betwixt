@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<info primitiveTypes="element">
-  <element name="address" class="be.peopleware.value_I.Address">
-    <hide property="empty" />
-    <addDefaults />
-  </element>
-</info>

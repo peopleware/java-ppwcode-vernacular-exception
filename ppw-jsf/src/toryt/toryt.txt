@@ -1,2 +1,0 @@
-Placeholder for the src/toryt source folder. 
-Otherwise Eclipse is complaining about missing a required folder.
