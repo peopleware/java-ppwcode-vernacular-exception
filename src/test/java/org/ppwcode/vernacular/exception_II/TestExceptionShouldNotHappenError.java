@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package be.peopleware.exception_II;
+package org.ppwcode.vernacular.exception_II;
 
 
 import java.text.MessageFormat;
