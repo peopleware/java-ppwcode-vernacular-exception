@@ -1,15 +1,29 @@
 /*<license>
-  Copyright 2004, PeopleWare n.v.
-  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
-  TO SELECTED PARTIES.
+Copyright 2005 - $Date$ by PeopleWare n.v..
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 </license>*/
 
-package be.peopleware.exception_I;
+package be.peopleware.exception_II;
 
 
-import be.peopleware.i18n_I.DefaultResourceBundleLoadStrategy;
-import be.peopleware.i18n_I.Properties;
-import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
+
+import java.util.Properties;
+
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 /**
@@ -48,6 +62,10 @@ import be.peopleware.i18n_I.ResourceBundleLoadStrategy;
  *               as arguments in the localized message, e.g.,
  *               <samp>The {origin} had validation errors.</samp>
  */
+@Copyright("2007 - $Date$, PeopleWare n.v.")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class LocalizedMessageException extends Exception {
 
   /*<section name="Meta Information">*/
@@ -163,6 +181,7 @@ public abstract class LocalizedMessageException extends Exception {
    * or there is no entry in the bundles with the given keys, the
    * non-localized message is returned.
    */
+  @Override
   public final String getLocalizedMessage() {
     ResourceBundleLoadStrategy strategy = getLocalizedMessageResourceBundleLoadStrategy();
     String[] keys = getLocalizedMessageKeys();
