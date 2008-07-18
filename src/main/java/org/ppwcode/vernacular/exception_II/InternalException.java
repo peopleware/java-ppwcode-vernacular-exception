@@ -25,38 +25,29 @@ import java.util.regex.Pattern;
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
+import org.toryt.annotations_I.Expression;
+import org.toryt.annotations_I.Invars;
+import org.toryt.annotations_I.MethodContract;
 
 
 /**
- * <p>Supertype for exceptions we consider internal
- *   to the system, expected and normal. Internal
- *   exceptions are thrown when a method cannot
- *   perform its nominal task.</p>
- * <p>{@code InternalExceptions} should be caught
- *   somewhere, and possibly result in end-user
- *   feedback. {@code InternalExceptions} should
- *   never result in a crash of the application.</p>
- * <p>Because {@code InternalExceptions} often result
- *   in feedback to the end user, the messages that
- *   are based on them should be localized.
- *   When instances of this class are created, you
- *   should use an identifying string (in all caps, without spaces)
- *   as {@link #getMessage() message}, which can be used
- *   to retrieve the appropriate end user message
- *   when the exception is dealt with. The {@link #getMessage()
- *   message} thus should not be an extensive end user
- *   feedback message itself. If the given message identifier
- *   is {@code null}, {@link #DEFAULT_MESSAGE_IDENTIFIER} is used
+ * <p>Supertype for exceptions we consider <em>internal to the system we are developing,
+ *   expected to occur and normal behavior</em> . Internal exceptions are thrown when a
+ *   method cannot perform its nominal task.</p>
+ * <p>{@code InternalExceptions} should be caught somewhere, and possibly result in end-user
+ *   feedback. {@code InternalExceptions} should never result in a crash of the application.</p>
+ * <p>Because {@code InternalExceptions} often result in feedback to the end user, the messages that
+ *   are based on them should be localized. When instances of this class are created, you should
+ *   use an identifying string (in all caps, without spaces) as {@link #getMessage() message},
+ *   which can be used to retrieve the appropriate end user message when the exception is dealt with.
+ *   The {@link #getMessage() message} thus should not be an extensive end user feedback message itself.
+ *   If the given message identifier is {@code null}, {@link #DEFAULT_MESSAGE_KEY} is used
  *   instead. Handling code should always provide a default localized
- *   message for the {@link #DEFAULT_MESSAGE_IDENTIFIER}.
- *   <strong>{@link #getLocalizedMessage()} is not used:
- *   this turned out to be a difficult pattern to use.</strong></p>
- * <p>When the reason to throw the {@code InternalException}
- *   is itself an exception, it should be provided as the
- *   {@link #getCause()} of the {@code InternalException}.</p>
- *
- * @invar getMessage() != null;
- * @invar validMessageIdentifier(getMessage());
+ *   message for the {@link #DEFAULT_MESSAGE_KEY}.</p>
+ * <p><strong>{@link #getLocalizedMessage()} is not used: this turned out to be a difficult pattern
+ *   to use.</strong></p>
+ * <p>When the reason to throw the {@code InternalException} is itself an exception, it should be
+ *   provided as the {@link #getCause()} of the {@code InternalException}.</p>
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
@@ -65,17 +56,20 @@ import org.ppwcode.metainfo_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision: 1504 $",
          date     = "$Date: 2008-07-02 11:36:19 +0200 (Wed, 02 Jul 2008) $")
+@Invars(@Expression("validMessageKey(message)"))
 public class InternalException extends Exception {
 
   /**
    * The empty string.
+   *
+   * @todo use from smallfries
    */
   public final static String EMPTY = "";
 
   /**
-   * {@value}
+   * {@code DEFAULT_MESSAGE_INDENTIER == }{@value}
    */
-  public final static String DEFAULT_MESSAGE_IDENTIFIER = "DEFAULT";
+  public final static String DEFAULT_MESSAGE_KEY = "DEFAULT";
 
 
 
@@ -83,56 +77,53 @@ public class InternalException extends Exception {
   //------------------------------------------------------------------
 
   /**
-   * @param     messageIdentifier
-   *            The string that identifies a localized
-   *            end user feedback message about the
+   * @param     messageKey
+   *            The string that identifies a localized end user feedback message about the
    *            non-nominal behavior.
    * @param     cause
-   *            The exception that occured, causing this
-   *            exception to be thrown, if that is the case.
-   * @pre       (messageIdentifier == null) ||
-   *            EMPTY.equals(messageIdentifier) ||
-   *            validMessageIdentifier(messageIdentifier);
-   * @post      new.getMessage().equals((messageIdentifier == null) || (EMPTY.equals(messageIdentifier)) ?
-   *                                       DEFAULT_MESSAGE_IDENTIFIER :
-   *                                       messageIdentifier);
-   * @post      new.getCause() == cause;
+   *            The exception that occured, causing this exception to be thrown, if that is
+   *            the case.
    */
-  public InternalException(final String messageIdentifier,
-                           final Throwable cause) {
-    super(defaultMessageIdentifier(messageIdentifier), cause);
+  @MethodContract(
+    pre  = @Expression("_messageKey == null || _messageKey == EMPTY || validmessageKey(_messageKey)"),
+    post = {
+      @Expression("message == (_messageKey == null || _messageIdentfier == EMPTY) ? DEFAULT_MESSAGE_KEY : _messageKey"),
+      @Expression("cause == _cause")
+    }
+  )
+  public InternalException(final String messageKey, final Throwable cause) {
+    super(defaultMessageKey(messageKey), cause);
   }
 
-  private static String defaultMessageIdentifier(String messageIdentifier) {
-    return ((messageIdentifier == null) || (EMPTY.equals(messageIdentifier))) ?
-           DEFAULT_MESSAGE_IDENTIFIER :
-           messageIdentifier;
+  private static String defaultMessageKey(String messageKey) {
+    return ((messageKey == null) || (EMPTY.equals(messageKey))) ? DEFAULT_MESSAGE_KEY : messageKey;
   }
 
   /*</construction>*/
 
-  /**
-   * return (messageIdentifier != null) &&
-   *        matchesMessageIdentifierPattern(messageIdentifier);
-   */
-  public static boolean validMessageIdentifier(String messageIdentifier) {
-    return (messageIdentifier != null) &&
-           matchesMessageIdentifierPattern(messageIdentifier);
+
+
+  @MethodContract(
+    post = @Expression("messageKey != null && matchesMessageKeyPattern(messageKey)")
+  )
+  public static boolean validMessageKey(String messageKey) {
+    return (messageKey != null) &&
+           matchesMessageKeyPattern(messageKey);
   }
 
   /**
-   * {@value}
+   * {@code MESSAGE_KEY_PATTERN ==}{@value}
    */
-  public final static String PATTERN = "[A-Z][A-Z_]*[A-Z]";
+  public final static String MESSAGE_KEY_PATTERN = "[A-Z][A-Z_]*[A-Z]";
 
-  /**
-   * @pre messageIdentifier != null;
-   * @return PATTERN.matches(messageIdentifier);
-   */
-  public static boolean matchesMessageIdentifierPattern(String messageIdentifier) {
-    assert messageIdentifier != null;
-    Pattern p = Pattern.compile(PATTERN);
-    Matcher m = p.matcher(messageIdentifier);
+  @MethodContract(
+    pre  = @Expression("messageKey != null"),
+    post = @Expression("Pattern.compile(MESSAGE_KEY_PATTERN).matcher(messageKey).matches()")
+  )
+  public static boolean matchesMessageKeyPattern(String messageKey) {
+    assert messageKey != null;
+    Pattern p = Pattern.compile(MESSAGE_KEY_PATTERN);
+    Matcher m = p.matcher(messageKey);
     return m.matches();
   }
 

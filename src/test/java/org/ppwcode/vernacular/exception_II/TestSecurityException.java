@@ -22,7 +22,7 @@ public class TestSecurityException extends TestCase {
 
   private void testInvariants(SecurityException subject) {
     assertNotNull(subject.getMessage());
-    assertTrue(InternalException.validMessageIdentifier(subject.getMessage()));
+    assertTrue(InternalException.validMessageKey(subject.getMessage()));
   }
 
 
@@ -58,7 +58,7 @@ public class TestSecurityException extends TestCase {
     SecurityException subject = new SecurityException(messageIdentifier, t);
     testInvariants(subject);
     assertEquals(((messageIdentifier == null) || (EMPTY.equals(messageIdentifier))) ?
-                     InternalException.DEFAULT_MESSAGE_IDENTIFIER :
+                     InternalException.DEFAULT_MESSAGE_KEY :
                      messageIdentifier, subject.getMessage());
     assertEquals(t, subject.getCause());
   }

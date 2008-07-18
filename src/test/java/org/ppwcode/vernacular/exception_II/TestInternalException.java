@@ -22,7 +22,7 @@ public class TestInternalException extends TestCase {
 
   private void testInvariants(InternalException subject) {
     assertNotNull(subject.getMessage());
-    assertTrue(InternalException.validMessageIdentifier(subject.getMessage()));
+    assertTrue(InternalException.validMessageKey(subject.getMessage()));
   }
 
 
@@ -58,7 +58,7 @@ public class TestInternalException extends TestCase {
     InternalException subject = new InternalException(messageIdentifier, t);
     testInvariants(subject);
     assertEquals(((messageIdentifier == null) || (EMPTY.equals(messageIdentifier))) ?
-                     InternalException.DEFAULT_MESSAGE_IDENTIFIER :
+                     InternalException.DEFAULT_MESSAGE_KEY :
                      messageIdentifier, subject.getMessage());
     assertEquals(t, subject.getCause());
   }
@@ -104,8 +104,8 @@ public class TestInternalException extends TestCase {
 
   private void testValidMessageIdentifierString(String messageIdentifier) {
     boolean expected = (messageIdentifier != null) &&
-                       InternalException.matchesMessageIdentifierPattern(messageIdentifier);
-    boolean result = InternalException.validMessageIdentifier(messageIdentifier);
+                       InternalException.matchesMessageKeyPattern(messageIdentifier);
+    boolean result = InternalException.validMessageKey(messageIdentifier);
     assertEquals(expected, result);
   }
 
@@ -156,7 +156,7 @@ public class TestInternalException extends TestCase {
         expected &= ((ch == '_') || (Character.isUpperCase(ch)));
       }
     }
-    boolean result = InternalException.matchesMessageIdentifierPattern(messageIdentifier);
+    boolean result = InternalException.matchesMessageKeyPattern(messageIdentifier);
     assertEquals(expected, result);
   }
 

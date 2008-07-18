@@ -22,10 +22,12 @@ import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
+import org.toryt.annotations_I.Expression;
+import org.toryt.annotations_I.MethodContract;
 
 
 /**
- * <p>Supertype for exceptions related to security.</p>
+ * <p>Super type for exceptions related to security.</p>
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
@@ -40,23 +42,21 @@ public class SecurityException extends InternalException {
   //------------------------------------------------------------------
 
   /**
-   * @param     messageIdentifier
-   *            The string that identifies a localized
-   *            end user feedback message about the
+   * @param     messageKey
+   *            The string that identifies a localized end user feedback message about the
    *            non-nominal behavior.
    * @param     cause
-   *            The exception that occured, causing this
-   *            exception to be thrown, if that is the case.
-   * @pre       (messageIdentifier == null) ||
-   *            EMPTY.equals(messageIdentifier) ||
-   *            validMessageIdentifier(messageIdentifier);
-   * @post      new.getMessage().equals((messageIdentifier == null) || (EMPTY.equals(messageIdentifier)) ?
-   *                                       DEFAULT_MESSAGE_IDENTIFIER :
-   *                                       messageIdentifier);
-   * @post      new.getCause() == cause;
+   *            The exception that occured, causing this exception to be thrown, if that is
+   *            the case.
    */
-  public SecurityException(final String messageIdentifier,
-                           final Throwable cause) {
+  @MethodContract(
+    pre  = @Expression("_messageKey == null || _messageKey == EMPTY || validmessageKey(_messageKey)"),
+    post = {
+      @Expression("message == (_messageKey == null || _messageIdentfier == EMPTY) ? DEFAULT_MESSAGE_KEY : _messageKey"),
+      @Expression("cause == _cause")
+    }
+  )
+  public SecurityException(final String messageIdentifier, final Throwable cause) {
     super(messageIdentifier, cause);
   }
 
