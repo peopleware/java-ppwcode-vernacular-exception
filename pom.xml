@@ -41,15 +41,46 @@
   </properties>
 
   <!-- General information -->
+  <!--  the artifact name simply doesn't work with inhertiance and property expansion -->
   <artifactId>ppwcode-vernacular-${ppwcode.shortArtifactName}-${ppwcode.markVersion}</artifactId>
+  <!--  packaging cannot be inherited: the parent is always of packaging type pom -->
   <packaging>jar</packaging>
   <version>1.0.0-SNAPSHOT</version>
   <!-- MUDO add Svn release number as implementation version -->
 
-  <name>ppwcode persistence vernacular</name>
+  <!--  The name and description are particular to the project at at hand  -->
+  <name>ppwcode exception vernacular</name>
   <description>
     Vernacular, famework, guidelines, support for dealing with exceptions, errors and preconditions.
   </description>
+
+  <!-- The following entries need to be repeated, and can not sensibly be inherited.
+       The reason is, sadly, that Maven 2 has a built in, undocumented "feature" that appends the artifact id to a number of URL's and paths
+       if those URL's or paths are inherited. The reasoning behind that is he use of inheritance inside multi-module projects.
+       It seems that if you are using inheritance outside of multi-module projects, you are out of luck.
+       At least, we are :-(.  -->
+  <url>http://www.ppwcode.org/java/projectdocs/vernacular/exception/II/1.0.0-SNAPSHOT</url>
+  <scm>
+    <connection>scm:svn:http://ppwcode.googlecode.com/svn/java/vernacular/exception/trunk</connection>
+    <developerConnection>scm:svn:https://ppwcode.googlecode.com/svn/java/vernacular/exception/trunk</developerConnection>
+    <url>http://code.google.com/p/ppwcode/source/browse/java/vernacular/exception</url>
+  </scm>
+  <distributionManagement>
+    <site>
+      <id>ppwcodeSite</id>
+      <name>ppwcode Project Documentation Site</name>
+      <url>scpexe://cvs.peopleware.be/ppw/projects/ppwcode/public_html/java/projectdocs/vernacular/exception/II/1.0.0-SNAPSHOT</url>
+    </site>
+  </distributionManagement>
+
+  <!-- This needs to be copied in all child poms, to find the parent -->
+  <repositories>
+    <repository>
+      <id>ppwcodeRepo</id>
+      <name>ppwcode Maven 2 repository</name>
+      <url>http://www.ppwcode.org/java/maven2repo</url>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>
@@ -112,14 +143,5 @@
       <organization>PeopleWare n.v.</organization>
     </contributor>
   </contributors>
-
-  <repositories>
-    <repository>
-      <id>ppwcodeRepo</id>
-      <!-- This needs to be copied in all child poms, to find the parent -->
-      <name>ppwcode Maven 2 repository</name>
-      <url>http://www.ppwcode.org/java/maven2repo</url>
-    </repository>
-  </repositories>
 
 </project>
