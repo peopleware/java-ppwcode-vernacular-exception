@@ -38,11 +38,20 @@
   <properties>
     <ppwcode.shortArtifactName>exception</ppwcode.shortArtifactName>
     <ppwcode.markVersion>II</ppwcode.markVersion>
+
+    <ppwcode.artifactId>ppwcode-vernacular-${ppwcode.shortArtifactName}-${ppwcode.markVersion}</ppwcode.artifactId>
+    <ppwcode.url>http://www.ppwcode.org/java/projectdocs/vernacular/exception/II/1.0.0-SNAPSHOT</ppwcode.url>
+    <ppwcode.scm.connection>scm:svn:http://ppwcode.googlecode.com/svn/java/vernacular/exception/trunk</ppwcode.scm.connection>
+    <ppwcode.scm.developerConnection>scm:svn:https://ppwcode.googlecode.com/svn/java/vernacular/exception/trunk</ppwcode.scm.developerConnection>
+    <ppwcode.scm.url>http://code.google.com/p/ppwcode/source/browse/java/vernacular/exception</ppwcode.scm.url>
+    <ppwcode.distributionManagement.site.id>ppwcodeSite</ppwcode.distributionManagement.site.id>
+    <ppwcode.distributionManagement.site.name>ppwcode Project Documentation Site</ppwcode.distributionManagement.site.name>
+    <ppwcode.distributionManagement.site.url>scpexe://cvs.peopleware.be/ppw/projects/ppwcode/public_html/java/projectdocs/vernacular/exception/II/1.0.0-SNAPSHOT</ppwcode.distributionManagement.site.url>
   </properties>
 
   <!-- General information -->
   <!--  the artifact name simply doesn't work with inhertiance and property expansion -->
-  <artifactId>ppwcode-vernacular-${ppwcode.shortArtifactName}-${ppwcode.markVersion}</artifactId>
+  <artifactId>${ppwcode.artifactId}</artifactId>
   <!--  packaging cannot be inherited: the parent is always of packaging type pom -->
   <packaging>jar</packaging>
   <version>1.0.0-SNAPSHOT</version>
@@ -59,17 +68,17 @@
        if those URL's or paths are inherited. The reasoning behind that is he use of inheritance inside multi-module projects.
        It seems that if you are using inheritance outside of multi-module projects, you are out of luck.
        At least, we are :-(.  -->
-  <url>http://www.ppwcode.org/java/projectdocs/vernacular/exception/II/1.0.0-SNAPSHOT</url>
+  <url>${ppwcode.url}</url>
   <scm>
-    <connection>scm:svn:http://ppwcode.googlecode.com/svn/java/vernacular/exception/trunk</connection>
-    <developerConnection>scm:svn:https://ppwcode.googlecode.com/svn/java/vernacular/exception/trunk</developerConnection>
-    <url>http://code.google.com/p/ppwcode/source/browse/java/vernacular/exception</url>
+    <connection>${ppwcode.scm.connection}</connection>
+    <developerConnection>${ppwcode.scm.developerConnection}</developerConnection>
+    <url>${ppwcode.scm.url}</url>
   </scm>
   <distributionManagement>
     <site>
-      <id>ppwcodeSite</id>
-      <name>ppwcode Project Documentation Site</name>
-      <url>scpexe://cvs.peopleware.be/ppw/projects/ppwcode/public_html/java/projectdocs/vernacular/exception/II/1.0.0-SNAPSHOT</url>
+      <id>${ppwcode.distributionManagement.site.id}</id>
+      <name>${ppwcode.distributionManagement.site.name}</name>
+      <url>${ppwcode.distributionManagement.site.url}</url>
     </site>
   </distributionManagement>
 
