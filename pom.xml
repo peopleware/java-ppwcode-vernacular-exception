@@ -58,7 +58,7 @@
        if those URL's or paths are inherited. The reasoning behind that is he use of inheritance inside multi-module projects.
        It seems that if you are using inheritance outside of multi-module projects, you are out of luck.
        At least, we are :-(.  -->
-  <groupId>${ppwcode.groupId}</groupId> <!-- note: group id cannot be inherited, ever -->
+  <groupId>${ppwcode.groupId}</groupId>
   <artifactId>${ppwcode.artifactId}</artifactId>
   <url>${ppwcode.url}</url>
   <scm>
