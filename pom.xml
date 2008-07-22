@@ -38,17 +38,6 @@
   <properties>
     <ppwcode.shortArtifactName>exception</ppwcode.shortArtifactName>
     <ppwcode.markVersion>II</ppwcode.markVersion>
-
-
-    <ppwcode.artifactId>ppwcode-${ppwcode.libraryKind}-${ppwcode.shortArtifactName}-${ppwcode.markVersion}</ppwcode.artifactId>
-    <ppwcode.inSiteLocation>projectdocs/${ppwcode.libraryKind}/${ppwcode.shortArtifactName}/${ppwcode.markVersion}/${pom.version}</ppwcode.inSiteLocation>
-    <ppwcode.url>http://${ppwcode.mainUrl}/${ppwcode.inSiteLocation}</ppwcode.url>
-    <ppwcode.distributionManagement.site.id>ppwcodeSite</ppwcode.distributionManagement.site.id>
-    <ppwcode.distributionManagement.site.name>ppwcode Project Documentation Site</ppwcode.distributionManagement.site.name>
-    <ppwcode.distributionManagement.site.url>scpexe://${ppwcode.mainDistroUrl}/${ppwcode.inSiteLocation}</ppwcode.distributionManagement.site.url>
-    <ppwcode.scm.connection>scm:svn:http://${ppwcode.mainScmUrl}/${ppwcode.inRepoLocation}/trunk</ppwcode.scm.connection>
-    <ppwcode.scm.developerConnection>scm:svn:https://${ppwcode.mainScmUrl}/${ppwcode.inRepoLocation}/trunk</ppwcode.scm.developerConnection>
-    <ppwcode.scm.url>http://${ppwcode.mainScmViewUrl}/${ppwcode.inRepoLocation}</ppwcode.scm.url>
   </properties>
 
   <!-- General information -->
