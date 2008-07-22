@@ -40,7 +40,7 @@
     <ppwcode.markVersion>II</ppwcode.markVersion>
 
 
-    <ppwcode.artifactId>ppwcode-vernacular-${ppwcode.shortArtifactName}-${ppwcode.markVersion}</ppwcode.artifactId>
+    <ppwcode.artifactId>ppwcode-${ppwcode.libraryKind}-${ppwcode.shortArtifactName}-${ppwcode.markVersion}</ppwcode.artifactId>
     <ppwcode.inSiteLocation>projectdocs/${ppwcode.libraryKind}/${ppwcode.shortArtifactName}/${ppwcode.markVersion}/${pom.version}</ppwcode.inSiteLocation>
     <ppwcode.url>http://${ppwcode.mainUrl}/${ppwcode.inSiteLocation}</ppwcode.url>
     <ppwcode.distributionManagement.site.id>ppwcodeSite</ppwcode.distributionManagement.site.id>
