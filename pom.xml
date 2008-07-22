@@ -36,29 +36,32 @@
   </parent>
 
   <properties>
+    <!-- The short artifact name. The real artifact name is calculated from the ppwcode.libraryKind,
+         this short name, and the ppwcode.markVersion -->
     <ppwcode.shortArtifactName>exception</ppwcode.shortArtifactName>
+    <!-- The mark version of the artifact. This part of the version becomes part of the artifactId.
+         For this pom, an empty mark version is used, which results in "double slash in paths", which works. -->
     <ppwcode.markVersion>II</ppwcode.markVersion>
   </properties>
 
-  <!-- General information -->
-  <!--  the artifact name simply doesn't work with inhertiance and property expansion -->
-  <artifactId>${ppwcode.artifactId}</artifactId>
-  <!--  packaging cannot be inherited: the parent is always of packaging type pom -->
+  <!-- GROUP ID, VERSION, PACKAGING, NAME & DESCRIPTION: OVERWRITE IN YOUR CHILD POM (know what you are doing :-) ) -->
+  <!-- for ppwcode projects, groupId and artifactId are calculated, and used in the magic mantra (see below) -->
+  <groupId>org.ppwcode.vernacular</groupId> <!-- note: group id cannot be inherited, ever -->
+  <version>1.0.0-SNAPSHOT</version> <!-- MUDO add Svn release number as implementation version -->
   <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
-  <!-- MUDO add Svn release number as implementation version -->
-
-  <!--  The name and description are particular to the project at at hand  -->
   <name>ppwcode exception vernacular</name>
   <description>
     Vernacular, famework, guidelines, support for dealing with exceptions, errors and preconditions.
   </description>
 
+  <!-- MAGIC MANTRA -->
   <!-- The following entries need to be repeated, and can not sensibly be inherited.
        The reason is, sadly, that Maven 2 has a built in, undocumented "feature" that appends the artifact id to a number of URL's and paths
        if those URL's or paths are inherited. The reasoning behind that is he use of inheritance inside multi-module projects.
        It seems that if you are using inheritance outside of multi-module projects, you are out of luck.
        At least, we are :-(.  -->
+
+  <artifactId>${ppwcode.artifactId}</artifactId>
   <url>${ppwcode.url}</url>
   <scm>
     <connection>${ppwcode.scm.connection}</connection>
@@ -73,15 +76,22 @@
     </site>
   </distributionManagement>
 
-  <!-- This needs to be copied in all child poms, to find the parent -->
+  <!-- THIS NEEDS TO BE COPIED IN ALL CHILD POMS, TO FIND THE PARENT -->
   <repositories>
     <repository>
       <id>ppwcodeRepo</id>
       <name>ppwcode Maven 2 repository</name>
       <url>http://www.ppwcode.org/java/maven2repo</url>
     </repository>
+    <repository>
+      <id>ppwcodeSnapshotRepo</id>
+      <!-- This needs to be copied in all child poms, to find the parent -->
+      <name>ppwcode Maven 2 snapshot repository</name>
+      <url>http://www.ppwcode.org/java/maven2snapshotrepo</url>
+    </repository>
   </repositories>
 
+  <!-- activating dependencies used in this project. Versions are choosen in the grandparent pom -->
   <dependencies>
     <dependency>
       <groupId>org.ppwcode</groupId>
