@@ -32,6 +32,7 @@ public class TestExternalError extends TestCase {
 
   private void testInvariants(ExternalError subject) {
     assertNotNull(subject.getMessage());
+    assertNotSame("", subject.getMessage());
   }
 
 
@@ -66,7 +67,10 @@ public class TestExternalError extends TestCase {
   public void testExternalErrorStringThrowable(String message, Throwable t) {
     ExternalError subject = new ExternalError(message, t);
     testInvariants(subject);
-    assertEquals(ExternalError.defaultMessage(message, t), subject.getMessage());
+    String expectedMessage = (message == null) || (EMPTY.equals(message)) ?
+                               ((t == null) ? ExternalError.UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : ExternalError.EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE) :
+                               message;
+    assertEquals(expectedMessage, subject.getMessage());
     assertEquals(t, subject.getCause());
   }
 
@@ -88,7 +92,8 @@ public class TestExternalError extends TestCase {
   private void testExternalErrorThrowable(Throwable t) {
     ExternalError subject = new ExternalError(t);
     testInvariants(subject);
-    assertEquals(ExternalError.defaultMessage(null, t), subject.getMessage());
+    String expectedMessage = (t == null) ? ExternalError.UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : ExternalError.EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE;
+    assertEquals(expectedMessage, subject.getMessage());
     assertEquals(t, subject.getCause());
   }
 
@@ -114,55 +119,11 @@ public class TestExternalError extends TestCase {
   private void testExternalErrorString(String message) {
     ExternalError subject = new ExternalError(message);
     testInvariants(subject);
-    assertEquals(ExternalError.defaultMessage(message, null), subject.getMessage());
-    assertEquals(null, subject.getCause());
-  }
-
-  /*</method>*/
-
-
-
-  /*<method signature="ExternalError()">*/
-  //-----------------------------------------------------------------------
-
-  public void testExternalError() {
-    ExternalError subject = new ExternalError();
-    testInvariants(subject);
-    assertEquals(ExternalError.defaultMessage(null, null), subject.getMessage());
-    assertEquals(null, subject.getCause());
-  }
-
-  /*</method>*/
-
-
-
-  /*<method signature="defaultMessage(String, Throwable)">*/
-  //-----------------------------------------------------------------------
-
-  public void testDefaultMessage1() {
-    testDefaultMessage(null, null);
-  }
-
-  public void testDefaultMessage2() {
-    testDefaultMessage(TEST_MESSAGE, null);
-  }
-
-  public void testDefaultMessage3() {
-    testDefaultMessage(null, TEST_THROWABLE);
-  }
-
-  public void testDefaultMessage4() {
-    testDefaultMessage(TEST_MESSAGE, TEST_THROWABLE);
-  }
-
-  private void testDefaultMessage(String message, Throwable t) {
-    String expected = (message != null) ?
-                        message :
-                        ((t != null) ?
-                           ExternalError.UNEXPECTED_MESSAGE :
-                           ExternalError.COULD_NOT_CONTINUE_MESSAGE);
-    String result = ExternalError.defaultMessage(message, t);
-    assertEquals(expected, result);
+    String expectedMessage = (message == null) || (EMPTY.equals(message)) ?
+                               ExternalError.UNSPECIFIED_EXTERNAL_ERROR_MESSAGE :
+                               message;
+    assertEquals(expectedMessage, subject.getMessage());
+    assertNull(subject.getCause());
   }
 
   /*</method>*/

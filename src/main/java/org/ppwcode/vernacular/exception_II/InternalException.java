@@ -35,7 +35,9 @@ import org.toryt.annotations_I.MethodContract;
  *   expected to occur and normal behavior</em> . Internal exceptions are thrown when a
  *   method cannot perform its nominal task.</p>
  * <p>{@code InternalExceptions} should be caught somewhere, and possibly result in end-user
- *   feedback. {@code InternalExceptions} should never result in a crash of the application.</p>
+ *   feedback. {@code InternalExceptions} should never result in a crash of the application.
+ *   Neither developers not administrators have a need for the information this exception
+ *   expresses.</p>
  * <p>Because {@code InternalExceptions} often result in feedback to the end user, the messages that
  *   are based on them should be localized. When instances of this class are created, you should
  *   use an identifying string (in all caps, without spaces) as {@link #getMessage() message},
@@ -67,7 +69,10 @@ public class InternalException extends Exception {
   public final static String EMPTY = "";
 
   /**
-   * {@code DEFAULT_MESSAGE_INDENTIER == }{@value}
+   * The default key used if no key is provided. This is necessary, because we cannot use
+   * {@code null} or {@code EMPTY} to lookup i18ned end-user messages.
+   *
+   * {@code DEFAULT_MESSAGE_KEY == }{@value}
    */
   public final static String DEFAULT_MESSAGE_KEY = "DEFAULT";
 
