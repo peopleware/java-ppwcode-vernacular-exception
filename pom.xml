@@ -93,19 +93,6 @@
         <role>developer</role>
       </roles>
     </developer>
-
-
-    <developer>
-      <name>Ruben Vandeginste</name>
-      <id>ruben.vandeginste</id>
-      <email>ruben.vandeginste@gmail.com</email>
-      <timezone>+1</timezone>
-      <organization>PeopleWare n.v.</organization>
-      <organizationUrl>http://www.peopleware.be/</organizationUrl>
-      <roles>
-        <role>developer</role>
-      </roles>
-    </developer>
   </developers>
   <contributors>
     <contributor>
@@ -209,47 +196,5 @@
     </dependency>
     -->
   </dependencies>
-
-  <!-- More Project Information -->
-  <developers>
-    <developer>
-      <name>Jan Dockx</name>
-      <id>jandockx</id>
-      <email>jandockx@gmail.com</email>
-      <timezone>+1</timezone>
-      <organization>PeopleWare n.v.</organization>
-      <organizationUrl>http://www.peopleware.be/</organizationUrl>
-      <roles>
-        <role>architect</role>
-        <role>developer</role>
-      </roles>
-      <properties>
-        <aim>jandockx@mac.com</aim>
-        <skype>callto:jandockx</skype>
-      </properties>
-    </developer>
-    <developer>
-      <name>David Van Keer</name>
-      <id>dvankeer</id>
-      <email>David_Van_Keer@peopleware.be</email>
-      <timezone>+1</timezone>
-      <organization>PeopleWare n.v.</organization>
-    </developer>
-    <developer>
-      <name>Nele Smeets</name>
-      <id>nsmeets</id>
-      <email>Nele_Smeets@peopleware.be</email>
-      <timezone>+1</timezone>
-      <organization>PeopleWare n.v.</organization>
-    </developer>
-  </developers>
-  <contributors>
-    <contributor>
-      <name>Dirk Couck</name>
-      <email>Dirk_Couck@peopleware.be</email>
-      <timezone>+1</timezone>
-      <organization>PeopleWare n.v.</organization>
-    </contributor>
-  </contributors>
 
 </project>
