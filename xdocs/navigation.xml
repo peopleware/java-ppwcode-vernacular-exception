@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="PeopleWare Library">
 
+  <!-- MUDO update this file to Maven 2 or remove -->
+
   <body>
     <links>
       <item name="Repository" href="http://cvs.peopleware.be/projects/JavaLibraries/maven-repository/"/>
