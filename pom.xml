@@ -51,6 +51,7 @@
   <description>
     Vernacular, famework, guidelines, support for dealing with exceptions, errors and preconditions.
   </description>
+  <inceptionYear>2004</inceptionYear>
 
   <!-- MAGIC MANTRA -->
   <!-- The following entries need to be repeated, and can not sensibly be inherited.
