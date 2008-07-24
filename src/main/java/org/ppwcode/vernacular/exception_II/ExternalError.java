@@ -42,6 +42,10 @@ import org.toryt.annotations_I.MethodContract;
  *   explicitly. If you become aware of the external condition you do not want to deal
  *   with through an {@link Exception} or an {@link Error}, it should be carried
  *   by an instance of this class as its {@link #getCause() cause}.</p>
+ * <p>It probably does not make sense to create subtypes of this error for specific
+ *   situations. There is no need for internationalization for external errors. If there
+ *   is extra information that we can communicate to the administrator, we can add it to
+ *   the message.</p>
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
