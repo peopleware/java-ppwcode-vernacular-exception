@@ -30,7 +30,7 @@ import org.toryt.annotations_I.MethodContract;
 /**
  * <p>This error is thrown when an external condition occurs, which we know can happen
  *   (however unlikely), which we do not want to deal with in our application. Most often,
- *   these are exceptional conditions areof a technical nature. These conditions are
+ *   these are exceptional conditions are of a technical nature. These conditions are
  *   considered preconditions on the system level. Examples are a disk that is full,
  *   a network connection that cannot be established, a power failure, etcetera.
  *   The indented audience of these errors is neither the end user, nor the developer,
