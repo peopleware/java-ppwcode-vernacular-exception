@@ -63,8 +63,6 @@ public class InternalException extends Exception {
 
   /**
    * The empty string.
-   *
-   * @todo use from smallfries
    */
   public final static String EMPTY = "";
 
