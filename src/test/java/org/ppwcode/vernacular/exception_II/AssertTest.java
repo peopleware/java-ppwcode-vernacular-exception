@@ -59,7 +59,7 @@ public class AssertTest {
    */
   private static boolean staticMethodProgrammingErrorOnFalse(boolean arg) {
     if (! arg) {
-      throw new ProgrammingError("tuut");
+      throw new AssertionError("tuut");
     }
     return arg;
   }
@@ -194,7 +194,7 @@ public class AssertTest {
       assertFalse(getClass().desiredAssertionStatus());
       assertFalse($called);
     }
-    catch (ProgrammingError pe) {
+    catch (AssertionError pe) {
       assertTrue(getClass().desiredAssertionStatus());
       assertTrue($called);
     }
