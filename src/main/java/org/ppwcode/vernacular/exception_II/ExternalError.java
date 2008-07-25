@@ -73,7 +73,7 @@ public class ExternalError extends Error {
   /**
    * The empty string.
    */
-  public final static String EMPTY = "";
+  public static final String EMPTY = "";
 
   /**
    * The message used if no message was given, and no {@link Throwable} was given.
@@ -82,7 +82,8 @@ public class ExternalError extends Error {
    *
    * {@code UNSPECIFIED_EXTERNAL_ERROR_MESSAGE == }{@value}
    */
-  public final static String UNSPECIFIED_EXTERNAL_ERROR_MESSAGE = "Could not continue due to an unspecified external error.";
+  public static final String UNSPECIFIED_EXTERNAL_ERROR_MESSAGE =
+      "Could not continue due to an unspecified external error.";
 
   /**
    * The message used if no message was given, but there was a {@link Throwable} given.
@@ -93,7 +94,8 @@ public class ExternalError extends Error {
    *
    * {@code EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE == }{@value}
    */
-  public final static String EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE = "An exception occured, which appears to be of an external nature.";
+  public static final String EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE =
+      "An exception occured, which appears to be of an external nature.";
 
 
 
@@ -124,7 +126,8 @@ public class ExternalError extends Error {
    */
   @MethodContract(
     post = {
-      @Expression("message == (_t == null) ? UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE)"),
+      @Expression("message == (_t == null) ? UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : " +
+                                            "EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE)"),
       @Expression("cause == _t")
     }
   )
@@ -138,7 +141,8 @@ public class ExternalError extends Error {
    */
   @MethodContract(
     post = {
-      @Expression("message == (_message == null) || (_message == EMPTY) ? UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : _message"),
+      @Expression("message == (_message == null) || (_message == EMPTY) ? " +
+                                 "UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : _message"),
       @Expression("cause == null")
     }
   )
@@ -149,10 +153,11 @@ public class ExternalError extends Error {
 
   @MethodContract(
     post = @Expression("(_message == null) || (_message == EMPTY) ? " +
-                         "((_t == null) ? UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE) : " +
+                         "((_t == null) ? UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : " +
+                                         "EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE) : " +
                          "_message")
   )
-  private static String defaultMessage(String message, Throwable t) {
+  private static String defaultMessage(final String message, final Throwable t) {
     return ((message != null) && (! EMPTY.equals(message))) ?
                message :
                ((t != null) ? EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE : UNSPECIFIED_EXTERNAL_ERROR_MESSAGE);

@@ -106,6 +106,13 @@ import org.toryt.annotations_I.Throw;
 public final class ProgrammingErrors {
 
   /**
+   * No public constructor for this class.
+   */
+  private ProgrammingErrors() {
+    // NOP
+  }
+
+  /**
    * {@link AssertionError} has no true constructor with a cause argument.
    * This method emulates that.
    */

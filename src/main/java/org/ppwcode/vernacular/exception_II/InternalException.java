@@ -64,7 +64,7 @@ public class InternalException extends Exception {
   /**
    * The empty string.
    */
-  public final static String EMPTY = "";
+  public static final String EMPTY = "";
 
   /**
    * The default key used if no key is provided. This is necessary, because we cannot use
@@ -72,7 +72,7 @@ public class InternalException extends Exception {
    *
    * {@code DEFAULT_MESSAGE_KEY == }{@value}
    */
-  public final static String DEFAULT_MESSAGE_KEY = "DEFAULT";
+  public static final String DEFAULT_MESSAGE_KEY = "DEFAULT";
 
 
 
@@ -98,7 +98,7 @@ public class InternalException extends Exception {
     super(defaultMessageKey(messageKey), cause);
   }
 
-  private static String defaultMessageKey(String messageKey) {
+  private static String defaultMessageKey(final String messageKey) {
     return ((messageKey == null) || (EMPTY.equals(messageKey))) ? DEFAULT_MESSAGE_KEY : messageKey;
   }
 
@@ -109,7 +109,7 @@ public class InternalException extends Exception {
   @MethodContract(
     post = @Expression("messageKey != null && matchesMessageKeyPattern(messageKey)")
   )
-  public static boolean validMessageKey(String messageKey) {
+  public static boolean validMessageKey(final String messageKey) {
     return (messageKey != null) &&
            matchesMessageKeyPattern(messageKey);
   }
@@ -117,13 +117,13 @@ public class InternalException extends Exception {
   /**
    * {@code MESSAGE_KEY_PATTERN ==}{@value}
    */
-  public final static String MESSAGE_KEY_PATTERN = "[A-Z][A-Z_]*[A-Z]";
+  public static final String MESSAGE_KEY_PATTERN = "[A-Z][A-Z_]*[A-Z]";
 
   @MethodContract(
     pre  = @Expression("messageKey != null"),
     post = @Expression("Pattern.compile(MESSAGE_KEY_PATTERN).matcher(messageKey).matches()")
   )
-  public static boolean matchesMessageKeyPattern(String messageKey) {
+  public static boolean matchesMessageKeyPattern(final String messageKey) {
     assert messageKey != null;
     Pattern p = Pattern.compile(MESSAGE_KEY_PATTERN);
     Matcher m = p.matcher(messageKey);

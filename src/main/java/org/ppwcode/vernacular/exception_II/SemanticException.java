@@ -44,7 +44,7 @@ public class SemanticException extends InternalException {
   //------------------------------------------------------------------
 
   /**
-   * @param     messageKey
+   * @param     messageIdentifier
    *            The string that identifies a localized end user feedback message about the
    *            non-nominal behavior.
    * @param     cause
