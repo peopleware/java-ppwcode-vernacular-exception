@@ -36,7 +36,7 @@ import org.toryt.annotations_I.Throw;
  *   when a precondition is violated, ...). The intended audience of these errors is neither the end user,
  *   nor the administrator, but <em>we ourself, the developers</em>.</p>
  *
- * <p>The {@link #getMessage() message} should describe the programming error as closely as possible.
+ * <p>The {@link AssertionError#getMessage() message} should describe the programming error as closely as possible.
  *   These messages will help you to find the problem if it occurs. Note that for server based
  *   applications (web applications, enterprise applications), debugging in the production environment
  *   is most often plain not possible, and the only available source of information about problems
@@ -45,7 +45,7 @@ import org.toryt.annotations_I.Throw;
  *   phone, in debug mode). If you cannot pinpoint the exact nature of the programming error, you should
  *   say so explicitly. If you become aware of the programming error by catching an {@link Exception} or
  *   an {@link Error}, it should be carried by instances of this class as the
- *   {@link #getCause() cause}.</p>
+ *   {@link AssertionError#getCause() cause}.</p>
  * <p>Instead of constructors, most of the time, the static methods should be used to signal programming
  *   errors. These static methods already feature a message, sparing you the effort. Because we
  *   probably do not foresee all cases, the 1-argument constructor is available too.</p>
