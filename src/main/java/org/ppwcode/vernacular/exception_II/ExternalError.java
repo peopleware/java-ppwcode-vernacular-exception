@@ -72,8 +72,6 @@ public class ExternalError extends Error {
 
   /**
    * The empty string.
-   *
-   * @todo use from smallfries
    */
   public final static String EMPTY = "";
 
