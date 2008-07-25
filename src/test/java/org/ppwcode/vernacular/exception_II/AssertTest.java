@@ -54,10 +54,10 @@ public class AssertTest {
   }
 
   /**
-   * A static method that throws a {@link ProgrammingError} when
+   * A static method that throws a {@link AssertionError} when
    * {@code arg} is {@code false}, and otherwise returns {@code true}.
    */
-  private static boolean staticMethodProgrammingErrorOnFalse(boolean arg) {
+  private static boolean staticMethodAssertionErrorOnFalse(boolean arg) {
     if (! arg) {
       throw new AssertionError("tuut");
     }
@@ -148,17 +148,17 @@ public class AssertTest {
   }
 
   /**
-   * An assert that calls a static method that throws a {@link ProgrammingError}
+   * An assert that calls a static method that throws a {@link AssertionError}
    * if its argument is {@link false}, but it is {@code true}. The method should
    * end nominally.
    */
   @Test
-  public void testAssertNoProgrammingError() {
-    assert staticMethodProgrammingErrorOnFalse(true) : "test";
+  public void testAssertNoAssertionError() {
+    assert staticMethodAssertionErrorOnFalse(true) : "test";
   }
 
   /**
-   * An assert that calls a static method that throws a {@link ProgrammingError}
+   * An assert that calls a static method that throws a {@link AssertionError}
    * if its argument is {@link false}, where the argument is another
    * static method that returns {@code true}.
    * With assertions enabled, we expect that the methods (we test it for the
@@ -171,26 +171,26 @@ public class AssertTest {
   public void testAssertMethodsNotCalledIfAssertionsDisabled() {
     $called = false;
 //    System.out.println(getClass().desiredAssertionStatus());
-    assert staticMethodProgrammingErrorOnFalse(staticMethodAmICalled()) : "test";
+    assert staticMethodAssertionErrorOnFalse(staticMethodAmICalled()) : "test";
     assertEquals(getClass().desiredAssertionStatus(), $called);
   }
 
   /**
    * Finally, in this method, we have an assert which is decided by a static method
-   * that throws a {@link ProgrammingError} if its argument is false (and it is),
+   * that throws a {@link AssertionError} if its argument is false (and it is),
    * and returns {@code true} otherwise. In other words, the method will throw
-   * a {@link ProgrammingError} before the assert clause can throw its own
+   * a {@link AssertionError} before the assert clause can throw its own
    * {@link AssertionError}. Does this work as expected.
    *
    * With assertions enabled, we expect all methods to be called during the evaluation
-   * of the assert, and we expect a {@link ProgrammingError} (and not an {@link AssertionError}).
+   * of the assert, and we expect a {@link AssertionError} (and not an {@link AssertionError}).
    * With assertions disabled, we expect a nominal end of the method, and none of the
    * evaluation methods called.
    */
   public void testAssert999() {
     $called = false;
     try {
-      assert staticMethodProgrammingErrorOnFalse(staticMethodAmICalled() && false) : "test";
+      assert staticMethodAssertionErrorOnFalse(staticMethodAmICalled() && false) : "test";
       assertFalse(getClass().desiredAssertionStatus());
       assertFalse($called);
     }
@@ -203,7 +203,7 @@ public class AssertTest {
   // attempt to run without assertions -- failed
   public static void main(String[]  args) {
 //    System.out.println(AssertTest.class.desiredAssertionStatus());
-    assert staticMethodProgrammingErrorOnFalse(staticMethodAmICalled() && false) : "test";
+    assert staticMethodAssertionErrorOnFalse(staticMethodAmICalled() && false) : "test";
   }
 
 }
