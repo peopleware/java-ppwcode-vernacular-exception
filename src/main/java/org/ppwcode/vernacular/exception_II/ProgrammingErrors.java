@@ -66,6 +66,16 @@ import org.toryt.annotations_I.Throw;
  *   error information. We also use
  *
  *   MORE DOC
+ * <p>These errors should not be mentioned in the exception part of a method contract.
+ *   They could be mentioned in the preconditions of a method contract, but in general
+ *   this is not appropriate. {@code ExternalError}s are a mechanism to signal
+ *   <dfn>system precondition</dfn> violations to administrators, it is not a part of the
+ *   contract between developers, but rather a contract between developers in general and
+ *   the system administrator. These errors could be documented in a document that
+ *   communicates between developers and administrators (e.g., {@code web.xml} for web
+ *   applications), and this should be done in specific cases. But most often, these
+ *   system preconditions are considered implicit (e.g., when we need a database, it is
+ *   implied that the database connection works).</p>
  *
  * <p>It probably does not make sense to create subtypes of this error for specific situations. There
  *   is no need for internationalization for external errors. If there is extra information that we
