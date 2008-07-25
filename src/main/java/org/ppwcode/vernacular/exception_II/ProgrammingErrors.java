@@ -106,6 +106,12 @@ import org.toryt.annotations_I.Throw;
 public final class ProgrammingErrors {
 
   /**
+   * <p>A colon and a space.</p>
+   * <p>{@code COLON == }{@value}
+   */
+  public static final String COLON = ": ";
+
+  /**
    * No public constructor for this class.
    */
   private ProgrammingErrors() {
@@ -123,17 +129,15 @@ public final class ProgrammingErrors {
   }
 
   /**
-   * The message used to signal entry in a branch that should never be visited.
-   *
-   * {@code UNEXPECTED_EXCEPTION_MESSAGE == }{@value}
+   * <p>The message used to signal entry in a branch that should never be visited.</p>
+   * <p>{@code UNEXPECTED_EXCEPTION_MESSAGE == }{@value}</p>
    */
-  public final static String DEAD_BRANCH_MESSAGE = "Execution entered a branch that should never be entered.";
+  public static final String DEAD_BRANCH_MESSAGE = "Execution entered a branch that should never be entered.";
 
   /**
-   * Use in a code branch ({@code if}, {@code else}, {@code default}, ...) that should never be reached if
-   * the code is correct. For dead {@code catch} clauses, see {@link #unexpectedException(Throwable)}.
-   *
-   * Usage:
+   * <p>Use in a code branch ({@code if}, {@code else}, {@code default}, ...) that should never be reached if
+   *   the code is correct. For dead {@code catch} clauses, see {@link #unexpectedException(Throwable)}.<p>
+   * <p>Usage:</p>
    * <pre>
    * ...
    * else {
@@ -157,10 +161,9 @@ public final class ProgrammingErrors {
   }
 
   /**
-   * Use in a code branch ({@code if}, {@code else}, {@code default}, ...) that should never be reached if
-   * the code is correct. For dead {@code catch} clauses, see {@link #unexpectedException(Throwable, String)}.
-   *
-   * Usage:
+   * <p>Use in a code branch ({@code if}, {@code else}, {@code default}, ...) that should never be reached if
+   * vvthe code is correct. For dead {@code catch} clauses, see {@link #unexpectedException(Throwable, String)}.</p>
+   * <p>Usage:</p>
    * <pre>
    * ...
    * else {
@@ -175,23 +178,22 @@ public final class ProgrammingErrors {
                                      "thus, there is no alternative but to throw an exception"),
     exc  = @Throw(type = AssertionError.class,
                   cond = {
-                    @Expression("e.message == DEAD_BRANCH_MESSAGE + ': ' + _whyItIsDead"),
+                    @Expression("e.message == DEAD_BRANCH_MESSAGE + COLON + _whyItIsDead"),
                     @Expression("e.cause == null")
                   })
   )
   public static void deadBranch(String whyItIsDead) {
-    throw new AssertionError(DEAD_BRANCH_MESSAGE + ": " + whyItIsDead);
+    throw new AssertionError(DEAD_BRANCH_MESSAGE + COLON + whyItIsDead);
   }
 
 
 
   /**
-   * The message used to signal the occurrence of an unexpected exception, without further
-   * explanation.
-   *
-   * {@code UNEXPECTED_EXCEPTION_MESSAGE == }{@value}
+   * <p>The message used to signal the occurrence of an unexpected exception, without further
+   *   explanation.</p>
+   * <p>{@code UNEXPECTED_EXCEPTION_MESSAGE == }{@value}</p>
    */
-  public final static String UNEXPECTED_EXCEPTION_MESSAGE = "An unexpected exception occured.";
+  public static final String UNEXPECTED_EXCEPTION_MESSAGE = "An unexpected exception occured.";
 
   /**
    * Use in a {@code catch} clause, to express that the catch clause should never be used, or
@@ -225,8 +227,7 @@ public final class ProgrammingErrors {
    * <p>Use in a {@code catch} clause, to express that the catch clause should never be used, or
    *   in other words, the exception should not occur.
    *   This is a special case of {@link #deadBranch(String)}.</p>
-   *
-   * Usage:
+   * <p>Usage:</p>
    * <pre>
    * ...
    * catch (<var>SomeException</var> sExc) {
@@ -241,27 +242,25 @@ public final class ProgrammingErrors {
                                      "thus, there is no alternative but to throw an exception"),
     exc  = @Throw(type = AssertionError.class,
                   cond = {
-                    @Expression("e.message == UNEXPECTED_EXCEPTION_MESSAGE + ': ' + _whyIsItUnexpected"),
+                    @Expression("e.message == UNEXPECTED_EXCEPTION_MESSAGE + COLON + _whyIsItUnexpected"),
                     @Expression("e.cause == t")
                   })
   )
   public static void unexpectedException(Throwable t, String whyIsItUnexpected) {
-    throw newAssertionError(UNEXPECTED_EXCEPTION_MESSAGE + ": " + whyIsItUnexpected, t);
+    throw newAssertionError(UNEXPECTED_EXCEPTION_MESSAGE + COLON + whyIsItUnexpected, t);
   }
 
 
 
   /**
-   * The message used to signal a precondition violation.
-   *
-   * {@code PRECONDITION_VIOLATION_MESSAGE == }{@value}
+   * <p>The message used to signal a precondition violation.</p>
+   * <p>{@code PRECONDITION_VIOLATION_MESSAGE == }{@value}</p>
    */
-  public final static String PRECONDITION_VIOLATION_MESSAGE = "Precondition violation";
+  public static final String PRECONDITION_VIOLATION_MESSAGE = "Precondition violation";
 
   /**
-   * Verify a precondition.
-   *
-   * Usage: <code><b>assert</b> pre(<var>condition</var>)</code>
+   * <p>Verify a precondition.</p>
+   * <p>Usage: <code><b>assert</b> pre(<var>condition</var>)</code></p>
    */
   @MethodContract(
     post = {
@@ -281,9 +280,9 @@ public final class ProgrammingErrors {
   }
 
   /**
-   * Verify a precondition.
-   *
-   * Usage: <code><b>assert</b> pre(<var>condition</var>, &quot;<var>preconditionIdentification</var>&quot;)</code>
+   * <p>Verify a precondition.</p>
+   * <p>Usage: <code><b>assert</b> pre(<var>condition</var>,
+   *   &quot;<var>preconditionIdentification</var>&quot;)</code></p>
    */
   @MethodContract(
     pre  = {
@@ -298,12 +297,12 @@ public final class ProgrammingErrors {
     },
     exc  = @Throw(type = AssertionError.class,
                   cond = @Expression("! _condition && " +
-                                     "e.message == PRECONDITION_VIOLATION_MESSAGE + ': ' +" +
+                                     "e.message == PRECONDITION_VIOLATION_MESSAGE + COLON +" +
                                                     " _preconditionIdentification"))
   )
   public static boolean pre(boolean condition, String preconditionIdentification) {
     if (! condition) {
-      throw new AssertionError(PRECONDITION_VIOLATION_MESSAGE + ": " + preconditionIdentification);
+      throw new AssertionError(PRECONDITION_VIOLATION_MESSAGE + COLON + preconditionIdentification);
     }
     return condition;
   }
@@ -311,18 +310,16 @@ public final class ProgrammingErrors {
 
 
   /**
-   * The message used to signal a dependency injection problem, part 1.
-   *
-   * {@code DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 == }{@value}
+   * <p>The message used to signal a dependency injection problem, part 1.</p>
+   * <p>{@code DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 == }{@value}</p>
    */
-  public final static String DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 = "Dependency injection problem: property \"";
+  public static final String DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 = "Dependency injection problem: property \"";
 
   /**
-   * The message used to signal a dependency injection problem, part 2.
-   *
-   * {@code DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2 == }{@value}
+   * <p>The message used to signal a dependency injection problem, part 2.</p>
+   * <p>{@code DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2 == }{@value}</p>
    */
-  public final static String DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2 = "\" not set.";
+  public static final String DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2 = "\" not set.";
 
   /**
    * <p>Verify dependency injection: throw a programming error if the dependency is not
@@ -354,10 +351,10 @@ public final class ProgrammingErrors {
   }
 
   /**
-   * Verify dependency injection: throw a programming error if the condition is not met.
-   * This is a special form of precondition ({@link #pre(boolean)}).
-   *
-   * Usage: <code><b>assert</b> dependency(<var>condition</var>, &quot;<var>dependencyProperty</var>&quot;)</code>
+   * <p>Verify dependency injection: throw a programming error if the condition is not met.
+   *   This is a special form of precondition ({@link #pre(boolean)}).</p>
+   * <p>Usage: <code><b>assert</b> dependency(<var>condition</var>,
+   *   &quot;<var>dependencyProperty</var>&quot;)</code></p>
    */
   @MethodContract(
     pre  = {
