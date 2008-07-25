@@ -144,7 +144,8 @@ public final class ProgrammingErrors {
    */
   @MethodContract(
     post = @Expression(value = "false",
-                       description = "false cannot be made true; thus, there is no alternative but to throw an exception"),
+                       description = "false cannot be made true; " +
+                                    "thus, there is no alternative but to throw an exception"),
     exc  = @Throw(type = AssertionError.class,
                   cond = {
                     @Expression("e.message == DEAD_BRANCH_MESSAGE"),
@@ -170,7 +171,8 @@ public final class ProgrammingErrors {
    */
   @MethodContract(
     post = @Expression(value = "false",
-                       description = "false cannot be made true; thus, there is no alternative but to throw an exception"),
+                       description = "false cannot be made true; " +
+                                     "thus, there is no alternative but to throw an exception"),
     exc  = @Throw(type = AssertionError.class,
                   cond = {
                     @Expression("e.message == DEAD_BRANCH_MESSAGE + ': ' + _whyItIsDead"),
@@ -207,7 +209,8 @@ public final class ProgrammingErrors {
    */
   @MethodContract(
     post = @Expression(value = "false",
-                       description = "false cannot be made true; thus, there is no alternative but to throw an exception"),
+                       description = "false cannot be made true; " +
+                                     "thus, there is no alternative but to throw an exception"),
     exc  = @Throw(type = AssertionError.class,
                   cond = {
                     @Expression("e.message == UNEXPECTED_EXCEPTION_MESSAGE"),
@@ -219,9 +222,9 @@ public final class ProgrammingErrors {
   }
 
   /**
-   * Use in a {@code catch} clause, to express that the catch clause should never be used, or
-   * in other words, the exception should not occur.
-   * This is a special case of {@link #deadBranch(String)}.
+   * <p>Use in a {@code catch} clause, to express that the catch clause should never be used, or
+   *   in other words, the exception should not occur.
+   *   This is a special case of {@link #deadBranch(String)}.</p>
    *
    * Usage:
    * <pre>
@@ -234,7 +237,8 @@ public final class ProgrammingErrors {
    */
   @MethodContract(
     post = @Expression(value = "false",
-                       description = "false cannot be made true; thus, there is no alternative but to throw an exception"),
+                       description = "false cannot be made true; " +
+                                     "thus, there is no alternative but to throw an exception"),
     exc  = @Throw(type = AssertionError.class,
                   cond = {
                     @Expression("e.message == UNEXPECTED_EXCEPTION_MESSAGE + ': ' + _whyIsItUnexpected"),
@@ -294,7 +298,8 @@ public final class ProgrammingErrors {
     },
     exc  = @Throw(type = AssertionError.class,
                   cond = @Expression("! _condition && " +
-                                     "e.message == PRECONDITION_VIOLATION_MESSAGE + ': ' + _preconditionIdentification"))
+                                     "e.message == PRECONDITION_VIOLATION_MESSAGE + ': ' +" +
+                                                    " _preconditionIdentification"))
   )
   public static boolean pre(boolean condition, String preconditionIdentification) {
     if (! condition) {
@@ -320,10 +325,10 @@ public final class ProgrammingErrors {
   public final static String DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2 = "\" not set.";
 
   /**
-   * Verify dependency injection: throw a programming error if the dependency is not
-   * set. This is a special form of precondition ({@link #pre(boolean)}).
-   *
-   * Usage: <code><b>assert</b> dependency(get<var>DependencyProperty</var>(), &quot;<var>dependencyProperty</var>&quot;)</code>
+   * <p>Verify dependency injection: throw a programming error if the dependency is not
+   *   set. This is a special form of precondition ({@link #pre(boolean)}).</p>
+   * <p> Usage: <code><b>assert</b> dependency(get<var>DependencyProperty</var>(),
+   *   &quot;<var>dependencyProperty</var>&quot;)</code></p>
    */
   @MethodContract(
     pre  = {
@@ -339,7 +344,8 @@ public final class ProgrammingErrors {
     exc  = @Throw(type = AssertionError.class,
                   cond = {
                     @Expression("_dependency != null"),
-                    @Expression("e.message == DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + _dependencyIdentifier + DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2"),
+                    @Expression("e.message == DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + _dependencyIdentifier + " +
+                                             "DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2"),
                     @Expression("e.cause == null")
                   })
   )
@@ -367,7 +373,8 @@ public final class ProgrammingErrors {
     exc  = @Throw(type = AssertionError.class,
                   cond = {
                     @Expression("! _condition"),
-                    @Expression("e.message == DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + _dependencyIdentifier + DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2"),
+                    @Expression("e.message == DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + _dependencyIdentifier + " +
+                                             "DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2"),
                     @Expression("e.cause == null")
                   })
   )
@@ -380,10 +387,10 @@ public final class ProgrammingErrors {
   }
 
   /**
-   * Verify dependency injection: throw a programming error if the condition is not met.
-   * This is a special form of precondition ({@link #pre(boolean)}).
-   *
-   * Usage: <code><b>assert</b> dependency(<var>condition</var>, &quot;<var>dependencyProperty</var>&quot;, &quot;<var>description</var>&quot;)</code>
+   * <p>Verify dependency injection: throw a programming error if the condition is not met.
+   *   This is a special form of precondition ({@link #pre(boolean)}).</p>
+   * <p>Usage: <code><b>assert</b> dependency(<var>condition</var>,
+   *   &quot;<var>dependencyProperty</var>&quot;, &quot;<var>description</var>&quot;)</code></p>
    */
   @MethodContract(
     pre  = {
