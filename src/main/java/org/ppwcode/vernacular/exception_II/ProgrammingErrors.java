@@ -106,13 +106,6 @@ import org.toryt.annotations_I.Throw;
 public final class ProgrammingErrors {
 
   /**
-   * The empty string.
-   *
-   * @todo use from smallfries
-   */
-  public final static String EMPTY = "";
-
-  /**
    * {@link AssertionError} has no true constructor with a cause argument.
    * This method emulates that.
    */
