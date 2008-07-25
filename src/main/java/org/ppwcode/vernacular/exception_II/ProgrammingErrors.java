@@ -284,7 +284,7 @@ public final class ProgrammingErrors {
   @MethodContract(
     pre  = {
       @Expression("_preconditionIdentification != null"),
-      @Expression("_preconditionIdentification != EMPTY"),
+      @Expression("_preconditionIdentification != EMPTY")
     },
     post = {
       @Expression("return == true"),
@@ -328,7 +328,7 @@ public final class ProgrammingErrors {
   @MethodContract(
     pre  = {
       @Expression("_dependencyPropertyName != null"),
-      @Expression("_dependencyPropertyName != EMPTY"),
+      @Expression("_dependencyPropertyName != EMPTY")
     },
     post = {
       @Expression("return == true"),
@@ -356,7 +356,7 @@ public final class ProgrammingErrors {
   @MethodContract(
     pre  = {
       @Expression("_dependencyIdentifier != null"),
-      @Expression("_dependencyIdentifier != EMPTY"),
+      @Expression("_dependencyIdentifier != EMPTY")
     },
     post = {
       @Expression("return == true"),
@@ -390,7 +390,7 @@ public final class ProgrammingErrors {
       @Expression("_dependencyIdentifier != null"),
       @Expression("_dependencyIdentifier != EMPTY"),
       @Expression("_description != null"),
-      @Expression("_description != EMPTY"),
+      @Expression("_description != EMPTY")
     },
     post = {
       @Expression("return == true"),
