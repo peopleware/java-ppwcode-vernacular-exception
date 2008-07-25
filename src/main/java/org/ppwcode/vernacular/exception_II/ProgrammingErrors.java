@@ -65,7 +65,7 @@ import org.toryt.annotations_I.Throw;
  *   performance benefit doesn't occur), or when we want to communicate an exception as part of the
  *   error information. We also use
  *
- *   MORE DOC
+ *   MUDO MORE DOC
  * <p>These errors should not be mentioned in the exception part of a method contract.
  *   They could be mentioned in the preconditions of a method contract, but in general
  *   this is not appropriate. {@code ExternalError}s are a mechanism to signal
@@ -147,7 +147,7 @@ public final class ProgrammingErrors {
                        description = "false cannot be made true; thus, there is no alternative but to throw an exception"),
     exc  = @Throw(type = AssertionError.class,
                   cond = {
-                    @Expression("e.message == UNEXPECTED_EXCEPTION_MESSAGE"),
+                    @Expression("e.message == DEAD_BRANCH_MESSAGE"),
                     @Expression("e.cause == null")
                   })
   )
@@ -173,7 +173,7 @@ public final class ProgrammingErrors {
                        description = "false cannot be made true; thus, there is no alternative but to throw an exception"),
     exc  = @Throw(type = AssertionError.class,
                   cond = {
-                    @Expression("e.message == UNEXPECTED_EXCEPTION_MESSAGE + ': ' + _whyItIsDead"),
+                    @Expression("e.message == DEAD_BRANCH_MESSAGE + ': ' + _whyItIsDead"),
                     @Expression("e.cause == null")
                   })
   )
