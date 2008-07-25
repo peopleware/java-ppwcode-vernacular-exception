@@ -32,8 +32,8 @@ import org.toryt.annotations_I.MethodContract;
 
 /**
  * <p>Supertype for exceptions we consider <em>internal to the system we are developing,
- *   expected to occur and normal behavior</em> . Internal exceptions are thrown when a
- *   method cannot perform its nominal task.</p>
+ *   expected to occur and normal (though non-nominal) behavior</em> . Internal exceptions are
+ *   thrown when a method cannot perform its nominal task.</p>
  * <p>{@code InternalExceptions} should be caught somewhere, and possibly result in end-user
  *   feedback. {@code InternalExceptions} should never result in a crash of the application.
  *   Neither developers not administrators have a need for the information this exception
