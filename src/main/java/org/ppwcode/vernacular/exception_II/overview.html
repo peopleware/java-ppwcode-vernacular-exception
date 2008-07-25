@@ -9,7 +9,8 @@
     <link href="../../../../doc-css/doc.css" rel="stylesheet" type="text/css" />
   </head>
 
-  <body><h1>Exceptions Are Important</h1> 
+<!-- MUDO overview text not done; missing package.html -->
+  <body><h1>Exceptions Are Important</h1>
   <p>One of the badly understood
   features of modern object oriented programming languages is the importance
   of <dfn>exceptions</dfn> and how to deal with them. In comparison to a
@@ -23,7 +24,7 @@
   anything can happen in these conditions, making the application inherently
   unstable and unsafe. And in web applications, based on the very simple,
   stateless HTTP protocol, there are so much more exceptional conditions than
-  in a desktop application.</p> 
+  in a desktop application.</p>
   <h2>My Application Works (If Nothing
   Unexpected Happens)</h2> <p>One popular approach to exception handling is to
   let them all propagate to the final layer, where the user is then presented
@@ -58,7 +59,7 @@
   that is not explicitly forbidden (<dfn>precondition</dfn>) that keeps your
   code from reaching its nominal effect (<dfn>postcondition</dfn>). Calling
   code in violation of preconditions is not an exceptional condition, but a
-  <dfn>programming error</dfn>.</p> 
+  <dfn>programming error</dfn>.</p>
   <p>Every method tries to reach its nominal
   postcondition (which is oftern not completely deterministic in an
   environment with dynamic binding like an object oriented programming
@@ -95,23 +96,23 @@
       prime object and the explicit actual arguments of the method call, is
       examined by the code of the method, and the method decided that it can
       (or will) not implement the postcondition in these circumstances for
-      <dfn>semantic reasons</dfn>.<br /> 
+      <dfn>semantic reasons</dfn>.<br />
       E.g., we want to withdraw money
       from an account, and the requested amount is larger than the balance.
       Or, the first name of a person is mandatory, and we want to set the
       first name of a person from an actual argument, and the argument is
-      <code>null</code>.<br /> 
+      <code>null</code>.<br />
       This kind of exceptional conditions we will
     call <dfn>semantic exceptional conditions</dfn>.</li>
 
       <li>CONFUSION STARTS HERE The method could not reach the postcondition for a <dfn>technical
-      reason</dfn> outside the system.<br /> 
+      reason</dfn> outside the system.<br />
       E.g., we are saving data to a
       database, and the connection fails (maybe somebody tripped over a
       network cable). Or, we need to access a webservice, and we can't resolve
       the domain name (maybe our DNS server is down). Or, as a final example,
       the postcondition cannot be reached because the system runs out of
-      memory.<br /> 
+      memory.<br />
       This kind of exceptional conditions we call
     <dfn>technical exceptional conditions</dfn> .</li>
     </ol> <p>The above examples obviously are based on the premise that
@@ -165,13 +166,13 @@
   exhaustively known, and either be listed in the preconditions as
   unacceptable for the method, or be dealt with in the code. The latter can
   mean reaching the nominal effect in those conditions, or throwing an
-  exception.<br /> 
+  exception.<br />
   So, if a method behaves weird when it is called in
   violation of its preconditions, this is not a bug in the implementation of
   the method. Actually, as method implementors, we don't care about this.
   Calling a method in violation of its preconditions is a programming error in
   the implementation of the <em>calling</em> method, not of the called method.
-  </p> 
+  </p>
   <p> The point I'm trying to make is, that if a condition can occur
   during execution of a method that was <em>not</em> taken into account either
   in the preconditions or in the code, i.e., it is an <dfn>unexpected
@@ -186,7 +187,7 @@
    An <dfn>unexpected
   condition</dfn> is different from an <dfn>expected exceptional
   condition</dfn>. We have reasoned about <dfn>expected conditions</dfn>,
-  and </p> 
+  and </p>
   <ul>
       <li>some we have defined as being outside our scope, and we have
       documented that in preconditions,</li>
@@ -260,7 +261,7 @@
   programming error, not only when unexpected exceptions occur. Programming
   errors that result in an unexpected exception feature this behavior
   naturally. But there is also a large class of programming errors that we
-  might detect ourselves.</p> 
+  might detect ourselves.</p>
   <p> A best-practices programming style is to
   write down all thoughts about you're algorithm using <code>assert</code>
   statements. Programmers will recognize this experience: while coding, now
@@ -332,11 +333,11 @@
   gets feedback about what he did wrong, for him to be able to correct his
   input or behavior. Also, the same applies for any other kind of
   <dfn>internal exception</dfn> (e.g., security exceptions) that reaches the
-  user.<br /> 
+  user.<br />
   So, in general, we know what to do. In particular, what we need
   to tell the user exactly and how, depends on the particular kind of
   exception, the exact circumstances in which it occurred, possible i18n
-  settings, and more. </p> 
+  settings, and more. </p>
   <p> When a <dfn>technical exception</dfn>, or any
   other kind of <dfn>external exception</dfn>, occurs, there is little we can
   do. Since these conditions are, per definition, considered to be outside the
@@ -349,7 +350,7 @@
   make clear that it has nothing to do with him, but we also want to notify
   the persons that are responsible for solving the external problem, a.s.a.p.
   The user cannot continue until the problem is fixed, and we exit the
-  application gracefully, making sure that no harm has been done.<br /> 
+  application gracefully, making sure that no harm has been done.<br />
   So,
   in general, we know what to do. In this case, the message to show to the
   user can be very generic. But again, in particular, what we want to tell the
@@ -363,14 +364,14 @@
   expected internal conditions are of interest to the end-user, expected
   external conditions are of interest to the administrator, and unexpected
   conditions are of interest to the developer. Sadly, because exceptions
-  necessarily occur at runtime, the end-user is always confronted with them.<br /> 
+  necessarily occur at runtime, the end-user is always confronted with them.<br />
   For expected external exceptions, there is nothing we can do: shit
   happens. We apologize to the user, and will correct the situation a.s.a.p.
   With a web application, this is relatively easy to do (mail a trouble ticket
   to the administrator and show a decent page to the end user). For a desktop
   application, this is much more problematic. Either the end-user is the
   administrator, and chances are that he doesn't have the ability to correct
-  the problem, or the administrator is unknown to us.<br /> 
+  the problem, or the administrator is unknown to us.<br />
   For unexpected
   exceptions, the problem is greater. The developer is one sizable step
   further removed from the running application. Mailing a trouble ticket is
@@ -399,7 +400,7 @@
   exceptions. Therefor, we define a number of general exception classes in
   <code>ppw-exception</code>:</p> <p><img
   src="doc-files/exceptionHierarchy.png" style="width: 100%;"></img></p>
-  <p>&nbsp;</p> 
+  <p>&nbsp;</p>
   <h4>ProgrammingError</h4>
   <p>A {@link be.peopleware.exception_II.ProgrammingError} could be used if an
     <code>assert</code>-clause doesn't carry enough information for debugging
@@ -443,7 +444,7 @@
   <p>NOT RIGHT: HANDLING CODE SHOULD DO THE
   LOGGING? BUT THEN WE ARE NOT USING THE RIGHT LOG? NOT SURE!</p> <p></p>
   <p>LOOK FOR A LOGGER FOR ALL CLASSES IN THE STACKTRACE, USE ONE CLOSEST BY!
-  USING THE CLASSNAME!</p> 
+  USING THE CLASSNAME!</p>
   <h3>Logging</h3>
   <h3>Handling exceptions</h3>
   <h4>Handling Programming Errors  </h4>
