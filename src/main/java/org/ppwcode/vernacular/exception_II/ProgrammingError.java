@@ -143,6 +143,9 @@ public class ProgrammingError extends AssertionError {
 
 
 
+  unreachableBranch
+
+
   /**
    * The message used if the constructor with 1 {@link Throwable} parameter is used,
    * to signal the occurrence of an unexpected exception, without further explanation.
@@ -154,6 +157,7 @@ public class ProgrammingError extends AssertionError {
   /**
    * Use in a {@code catch} clause, to express that the catch clause should never be used, or
    * in other words, the exception should not occur.
+   * This is a special case of {@link #unreachableBranch()}.
    *
    * Usage:
    * <pre>
@@ -180,6 +184,7 @@ public class ProgrammingError extends AssertionError {
   /**
    * Use in a {@code catch} clause, to express that the catch clause should never be used, or
    * in other words, the exception should not occur.
+   * This is a special case of {@link #unreachableBranch()}.
    *
    * Usage:
    * <pre>
@@ -279,7 +284,7 @@ public class ProgrammingError extends AssertionError {
 
   /**
    * Verify dependency injection: throw a programming error if the dependency is not
-   * set. This is a special form of precondition.
+   * set. This is a special form of precondition ({@link #pre(boolean)}).
    *
    * Usage: <code><b>assert</b> dependency(get<var>DependencyProperty</var>(), &quot;<var>dependencyProperty</var>&quot;)</code>
    */
@@ -306,7 +311,8 @@ public class ProgrammingError extends AssertionError {
   }
 
   /**
-   * Verify dependency injection: throw a programming error if the condition is not met. This is a special form of precondition.
+   * Verify dependency injection: throw a programming error if the condition is not met.
+   * This is a special form of precondition ({@link #pre(boolean)}).
    *
    * Usage: <code><b>assert</b> dependency(<var>condition</var>, &quot;<var>dependencyProperty</var>&quot;)</code>
    */
@@ -337,7 +343,8 @@ public class ProgrammingError extends AssertionError {
   }
 
   /**
-   * Verify dependency injection: throw a programming error if the condition is not met. This is a special form of precondition.
+   * Verify dependency injection: throw a programming error if the condition is not met.
+   * This is a special form of precondition ({@link #pre(boolean)}).
    *
    * Usage: <code><b>assert</b> dependency(<var>condition</var>, &quot;<var>dependencyProperty</var>&quot;, &quot;<var>description</var>&quot;)</code>
    */
