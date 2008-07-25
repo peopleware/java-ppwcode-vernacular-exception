@@ -149,7 +149,7 @@ public class AssertTest {
 
   /**
    * An assert that calls a static method that throws a {@link AssertionError}
-   * if its argument is {@link false}, but it is {@code true}. The method should
+   * if its argument is {@code false}, but it is {@code true}. The method should
    * end nominally.
    */
   @Test
@@ -159,7 +159,7 @@ public class AssertTest {
 
   /**
    * An assert that calls a static method that throws a {@link AssertionError}
-   * if its argument is {@link false}, where the argument is another
+   * if its argument is {@code false}, where the argument is another
    * static method that returns {@code true}.
    * With assertions enabled, we expect that the methods (we test it for the
    * nested method) is called. With assertions disabled we expect that the methods
