@@ -120,6 +120,107 @@ public class ProgrammingErrorsTest {
   }
 
   @Test
+  public void testPreArgumentNotNullObject1() {
+    try {
+      ProgrammingErrors.preArgumentNotNull(null);
+      fail();
+    }
+    catch (AssertionError aErr) {
+      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.ARGUMENT_NOT_NULL_MESSAGE, aErr.getMessage());
+      assertNull(aErr.getCause());
+    }
+  }
+
+  @Test
+  public void testPreArgumentNotNullObject2() {
+    boolean result = ProgrammingErrors.preArgumentNotNull(TEST_OBJECT);
+    assertTrue(result);
+  }
+
+  @Test
+  public void testPreArgumentNotNullObjectString1() {
+    try {
+      ProgrammingErrors.preArgumentNotNull(null, TEST_MESSAGE_1);
+      fail();
+    }
+    catch (AssertionError aErr) {
+      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.ARGUMENT_NOT_NULL_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
+      assertNull(aErr.getCause());
+    }
+  }
+
+  @Test
+  public void testPreArgumentNotNullObjectString2() {
+    boolean result = ProgrammingErrors.preArgumentNotNull(TEST_OBJECT, TEST_MESSAGE_1);
+    assertTrue(result);
+  }
+
+
+
+
+
+
+  @Test
+  public void testPreArgumentNotEmptyString1() {
+    try {
+      ProgrammingErrors.preArgumentNotEmpty(null);
+      fail();
+    }
+    catch (AssertionError aErr) {
+      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.STRING_ARGUMENT_NOT_EMPTY_MESSAGE, aErr.getMessage());
+      assertNull(aErr.getCause());
+    }
+  }
+
+  @Test
+  public void testPreArgumentNotEmptyString2() {
+    try {
+      ProgrammingErrors.preArgumentNotEmpty(ProgrammingErrors.EMPTY);
+      fail();
+    }
+    catch (AssertionError aErr) {
+      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.STRING_ARGUMENT_NOT_EMPTY_MESSAGE, aErr.getMessage());
+      assertNull(aErr.getCause());
+    }
+  }
+
+  @Test
+  public void testPreArgumentNotEmptyString3() {
+    boolean result = ProgrammingErrors.preArgumentNotEmpty(TEST_MESSAGE_2);
+    assertTrue(result);
+  }
+
+  @Test
+  public void testPreArgumentNotEmp1yStringString1() {
+    try {
+      ProgrammingErrors.preArgumentNotEmpty(null, TEST_MESSAGE_1);
+      fail();
+    }
+    catch (AssertionError aErr) {
+      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.STRING_ARGUMENT_NOT_EMPTY_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
+      assertNull(aErr.getCause());
+    }
+  }
+
+  @Test
+  public void testPreArgumentNotEmp1yStringString2() {
+    try {
+      ProgrammingErrors.preArgumentNotEmpty(ProgrammingErrors.EMPTY, TEST_MESSAGE_1);
+      fail();
+    }
+    catch (AssertionError aErr) {
+      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.STRING_ARGUMENT_NOT_EMPTY_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
+      assertNull(aErr.getCause());
+    }
+  }
+
+  @Test
+  public void testPreArgumentNotEmptyStringString3() {
+    boolean result = ProgrammingErrors.preArgumentNotEmpty(TEST_MESSAGE_2, TEST_MESSAGE_1);
+    assertTrue(result);
+  }
+
+  @Test
   public void testDependencyObjectString1() {
     try {
       ProgrammingErrors.dependency(null, TEST_MESSAGE_1);

@@ -106,6 +106,12 @@ import org.toryt.annotations_I.Throw;
 public final class ProgrammingErrors {
 
   /**
+   * <p>The empty String.</p>
+   * <p>{@code EMPTY == }{@value}
+   */
+  public static final String EMPTY = "";
+
+  /**
    * <p>A colon and a space.</p>
    * <p>{@code COLON == }{@value}
    */
@@ -307,6 +313,116 @@ public final class ProgrammingErrors {
     return condition;
   }
 
+  /**
+   * <p>The message used to signal a {@code null}-argument problem.</p>
+   * <p>{@code ARGUMENT_NOT_NULL_MESSAGE == }{@value}</p>
+   */
+  public static final String ARGUMENT_NOT_NULL_MESSAGE = "argument should not be null";
+
+  /**
+   * <p>Verify precondition: {@code argument != null}: throw a programming error if {@code argument} is not
+   *   set. This is a special form of precondition ({@link #pre(boolean)}).</p>
+   * <p> Usage: <code><b>assert</b> preArgumentNotNull(<var>argument</var>)</code></p>
+   */
+  @MethodContract(
+    post = {
+      @Expression("return == true"),
+      @Expression(value = "'_argument != null",
+                  description = "old value cannot be made true if it is not true to begin with; in that case, " +
+                              "there is no alternative but to throw an exception")
+    },
+    exc  = @Throw(type = AssertionError.class,
+                  cond = {
+                    @Expression("_argument == null"),
+                    @Expression("e.message == PRECONDITION_VIOLATION_MESSAGE + COLON + ARGUMENT_NOT_NULL_MESSAGE"),
+                    @Expression("e.cause == null")
+                  })
+  )
+  public static boolean preArgumentNotNull(Object argument) {
+    return pre(argument != null, ARGUMENT_NOT_NULL_MESSAGE);
+  }
+
+  /**
+   * <p>Verify precondition: {@code argument != null}: throw a programming error if {@code argument} is not
+   *   set. This is a special form of precondition ({@link #pre(boolean)}).</p>
+   * <p> Usage: <code><b>assert</b> preArgumentNotNull(<var>argument</var>, <var>argumentName</var>)</code></p>
+   */
+  @MethodContract(
+    pre  = {
+            @Expression("_argumentName != null"),
+            @Expression("_argumentName != EMPTY")
+          },
+    post = {
+      @Expression("return == true"),
+      @Expression(value = "'_argument != null",
+                  description = "old value cannot be made true if it is not true to begin with; in that case, " +
+                              "there is no alternative but to throw an exception")
+    },
+    exc  = @Throw(type = AssertionError.class,
+                  cond = {
+                    @Expression("_argument == null"),
+                    @Expression("e.message == PRECONDITION_VIOLATION_MESSAGE + COLON + ARGUMENT_NOT_NULL_MESSAGE + " +
+                                "' (' + _argumentName + ')'"),
+                    @Expression("e.cause == null")
+                  })
+  )
+  public static boolean preArgumentNotNull(Object argument, String argumentName) {
+    return pre(argument != null, ARGUMENT_NOT_NULL_MESSAGE + " (" + argumentName + ")");
+  }
+  /**
+   * <p>The message used to signaling a {@code null} or empty String argument.</p>
+   * <p>{@code STRING_ARGUMENT_NOT_EMPTY_MESSAGE == }{@value}</p>
+   */
+  public static final String STRING_ARGUMENT_NOT_EMPTY_MESSAGE = "argument should not be null nor empty";
+
+  /**
+   * <p>Verify precondition: {@code (argument != null) && ! EMPTY.equals(argument)}}: throw a programming error if
+   *   {@code argument} is {@code null} or empty. This is a special form of precondition ({@link #pre(boolean)}).</p>
+   * <p> Usage: <code><b>assert</b> preArgumentNotNull(<var>argument</var>)</code></p>
+   */
+  @MethodContract(
+    post = {
+      @Expression("return == true"),
+      @Expression(value = "'_argument != null && '_argument != EMPTY",
+                  description = "old value cannot be made true if it is not true to begin with; in that case, " +
+                              "there is no alternative but to throw an exception")
+    },
+    exc  = @Throw(type = AssertionError.class,
+                  cond = {
+                    @Expression("_argument == null || _argument == EMPTY"),
+                    @Expression("e.message == PRECONDITION_VIOLATION_MESSAGE + COLON + STRING_ARGUMENT_NOT_EMPTY_MESSAGE"),
+                    @Expression("e.cause == null")
+                  })
+  )
+  public static boolean preArgumentNotEmpty(String argument) {
+    return pre(argument != null && ! EMPTY.equals(argument), STRING_ARGUMENT_NOT_EMPTY_MESSAGE);
+  }
+
+  /**
+   * <p>Verify precondition: {@code (argument != null) && ! EMPTY.equals(argument)}}: throw a programming error if
+   *   {@code argument} is {@code null} or empty. This is a special form of precondition ({@link #pre(boolean)}).</p>
+   * <p> Usage: <code><b>assert</b> preArgumentNotNull(<var>argument</var>, <var>argumentName</var>)</code></p>
+   */
+  @MethodContract(
+    post = {
+      @Expression("return == true"),
+      @Expression(value = "'_argument != null && '_argument != EMPTY",
+                  description = "old value cannot be made true if it is not true to begin with; in that case, " +
+                              "there is no alternative but to throw an exception")
+    },
+    exc  = @Throw(type = AssertionError.class,
+                  cond = {
+                    @Expression("_argument == null || _argument == EMPTY"),
+                    @Expression("e.message == PRECONDITION_VIOLATION_MESSAGE + COLON + " +
+                                "STRING_ARGUMENT_NOT_EMPTY_MESSAGE + ' (' + argumentName + ')'"),
+                    @Expression("e.cause == null")
+                  })
+  )
+  public static boolean preArgumentNotEmpty(String argument, String argumentName) {
+    return pre(argument != null && ! EMPTY.equals(argument), STRING_ARGUMENT_NOT_EMPTY_MESSAGE +
+               " (" + argumentName + ")");
+  }
+
 
 
   /**
@@ -340,7 +456,7 @@ public final class ProgrammingErrors {
     },
     exc  = @Throw(type = AssertionError.class,
                   cond = {
-                    @Expression("_dependency != null"),
+                    @Expression("_dependency == null"),
                     @Expression("e.message == DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + _dependencyIdentifier + " +
                                              "DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2"),
                     @Expression("e.cause == null")
@@ -382,6 +498,8 @@ public final class ProgrammingErrors {
     }
     return condition;
   }
+
+  // TODO version with only property name + reflection
 
   /**
    * <p>Verify dependency injection: throw a programming error if the condition is not met.
