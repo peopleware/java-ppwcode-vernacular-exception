@@ -25,7 +25,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 
-public class ProgrammingErrorsTest {
+public class ProgrammingErrorHelpersTest {
 
   public final static String TEST_MESSAGE_1 = "TEST MESSAGE 1";
 
