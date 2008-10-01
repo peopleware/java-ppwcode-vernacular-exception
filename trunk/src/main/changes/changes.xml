@@ -1,0 +1,54 @@
+<document>
+
+  <!--
+  $Date$
+  $Revision$
+  $HeadURL$
+
+  Copyright 2004 - $Date$ by PeopleWare n.v.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+  <!-- see http://maven.apache.org/reference/plugins/changes/ for documentation -->
+  <!-- There are four valid values for action type:  add, fix, remove, update. -->
+
+  <properties>
+    <title>Changes to ppwcode exception vernacular</title>
+    <author email="Jan_Dockx@peopleware.be">Jan Dockx</author>
+    <author email="Nele_Smeets@peopleware.be">Nele Smeets</author>
+  </properties>
+  <body>
+
+    <release version="II v1.0" date="2008-10-01" description="Brand new release">
+      <action dev="jand" type="update">
+        This version is a total rewrite of the previous version.
+        The vernacular is worked out and explanained. The overview document is
+        not finished.
+      </action>
+    </release>
+
+    <release version="I v1.0.0/2.0" date="2005-08-14" description="Dependencies">
+      <action dev="jand" type="update">
+        Updated dependencies.
+      </action>
+    </release>
+
+    <release version="I v1.0.0/1.0" date="2004-12-20" description="First release">
+      <action dev="jand" type="add">
+        First release with this version number scheme.
+      </action>
+    </release>
+
+  </body>
+</document>
