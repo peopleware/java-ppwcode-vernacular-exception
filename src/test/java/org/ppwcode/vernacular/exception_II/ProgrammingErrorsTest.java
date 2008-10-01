@@ -38,11 +38,11 @@ public class ProgrammingErrorsTest {
   @Test
   public void testDeadBranch() {
     try {
-      ProgrammingErrors.deadBranch();
+      ProgrammingErrorHelpers.deadBranch();
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.DEAD_BRANCH_MESSAGE, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.DEAD_BRANCH_MESSAGE, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
@@ -50,11 +50,11 @@ public class ProgrammingErrorsTest {
   @Test
   public void testDeadBranchString() {
     try {
-      ProgrammingErrors.deadBranch(TEST_MESSAGE_1);
+      ProgrammingErrorHelpers.deadBranch(TEST_MESSAGE_1);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.DEAD_BRANCH_MESSAGE + ": " + TEST_MESSAGE_1, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.DEAD_BRANCH_MESSAGE + ": " + TEST_MESSAGE_1, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
@@ -62,11 +62,11 @@ public class ProgrammingErrorsTest {
   @Test
   public void testUnexpectedExceptionThrowable() {
     try {
-      ProgrammingErrors.unexpectedException(TEST_THROWABLE);
+      ProgrammingErrorHelpers.unexpectedException(TEST_THROWABLE);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.UNEXPECTED_EXCEPTION_MESSAGE, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.UNEXPECTED_EXCEPTION_MESSAGE, aErr.getMessage());
       assertEquals(TEST_THROWABLE, aErr.getCause());
     }
   }
@@ -74,11 +74,11 @@ public class ProgrammingErrorsTest {
   @Test
   public void testUnexpectedExceptionThrowableString() {
     try {
-      ProgrammingErrors.unexpectedException(TEST_THROWABLE, TEST_MESSAGE_1);
+      ProgrammingErrorHelpers.unexpectedException(TEST_THROWABLE, TEST_MESSAGE_1);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.UNEXPECTED_EXCEPTION_MESSAGE + ": " + TEST_MESSAGE_1, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.UNEXPECTED_EXCEPTION_MESSAGE + ": " + TEST_MESSAGE_1, aErr.getMessage());
       assertEquals(TEST_THROWABLE, aErr.getCause());
     }
   }
@@ -86,72 +86,72 @@ public class ProgrammingErrorsTest {
   @Test
   public void testPreBoolean1() {
     try {
-      ProgrammingErrors.pre(false);
+      ProgrammingErrorHelpers.pre(false);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.PRECONDITION_VIOLATION_MESSAGE, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testPreBoolean2() {
-    boolean result = ProgrammingErrors.pre(true);
+    boolean result = ProgrammingErrorHelpers.pre(true);
     assertTrue(result);
   }
 
   @Test
   public void testPreBooleanString1() {
     try {
-      ProgrammingErrors.pre(false, TEST_MESSAGE_1);
+      ProgrammingErrorHelpers.pre(false, TEST_MESSAGE_1);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ": " + TEST_MESSAGE_1, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.PRECONDITION_VIOLATION_MESSAGE + ": " + TEST_MESSAGE_1, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testPreBooleanString2() {
-    boolean result = ProgrammingErrors.pre(true, TEST_MESSAGE_1);
+    boolean result = ProgrammingErrorHelpers.pre(true, TEST_MESSAGE_1);
     assertTrue(result);
   }
 
   @Test
   public void testPreArgumentNotNullObject1() {
     try {
-      ProgrammingErrors.preArgumentNotNull(null);
+      ProgrammingErrorHelpers.preArgumentNotNull(null);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.ARGUMENT_NOT_NULL_MESSAGE, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrorHelpers.COLON + ProgrammingErrorHelpers.ARGUMENT_NOT_NULL_MESSAGE, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testPreArgumentNotNullObject2() {
-    boolean result = ProgrammingErrors.preArgumentNotNull(TEST_OBJECT);
+    boolean result = ProgrammingErrorHelpers.preArgumentNotNull(TEST_OBJECT);
     assertTrue(result);
   }
 
   @Test
   public void testPreArgumentNotNullObjectString1() {
     try {
-      ProgrammingErrors.preArgumentNotNull(null, TEST_MESSAGE_1);
+      ProgrammingErrorHelpers.preArgumentNotNull(null, TEST_MESSAGE_1);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.ARGUMENT_NOT_NULL_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrorHelpers.COLON + ProgrammingErrorHelpers.ARGUMENT_NOT_NULL_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testPreArgumentNotNullObjectString2() {
-    boolean result = ProgrammingErrors.preArgumentNotNull(TEST_OBJECT, TEST_MESSAGE_1);
+    boolean result = ProgrammingErrorHelpers.preArgumentNotNull(TEST_OBJECT, TEST_MESSAGE_1);
     assertTrue(result);
   }
 
@@ -163,11 +163,11 @@ public class ProgrammingErrorsTest {
   @Test
   public void testPreArgumentNotEmptyString1() {
     try {
-      ProgrammingErrors.preArgumentNotEmpty(null);
+      ProgrammingErrorHelpers.preArgumentNotEmpty(null);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.STRING_ARGUMENT_NOT_EMPTY_MESSAGE, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrorHelpers.COLON + ProgrammingErrorHelpers.STRING_ARGUMENT_NOT_EMPTY_MESSAGE, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
@@ -175,29 +175,29 @@ public class ProgrammingErrorsTest {
   @Test
   public void testPreArgumentNotEmptyString2() {
     try {
-      ProgrammingErrors.preArgumentNotEmpty(ProgrammingErrors.EMPTY);
+      ProgrammingErrorHelpers.preArgumentNotEmpty(ProgrammingErrorHelpers.EMPTY);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.STRING_ARGUMENT_NOT_EMPTY_MESSAGE, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrorHelpers.COLON + ProgrammingErrorHelpers.STRING_ARGUMENT_NOT_EMPTY_MESSAGE, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testPreArgumentNotEmptyString3() {
-    boolean result = ProgrammingErrors.preArgumentNotEmpty(TEST_MESSAGE_2);
+    boolean result = ProgrammingErrorHelpers.preArgumentNotEmpty(TEST_MESSAGE_2);
     assertTrue(result);
   }
 
   @Test
   public void testPreArgumentNotEmp1yStringString1() {
     try {
-      ProgrammingErrors.preArgumentNotEmpty(null, TEST_MESSAGE_1);
+      ProgrammingErrorHelpers.preArgumentNotEmpty(null, TEST_MESSAGE_1);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.STRING_ARGUMENT_NOT_EMPTY_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrorHelpers.COLON + ProgrammingErrorHelpers.STRING_ARGUMENT_NOT_EMPTY_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
@@ -205,72 +205,72 @@ public class ProgrammingErrorsTest {
   @Test
   public void testPreArgumentNotEmp1yStringString2() {
     try {
-      ProgrammingErrors.preArgumentNotEmpty(ProgrammingErrors.EMPTY, TEST_MESSAGE_1);
+      ProgrammingErrorHelpers.preArgumentNotEmpty(ProgrammingErrorHelpers.EMPTY, TEST_MESSAGE_1);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrors.COLON + ProgrammingErrors.STRING_ARGUMENT_NOT_EMPTY_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.PRECONDITION_VIOLATION_MESSAGE + ProgrammingErrorHelpers.COLON + ProgrammingErrorHelpers.STRING_ARGUMENT_NOT_EMPTY_MESSAGE  + " (" + TEST_MESSAGE_1 + ")", aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testPreArgumentNotEmptyStringString3() {
-    boolean result = ProgrammingErrors.preArgumentNotEmpty(TEST_MESSAGE_2, TEST_MESSAGE_1);
+    boolean result = ProgrammingErrorHelpers.preArgumentNotEmpty(TEST_MESSAGE_2, TEST_MESSAGE_1);
     assertTrue(result);
   }
 
   @Test
   public void testDependencyObjectString1() {
     try {
-      ProgrammingErrors.dependency(null, TEST_MESSAGE_1);
+      ProgrammingErrorHelpers.dependency(null, TEST_MESSAGE_1);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + TEST_MESSAGE_1 + ProgrammingErrors.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + TEST_MESSAGE_1 + ProgrammingErrorHelpers.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testDependencyObjectString2() {
-    boolean result = ProgrammingErrors.dependency(TEST_OBJECT, TEST_MESSAGE_1);
+    boolean result = ProgrammingErrorHelpers.dependency(TEST_OBJECT, TEST_MESSAGE_1);
     assertTrue(result);
   }
 
   @Test
   public void testDependencyBooleanString1() {
     try {
-      ProgrammingErrors.dependency(false, TEST_MESSAGE_1);
+      ProgrammingErrorHelpers.dependency(false, TEST_MESSAGE_1);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + TEST_MESSAGE_1 + ProgrammingErrors.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + TEST_MESSAGE_1 + ProgrammingErrorHelpers.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testDependencyBooleanString2() {
-    boolean result = ProgrammingErrors.dependency(true, TEST_MESSAGE_1);
+    boolean result = ProgrammingErrorHelpers.dependency(true, TEST_MESSAGE_1);
     assertTrue(result);
   }
 
   @Test
   public void testDependencyBooleanStringString1() {
     try {
-      ProgrammingErrors.dependency(false, TEST_MESSAGE_1, TEST_MESSAGE_2);
+      ProgrammingErrorHelpers.dependency(false, TEST_MESSAGE_1, TEST_MESSAGE_2);
       fail();
     }
     catch (AssertionError aErr) {
-      assertEquals(ProgrammingErrors.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + TEST_MESSAGE_1 + ProgrammingErrors.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2 + " " + TEST_MESSAGE_2, aErr.getMessage());
+      assertEquals(ProgrammingErrorHelpers.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_1 + TEST_MESSAGE_1 + ProgrammingErrorHelpers.DEPENDENCY_INJECTION_PROBLEM_MESSAGE_2 + " " + TEST_MESSAGE_2, aErr.getMessage());
       assertNull(aErr.getCause());
     }
   }
 
   @Test
   public void testDependencyBooleanStringString2() {
-    boolean result = ProgrammingErrors.dependency(true, TEST_MESSAGE_1, TEST_MESSAGE_2);
+    boolean result = ProgrammingErrorHelpers.dependency(true, TEST_MESSAGE_1, TEST_MESSAGE_2);
     assertTrue(result);
   }
 
