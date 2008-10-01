@@ -5,7 +5,7 @@
   $Revision$
   $HeadURL$
 
-  Copyright 2007 - $Date$ by PeopleWare n.v.
+  Copyright 2004 - $Date$ by PeopleWare n.v.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -29,6 +29,14 @@
     <author email="Nele_Smeets@peopleware.be">Nele Smeets</author>
   </properties>
   <body>
+
+    <release version="II v1.0" date="2008-10-01" description="Brand new release">
+      <action dev="jand" type="update">
+        This version is a total rewrite of the previous version.
+        The vernacular is worked out and explanained. The overview document is
+        not finished.
+      </action>
+    </release>
 
     <release version="I v1.0.0/2.0" date="2005-08-14" description="Dependencies">
       <action dev="jand" type="update">
