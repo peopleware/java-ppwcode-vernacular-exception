@@ -103,7 +103,7 @@ import org.toryt.annotations_I.Throw;
   @Expression("message != null"),
   @Expression("message != EMPTY")
 })
-public final class ProgrammingErrors {
+public final class ProgrammingErrorHelpers {
 
   /**
    * <p>The empty String.</p>
@@ -120,7 +120,7 @@ public final class ProgrammingErrors {
   /**
    * No public constructor for this class.
    */
-  private ProgrammingErrors() {
+  private ProgrammingErrorHelpers() {
     // NOP
   }
 
