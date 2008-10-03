@@ -1,5 +1,5 @@
 /*<license>
-Copyright 2004 - $Date: 2008-08-05 13:44:45 +0200 (Tue, 05 Aug 2008) $ by PeopleWare n.v..
+Copyright 2004 - $Date$ by PeopleWare n.v..
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,10 +36,10 @@ import org.toryt.annotations_I.MethodContract;
  * @author      Jan Dockx
  * @author      PeopleWare n.v.
  */
-@Copyright("2007 - $Date: 2008-08-05 13:44:45 +0200 (Tue, 05 Aug 2008) $, PeopleWare n.v.")
+@Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@SvnInfo(revision = "$Revision: 2269 $",
-         date     = "$Date: 2008-08-05 13:44:45 +0200 (Tue, 05 Aug 2008) $")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class ExceptionHelpers {
 
   /**
