@@ -30,6 +30,12 @@
   </properties>
   <body>
 
+    <release version="II v3.0" date="2008-10-06" description="InternalTransportException">
+      <action dev="jand" type="add">
+        Added InternalTransportException.
+      </action>
+    </release>
+
     <release version="II v1.1" date="2008-10-03" description="ExceptionHelpers">
       <action dev="jand" type="add">
         Added ExceptionHelpers, with helper methods for throwables. This code
