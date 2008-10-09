@@ -42,10 +42,10 @@ import org.toryt.annotations_I.MethodContract;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-@Copyright("2004 - $Date: 2008-10-03 17:35:30 +0200 (Fri, 03 Oct 2008) $, PeopleWare n.v.")
+@Copyright("2004 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@SvnInfo(revision = "$Revision: 2918 $",
-         date     = "$Date: 2008-10-03 17:35:30 +0200 (Fri, 03 Oct 2008) $")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class NoLongerSupportedError extends ExternalError {
 
   @MethodContract(post = {
