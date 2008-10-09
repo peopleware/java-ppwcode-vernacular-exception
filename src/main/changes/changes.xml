@@ -30,6 +30,12 @@
   </properties>
   <body>
 
+    <release version="II v5.0" date="2008-10-09" description="Extra method in ProgrammingErrorHelpers">
+      <action dev="jand" type="add">
+        ProgrammingErrorHelpers.newAssertionError is now public.
+      </action>
+    </release>
+
     <release version="II v4.0" date="2008-10-09" description="NoLongerSupportedError">
       <action dev="jand" type="add">
         Added NoLongerSupportedError.

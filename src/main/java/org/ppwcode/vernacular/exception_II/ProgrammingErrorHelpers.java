@@ -128,7 +128,7 @@ public final class ProgrammingErrorHelpers {
    * {@link AssertionError} has no true constructor with a cause argument.
    * This method emulates that.
    */
-  private static AssertionError newAssertionError(String message, Throwable t) {
+  public static AssertionError newAssertionError(String message, Throwable t) {
     AssertionError aErr = new AssertionError(message);
     aErr.initCause(t);
     return aErr;
