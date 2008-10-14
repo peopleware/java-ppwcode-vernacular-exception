@@ -30,6 +30,12 @@
   </properties>
   <body>
 
+    <release version="II v6.0" date="2008-10-??" description="handling">
+      <action dev="jand" type="add">
+        First version of exception handling framework.
+      </action>
+    </release>
+
     <release version="II v5.0" date="2008-10-09" description="Extra method in ProgrammingErrorHelpers">
       <action dev="jand" type="add">
         ProgrammingErrorHelpers.newAssertionError is now public.
