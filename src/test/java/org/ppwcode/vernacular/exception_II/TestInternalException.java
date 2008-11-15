@@ -30,14 +30,14 @@ public class TestInternalException extends TestCase {
 
 
 
-  private void testInvariants(InternalException subject) {
+  private void testInvariants(ApplicationException subject) {
     assertNotNull(subject.getMessage());
-    assertTrue(InternalException.validMessageKey(subject.getMessage()));
+    assertTrue(ApplicationException.validMessageKey(subject.getMessage()));
   }
 
 
 
-  /*<method signature="InternalException(String, Throwable)">*/
+  /*<method signature="ApplicationException(String, Throwable)">*/
   //-----------------------------------------------------------------------
 
   public void testInternalExceptionStringThrowable1() {
@@ -65,10 +65,10 @@ public class TestInternalException extends TestCase {
   }
 
   private void testInternalExceptionStringThrowable(String messageIdentifier, Throwable t) {
-    InternalException subject = new InternalException(messageIdentifier, t);
+    ApplicationException subject = new ApplicationException(messageIdentifier, t);
     testInvariants(subject);
     assertEquals(((messageIdentifier == null) || (EMPTY.equals(messageIdentifier))) ?
-                     InternalException.DEFAULT_MESSAGE_KEY :
+                     ApplicationException.DEFAULT_MESSAGE_KEY :
                      messageIdentifier, subject.getMessage());
     assertEquals(t, subject.getCause());
   }
@@ -114,8 +114,8 @@ public class TestInternalException extends TestCase {
 
   private void testValidMessageIdentifierString(String messageIdentifier) {
     boolean expected = (messageIdentifier != null) &&
-                       InternalException.matchesMessageKeyPattern(messageIdentifier);
-    boolean result = InternalException.validMessageKey(messageIdentifier);
+                       ApplicationException.matchesMessageKeyPattern(messageIdentifier);
+    boolean result = ApplicationException.validMessageKey(messageIdentifier);
     assertEquals(expected, result);
   }
 
@@ -166,7 +166,7 @@ public class TestInternalException extends TestCase {
         expected &= ((ch == '_') || (Character.isUpperCase(ch)));
       }
     }
-    boolean result = InternalException.matchesMessageKeyPattern(messageIdentifier);
+    boolean result = ApplicationException.matchesMessageKeyPattern(messageIdentifier);
     assertEquals(expected, result);
   }
 

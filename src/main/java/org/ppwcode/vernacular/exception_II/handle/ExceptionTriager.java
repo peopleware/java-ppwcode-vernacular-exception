@@ -19,16 +19,16 @@ package org.ppwcode.vernacular.exception_II.handle;
 
 import org.ppwcode.vernacular.exception_II.ExceptionHelpers;
 import org.ppwcode.vernacular.exception_II.ExternalError;
-import org.ppwcode.vernacular.exception_II.InternalException;
+import org.ppwcode.vernacular.exception_II.ApplicationException;
 import org.toryt.annotations_I.Expression;
 import org.toryt.annotations_I.MethodContract;
 
 
 /**
- * <p>Triage {@link Throwable Throwables} into {@link InternalException InternalExceptions},
+ * <p>Triage {@link Throwable Throwables} into {@link ApplicationException InternalExceptions},
  *   {@link ExternalError ExternalErrors} or {@link AssertionError AssertionErrors}.</p>
  * <p>In the ppwcode exception vernacular, we intend as much as possible to communicate with
- *   either {@link InternalException InternalExceptions}, {@link ExternalError ExternalErrors}
+ *   either {@link ApplicationException InternalExceptions}, {@link ExternalError ExternalErrors}
  *   or {@link AssertionError AssertionErrors}, especially between layers. Implementations of
  *   this interface are responsible for trying to convert any {@link Throwable} into one
  *   of these specialized kinds.</p>
@@ -39,7 +39,7 @@ import org.toryt.annotations_I.MethodContract;
 public interface ExceptionTriager {
 
   /**
-   * <p>Try to convert {@code t} into an {@link InternalException}, {@link ExternalError} or
+   * <p>Try to convert {@code t} into an {@link ApplicationException}, {@link ExternalError} or
    *   {@link AssertionError}.</p>
    * <p>Implementations should base themselves on the occurrence of specific exception types for
    *   {@code t} or in the {@link Throwable#getCause() cause chain} of {@code t} (see

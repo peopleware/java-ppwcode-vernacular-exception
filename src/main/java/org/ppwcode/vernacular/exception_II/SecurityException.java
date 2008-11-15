@@ -36,7 +36,7 @@ import org.toryt.annotations_I.MethodContract;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public class SecurityException extends InternalException {
+public class SecurityException extends ApplicationException {
 
   /*<construction>*/
   //------------------------------------------------------------------

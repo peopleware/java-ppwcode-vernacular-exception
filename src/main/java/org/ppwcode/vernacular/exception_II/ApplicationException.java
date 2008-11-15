@@ -48,8 +48,8 @@ import org.toryt.annotations_I.MethodContract;
  *   message for the {@link #DEFAULT_MESSAGE_KEY}.</p>
  * <p><strong>{@link #getLocalizedMessage()} is not used: this turned out to be a difficult pattern
  *   to use.</strong></p>
- * <p>When the reason to throw the {@code InternalException} is itself an exception, it should be
- *   provided as the {@link #getCause()} of the {@code InternalException}.</p>
+ * <p>When the reason to throw the {@code ApplicationException} is itself an exception, it should be
+ *   provided as the {@link #getCause()} of the {@code ApplicationException}.</p>
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
@@ -59,7 +59,7 @@ import org.toryt.annotations_I.MethodContract;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 @Invars(@Expression("validMessageKey(message)"))
-public class InternalException extends Exception {
+public class ApplicationException extends Exception {
 
   /**
    * The empty string.
@@ -94,7 +94,7 @@ public class InternalException extends Exception {
       @Expression("cause == _cause")
     }
   )
-  public InternalException(final String messageKey, final Throwable cause) {
+  public ApplicationException(final String messageKey, final Throwable cause) {
     super(defaultMessageKey(messageKey), cause);
   }
 

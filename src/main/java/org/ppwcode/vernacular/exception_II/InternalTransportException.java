@@ -25,7 +25,7 @@ import org.toryt.annotations_I.MethodContract;
 
 
 /**
- * <p>Exception for transporting {@link InternalException InternalExceptions} out of methods that
+ * <p>Exception for transporting {@link ApplicationException InternalExceptions} out of methods that
  *   only allow for {@link RuntimeException RuntimeExceptions} to be thrown.</p>
  * <p>In a number of modern frameworks (notably JPA, EJB3, Hibernate 3, Spring, etc...) there
  *   is a tendency towards using {@link RuntimeException RuntimeExceptions} instead of
@@ -37,7 +37,7 @@ import org.toryt.annotations_I.MethodContract;
  *   like {@link RemoteException}).</p>
  * <p>Since this conflicts with the ppwcode exception vernacular, this exception type is offered
  *   to resolve the problem.</p>
- * <p>Note that exception handling code should thus remember to filter not only on {@link InternalException},
+ * <p>Note that exception handling code should thus remember to filter not only on {@link ApplicationException},
  *   but also on the cause of {@link InternalTransportException InternalTransportRuntimeExceptions}.</p>
  *
  * @mudo This might have been a tad too soon. Maybe we are supposed to throw an EJBException as transport medium?
@@ -51,7 +51,7 @@ public class InternalTransportException extends RuntimeException {
       @Expression("message == null")
     }
   )
-  public InternalTransportException(InternalException cause) {
+  public InternalTransportException(ApplicationException cause) {
     super(cause);
     assert preArgumentNotNull(cause, "cause");
   }

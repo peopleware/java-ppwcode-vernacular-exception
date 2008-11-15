@@ -27,7 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ppwcode.vernacular.exception_II.ExceptionHelpers;
 import org.ppwcode.vernacular.exception_II.ExternalError;
-import org.ppwcode.vernacular.exception_II.InternalException;
+import org.ppwcode.vernacular.exception_II.ApplicationException;
 import org.toryt.annotations_I.Basic;
 import org.toryt.annotations_I.Expression;
 import org.toryt.annotations_I.Invars;
@@ -36,12 +36,12 @@ import org.toryt.annotations_I.Throw;
 
 /**
  * <p>Final handling of throwables according to the ppwcode exception vernacular.
- *   {@link InternalException InternalExceptions} are thrown without ado. They should be caught in the UI layer
+ *   {@link ApplicationException InternalExceptions} are thrown without ado. They should be caught in the UI layer
  *   and communicated to the end user. {@link ExternalError ExternalErrors} are communicated to the administrator,
  *   and then thrown. {@link AssertionError Programming errors} are communicated to the administrator and the
  *   developers, and then thrown. Other throwables are translated in {@link AssertionError AssertionErrors}
  *   (programming errors) and also communicated to the administrator and the developers.</p>
- * <p>The handler looks for {@link InternalException InternalExceptions}, {@link ExternalError ExternalErrors}
+ * <p>The handler looks for {@link ApplicationException InternalExceptions}, {@link ExternalError ExternalErrors}
  *   or {@link AssertionError AssertionErrors} inside the causal chain (and legacy patterns of the causal chain,
  *   see {@link ExceptionHelpers#huntFor(Throwable, Class)}) of the {@link Throwable} it is asked to handle.
  *   This is done by a chain of {@link ExceptionTriager ExceptionTriagers}, which have to be set up on an instance
@@ -54,7 +54,7 @@ import org.toryt.annotations_I.Throw;
  *   triagers can influence the outcome. Suppose in the example above, that there is a {@code SQLException}
  *   nested in a JPA exception, which in its turn is nested in a JTA exception, which in its turn nested in an
  *   EJB exception. With the {@code SqlExceptionTriager} before the others, the {@code SQLException} will be
- *   recognized as an {@link InternalException} or an {@link ExternalError}, and that will be reported. Extra
+ *   recognized as an {@link ApplicationException} or an {@link ExternalError}, and that will be reported. Extra
  *   information earlier in the causal chain is discarded. When the {@code JpaTriager} is configured to triage
  *   earlier, the JPA exception will probably be recognized as a programming error, and the
  *   {@code SqlExceptionTriager} will not be asked to triage the exception. This is comparable to the importance
@@ -82,7 +82,7 @@ import org.toryt.annotations_I.Throw;
  *       catch (InternalExceptionB b) {
  *         throw b;
  *       }</var>
- *       catch (InternalException metaExc) {
+ *       catch (ApplicationException metaExc) {
  *         unexpectedException(metaExc, "handleException can throw no InternalExceptions");
  *       }
  *     }
@@ -141,26 +141,26 @@ public class ExceptionHandler {
 
   /**
    * Ask the {@link #getTriagers() triagers} one after the other, in order, to {@link ExceptionTriager#triage(Throwable)}
-   * {@code t}. If the resulting {@link Throwable} is an instance of {@link InternalException}, {@link ExternalError} or
+   * {@code t}. If the resulting {@link Throwable} is an instance of {@link ApplicationException}, {@link ExternalError} or
    * {@link AssertionError}, return that {@link Throwable} and stop looking. If no {@link #getTriagers() triagers} can
-   * return an instance of {@link InternalException}, {@link ExternalError} or {@link AssertionError}, return {@code t}
+   * return an instance of {@link ApplicationException}, {@link ExternalError} or {@link AssertionError}, return {@code t}
    * itself.
    */
   @MethodContract(
     pre  = @Expression("_t != null"),
     post = {
       @Expression("exists (int i : 0 .. triagers.size) {" +
-                    "triagers.get(i).triage(_t) instanceof InternalException || " +
+                    "triagers.get(i).triage(_t) instanceof ApplicationException || " +
                     "triagers.get(i).triage(_t) instanceof ExternalError || " +
                     "triagers.get(i).triage(_t) instanceof AssertionError && " +
                     "for (int j : 0 .. i) {" +
-                      "! triagers.get(j).triage(_t) instanceof InternalException && " +
+                      "! triagers.get(j).triage(_t) instanceof ApplicationException && " +
                       "! triagers.get(j).triage(_t) instanceof ExternalError && " +
                       "! triagers.get(j).triage(_t) instanceof AssertionError " +
                     "} ?? " +
                   "result == triagers.get(i).triage(_t)"),
       @Expression("! exists (int i : 0 .. triagers.size) {" +
-                      "triagers.get(i).triage(_t) instanceof InternalException || " +
+                      "triagers.get(i).triage(_t) instanceof ApplicationException || " +
                       "triagers.get(i).triage(_t) instanceof ExternalError || " +
                       "triagers.get(i).triage(_t) instanceof AssertionError" +
                     "} ?? result == _t")
@@ -171,7 +171,7 @@ public class ExceptionHandler {
     assert $triagers.get(0) instanceof PpwcodeTriager : "first triager must be ppwcode exception vernacular triager";
     for (ExceptionTriager triager : $triagers) {
       Throwable triaged = triager.triage(t);
-      if (triaged instanceof InternalException || triaged instanceof ExternalError || triaged instanceof AssertionError) {
+      if (triaged instanceof ApplicationException || triaged instanceof ExternalError || triaged instanceof AssertionError) {
         // triage succeeded
         _LOG.debug("triaging " + t + ": results in " + triaged);
         return triaged;
@@ -209,14 +209,14 @@ public class ExceptionHandler {
                   "handleProgrammingError(new AssertionError(triage(t)), log)")
     }
   )
-  public void handleException(Throwable t, Log log, Class<? extends InternalException>... acceptableInternalExceptionType)
-      throws InternalException, ExternalError, AssertionError {
+  public void handleException(Throwable t, Log log, Class<? extends ApplicationException>... acceptableInternalExceptionType)
+      throws ApplicationException, ExternalError, AssertionError {
     assert preArgumentNotNull(t, "t");
     assert preArgumentNotNull(log, "log");
     _LOG.debug("handling exception " + t);
-    /* Case by case, we try to triage t, into an InternalException, ExternalError or AssertionError.
+    /* Case by case, we try to triage t, into an ApplicationException, ExternalError or AssertionError.
      * If triage fails, anything that is unclear is considered a programming error.
-     * The finally resulting InternalException, ExternalError or AssertionError is then logged and thrown.
+     * The finally resulting ApplicationException, ExternalError or AssertionError is then logged and thrown.
      * For internal exceptions, only types found in accaptableInternalExceptionTypes are actually acceptable.
      * If InternalExceptions occur that are not of an acceptable type, they are converted into programming errors too.
      */
@@ -231,18 +231,18 @@ public class ExceptionHandler {
     handleTriagedException(log, triaged, acceptableInternalExceptionType);
   }
 
-  private void handleTriagedException(Log log, Throwable triaged, Class<? extends InternalException>... acceptableInternalExceptionType)
-      throws InternalException, ExternalError, AssertionError {
+  private void handleTriagedException(Log log, Throwable triaged, Class<? extends ApplicationException>... acceptableInternalExceptionType)
+      throws ApplicationException, ExternalError, AssertionError {
     if (acceptableInternalExceptionType != null ) {
       for (int i = 0; i < acceptableInternalExceptionType.length; i++) {
         if (acceptableInternalExceptionType[i].isInstance(triaged)) {
-          _LOG.trace("exception " + triaged + " recognized as of acceptable InternalException type " + acceptableInternalExceptionType[i]);
+          _LOG.trace("exception " + triaged + " recognized as of acceptable ApplicationException type " + acceptableInternalExceptionType[i]);
           handleInternalException(acceptableInternalExceptionType[i].cast(triaged), log);
         }
       }
     }
-    _LOG.trace("exception " + triaged + " is not of an acceptable InternalException type");
-    // if we get here, and triaged is an InternalException, it will be handled as a programning error further down
+    _LOG.trace("exception " + triaged + " is not of an acceptable ApplicationException type");
+    // if we get here, and triaged is an ApplicationException, it will be handled as a programning error further down
     if (triaged instanceof ExternalError) {
       _LOG.trace("exception " + triaged + " recognized as an ExternalError");
       handleExternalError((ExternalError)triaged, log);
@@ -264,9 +264,9 @@ public class ExceptionHandler {
   @MethodContract(
     pre  = @Expression("_internalExc != null"),
     post = @Expression("false"),
-    exc  = @Throw(type = InternalException.class, cond = @Expression("thrown == _internalExc"))
+    exc  = @Throw(type = ApplicationException.class, cond = @Expression("thrown == _internalExc"))
   )
-  public void handleInternalException(InternalException internalExc, Log log) throws InternalException {
+  public void handleInternalException(ApplicationException internalExc, Log log) throws ApplicationException {
     // this is an application exception; its occurence is non-nominal, but normal and expected; there is no need to warn anybody
     log.debug("internal exception; this is non-nominal, normal and expected behavior", internalExc);
     // rethrow

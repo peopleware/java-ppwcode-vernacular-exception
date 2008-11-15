@@ -20,14 +20,14 @@ package org.ppwcode.vernacular.exception_II.handle;
 import static org.ppwcode.vernacular.exception_II.ExceptionHelpers.huntFor;
 
 import org.ppwcode.vernacular.exception_II.ExternalError;
-import org.ppwcode.vernacular.exception_II.InternalException;
+import org.ppwcode.vernacular.exception_II.ApplicationException;
 import org.toryt.annotations_I.Expression;
 import org.toryt.annotations_I.MethodContract;
 
 
 /**
  * <p>A {@Link ThrowableTriager} for the ppwcode exception vernacular. This triages
- *   occurences of existing {@link InternalException InternalExceptions}, {@link ExternalError ExternalErrors}
+ *   occurences of existing {@link ApplicationException InternalExceptions}, {@link ExternalError ExternalErrors}
  *   and {@link AssertionError AssertionErrors} into themselves. This is more than a no-op,
  *   since those exceptions might be buried inside the cause chain of the offered throwable, instead
  *   of being the exception itself. With this triager, triage work done higher in the stack is recovered.
@@ -37,15 +37,15 @@ public class PpwcodeTriager implements ExceptionTriager {
 
   @MethodContract(
     post = {
-      @Expression("huntFor(t, InternalException.class) != null ? result = huntFor(t, InternalException.class)"),
+      @Expression("huntFor(t, ApplicationException.class) != null ? result = huntFor(t, ApplicationException.class)"),
       @Expression("huntFor(t, ExternalError.class) != null ? result == huntFor(t, ExternalError.class)"),
       @Expression("huntFor(t, AssertionError.class) != null ? result == huntFor(t, AssertionError.class)"),
-      @Expression("huntFor(t, InternalException.class) == null &&  huntFor(t, ExternalError.class) == null && " +
+      @Expression("huntFor(t, ApplicationException.class) == null &&  huntFor(t, ExternalError.class) == null && " +
                   "huntFor(t, AssertionError.class) == null ? result == t")
     }
   )
   public Throwable triage(Throwable t) {
-    InternalException internalExc = huntFor(t, InternalException.class);
+    ApplicationException internalExc = huntFor(t, ApplicationException.class);
     if (internalExc != null) {
       return internalExc;
     }
