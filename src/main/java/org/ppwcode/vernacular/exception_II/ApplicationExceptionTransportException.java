@@ -38,11 +38,11 @@ import org.toryt.annotations_I.MethodContract;
  * <p>Since this conflicts with the ppwcode exception vernacular, this exception type is offered
  *   to resolve the problem.</p>
  * <p>Note that exception handling code should thus remember to filter not only on {@link ApplicationException},
- *   but also on the cause of {@link InternalTransportException InternalTransportRuntimeExceptions}.</p>
+ *   but also on the cause of {@link ApplicationExceptionTransportException InternalTransportRuntimeExceptions}.</p>
  *
  * @mudo This might have been a tad too soon. Maybe we are supposed to throw an EJBException as transport medium?
  */
-public class InternalTransportException extends RuntimeException {
+public class ApplicationExceptionTransportException extends RuntimeException {
 
   @MethodContract(
     pre  = @Expression("_cause != null"),
@@ -51,7 +51,7 @@ public class InternalTransportException extends RuntimeException {
       @Expression("message == null")
     }
   )
-  public InternalTransportException(ApplicationException cause) {
+  public ApplicationExceptionTransportException(ApplicationException cause) {
     super(cause);
     assert preArgumentNotNull(cause, "cause");
   }

@@ -20,7 +20,7 @@ package org.ppwcode.vernacular.exception_II;
 import junit.framework.TestCase;
 
 
-public class TestSecurityException extends TestCase {
+public class TestApplicationSecurityException extends TestCase {
 
   public final static String TEST_MESSAGE = "TEST_MESSAGE_IDENTIFIER";
 
@@ -30,14 +30,14 @@ public class TestSecurityException extends TestCase {
 
 
 
-  private void testInvariants(SecurityException subject) {
+  private void testInvariants(ApplicationSecurityException subject) {
     assertNotNull(subject.getMessage());
     assertTrue(ApplicationException.validMessageKey(subject.getMessage()));
   }
 
 
 
-  /*<method signature="SecurityException(String, Throwable)">*/
+  /*<method signature="ApplicationSecurityException(String, Throwable)">*/
   //-----------------------------------------------------------------------
 
   public void testSecurityExceptionStringThrowable1() {
@@ -65,7 +65,7 @@ public class TestSecurityException extends TestCase {
   }
 
   private void testSecurityExceptionStringThrowable(String messageIdentifier, Throwable t) {
-    SecurityException subject = new SecurityException(messageIdentifier, t);
+    ApplicationSecurityException subject = new ApplicationSecurityException(messageIdentifier, t);
     testInvariants(subject);
     assertEquals(((messageIdentifier == null) || (EMPTY.equals(messageIdentifier))) ?
                      ApplicationException.DEFAULT_MESSAGE_KEY :

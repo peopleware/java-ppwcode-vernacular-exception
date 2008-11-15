@@ -20,7 +20,7 @@ package org.ppwcode.vernacular.exception_II;
 import junit.framework.TestCase;
 
 
-public class TestInternalException extends TestCase {
+public class TestApplicationException extends TestCase {
 
   public final static String TEST_MESSAGE = "TEST_MESSAGE_IDENTIFIER";
 

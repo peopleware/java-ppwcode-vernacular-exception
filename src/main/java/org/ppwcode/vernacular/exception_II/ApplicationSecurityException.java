@@ -36,7 +36,7 @@ import org.toryt.annotations_I.MethodContract;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public class SecurityException extends ApplicationException {
+public class ApplicationSecurityException extends ApplicationException {
 
   /*<construction>*/
   //------------------------------------------------------------------
@@ -56,7 +56,7 @@ public class SecurityException extends ApplicationException {
       @Expression("cause == _cause")
     }
   )
-  public SecurityException(final String messageIdentifier, final Throwable cause) {
+  public ApplicationSecurityException(final String messageIdentifier, final Throwable cause) {
     super(messageIdentifier, cause);
   }
 
