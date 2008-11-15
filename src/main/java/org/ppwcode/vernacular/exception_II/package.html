@@ -8,21 +8,21 @@
 <body>
 <p>Vernacular for exceptions. Most exceptions you use should extend one of the classes in this library.</p>
 <img src="doc-files/exceptionHierarchy.png" style="width: 100%;"></img>
-<p>We discern between <dfn>internal exceptions</dfn>, <dfn>external errors</dfn>, and <dfn>programming errors</dfn>.
+<p>We discern between <dfn>internal application exceptions</dfn>, <dfn>external errors</dfn>, and <dfn>programming errors</dfn>.
   The main criterion to decide which kind to use is the <em>audience</em> for whom a notice of the exceptional
   condition or error is of importance.</p>
-<h3>Internal exceptions</h3>
-<p>When the exceptional condition is considered <em>internal</em> to your system, i.e., although the condition
-  is exceptional and non-nominal, it is expected and normal for your system, i.e., your system is equipped to
-  deal with it, you should throw an {@link org.ppwcode.vernacular.exception.InternalException}. The audience
+<h3>Application exceptions</h3>
+<p>When the exceptional condition is considered <em>internal</em> to your application, i.e., although the condition
+  is exceptional and non-nominal, it is expected and normal for your application, i.e., your application is equipped to
+  deal with it, you should throw an {@link org.ppwcode.vernacular.exception.ApplicationException}. The audience
   of these exceptions is the <em>end user</em>. Administrators and developers are not interested in these
   exceptions because their occurence is expected and normal. As a guideline, you can pose yourself the question
   <q>If I communicate this exceptional condition to the end user, can he do something about it?</q> If not,
-  you should probably not throw an {@link org.ppwcode.vernacular.exception.InternalException}.</p>
+  you should probably not throw an {@link org.ppwcode.vernacular.exception.ApplicationException}.</p>
 <p>The package
-  offers a number of more specialized subclasses of {@link org.ppwcode.vernacular.exception.InternalException},
+  offers a number of more specialized subclasses of {@link org.ppwcode.vernacular.exception.ApplicationException},
   and others can be found in other libraries or can be created by you. Since the intended audience of
-  {@link org.ppwcode.vernacular.exception.InternalException} is the end user, there should be a mechanism to
+  {@link org.ppwcode.vernacular.exception.ApplicationException} is the end user, there should be a mechanism to
   internationalize the message that will be presented to the end user.</p>
 <h3>External errors</h3>
 <p>When the condition you want to report about is considered a <em>violation of a precondition to the system as
