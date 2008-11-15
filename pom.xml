@@ -32,7 +32,7 @@
   <parent>
     <groupId>org.ppwcode.vernacular</groupId>
     <artifactId>ppwcode-vernacular-parent-pom</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.1</version>
   </parent>
 
   <properties>
@@ -40,12 +40,12 @@
          this short name, and the ppwcode.markVersion -->
     <ppwcode.shortArtifactName>exception</ppwcode.shortArtifactName>
     <!-- The mark version of the artifact. This part of the version becomes part of the artifactId. -->
-    <ppwcode.markVersion>II</ppwcode.markVersion>
+    <ppwcode.markVersion>III</ppwcode.markVersion>
   </properties>
 
   <!-- GROUP ID, VERSION, PACKAGING, NAME & DESCRIPTION: OVERWRITE IN YOUR CHILD POM (know what you are doing :-) ) -->
   <!-- for ppwcode projects, groupId and artifactId are calculated, and used in the magic mantra (see below) -->
-  <version>6.0-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>ppwcode exception vernacular</name>
   <description>
