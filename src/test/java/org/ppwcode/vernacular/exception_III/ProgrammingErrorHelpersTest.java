@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppwcode.vernacular.exception_II;
+package org.ppwcode.vernacular.exception_III;
 
 
 import static org.junit.Assert.assertEquals;
@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+import org.ppwcode.vernacular.exception_III.ProgrammingErrorHelpers;
 
 
 public class ProgrammingErrorHelpersTest {
