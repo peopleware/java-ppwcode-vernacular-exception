@@ -14,12 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppwcode.vernacular.exception_II.handle;
+package org.ppwcode.vernacular.exception_III.handle;
 
 
-import org.ppwcode.vernacular.exception_II.ExceptionHelpers;
-import org.ppwcode.vernacular.exception_II.ExternalError;
-import org.ppwcode.vernacular.exception_II.ApplicationException;
+import org.ppwcode.vernacular.exception_III.ApplicationException;
+import org.ppwcode.vernacular.exception_III.ExceptionHelpers;
+import org.ppwcode.vernacular.exception_III.ExternalError;
 import org.toryt.annotations_I.Expression;
 import org.toryt.annotations_I.MethodContract;
 
