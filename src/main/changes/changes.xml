@@ -30,7 +30,11 @@
   </properties>
   <body>
 
-    <release version="II v6.0" date="2008-10-??" description="handling">
+    <release version="III v1.0" date="2008-10-??" description="name changes and handling">
+      <action dev="jand" type="update">
+        Changed the name of InternalException to ApplicationException. Application exception
+        is a name used in JavaEE documentation. Like this, there will be less confusion.
+      </action>
       <action dev="jand" type="add">
         First version of exception handling framework.
       </action>
