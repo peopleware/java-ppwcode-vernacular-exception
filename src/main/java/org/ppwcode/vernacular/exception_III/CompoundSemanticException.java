@@ -184,13 +184,12 @@ public final class CompoundSemanticException extends SemanticException implement
     if (! super.like(other)) {
       return false;
     }
-    CompoundSemanticException cse = (CompoundSemanticException)other;
-    Set<SemanticException> otherElementException = cse.getElementExceptions();
-    if ($elementExceptions.size() != otherElementException.size()) {
+    CompoundSemanticException otherCse = (CompoundSemanticException)other;
+    if ($elementExceptions.size() != otherCse.getElementExceptions().size()) {
       return false;
     }
-    for (SemanticException otherEe : $elementExceptions) {
-      if (! cse.contains(otherEe)) {
+    for (SemanticException ourEe : $elementExceptions) {
+      if (! otherCse.contains(ourEe)) {
         return false;
       }
     }
