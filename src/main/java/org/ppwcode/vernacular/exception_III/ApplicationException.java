@@ -133,12 +133,13 @@ public class ApplicationException extends Exception {
   @MethodContract(
     post = @Expression("result ? (_other != null) && (_other.class = class) && " +
                        "(message == _other.message) && (cause == _other.cause) && " +
-                       "(_other.cause == null ? cause == null : _other.cause.class == cause.class)")
+                       "(_other.cause == null ? cause == null : cause != null && _other.cause.class == cause.class)")
   )
   public boolean like(ApplicationException other) {
     return (other != null) && (other.getClass() == getClass()) &&
            eqn(other.getMessage(), getMessage()) &&
-           (other.getCause() == null ? getCause() == null : other.getCause().getClass() == getCause().getClass());
+           (other.getCause() == null ? getCause() == null :
+             (getCause() != null && other.getCause().getClass() == getCause().getClass()));
   }
 
   protected final boolean eqn(Object o1, Object o2) {
