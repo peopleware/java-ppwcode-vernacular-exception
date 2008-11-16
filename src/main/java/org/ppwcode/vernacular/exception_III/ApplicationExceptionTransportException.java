@@ -16,7 +16,8 @@ limitations under the License.
 
 package org.ppwcode.vernacular.exception_III;
 
-import static org.ppwcode.vernacular.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
+
+import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
 
 import java.rmi.RemoteException;
 

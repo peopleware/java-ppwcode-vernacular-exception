@@ -17,7 +17,7 @@ limitations under the License.
 package org.ppwcode.vernacular.exception_III.handle;
 
 
-import static org.ppwcode.vernacular.exception_III.ExceptionHelpers.huntFor;
+import static org.ppwcode.util.exception_III.ExceptionHelpers.huntFor;
 
 import org.ppwcode.vernacular.exception_III.ApplicationException;
 import org.ppwcode.vernacular.exception_III.ExternalError;

@@ -180,6 +180,10 @@
       <artifactId>Toryt-annotations-I</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.ppwcode.util</groupId>
+      <artifactId>ppwcode-util-exception-III</artifactId>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>

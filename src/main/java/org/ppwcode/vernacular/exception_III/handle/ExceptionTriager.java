@@ -17,8 +17,8 @@ limitations under the License.
 package org.ppwcode.vernacular.exception_III.handle;
 
 
+import org.ppwcode.util.exception_III.ExceptionHelpers;
 import org.ppwcode.vernacular.exception_III.ApplicationException;
-import org.ppwcode.vernacular.exception_III.ExceptionHelpers;
 import org.ppwcode.vernacular.exception_III.ExternalError;
 import org.toryt.annotations_I.Expression;
 import org.toryt.annotations_I.MethodContract;
