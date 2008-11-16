@@ -31,6 +31,9 @@
   <body>
 
     <release version="III v1.0" date="2008-10-??" description="name changes and handling">
+      <action dev="jand" type="remove">
+        Split ProgrammingErrorHelpers and ExceptionHelpers into ppwcode util exception.
+      </action>
       <action dev="jand" type="update">
         Changed the name of InternalException to ApplicationException. Application exception
         is a name used in JavaEE documentation. Like this, there will be less confusion.
