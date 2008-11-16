@@ -106,6 +106,49 @@ public class ApplicationException extends Exception {
 
 
 
+  /*<section name="comparison">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Compare {@code other} to this: is other of the the exact same
+   * type and does other have the exact same properties.
+   *
+   * This method is an alternative to {@link #equals(Object)}, which
+   * we cannot override, because we need to keep reference semantics
+   * for exceptions.
+   *
+   * This method is introduced mainly for use in contracts of methods
+   * that throw property exceptions, and in unit tests for those
+   * methods.
+   *
+   * This method must be overridden in every subclass that adds a property
+   * to include that property in the comparison.
+   *
+   * @note methods was formerly called {@code hasSameValues}, and now replaces
+   *       {@code hasSameValues}, 2 {@code contains} methods and 2 {@code reportsOn}
+   *       methods, which in practice did not fulfill their promise.
+   *
+   * @since III
+   */
+  @MethodContract(
+    post = @Expression("result ? (_other != null) && (_other.class = class) && " +
+                       "(message == _other.message) && (cause == _other.cause) && " +
+                       "(_other.cause == null ? cause == null : _other.cause.class == cause.class)")
+  )
+  public boolean like(ApplicationException other) {
+    return (other != null) && (other.getClass() == getClass()) &&
+           eqn(other.getMessage(), getMessage()) &&
+           (other.getCause() == null ? getCause() == null : other.getCause().getClass() == getCause().getClass());
+  }
+
+  protected final boolean eqn(Object o1, Object o2) {
+    return o1 == null ? o2 == null : o1.equals(o2);
+  }
+
+  /*</section>*/
+
+
+
   @MethodContract(
     post = @Expression("messageKey != null && matchesMessageKeyPattern(messageKey)")
   )
