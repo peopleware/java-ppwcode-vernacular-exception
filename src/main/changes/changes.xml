@@ -30,6 +30,11 @@
   </properties>
   <body>
 
+    <release version="III v1.1" date="2008-12-18" description="more recent parent pom">
+      <action dev="jand" type="update">
+        use more recent version of parent pom
+      </action>
+    </release>
     <release version="III v1.0" date="2008-12-18" description="name changes and handling">
       <action dev="jand" type="remove">
         Split ProgrammingErrorHelpers and ExceptionHelpers into ppwcode util exception.
