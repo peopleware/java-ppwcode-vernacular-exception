@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>org.ppwcode.vernacular.exception</title>
+</head>
+<body>
+<p>Vernacular for exceptions. Most exceptions you use should extend one of the classes in this library.</p>
+<img src="doc-files/exceptionHierarchy.png" style="width: 100%;"></img>
+<p>We discern between <dfn>internal application exceptions</dfn>, <dfn>external errors</dfn>, and <dfn>programming errors</dfn>.
+  The main criterion to decide which kind to use is the <em>audience</em> for whom a notice of the exceptional
+  condition or error is of importance.</p>
+<h3>Application exceptions</h3>
+<p>When the exceptional condition is considered <em>internal</em> to your application, i.e., although the condition
+  is exceptional and non-nominal, it is expected and normal for your application, i.e., your application is equipped to
+  deal with it, you should throw an {@link org.ppwcode.vernacular.exception.ApplicationException}. The audience
+  of these exceptions is the <em>end user</em>. Administrators and developers are not interested in these
+  exceptions because their occurence is expected and normal. As a guideline, you can pose yourself the question
+  <q>If I communicate this exceptional condition to the end user, can he do something about it?</q> If not,
+  you should probably not throw an {@link org.ppwcode.vernacular.exception.ApplicationException}.</p>
+<p>The package
+  offers a number of more specialized subclasses of {@link org.ppwcode.vernacular.exception.ApplicationException},
+  and others can be found in other libraries or can be created by you. Since the intended audience of
+  {@link org.ppwcode.vernacular.exception.ApplicationException} is the end user, there should be a mechanism to
+  internationalize the message that will be presented to the end user.</p>
+<h3>External errors</h3>
+<p>When the condition you want to report about is considered a <em>violation of a precondition to the system as
+  a whole</em>, i.e., although you know the condition can occur, you have choosen not to deal with it in your
+  system, you should throw and {@link org.ppwcode.vernacular.exception.ExternalError}. The audience of these
+  errors is the <em>administrator</em>. Developers are not interested in these errors because the issues they
+  report is a deployment or operational issue. End users are not interested in the details of these errors,
+  because the reason is technical and they can do nothing about it. As a guideline, your can pose yourself the
+  question <a>If I communicate this error to the administrator, can he do something about it?</a>. If not,
+  you should probably not throw an {@link org.ppwcode.vernacular.exception.ExternalError}.</p>
+<p>This package offers no more specialized subclasses of {@link org.ppwcode.vernacular.exception.ExternalError},
+  and there probably is little need to create more specialized subclasses. The notice we want to present to
+  the administrator should be defined in English when the error is created, with all necessary information
+  in the message and causes.</p>
+<h3>Programming errors</h3>
+<p>When the condition you want to report about is considered a <em>programming error</em>, i.e., although the
+  condition is known to be possible on a syntactic level, we can prove it cannot occur, or it should never
+  occur in a correct program, you should throw an {@link java.lang.AssertionError}. The audience of these
+  errors is the <em>developer</em>. Administrators nor end users are interested in thed details of these errors,
+  because the reason is code-bound and they can do nothing about it. As a guideline, your can pose yourself the
+  question <q>If I communicate this error to the end user or to the administrator, can he they do someting about
+  it?</q> If they can, you should probably not throw an {@link java.lang.AssertionError}.</p>
+<p>This package does not offer a special new type for programming errors. The error can be raised by using
+  the <code><b>assert</b></code> statement, but it is advisable for the most common cases to use a helper
+  method from {@link org.ppwcode.vernacular.exception.ProgrammingErrorHelpers}. No detailed messages are
+  needed (a developer can trace the occurence of the exception with a debugger), but they might be helpful,
+  especially in a server based program.</p>
+<p>There are conditions where we know, in code, that they can only occur when the program contains an
+  error. This vernacular is intended for those cases. Note that most programming errors, however, are
+  conditions we are not aware of during programming, and thus we cannot take positive action at that
+  time (if we knew there was an error, we would not make it). Such programming errors will represent themselves
+  often, but not always, as other kinds of unchecked exceptions or errors. Yet other programming errors
+  (the worst kind) will not represent themselves quickly at all.</p>
+<h3>Other exceptions</h3>
+<p>It is not possible for all code you write to know for which audience the message would be appropriate.
+  This is often the case in more technical libraries. In those cases, you should throw specialized checked exceptions,
+  that do not participate in the hierarchy presented here. User developers of this code, closer to the business
+  logic, then should catch these exceptions, and decided to translate them into one of the 3 kinds defined here,
+  or deal with them in the nominal flow of their code. As a guideline, if you cannot answer the questions
+  presented above in a definite way, you should probably define your own exception hierarchy.</p>
+</body>
+</html>
