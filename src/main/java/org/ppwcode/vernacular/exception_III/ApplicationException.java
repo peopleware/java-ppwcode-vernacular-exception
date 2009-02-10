@@ -16,15 +16,21 @@ limitations under the License.
 
 package org.ppwcode.vernacular.exception_III;
 
-
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
+import org.ppwcode.util.exception_III.ProgrammingErrorHelpers;
+import org.ppwcode.vernacular.l10n_III.LocalizedException;
+import org.ppwcode.vernacular.l10n_III.resourcebundle.DefaultResourceBundleLoadStrategy;
+import org.ppwcode.vernacular.l10n_III.resourcebundle.KeyNotFoundException;
+import org.ppwcode.vernacular.l10n_III.resourcebundle.ResourceBundleHelpers;
+import org.ppwcode.vernacular.l10n_III.resourcebundle.WrongValueTypeException;
 import org.toryt.annotations_I.Expression;
 import org.toryt.annotations_I.Invars;
 import org.toryt.annotations_I.MethodContract;
@@ -59,7 +65,7 @@ import org.toryt.annotations_I.MethodContract;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 @Invars(@Expression("validMessageKey(message)"))
-public class ApplicationException extends Exception {
+public class ApplicationException extends Exception implements LocalizedException {
 
   /**
    * The empty string.
@@ -173,6 +179,37 @@ public class ApplicationException extends Exception {
     Matcher m = p.matcher(messageKey);
     return m.matches();
   }
+
+
+  /*<section name="message template">*/
+  //------------------------------------------------------------------
+
+  /**
+   * Returns the message template for this exception in the given locale.
+   *
+   * TODO
+   */
+  public String getMessageTemplate(Locale locale) {
+    assert ProgrammingErrorHelpers.preArgumentNotNull(locale, "locale");
+    // use message key to find the right template in the properties files
+    String result;
+    String messageKey = getMessage();
+    DefaultResourceBundleLoadStrategy strategy = new DefaultResourceBundleLoadStrategy();
+    strategy.setLocale(locale);
+    String[] keys = { messageKey };
+    try {
+      result = ResourceBundleHelpers.value(getClass(), keys, String.class, strategy);
+    } catch (KeyNotFoundException exc) {
+      // TODO what to do with exceptions?
+      return null;
+    } catch (WrongValueTypeException exc) {
+      // TODO what to do with exceptions?
+      return null;
+    }
+    return result;
+  }
+
+  /*</section>*/
 
 }
 
