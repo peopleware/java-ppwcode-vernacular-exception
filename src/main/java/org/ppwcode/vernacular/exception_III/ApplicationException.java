@@ -17,6 +17,7 @@ limitations under the License.
 package org.ppwcode.vernacular.exception_III;
 
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
+import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.unexpectedException;
 
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -191,20 +192,19 @@ public class ApplicationException extends Exception implements LocalizedExceptio
    */
   public String getMessageTemplate(Locale locale) {
     assert ProgrammingErrorHelpers.preArgumentNotNull(locale, "locale");
-    // use message key to find the right template in the properties files
-    String result;
-    String messageKey = getMessage();
+    String result = null;
+
     DefaultResourceBundleLoadStrategy strategy = new DefaultResourceBundleLoadStrategy();
     strategy.setLocale(locale);
-    String[] keys = { messageKey };
+
+    String[] keys = { getMessage() };
     try {
       result = ResourceBundleHelpers.value(getClass(), keys, String.class, strategy);
     } catch (KeyNotFoundException exc) {
       // TODO what to do with exceptions?
       return null;
     } catch (WrongValueTypeException exc) {
-      // TODO what to do with exceptions?
-      return null;
+      unexpectedException(exc);
     }
     return result;
   }
