@@ -18,6 +18,7 @@ package org.ppwcode.vernacular.exception_III;
 
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.unexpectedException;
+import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
 
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppwcode.util.exception_III.ProgrammingErrorHelpers;
+import org.ppwcode.vernacular.l10n_III.I18nTemplateException;
 import org.ppwcode.vernacular.l10n_III.LocalizedException;
 import org.ppwcode.vernacular.l10n_III.resourcebundle.DefaultResourceBundleLoadStrategy;
 import org.ppwcode.vernacular.l10n_III.resourcebundle.KeyNotFoundException;
@@ -190,8 +191,9 @@ public class ApplicationException extends Exception implements LocalizedExceptio
    *
    * TODO
    */
-  public String getMessageTemplate(Locale locale) {
-    assert ProgrammingErrorHelpers.preArgumentNotNull(locale, "locale");
+  public String getMessageTemplate(Locale locale) throws I18nTemplateException {
+    assert preArgumentNotNull(locale, "locale");
+
     String result = null;
 
     DefaultResourceBundleLoadStrategy strategy = new DefaultResourceBundleLoadStrategy();
@@ -201,8 +203,7 @@ public class ApplicationException extends Exception implements LocalizedExceptio
     try {
       result = ResourceBundleHelpers.value(getClass(), keys, String.class, strategy);
     } catch (KeyNotFoundException exc) {
-      // TODO what to do with exceptions?
-      return null;
+      throw new I18nTemplateException("Template not found for key [" + getMessage() + "]", null, exc);
     } catch (WrongValueTypeException exc) {
       unexpectedException(exc);
     }
