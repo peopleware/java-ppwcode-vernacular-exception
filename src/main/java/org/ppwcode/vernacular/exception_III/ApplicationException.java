@@ -185,7 +185,7 @@ public class ApplicationException extends Exception implements LocalizedExceptio
 
   /*<section name="message template">*/
   //------------------------------------------------------------------
-
+  private static String DOT = ".";
   /**
    * Returns the message template for this exception in the given locale.
    *
@@ -199,7 +199,9 @@ public class ApplicationException extends Exception implements LocalizedExceptio
     DefaultResourceBundleLoadStrategy strategy = new DefaultResourceBundleLoadStrategy();
     strategy.setLocale(locale);
 
-    String[] keys = { getMessage() };
+    String prefix = getClass().getCanonicalName();
+    String[] keys = { prefix + DOT + getMessage(),
+    		              prefix };
     try {
       result = ResourceBundleHelpers.value(getClass(), keys, String.class, strategy);
     } catch (KeyNotFoundException exc) {
