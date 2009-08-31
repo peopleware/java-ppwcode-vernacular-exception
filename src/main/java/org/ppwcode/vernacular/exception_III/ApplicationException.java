@@ -200,8 +200,7 @@ public class ApplicationException extends Exception implements LocalizedExceptio
     strategy.setLocale(locale);
 
     String prefix = getClass().getCanonicalName();
-    String[] keys = { prefix + DOT + getMessage(),
-    		              prefix };
+    String[] keys = { getMessage() };
     try {
       result = ResourceBundleHelpers.value(getClass(), keys, String.class, strategy);
     } catch (KeyNotFoundException exc) {
