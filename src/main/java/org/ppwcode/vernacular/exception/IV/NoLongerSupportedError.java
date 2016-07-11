@@ -16,15 +16,6 @@ limitations under the License.
 
 package org.ppwcode.vernacular.exception.IV;
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
-
-
 /**
  * Signals that the method throwing this exception no longer supports the promised operation.
  * This is a vehicle in application business's semantics evolution. When business semantics or
@@ -41,16 +32,15 @@ import org.toryt.annotations_I.MethodContract;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class NoLongerSupportedError extends ExternalError {
 
+  /*
   @MethodContract(post = {
     @Expression("message == _message"),
     @Expression("cause == null")
   })
+  */
   public NoLongerSupportedError(String message) {
     super(message);
   }
