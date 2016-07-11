@@ -17,20 +17,10 @@ limitations under the License.
 package org.ppwcode.vernacular.exception.IV;
 
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.Invars;
-import org.toryt.annotations_I.MethodContract;
-import org.toryt.annotations_I.Throw;
 
 
 /**
@@ -40,10 +30,7 @@ import org.toryt.annotations_I.Throw;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public final class CompoundSemanticException extends SemanticException implements CompoundException<SemanticException> {
 
   /**
@@ -63,6 +50,7 @@ public final class CompoundSemanticException extends SemanticException implement
    *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_message == null || ! _message.equals(EMPTY)")
@@ -72,6 +60,7 @@ public final class CompoundSemanticException extends SemanticException implement
       @Expression("cause == _cause")
     }
   )
+  */
   public CompoundSemanticException(final String message, final Throwable cause) {
     super(message, cause);
   }
@@ -139,7 +128,9 @@ public final class CompoundSemanticException extends SemanticException implement
     return false;
   }
 
+  /*
   @MethodContract(post = @Expression("elementExceptions.empty"))
+  */
   public final boolean isEmpty() {
     return $elementExceptions.isEmpty();
   }
@@ -161,10 +152,12 @@ public final class CompoundSemanticException extends SemanticException implement
     $elementExceptions.add(eExc);
   }
 
+  /*
   @Invars({
     @Expression("$elementExceptions != null"),
     @Expression("! $elementExceptions.contains(null)")
   })
+  */
   private Set<SemanticException> $elementExceptions = new HashSet<SemanticException>();
 
   /*</property>*/
@@ -175,11 +168,13 @@ public final class CompoundSemanticException extends SemanticException implement
   //------------------------------------------------------------------
 
   @Override
+  /*
   @MethodContract(
     post = @Expression("result ? " +
                          "for (SemanticException otherEe : _other.elementExceptions) {contains(otherEe)} && " +
                          "for (SemanticException ee : elementExceptions) {_other.contains(ee)}")
   )
+  */
   public boolean like(ApplicationException other) {
     if (! super.like(other)) {
       return false;
@@ -200,12 +195,7 @@ public final class CompoundSemanticException extends SemanticException implement
 
 
 
-  /**
-   * This method throws this exception if it is not empty.
-   * If this is not empty, this is closed. If the number of element
-   * exceptions is larger than 1, this is thrown. If there is exactly
-   * 1 element exception, that is thrown instead.
-   */
+  /*
   @MethodContract(
     post = {
       @Expression(
@@ -234,6 +224,7 @@ public final class CompoundSemanticException extends SemanticException implement
        )
     }
   )
+  */
   public final void throwIfNotEmpty() throws SemanticException {
     if (! isClosed()) {
       close();
