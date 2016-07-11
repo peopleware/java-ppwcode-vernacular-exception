@@ -172,18 +172,6 @@
   <!-- activating dependencies used in this project. Versions are chosen in the grandparent pom -->
   <dependencies>
     <dependency>
-      <groupId>org.ppwcode</groupId>
-      <artifactId>ppwcode-metainfo-I</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.toryt</groupId>
-      <artifactId>Toryt-annotations-I</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ppwcode.vernacular</groupId>
-      <artifactId>ppwcode-vernacular-l10n-III</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.ppwcode.util</groupId>
       <artifactId>ppwcode-util-exception-III</artifactId>
     </dependency>
@@ -196,13 +184,6 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>jspapi</groupId>
-      <artifactId>jsp-api</artifactId>
-      <version>2.0-20040521</version>
-    </dependency>
-    -->
   </dependencies>
 
 </project>
