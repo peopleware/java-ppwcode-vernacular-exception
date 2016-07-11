@@ -16,17 +16,6 @@ limitations under the License.
 
 package org.ppwcode.vernacular.exception.IV;
 
-
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.Invars;
-import org.toryt.annotations_I.MethodContract;
-
-
 /**
  * <p>This error is thrown when an external condition occurs, which we know can happen
  *   (however unlikely), which we do not want to deal with in our application. Most often,
@@ -60,14 +49,13 @@ import org.toryt.annotations_I.MethodContract;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
+/*
 @Invars({
   @Expression("message != null"),
   @Expression("message != EMPTY")
 })
+*/
+@SuppressWarnings("WeakerAccess")
 public class ExternalError extends Error {
 
   /**
@@ -95,7 +83,7 @@ public class ExternalError extends Error {
    * {@code EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE == }{@value}
    */
   public static final String EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE =
-      "An exception occured, which appears to be of an external nature.";
+      "An exception occurred, which appears to be of an external nature.";
 
 
 
@@ -106,8 +94,9 @@ public class ExternalError extends Error {
    * @param     message
    *            The message that describes the external exceptional condition.
    * @param     t
-   *            The exception that occured, causing this error to be thrown, if that is the case.
+   *            The exception that occurred, causing this error to be thrown, if that is the case.
    */
+  /*
   @MethodContract(
     post = {
       @Expression("message == (_message == null) || (_message == EMPTY) ? " +
@@ -116,14 +105,16 @@ public class ExternalError extends Error {
       @Expression("cause == _t")
     }
   )
+  */
   public ExternalError(final String message, final Throwable t) {
     super(defaultMessage(message, t), t);
   }
 
   /**
    * @param     t
-   *            The exception that occured, causing this error to be thrown, if that is the case.
+   *            The exception that occurred, causing this error to be thrown, if that is the case.
    */
+  /*
   @MethodContract(
     post = {
       @Expression("message == (_t == null) ? UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : " +
@@ -131,6 +122,7 @@ public class ExternalError extends Error {
       @Expression("cause == _t")
     }
   )
+  */
   public ExternalError(final Throwable t) {
     this(null, t);
   }
@@ -139,6 +131,7 @@ public class ExternalError extends Error {
    * @param     message
    *            The message that describes the external exceptional condition.
    */
+  /*
   @MethodContract(
     post = {
       @Expression("message == (_message == null) || (_message == EMPTY) ? " +
@@ -146,17 +139,19 @@ public class ExternalError extends Error {
       @Expression("cause == null")
     }
   )
+  */
   public ExternalError(final String message) {
     this(message, null);
   }
 
-
+  /*
   @MethodContract(
     post = @Expression("(_message == null) || (_message == EMPTY) ? " +
                          "((_t == null) ? UNSPECIFIED_EXTERNAL_ERROR_MESSAGE : " +
                                          "EXCEPTION_WITH_EXTERNAL_CAUSE_MESSAGE) : " +
                          "_message")
   )
+  */
   private static String defaultMessage(final String message, final Throwable t) {
     return ((message != null) && (! EMPTY.equals(message))) ?
                message :
