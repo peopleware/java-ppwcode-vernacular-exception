@@ -14,14 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppwcode.vernacular.exception_III;
+package org.ppwcode.vernacular.exception.IV;
 
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppwcode.vernacular.exception_III.ExternalError;
 import org.toryt.annotations_I.Expression;
 import org.toryt.annotations_I.MethodContract;
 

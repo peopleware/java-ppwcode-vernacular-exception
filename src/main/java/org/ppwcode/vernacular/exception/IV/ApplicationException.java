@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppwcode.vernacular.exception_III;
+package org.ppwcode.vernacular.exception.IV;
 
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.unexpectedException;

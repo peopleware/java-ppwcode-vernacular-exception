@@ -14,11 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppwcode.vernacular.exception_III;
+package org.ppwcode.vernacular.exception.IV;
 
-
-import org.ppwcode.vernacular.exception_III.ApplicationException;
-import org.ppwcode.vernacular.exception_III.ApplicationSecurityException;
 
 import junit.framework.TestCase;
 
