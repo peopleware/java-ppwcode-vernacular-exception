@@ -16,36 +16,21 @@ limitations under the License.
 
 package org.ppwcode.vernacular.exception.IV;
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.unexpectedException;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
-
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppwcode.vernacular.l10n_III.I18nTemplateException;
-import org.ppwcode.vernacular.l10n_III.LocalizedException;
-import org.ppwcode.vernacular.l10n_III.resourcebundle.DefaultResourceBundleLoadStrategy;
-import org.ppwcode.vernacular.l10n_III.resourcebundle.KeyNotFoundException;
-import org.ppwcode.vernacular.l10n_III.resourcebundle.ResourceBundleHelpers;
-import org.ppwcode.vernacular.l10n_III.resourcebundle.WrongValueTypeException;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.Invars;
-import org.toryt.annotations_I.MethodContract;
 
 
 /**
  * <p>Supertype for exceptions we consider <em>internal to the system we are developing,
- *   expected to occur and normal (though non-nominal) behavior</em> . Internal exceptions are
+ *   expected to occur and normal (though non-nominal) behavior</em>. Application exceptions are
  *   thrown when a method cannot perform its nominal task.</p>
  * <p>{@code ApplicationExceptions} should be caught somewhere, and possibly result in end-user
  *   feedback. {@code ApplicationExceptions} should never result in a crash of the application.
  *   Neither developers not administrators have a need for the information this exception
  *   expresses.</p>
+ * <p>When the reason to throw the {@code ApplicationException} is itself an exception, it should be
+ *   provided as the {@link #getCause()} of the {@code ApplicationException}.</p>
+ *
  * <p>Because {@code ApplicationExceptions} often result in feedback to the end user, the messages that
  *   are based on them should be localized. When instances of this class are created, you should
  *   use an identifying string (in all caps, without spaces) as {@link #getMessage() message},
@@ -56,18 +41,19 @@ import org.toryt.annotations_I.MethodContract;
  *   message for the {@link #DEFAULT_MESSAGE_KEY}.</p>
  * <p><strong>{@link #getLocalizedMessage()} is not used: this turned out to be a difficult pattern
  *   to use.</strong></p>
- * <p>When the reason to throw the {@code ApplicationException} is itself an exception, it should be
- *   provided as the {@link #getCause()} of the {@code ApplicationException}.</p>
+ *
+ * <p>Note: in a previous version, it was suggested that exceptions could translate themselves.
+ *   However, that was in a time when users interfaces where also handled on the server. Now, we aim at a completely
+ *   separate UI as a one-page-app, in HTML / CSS / JavaScript. Translation should be handled there.</p>
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
+/*
 @Invars(@Expression("validMessageKey(message)"))
-public class ApplicationException extends Exception implements LocalizedException {
+*/
+@SuppressWarnings("WeakerAccess")
+public class ApplicationException extends Exception {
 
   /**
    * The empty string.
@@ -92,16 +78,18 @@ public class ApplicationException extends Exception implements LocalizedExceptio
    *            The string that identifies a localized end user feedback message about the
    *            non-nominal behavior.
    * @param     cause
-   *            The exception that occured, causing this exception to be thrown, if that is
+   *            The exception that occurred, causing this exception to be thrown, if that is
    *            the case.
    */
+  /*
   @MethodContract(
-    pre  = @Expression("_messageKey == null || _messageKey == EMPTY || validmessageKey(_messageKey)"),
+    pre  = @Expression("_messageKey == null || _messageKey == EMPTY || validMessageKey(_messageKey)"),
     post = {
-      @Expression("message == (_messageKey == null || _messageIdentfier == EMPTY) ? DEFAULT_MESSAGE_KEY : _messageKey"),
+      @Expression("message == (_messageKey == null || _messageIdentifier == EMPTY) ? DEFAULT_MESSAGE_KEY : _messageKey"),
       @Expression("cause == _cause")
     }
   )
+  */
   public ApplicationException(final String messageKey, final Throwable cause) {
     super(defaultMessageKey(messageKey), cause);
   }
@@ -118,31 +106,33 @@ public class ApplicationException extends Exception implements LocalizedExceptio
   //------------------------------------------------------------------
 
   /**
-   * Compare {@code other} to this: is other of the the exact same
-   * type and does other have the exact same properties.
+   * <p>Compare {@code other} to this: is other of the the exact same
+   * type and does other have the exact same properties.</p>
    *
-   * This method is an alternative to {@link #equals(Object)}, which
+   * <p>This method is an alternative to {@link #equals(Object)}, which
    * we cannot override, because we need to keep reference semantics
-   * for exceptions.
+   * for exceptions.</p>
    *
-   * This method is introduced mainly for use in contracts of methods
+   * <p>This method is introduced mainly for use in contracts of methods
    * that throw property exceptions, and in unit tests for those
-   * methods.
+   * methods.</p>
    *
-   * This method must be overridden in every subclass that adds a property
-   * to include that property in the comparison.
+   * <p>This method must be overridden in every subclass that adds a property
+   * to include that property in the comparison.</p>
    *
-   * @note methods was formerly called {@code hasSameValues}, and now replaces
-   *       {@code hasSameValues}, 2 {@code contains} methods and 2 {@code reportsOn}
-   *       methods, which in practice did not fulfill their promise.
+   * <p>Note: methods was formerly called {@code hasSameValues}, and now replaces
+   *  {@code hasSameValues}, 2 {@code contains} methods and 2 {@code reportsOn}
+   *  methods, which in practice did not fulfill their promise.</p>
    *
    * @since III
    */
+  /*
   @MethodContract(
     post = @Expression("result ? (_other != null) && (_other.class = class) && " +
                        "(message == _other.message) && (cause == _other.cause) && " +
                        "(_other.cause == null ? cause == null : cause != null && _other.cause.class == cause.class)")
   )
+  */
   public boolean like(ApplicationException other) {
     return (other != null) && (other.getClass() == getClass()) &&
            eqn(other.getMessage(), getMessage()) &&
@@ -158,9 +148,11 @@ public class ApplicationException extends Exception implements LocalizedExceptio
 
 
 
+  /*
   @MethodContract(
     post = @Expression("messageKey != null && matchesMessageKeyPattern(messageKey)")
   )
+  */
   public static boolean validMessageKey(final String messageKey) {
     return (messageKey != null) &&
            matchesMessageKeyPattern(messageKey);
@@ -171,47 +163,18 @@ public class ApplicationException extends Exception implements LocalizedExceptio
    */
   public static final String MESSAGE_KEY_PATTERN = "[A-Z][A-Z_]*[A-Z]";
 
+  /*
   @MethodContract(
     pre  = @Expression("messageKey != null"),
     post = @Expression("Pattern.compile(MESSAGE_KEY_PATTERN).matcher(messageKey).matches()")
   )
+  */
   public static boolean matchesMessageKeyPattern(final String messageKey) {
     assert messageKey != null;
     Pattern p = Pattern.compile(MESSAGE_KEY_PATTERN);
     Matcher m = p.matcher(messageKey);
     return m.matches();
   }
-
-
-  /*<section name="message template">*/
-  //------------------------------------------------------------------
-  private static String DOT = ".";
-  /**
-   * Returns the message template for this exception in the given locale.
-   *
-   * TODO
-   */
-  public String getMessageTemplate(Locale locale) throws I18nTemplateException {
-    assert preArgumentNotNull(locale, "locale");
-
-    String result = null;
-
-    DefaultResourceBundleLoadStrategy strategy = new DefaultResourceBundleLoadStrategy();
-    strategy.setLocale(locale);
-
-    String prefix = getClass().getCanonicalName();
-    String[] keys = { getMessage() };
-    try {
-      result = ResourceBundleHelpers.value(getClass(), keys, String.class, strategy);
-    } catch (KeyNotFoundException exc) {
-      throw new I18nTemplateException("Template not found for key [" + getMessage() + "]", null, exc);
-    } catch (WrongValueTypeException exc) {
-      unexpectedException(exc);
-    }
-    return result;
-  }
-
-  /*</section>*/
 
 }
 
