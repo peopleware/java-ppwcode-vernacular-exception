@@ -17,24 +17,24 @@ limitations under the License.
 package org.ppwcode.vernacular.exception.IV.handle;
 
 
-import static org.ppwcode.util.exception_III.ExceptionHelpers.huntFor;
-
 import org.ppwcode.vernacular.exception.IV.ApplicationException;
 import org.ppwcode.vernacular.exception.IV.ExternalError;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
+
+import static org.ppwcode.util.exception_III.ExceptionHelpers.huntFor;
 
 
 /**
- * <p>A {@Link ThrowableTriager} for the ppwcode exception vernacular. This triages
- *   occurences of existing {@link ApplicationException InternalExceptions}, {@link ExternalError ExternalErrors}
+ * <p>A {@link ThrowableTriager} for the ppwcode exception vernacular. This does triage of
+ *   occurrences of existing {@link ApplicationException ApplicationExceptions}, {@link ExternalError ExternalErrors}
  *   and {@link AssertionError AssertionErrors} into themselves. This is more than a no-op,
  *   since those exceptions might be buried inside the cause chain of the offered throwable, instead
  *   of being the exception itself. With this triager, triage work done higher in the stack is recovered.
- *   Outer transport exceptions are peeeled of the meaningful exceptions.</p>
+ *   Outer transport exceptions are peeled of the meaningful exceptions.</p>
  */
+@SuppressWarnings("WeakerAccess")
 public class PpwcodeTriager implements ExceptionTriager {
 
+  /*
   @MethodContract(
     post = {
       @Expression("huntFor(t, ApplicationException.class) != null ? result = huntFor(t, ApplicationException.class)"),
@@ -44,10 +44,11 @@ public class PpwcodeTriager implements ExceptionTriager {
                   "huntFor(t, AssertionError.class) == null ? result == t")
     }
   )
+  */
   public Throwable triage(Throwable t) {
-    ApplicationException internalExc = huntFor(t, ApplicationException.class);
-    if (internalExc != null) {
-      return internalExc;
+    ApplicationException applicationExc = huntFor(t, ApplicationException.class);
+    if (applicationExc != null) {
+      return applicationExc;
     }
     ExternalError externalErr = huntFor(t, ExternalError.class);
     if (externalErr != null) {

@@ -454,7 +454,7 @@
     be handled by special handling code, that is triggered by <code>AssertionErrors</code> and{@link be.peopleware.exception_II.ProgrammingError}, but also by
     any other unchecked exception (<code>RuntimeException</code>) or <code>Error</code> that reaches the
     handling layer. But since a layer handling {@link be.peopleware.exception_II.ExternalError ExternalErrors} should be defined immediately below this layer, and checked exceptions, most
-    notably {@link be.peopleware.exception_II.InternalException InternalExceptions}, are normally dealt with much
+    notably {@link be.peopleware.exception_II.InternalException ApplicationExceptions}, are normally dealt with much
     earlier, this handling code should handle all <code>Throwables</code> that
     reach this layer. If {@link be.peopleware.exception_II.ExternalError ExternalErrors} or checked exceptions do
     reach the handling code, that is a programming error in itself. The handling

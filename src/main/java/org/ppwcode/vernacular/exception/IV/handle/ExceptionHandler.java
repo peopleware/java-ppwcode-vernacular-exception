@@ -17,38 +17,34 @@ limitations under the License.
 package org.ppwcode.vernacular.exception.IV.handle;
 
 
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.newAssertionError;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ppwcode.util.exception_III.ExceptionHelpers;
 import org.ppwcode.vernacular.exception.IV.ApplicationException;
 import org.ppwcode.vernacular.exception.IV.ExternalError;
-import org.toryt.annotations_I.Basic;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.Invars;
-import org.toryt.annotations_I.MethodContract;
-import org.toryt.annotations_I.Throw;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.newAssertionError;
+import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
 
 /**
- * <p>Final handling of throwables according to the ppwcode exception vernacular.
- *   {@link ApplicationException InternalExceptions} are thrown without ado. They should be caught in the UI layer
+ * <p>Final handling of {@link Throwable Throwables} according to the ppwcode exception vernacular.
+ *   {@link ApplicationException ApplicationExceptions} are thrown without ado. They should be caught in the UI layer
  *   and communicated to the end user. {@link ExternalError ExternalErrors} are communicated to the administrator,
  *   and then thrown. {@link AssertionError Programming errors} are communicated to the administrator and the
- *   developers, and then thrown. Other throwables are translated in {@link AssertionError AssertionErrors}
- *   (programming errors) and also communicated to the administrator and the developers.</p>
- * <p>The handler looks for {@link ApplicationException InternalExceptions}, {@link ExternalError ExternalErrors}
+ *   developers, and then thrown. Other {@link Throwable Throwables} are translated in
+ *   {@link AssertionError AssertionErrors} (programming errors) and also communicated to the administrator and the
+ *   developers.</p>
+ * <p>The handler looks for {@link ApplicationException ApplicationExceptions}, {@link ExternalError ExternalErrors}
  *   or {@link AssertionError AssertionErrors} inside the causal chain (and legacy patterns of the causal chain,
  *   see {@link ExceptionHelpers#huntFor(Throwable, Class)}) of the {@link Throwable} it is asked to handle.
  *   This is done by a chain of {@link ExceptionTriager ExceptionTriagers}, which have to be set up on an instance
  *   of this type. The first {@link ExceptionTriager} in the chain is always a {@link PpwcodeTriager}. This makes
- *   sure that earlier triage is appropriately.</p>
+ *   sure that earlier triage is appropriately handled.</p>
  * <p>Communication to the administrator is done via the log.</p>
- * <p>An remote EJB3 session bean, using JPA, should setup its exception handler, e.g., with an extra
+ * <p>An remote API method, should setup its exception handler, e.g., with an extra
  *   {@code SqlExceptionTriager} (with a {@code SqlExceptionHandler} for the database type used), an extra
  *   {@code JpaTriager}, an extra {@code JtaTriager} and an extra {@code EjbTriager}. The order in which
  *   triagers can influence the outcome. Suppose in the example above, that there is a {@code SQLException}
@@ -83,15 +79,16 @@ import org.toryt.annotations_I.Throw;
  *         throw b;
  *       }</var>
  *       catch (ApplicationException metaExc) {
- *         unexpectedException(metaExc, "handleException can throw no InternalExceptions");
+ *         unexpectedException(metaExc, "handleException can throw no ApplicationExceptions");
  *       }
  *     }
  *   }
  * </pre>
  *
- * @todo A way to log via an applicable logger automatically
- * @todo Also warn administrators and developers via mail, in push fashion.
+ * // TODO A way to log via an applicable logger automatically
+ * // TODO Also warn administrators and developers via mail, in push fashion.
  */
+@SuppressWarnings("WeakerAccess")
 public class ExceptionHandler {
 
   private final static Log _LOG = LogFactory.getLog(ExceptionHandler.class);
@@ -99,6 +96,7 @@ public class ExceptionHandler {
   /*<property name="triagers">*/
   //------------------------------------------------------------------
 
+  /*
   @Basic(
     invars = {
       @Expression("triagers != null"),
@@ -106,30 +104,37 @@ public class ExceptionHandler {
     },
     init = @Expression("triagers.size() == 1")
   )
+  */
   public final List<ExceptionTriager> getTriagers() {
     @SuppressWarnings("unchecked")
     List<ExceptionTriager> clone = (List<ExceptionTriager>)$triagers.clone();
     return clone;
   }
 
+  /*
   @MethodContract(pre  = @Expression("triagers != null"),
                   post = @Expression("triagers.addAll(_triagers)"))
+  */
   public final void setTriagers(List<ExceptionTriager> triagers) {
     assert preArgumentNotNull(triagers, "triagers");
     $triagers.addAll(triagers);
   }
 
+  /*
   @MethodContract(pre  = @Expression("triager != null"),
                   post = @Expression("triagers.add(_triager)"))
+  */
   public final void addTriager(ExceptionTriager triager) {
     assert preArgumentNotNull(triager, "triager");
     $triagers.add(triager);
   }
 
+  /*
   @Invars({
     @Expression("$triagers != null"),
     @Expression("$triagers.get(0) instanceof PpwcodeTriager")
   })
+  */
   private ArrayList<ExceptionTriager> $triagers = new ArrayList<ExceptionTriager>();
   {
     $triagers.add(new PpwcodeTriager());
@@ -146,6 +151,7 @@ public class ExceptionHandler {
    * return an instance of {@link ApplicationException}, {@link ExternalError} or {@link AssertionError}, return {@code t}
    * itself.
    */
+  /*
   @MethodContract(
     pre  = @Expression("_t != null"),
     post = {
@@ -166,6 +172,7 @@ public class ExceptionHandler {
                     "} ?? result == _t")
     }
   )
+  */
   public Throwable triage(Throwable t) {
     _LOG.debug("triaging " + t);
     assert $triagers.get(0) instanceof PpwcodeTriager : "first triager must be ppwcode exception vernacular triager";
@@ -185,11 +192,12 @@ public class ExceptionHandler {
 
   /**
    * Handle {@link Throwable} {@code t}. {@link #triage(Throwable)} {@code _t}, and then, if triage results in
-   * an acceptable internal exception ({@code acceptableInternalExceptionType}), throw that. If triage results in
+   * an acceptable application exception ({@code acceptableInternalExceptionType}), throw that. If triage results in
    * an {@link ExternalError}, warn the administrator, and throw that. If triage results in a {@link AssertionError
    * programming error}, warn the administrator and developers, and throw that. If triage results in an other
    * type of exception, treat it as a programming error.
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_t != null"),
@@ -198,7 +206,7 @@ public class ExceptionHandler {
     post = {
       @Expression("exist (int i : 0 .. _acceptableInternalExceptionType.length) {" +
                     "_acceptableInternalExceptionType[i].isInstance(triage(t))" +
-                  "} ? handleInternalException(triage(t), log)"),
+                  "} ? handleApplicationException(triage(t), log)"),
       @Expression("triage(t) instanceof ExternalError ? handleExternalError(triage(t), log)"),
       @Expression("triage(t) instanceof AssertionError ? handleProgrammingError(triage(t), log)"),
       @Expression("! (exist (int i : 0 .. _acceptableInternalExceptionType.length) {" +
@@ -209,6 +217,7 @@ public class ExceptionHandler {
                   "handleProgrammingError(new AssertionError(triage(t)), log)")
     }
   )
+  */
   public void handleException(Throwable t, Log log, Class<? extends ApplicationException>... acceptableInternalExceptionType)
       throws ApplicationException, ExternalError, AssertionError {
     assert preArgumentNotNull(t, "t");
@@ -217,15 +226,15 @@ public class ExceptionHandler {
     /* Case by case, we try to triage t, into an ApplicationException, ExternalError or AssertionError.
      * If triage fails, anything that is unclear is considered a programming error.
      * The finally resulting ApplicationException, ExternalError or AssertionError is then logged and thrown.
-     * For internal exceptions, only types found in accaptableInternalExceptionTypes are actually acceptable.
-     * If InternalExceptions occur that are not of an acceptable type, they are converted into programming errors too.
+     * For internal exceptions, only types found in acceptableInternalExceptionTypes are actually acceptable.
+     * If ApplicationExceptions occur that are not of an acceptable type, they are converted into programming errors too.
      */
     Throwable triaged = null;
     try {
       triaged = triage(t);
     }
     catch (Throwable metaT) {
-      _LOG.error("triaging produced an error", metaT);
+      _LOG.error("triage produced an error", metaT);
       triaged = metaT; // an error trying to deal with a previous error
     }
     handleTriagedException(log, triaged, acceptableInternalExceptionType);
@@ -237,7 +246,7 @@ public class ExceptionHandler {
       for (int i = 0; i < acceptableInternalExceptionType.length; i++) {
         if (acceptableInternalExceptionType[i].isInstance(triaged)) {
           _LOG.trace("exception " + triaged + " recognized as of acceptable ApplicationException type " + acceptableInternalExceptionType[i]);
-          handleInternalException(acceptableInternalExceptionType[i].cast(triaged), log);
+          handleApplicationException(acceptableInternalExceptionType[i].cast(triaged), log);
         }
       }
     }
@@ -259,34 +268,38 @@ public class ExceptionHandler {
   }
 
   /**
-   * Throw {@code internalExc}.
+   * Throw {@code applicationExc}.
    */
+  /*
   @MethodContract(
     pre  = @Expression("_internalExc != null"),
     post = @Expression("false"),
     exc  = @Throw(type = ApplicationException.class, cond = @Expression("thrown == _internalExc"))
   )
-  public void handleInternalException(ApplicationException internalExc, Log log) throws ApplicationException {
-    // this is an application exception; its occurence is non-nominal, but normal and expected; there is no need to warn anybody
-    log.debug("internal exception; this is non-nominal, normal and expected behavior", internalExc);
+  */
+  public void handleApplicationException(ApplicationException applicationExc, Log log) throws ApplicationException {
+    // this is an application exception; its occurrence is non-nominal, but normal and expected; there is no need to warn anybody
+    log.debug("internal exception; this is non-nominal, normal and expected behavior", applicationExc);
     // rethrow
-    throw internalExc;
+    throw applicationExc;
   }
 
   /**
-   * Throw {@code internalExc}.
+   * Throw {@code applicationExc}.
    * As a side effect, the error is logged as an error.
    *
-   * @todo mail the administrator
+   * // TODO mail the administrator
    */
+  /*
   @MethodContract(
     pre  = @Expression("_externalErr != null"),
     post = @Expression("false"),
     exc  = @Throw(type = ExternalError.class, cond = @Expression("thrown == _externalErr"))
   )
+  */
   public void handleExternalError(ExternalError externalErr, Log log) throws ExternalError {
     // log and warn the administrator
-    log.error("A deployment issue occured. This is an issue outside the scope of the developers, which requires " +
+    log.error("A deployment issue occurred. This is an issue outside the scope of the developers, which requires " +
                "attention of the administrator", externalErr);
     // rethrow
     throw externalErr;
@@ -296,16 +309,18 @@ public class ExceptionHandler {
    * Throw {@code programmingErr}.
    * As a side effect, the error is logged as an error.
    *
-   * @todo mail the administrator and developers
+   * // TODO mail the administrator and developers
    */
+  /*
   @MethodContract(
     pre  = @Expression("_programmingErr != null"),
     post = @Expression("false"),
     exc  = @Throw(type = AssertionError.class, cond = @Expression("thrown == _programmingErr"))
   )
+  */
   public static void handleProgrammingError(AssertionError programmingErr, Log log) throws AssertionError {
     // log and warn the administrator and developers
-    log.error("A programming error occured. This is an issue where the administrator probably cannot help. " +
+    log.error("A programming error occurred. This is an issue where the administrator probably cannot help. " +
              "Please contact the developers and add as much information as possible in the communication," +
              "including this log file, and especially the stack trace following this message.", programmingErr);
     // rethrow

@@ -20,15 +20,13 @@ package org.ppwcode.vernacular.exception.IV.handle;
 import org.ppwcode.util.exception_III.ExceptionHelpers;
 import org.ppwcode.vernacular.exception.IV.ApplicationException;
 import org.ppwcode.vernacular.exception.IV.ExternalError;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
 
 
 /**
- * <p>Triage {@link Throwable Throwables} into {@link ApplicationException InternalExceptions},
+ * <p>Triage {@link Throwable Throwables} into {@link ApplicationException ApplicationExceptions},
  *   {@link ExternalError ExternalErrors} or {@link AssertionError AssertionErrors}.</p>
  * <p>In the ppwcode exception vernacular, we intend as much as possible to communicate with
- *   either {@link ApplicationException InternalExceptions}, {@link ExternalError ExternalErrors}
+ *   either {@link ApplicationException ApplicationExceptions}, {@link ExternalError ExternalErrors}
  *   or {@link AssertionError AssertionErrors}, especially between layers. Implementations of
  *   this interface are responsible for trying to convert any {@link Throwable} into one
  *   of these specialized kinds.</p>
@@ -36,6 +34,7 @@ import org.toryt.annotations_I.MethodContract;
  *   triage exceptions in a concerted effort.</p>
  * <p>Specialized triagers can be found in libraries specialized in specific domains.</p>
  */
+@SuppressWarnings("WeakerAccess")
 public interface ExceptionTriager {
 
   /**
@@ -45,14 +44,16 @@ public interface ExceptionTriager {
    *   {@code t} or in the {@link Throwable#getCause() cause chain} of {@code t} (see
    *   {@link ExceptionHelpers#huntFor(Throwable, Class)}). If {@code t} cannot sensibly be
    *   triaged in the context of this specific {@code ExceptionTriager}, this method should
-   *   return {@code t}. Non-triaged throwables will finally be treated as programming errors.</p>
+   *   return {@code t}. Non-triaged {@link Throwable Throwables} will finally be treated as programming errors.</p>
    * <p>This method can only throw programming errors. When it cannot do its job for a configuration
    *   reason, it should return {@code t} and log its problem at warn level.</p>
    */
+  /*
   @MethodContract(
     pre  = @Expression("_t != null"),
     post = @Expression("t != null")
   )
+  */
   Throwable triage(Throwable t);
 
 }

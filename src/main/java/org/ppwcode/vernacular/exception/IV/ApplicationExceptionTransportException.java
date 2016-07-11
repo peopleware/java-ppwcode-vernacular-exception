@@ -26,7 +26,7 @@ import org.toryt.annotations_I.MethodContract;
 
 
 /**
- * <p>Exception for transporting {@link ApplicationException InternalExceptions} out of methods that
+ * <p>Exception for transporting {@link ApplicationException ApplicationExceptions} out of methods that
  *   only allow for {@link RuntimeException RuntimeExceptions} to be thrown.</p>
  * <p>In a number of modern frameworks (notably JPA, EJB3, Hibernate 3, Spring, etc...) there
  *   is a tendency towards using {@link RuntimeException RuntimeExceptions} instead of

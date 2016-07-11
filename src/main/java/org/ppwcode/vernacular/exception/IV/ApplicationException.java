@@ -42,11 +42,11 @@ import org.toryt.annotations_I.MethodContract;
  * <p>Supertype for exceptions we consider <em>internal to the system we are developing,
  *   expected to occur and normal (though non-nominal) behavior</em> . Internal exceptions are
  *   thrown when a method cannot perform its nominal task.</p>
- * <p>{@code InternalExceptions} should be caught somewhere, and possibly result in end-user
- *   feedback. {@code InternalExceptions} should never result in a crash of the application.
+ * <p>{@code ApplicationExceptions} should be caught somewhere, and possibly result in end-user
+ *   feedback. {@code ApplicationExceptions} should never result in a crash of the application.
  *   Neither developers not administrators have a need for the information this exception
  *   expresses.</p>
- * <p>Because {@code InternalExceptions} often result in feedback to the end user, the messages that
+ * <p>Because {@code ApplicationExceptions} often result in feedback to the end user, the messages that
  *   are based on them should be localized. When instances of this class are created, you should
  *   use an identifying string (in all caps, without spaces) as {@link #getMessage() message},
  *   which can be used to retrieve the appropriate end user message when the exception is dealt with.
