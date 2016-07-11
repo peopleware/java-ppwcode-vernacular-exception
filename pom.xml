@@ -2,7 +2,7 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <!--
-    Copyright 2004 - $Date$ by PeopleWare n.v.
+    Copyright 2004 - 2016 by PeopleWare n.v.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
-    $Date$
+    2016
     $Revision$
     $HeadURL$
   -->
