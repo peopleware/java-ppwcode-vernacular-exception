@@ -19,15 +19,15 @@ package org.ppwcode.vernacular.exception.IV.handle;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ppwcode.util.exception_III.ExceptionHelpers;
 import org.ppwcode.vernacular.exception.IV.ApplicationException;
 import org.ppwcode.vernacular.exception.IV.ExternalError;
+import org.ppwcode.vernacular.exception.IV.util.ExceptionHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.newAssertionError;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
+import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.newAssertionError;
+import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.preArgumentNotNull;
 
 /**
  * <p>Final handling of {@link Throwable Throwables} according to the ppwcode exception vernacular.
@@ -40,8 +40,8 @@ import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgument
  * <p>The handler looks for {@link ApplicationException ApplicationExceptions}, {@link ExternalError ExternalErrors}
  *   or {@link AssertionError AssertionErrors} inside the causal chain (and legacy patterns of the causal chain,
  *   see {@link ExceptionHelpers#huntFor(Throwable, Class)}) of the {@link Throwable} it is asked to handle.
- *   This is done by a chain of {@link ExceptionTriager ExceptionTriagers}, which have to be set up on an instance
- *   of this type. The first {@link ExceptionTriager} in the chain is always a {@link PpwcodeTriager}. This makes
+ *   This is done by a chain of {@link ThrowableTriager ThrowableTriagers}, which have to be set up on an instance
+ *   of this type. The first {@link ThrowableTriager} in the chain is always a {@link PpwcodeTriager}. This makes
  *   sure that earlier triage is appropriately handled.</p>
  * <p>Communication to the administrator is done via the log.</p>
  * <p>An remote API method, should setup its exception handler, e.g., with an extra
@@ -88,7 +88,7 @@ import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgument
  * // TODO A way to log via an applicable logger automatically
  * // TODO Also warn administrators and developers via mail, in push fashion.
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ExceptionHandler {
 
   private final static Log _LOG = LogFactory.getLog(ExceptionHandler.class);
@@ -105,9 +105,9 @@ public class ExceptionHandler {
     init = @Expression("triagers.size() == 1")
   )
   */
-  public final List<ExceptionTriager> getTriagers() {
+  public final List<ThrowableTriager> getTriagers() {
     @SuppressWarnings("unchecked")
-    List<ExceptionTriager> clone = (List<ExceptionTriager>)$triagers.clone();
+    List<ThrowableTriager> clone = (List<ThrowableTriager>)$triagers.clone();
     return clone;
   }
 
@@ -115,7 +115,7 @@ public class ExceptionHandler {
   @MethodContract(pre  = @Expression("triagers != null"),
                   post = @Expression("triagers.addAll(_triagers)"))
   */
-  public final void setTriagers(List<ExceptionTriager> triagers) {
+  public final void setTriagers(List<ThrowableTriager> triagers) {
     assert preArgumentNotNull(triagers, "triagers");
     $triagers.addAll(triagers);
   }
@@ -124,7 +124,7 @@ public class ExceptionHandler {
   @MethodContract(pre  = @Expression("triager != null"),
                   post = @Expression("triagers.add(_triager)"))
   */
-  public final void addTriager(ExceptionTriager triager) {
+  public final void addTriager(ThrowableTriager triager) {
     assert preArgumentNotNull(triager, "triager");
     $triagers.add(triager);
   }
@@ -135,7 +135,7 @@ public class ExceptionHandler {
     @Expression("$triagers.get(0) instanceof PpwcodeTriager")
   })
   */
-  private ArrayList<ExceptionTriager> $triagers = new ArrayList<ExceptionTriager>();
+  private ArrayList<ThrowableTriager> $triagers = new ArrayList<ThrowableTriager>();
   {
     $triagers.add(new PpwcodeTriager());
   }
@@ -145,7 +145,7 @@ public class ExceptionHandler {
 
 
   /**
-   * Ask the {@link #getTriagers() triagers} one after the other, in order, to {@link ExceptionTriager#triage(Throwable)}
+   * Ask the {@link #getTriagers() triagers} one after the other, in order, to {@link ThrowableTriager#triage(Throwable)}
    * {@code t}. If the resulting {@link Throwable} is an instance of {@link ApplicationException}, {@link ExternalError} or
    * {@link AssertionError}, return that {@link Throwable} and stop looking. If no {@link #getTriagers() triagers} can
    * return an instance of {@link ApplicationException}, {@link ExternalError} or {@link AssertionError}, return {@code t}
@@ -176,7 +176,7 @@ public class ExceptionHandler {
   public Throwable triage(Throwable t) {
     _LOG.debug("triaging " + t);
     assert $triagers.get(0) instanceof PpwcodeTriager : "first triager must be ppwcode exception vernacular triager";
-    for (ExceptionTriager triager : $triagers) {
+    for (ThrowableTriager triager : $triagers) {
       Throwable triaged = triager.triage(t);
       if (triaged instanceof ApplicationException || triaged instanceof ExternalError || triaged instanceof AssertionError) {
         // triage succeeded

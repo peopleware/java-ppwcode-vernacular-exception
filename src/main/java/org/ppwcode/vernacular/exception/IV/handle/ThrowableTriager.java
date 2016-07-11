@@ -17,7 +17,7 @@ limitations under the License.
 package org.ppwcode.vernacular.exception.IV.handle;
 
 
-import org.ppwcode.util.exception_III.ExceptionHelpers;
+import org.ppwcode.vernacular.exception.IV.util.ExceptionHelpers;
 import org.ppwcode.vernacular.exception.IV.ApplicationException;
 import org.ppwcode.vernacular.exception.IV.ExternalError;
 
@@ -34,8 +34,8 @@ import org.ppwcode.vernacular.exception.IV.ExternalError;
  *   triage exceptions in a concerted effort.</p>
  * <p>Specialized triagers can be found in libraries specialized in specific domains.</p>
  */
-@SuppressWarnings("WeakerAccess")
-public interface ExceptionTriager {
+@SuppressWarnings({"WeakerAccess", "unused"})
+public interface ThrowableTriager {
 
   /**
    * <p>Try to convert {@code t} into an {@link ApplicationException}, {@link ExternalError} or
@@ -43,7 +43,7 @@ public interface ExceptionTriager {
    * <p>Implementations should base themselves on the occurrence of specific exception types for
    *   {@code t} or in the {@link Throwable#getCause() cause chain} of {@code t} (see
    *   {@link ExceptionHelpers#huntFor(Throwable, Class)}). If {@code t} cannot sensibly be
-   *   triaged in the context of this specific {@code ExceptionTriager}, this method should
+   *   triaged in the context of this specific {@code ThrowableTriager}, this method should
    *   return {@code t}. Non-triaged {@link Throwable Throwables} will finally be treated as programming errors.</p>
    * <p>This method can only throw programming errors. When it cannot do its job for a configuration
    *   reason, it should return {@code t} and log its problem at warn level.</p>

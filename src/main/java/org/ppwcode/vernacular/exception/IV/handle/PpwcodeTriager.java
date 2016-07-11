@@ -20,7 +20,7 @@ package org.ppwcode.vernacular.exception.IV.handle;
 import org.ppwcode.vernacular.exception.IV.ApplicationException;
 import org.ppwcode.vernacular.exception.IV.ExternalError;
 
-import static org.ppwcode.util.exception_III.ExceptionHelpers.huntFor;
+import static org.ppwcode.vernacular.exception.IV.util.ExceptionHelpers.huntFor;
 
 
 /**
@@ -32,7 +32,7 @@ import static org.ppwcode.util.exception_III.ExceptionHelpers.huntFor;
  *   Outer transport exceptions are peeled of the meaningful exceptions.</p>
  */
 @SuppressWarnings("WeakerAccess")
-public class PpwcodeTriager implements ExceptionTriager {
+public class PpwcodeTriager implements ThrowableTriager {
 
   /*
   @MethodContract(
