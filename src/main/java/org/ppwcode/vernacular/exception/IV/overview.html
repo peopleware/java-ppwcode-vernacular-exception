@@ -59,31 +59,31 @@
   kind of <dfn>exceptional conditions</dfn> that can occur during execution of
   your program. In essence, an <dfn>exceptional condition</dfn> is anything
   that is not explicitly forbidden (<dfn>precondition</dfn>) that keeps your
-  code from reaching its nominal effect (<dfn>postcondition</dfn>). Calling
+  code from reaching its nominal effect (<dfn>post-condition</dfn>). Calling
   code in violation of preconditions is not an exceptional condition, but a
   <dfn>programming error</dfn>.</p>
   <p>Every method tries to reach its nominal
-  postcondition (which is oftern not completely deterministic in an
+  post-condition (which is often not completely deterministic in an
   environment with dynamic binding like an object oriented programming
   language). That is its reason for being. During its execution, it might
   encounter exceptional conditions. When this happens, the method can decide
   either to work around this condition, and still reach its nominal
-  postcondition, or it can decide to give up. In the first case, the condition
+  post-condition, or it can decide to give up. In the first case, the condition
   actually is not considered exceptional, but part of the normal operational
   conditions, in which the nominal effect is reached. In the latter case,
   execution of code should be halted in a controlled fashion. This means that
   nothing in the state of the program should have changed: it should be as if
-  the method that cannot reach its nominal postcondition, was never called in
+  the method that cannot reach its nominal post-condition, was never called in
   the first place. The method should be <dfn>atomic</dfn>: either it reaches
   its nominal effect, or it does nothing. Furthermore, the caller of the
   method should be warned about the success or failure of the method call.</p>
   <p>Throwing an <dfn>exception</dfn> is the ideal way for a method to signal
-  that it cannot reach its nominal effect as described by the postcondition.
+  that it cannot reach its nominal effect as described by the post-condition.
   After detection of the exceptional condition, nominal execution stops, and
   the method makes sure that nothing is changed to the overall state of the
   system (either because the method didn't make a change yet, or because the
   method rolls back all changes it made). Then, it signals its failure by
-  throwing an exception.</p> <p>If a method cannot reach its postcondition,
+  throwing an exception.</p> <p>If a method cannot reach its post-condition,
   and it is impossible for the method to behave in an atomic way, the caller
   should be aware of this. The calling method itself should be atomic too, and
   if the called method cannot do this, than the calling method gets the
@@ -92,12 +92,12 @@
   application). Here we have only 1 recourse: quit the application
   gracefully.</p> <p>Now, what are the possible reasons why a correctly
   implemented method, if called in acceptable conditions, i.e., not in
-  violation of its preconditions, cannot reach its nominal postcondition? Here
+  violation of its preconditions, cannot reach its nominal post-condition? Here
   are 2 major types of conditions:</p> <ol>
       <li>The current state of the system, in particular the state of the
       prime object and the explicit actual arguments of the method call, is
       examined by the code of the method, and the method decided that it can
-      (or will) not implement the postcondition in these circumstances for
+      (or will) not implement the post-condition in these circumstances for
       <dfn>semantic reasons</dfn>.<br />
       E.g., we want to withdraw money
       from an account, and the requested amount is larger than the balance.
@@ -107,13 +107,13 @@
       This kind of exceptional conditions we will
     call <dfn>semantic exceptional conditions</dfn>.</li>
 
-      <li>CONFUSION STARTS HERE The method could not reach the postcondition for a <dfn>technical
+      <li>CONFUSION STARTS HERE The method could not reach the post-condition for a <dfn>technical
       reason</dfn> outside the system.<br />
       E.g., we are saving data to a
       database, and the connection fails (maybe somebody tripped over a
       network cable). Or, we need to access a webservice, and we can't resolve
       the domain name (maybe our DNS server is down). Or, as a final example,
-      the postcondition cannot be reached because the system runs out of
+      the post-condition cannot be reached because the system runs out of
       memory.<br />
       This kind of exceptional conditions we call
     <dfn>technical exceptional conditions</dfn> .</li>
@@ -152,7 +152,7 @@
   guarantee that, if a method is called within the boundaries set by its
   preconditions, <em>all</em> method calls will result in either,</p> <ul>
       <li>a nominal end to the method call and a state change that at least
-      incorporates the effect described by the postcondition, or,</li>
+      incorporates the effect described by the post-condition, or,</li>
 
       <li>an exception being thrown, under conditions described in the
       contract that allow this, and <ul>
@@ -200,7 +200,7 @@
       <li>and some we deal with inside the nominal flow of our code.</li>
   </ul> <p>Note that encountering unexpected conditions is not the only kind
   of programming error possible. You can, e.g., also blatantly fail to reach
-  your postcondition, when you typed a <code>-</code> where a <code>+</code>
+  your post-condition, when you typed a <code>-</code> where a <code>+</code>
   was in order. But it is a very important kind of programming error, because
   it is very difficult to always be exhaustively aware of all possible
   conditions.</p> <p>Very many unexpected conditions will turn up as
@@ -250,7 +250,7 @@
   aversion against unchecked exceptions. When the methods I use only list
   unchecked exceptions, my IDE can't help me in being aware of all possible
   conditions, and I must revert to looking things up by hand in Javadoc. The
-  loss in efficiëncy is enormous. Given, the IDE only warns me about potential
+  loss in efficiency is enormous. Given, the IDE only warns me about potential
   exceptions. I still need to look up by hand the conditions under which these
   exceptions might be thrown (the Javadoc <code>throws</code> clause), because
   that is what I need to consider in my implementation. But still, the aid I
@@ -299,7 +299,7 @@
   is the calling of methods in violation of their preconditions. This kind of
   programming error can, sadly, not be checked statically by the compiler, and
   also cannot not be checked with unit testing (unit testing can only check
-  whether postconditions are reached in a number of test cases, that must
+  whether post-conditions are reached in a number of test cases, that must
   adhere to the preconditions). Again, it is best-practice to take down
   preconditions at the start of your method in code, using an
   <code>assert</code>-clause. Any violation of preconditions while calling
@@ -309,7 +309,7 @@
   signaled by the occurrence of either an unexpected exception (which only can
   be an unchecked exception) or a <code>java.lang.AssertionError</code>. I
   also hypothesize that any other kind of programming error is related to not
-  reaching the postcondition (including throwing expected exceptions), and
+  reaching the post-condition (including throwing expected exceptions), and
   thus in the realm of unit testing.</p> <p>The above clearly gives the hint
   that unchecked exceptions (and <code>java.lang.Error</code> instances) have
   a role to play in the context of programming errors, and that checked
@@ -412,10 +412,10 @@
   document branches that should be unreachable (the <code>catch</code>-clause
   of exceptions that shouldn't occur, or <code>else</code>-branches of decision
   trees or <code>default</code> branches of <code>switch</code>-statements
-  that should never be choosen). It would be nice if
+  that should never be chosen). It would be nice if
   <code>AssertionError</code> would be a subclass of {@link be.peopleware.exception_II.ProgrammingError}, but we cannot change the core API, of course.
   Also, the other way around is not feasible, since
-  <code>AssertionError</code> doesn't provide a constructuror that takes a
+  <code>AssertionError</code> doesn't provide a constructor that takes a
   <code>Throwable</code> as an argument, which is important information in
   some cases. The user should be aware that the reaction higher up to
   this error is probably an immediate shutdown of the application, with a warning to the developer and a note in the log.</p>
@@ -423,18 +423,18 @@
   <p>An {@link be.peopleware.exception_II.ExternalError} should be used whenever an operation fails
   because of expected reasons we decide are outside our system.  When you decide to throw this error,
   you should know that the reaction higher up probably is to shut down the
-  system, with a warning to the developer and a note in the log. We have choosen to use an <code>Error</code> here, because we feel
+  system, with a warning to the developer and a note in the log. We have chosen to use an <code>Error</code> here, because we feel
   that code higher up should not be concerned with occurrences like these (we
   do consider the occurrence outside the system, remember), unless it is the
   code that is specifically handling external errors. The exception thus should
   best be unchecked, and by providing a specific exception type for these
   occurrences, it becomes easy to detect them at the higher levels, and write
-  the handling code in a general way. We could also have choosen to make {@link be.peopleware.exception_II.ExternalError} a <code>RuntimeException</code> (i.e., an unchecked
+  the handling code in a general way. We could also have chosen to make {@link be.peopleware.exception_II.ExternalError} a <code>RuntimeException</code> (i.e., an unchecked
   exception), we we believe the documented semantics of <code>Error</code> are
   closer to our need.</p>
   <h4>InternalException</h4>
-  <p>{@link be.peopleware.exception_II.InternalException} is the general super type for all exceptions that signal expected exceptional occurences that we consider to be internal to the system. These should be dealt with, and to notify the programmer of this during development, this is a checked exception. The difference with other checked exceptions is that, by throwing an {@link be.peopleware.exception_II.InternalException}, we are telling our users that we decided that this occurence indeed <em>is</em> internal, and should be handled.</p>
-  <p>Other checked exceptions should be used, in particular by lower level libraries, to signal exceptional occurences, when the developer of that code does not want to decide whether or not the condition is to be considered internal or external, or a programming error. Take, e.g., a persistence library, that might need to signal that a file is corrupt. Some programs that use the library will consider this problem to be external, but the library can also be used by an application that specifically scans for corrupt files, in which case the condition is obviously internal. The point is, the lower level library is supporting code, and is not in a position to make the call. For reasons explained higher, I strongly believe that such a library should throw checked exceptions, though.</p>
+  <p>{@link be.peopleware.exception_II.InternalException} is the general super type for all exceptions that signal expected exceptional occurrences that we consider to be internal to the system. These should be dealt with, and to notify the programmer of this during development, this is a checked exception. The difference with other checked exceptions is that, by throwing an {@link be.peopleware.exception_II.InternalException}, we are telling our users that we decided that this occurrence indeed <em>is</em> internal, and should be handled.</p>
+  <p>Other checked exceptions should be used, in particular by lower level libraries, to signal exceptional occurrences, when the developer of that code does not want to decide whether or not the condition is to be considered internal or external, or a programming error. Take, e.g., a persistence library, that might need to signal that a file is corrupt. Some programs that use the library will consider this problem to be external, but the library can also be used by an application that specifically scans for corrupt files, in which case the condition is obviously internal. The point is, the lower level library is supporting code, and is not in a position to make the call. For reasons explained higher, I strongly believe that such a library should throw checked exceptions, though.</p>
   <h4>SecurityException</h4>
   <p>{@link be.peopleware.exception_II.SemanticException} is a subtype of {@link be.peopleware.exception_II.InternalException}, to be used as supertype to signal security related exceptional conditions.</p>
   <p>At the moment, there are no general subtypes defined, and this exception has no special properties. This will probably change as the library evolves. </p>
@@ -460,11 +460,11 @@
     reach the handling code, that is a programming error in itself. The handling
     code can benefit from getting <code>AssertionErrors</code> or{@link be.peopleware.exception_II.ProgrammingError}, because they make it possible to give more
   precise feedback about the programming error.</p>
-  <p>The handling should catch the exception, log it, possibly notify the correct audience, and exit the application. The latter can possibly be done most easily by rethrowing the caucht exception. LOG LEVEL??? </p>
+  <p>The handling should catch the exception, log it, possibly notify the correct audience, and exit the application. The latter can possibly be done most easily by rethrowing the caught exception. LOG LEVEL??? </p>
   <p>&lt;&lt;&lt;&lt; HERE</p>
   <p> <a
   href="http://www.mindview.net/Etc/Discussions/CheckedExceptions">http://www.mindview.net/Etc/Discussions/CheckedExceptions</a></p>
-  <p>Abscence of proof is not proof of absence.</p> <p>&nbsp;</p> <h2>The
+  <p>Absence of proof is not proof of absence.</p> <p>&nbsp;</p> <h2>The
   Audience of Compilation Errors</h2> <p> As a side note, now that we are
   talking about the audiences for signaling issues, consider compilation
   problems. A failed compile is a signal of a programming error to the right
@@ -511,7 +511,7 @@
   without notifying the end-user or the administrator. What is exceptional to
   us, might be nominal to code above us. Furthermore, advocating a clean
   separation-of-concerns, if we are now in a layer that is not the
-  presentation layer, we should not concern ourselfs with end-user
+  presentation layer, we should not concern our self with end-user
   communication. We should merely, semantically, gather the information
   necessary, and report this information to the code that called us.</p>
   <h1>Going Through Layers</h1> <h1>When to Throw Exceptions</h1> <p>Now that
@@ -537,7 +537,7 @@
   the software is deployed, we take into account the fact that this will be a
   rare occurrence. So we should not put too many effort in it. In this case it
   sadly is the end-user that is confronted with the error, so we need some
-  blabla.</p> <p>assert good enough; disable when you feel safe.</p> <p>assert
+  explanation.</p> <p>assert good enough; disable when you feel safe.</p> <p>assert
   is good!!!!</p> <h1>Checked Exceptions, Unchecked Exceptions and Errors</h1>
   <p>Unchecked exceptions (and that includes errors) should be used to signal
   programming errors or technical exceptional conditions.</p> <p>Problem is

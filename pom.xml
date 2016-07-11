@@ -169,7 +169,7 @@
     </repository>
   </repositories>
 
-  <!-- activating dependencies used in this project. Versions are choosen in the grandparent pom -->
+  <!-- activating dependencies used in this project. Versions are chosen in the grandparent pom -->
   <dependencies>
     <dependency>
       <groupId>org.ppwcode</groupId>
