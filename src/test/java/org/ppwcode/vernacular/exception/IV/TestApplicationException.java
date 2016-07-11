@@ -16,16 +16,16 @@ limitations under the License.
 
 package org.ppwcode.vernacular.exception.IV;
 
-
 import junit.framework.TestCase;
 
-
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class TestApplicationException extends TestCase {
 
   public final static String TEST_MESSAGE = "TEST_MESSAGE_IDENTIFIER";
 
   public final static String EMPTY = "";
 
+  @SuppressWarnings("ThrowableInstanceNeverThrown")
   public final static Throwable TEST_THROWABLE = new NullPointerException();
 
 
@@ -158,7 +158,7 @@ public class TestApplicationException extends TestCase {
     boolean expected = (messageIdentifier.length() > 1);
     if (expected) {
       char first = messageIdentifier.charAt(0);
-      expected &= Character.isUpperCase(first);
+      expected = Character.isUpperCase(first);
       char last = messageIdentifier.charAt(messageIdentifier.length() - 1);
       expected &= Character.isUpperCase(last);
       for (int i = 1; i < messageIdentifier.length() - 1; i++) {

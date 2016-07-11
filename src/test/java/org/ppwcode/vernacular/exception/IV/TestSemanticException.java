@@ -16,16 +16,16 @@ limitations under the License.
 
 package org.ppwcode.vernacular.exception.IV;
 
-
 import junit.framework.TestCase;
 
-
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class TestSemanticException extends TestCase {
 
   public final static String TEST_MESSAGE = "TEST_MESSAGE_IDENTIFIER";
 
   public final static String EMPTY = "";
 
+  @SuppressWarnings("ThrowableInstanceNeverThrown")
   public final static Throwable TEST_THROWABLE = new NullPointerException();
 
 
