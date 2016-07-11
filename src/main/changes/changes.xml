@@ -1,11 +1,7 @@
 <document>
 
   <!--
-  $Date$
-  $Revision$
-  $HeadURL$
-
-  Copyright 2004 - $Date$ by PeopleWare n.v.
+  Copyright 2004 - 2016 by PeopleWare n.v.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -29,6 +25,13 @@
     <author email="Nele_Smeets@peopleware.be">Nele Smeets</author>
   </properties>
   <body>
+
+    <release version="IV v1.0" date="2016-07-11" description="revival">
+      <action dev="jand" type="update">
+        Everything is changed. This revives this code base after almost 8 years.
+        Java is now at version 8.
+      </action>
+    </release>
 
     <release version="III v1.1" date="2008-12-18" description="more recent parent pom">
       <action dev="jand" type="update">
