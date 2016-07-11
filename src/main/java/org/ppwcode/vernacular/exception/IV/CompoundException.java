@@ -17,17 +17,7 @@ limitations under the License.
 package org.ppwcode.vernacular.exception.IV;
 
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-
 import java.util.Set;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.toryt.annotations_I.Basic;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
-import org.toryt.annotations_I.Throw;
 
 
 /**
@@ -42,7 +32,7 @@ import org.toryt.annotations_I.Throw;
  *   every time. A validation failure is stored and remembered until all validation is done, and then collected
  *   in a compound exception, which makes it possible to provide full feedback on validity to the end user in
  *   one pass.</p>
- * <p>Compound exceptions are build during a certain time, and migth eventually be thrown or not be
+ * <p>Compound exceptions are build during a certain time, and might eventually be thrown or not be
  *   thrown. An {@link #isEmpty() empty} compound exception should never be thrown. Before a compound
  *   exception is thrown, it should be {@link #isClosed closed}.</p>
  * <p>Compound exceptions are meant as a flat list. You should not nest compound property exceptions.
@@ -51,10 +41,7 @@ import org.toryt.annotations_I.Throw;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public interface CompoundException<_ElementException_ extends ApplicationException> {
 
   /*<property name="closed">*/
@@ -67,6 +54,7 @@ public interface CompoundException<_ElementException_ extends ApplicationExcepti
    */
   boolean isClosed();
 
+  /*
   @MethodContract(
     post = @Expression("closed"),
     exc = @Throw(
@@ -74,6 +62,7 @@ public interface CompoundException<_ElementException_ extends ApplicationExcepti
       cond = @Expression("'closed")
     )
   )
+  */
   void close() throws IllegalStateException;
 
   /*</property>*/
@@ -83,42 +72,53 @@ public interface CompoundException<_ElementException_ extends ApplicationExcepti
   /*<property name="element exceptions">*/
   //------------------------------------------------------------------
 
+  /*
   @Basic(invars = @Expression("for (_ElementException_ eExc : elementExceptions) {! eExc instanceof CompoundException)"))
-  public Set<? extends _ElementException_> getElementExceptions();
+  */
+  Set<? extends _ElementException_> getElementExceptions();
 
   /**
    * Returns an element exception of this instance. Especially
-   * intresting if <code>size == 1</code>, of course.
+   * interesting if <code>size == 1</code>, of course.
    * Returns <code>null</code> if <code>size == 0</code>.
    */
+  /*
   @MethodContract(post = @Expression("result != null ? contains(result"))
-  public _ElementException_ getAnElement();
+  */
+  _ElementException_ getAnElement();
 
   /**
    * Checks whether an application exception that expresses the same
-   * as condition as {@code ae} is in the compound with reference semantics.
+   * as condition as {@code ee} is in the compound with reference semantics.
    */
+  /*
   @MethodContract(
     post = @Expression("result ? _ea != null && exists(_ElementException_ ee : elementExceptions]) {ee.like(_ee)}")
   )
+  */
   boolean contains(_ElementException_ ee);
 
   /**
    * There are no element exceptions.
    */
+  /*
   @MethodContract(post = @Expression("elementExceptions.empty"))
+  */
   boolean isEmpty();
 
   /**
    * The total number of exceptions in this compound.
    */
+  /*
   @MethodContract(post = @Expression("elementExceptions.size)"))
+  */
   int getSize();
 
   /**
    * @param     eExc
    *            The exception to add as element to the compound.
    */
+  /*
   @MethodContract(
     post = {
       @Expression("elementExceptions.contains(_eExc)"),
@@ -133,18 +133,20 @@ public interface CompoundException<_ElementException_ extends ApplicationExcepti
       @Throw(type = IllegalArgumentException.class, cond = @Expression("true"))
     }
   )
-  public void addElementException(_ElementException_ eExc) throws IllegalStateException, IllegalArgumentException;
+  */
+  void addElementException(_ElementException_ eExc) throws IllegalStateException, IllegalArgumentException;
 
   /*</property>*/
 
 
 
   /**
-   * This method throws this exception if it is not empty.
+   * This method throws this exception if this is not empty.
    * If this is not empty, this is closed. If the number of element
    * exceptions is larger than 1, this is thrown. If there is exactly
    * 1 element exception, that is thrown instead.
    */
+  /*
   @MethodContract(
     post = {
       @Expression(
@@ -173,6 +175,7 @@ public interface CompoundException<_ElementException_ extends ApplicationExcepti
        )
     }
   )
+  */
   void throwIfNotEmpty() throws _ElementException_;
 
 }
