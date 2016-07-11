@@ -16,16 +16,6 @@ limitations under the License.
 
 package org.ppwcode.vernacular.exception.IV;
 
-
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
-
-
 /**
  * <p>Super type for exceptions related to semantics: the nominal effect of a method could
  *   not be reached, because doing so under the given circumstances would violate semantics
@@ -34,10 +24,6 @@ import org.toryt.annotations_I.MethodContract;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
 public class SemanticException extends ApplicationException {
 
   /*<construction>*/
@@ -48,16 +34,18 @@ public class SemanticException extends ApplicationException {
    *            The string that identifies a localized end user feedback message about the
    *            non-nominal behavior.
    * @param     cause
-   *            The exception that occured, causing this exception to be thrown, if that is
+   *            The exception that occurred, causing this exception to be thrown, if that is
    *            the case.
    */
+  /*
   @MethodContract(
-    pre  = @Expression("_messageKey == null || _messageKey == EMPTY || validmessageKey(_messageKey)"),
+    pre  = @Expression("_messageKey == null || _messageKey == EMPTY || validMessageKey(_messageKey)"),
     post = {
-      @Expression("message == (_messageKey == null || _messageIdentfier == EMPTY) ? DEFAULT_MESSAGE_KEY : _messageKey"),
+      @Expression("message == (_messageKey == null || _messageIdentifier == EMPTY) ? DEFAULT_MESSAGE_KEY : _messageKey"),
       @Expression("cause == _cause")
     }
   )
+  */
   public SemanticException(final String messageIdentifier, final Throwable cause) {
     super(messageIdentifier, cause);
   }
