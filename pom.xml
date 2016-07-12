@@ -122,7 +122,7 @@
     <scm>
         <url>https://github.com/peopleware/java-ppwcode-vernacular-exception</url>
         <connection>scm:git:https://github.com/peopleware/java-ppwcode-vernacular-exception.git</connection>
-        <developerConnection>scm:git:git@github.com:peopleware/java-ppwcode-vernacular-exception.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/peopleware/java-ppwcode-vernacular-exception.git</developerConnection>
     </scm>
     <issueManagement>
         <system>GitHub</system>
@@ -384,6 +384,10 @@
             <!--</execution>-->
             <!--</executions>-->
             </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-release-plugin</artifactId>
+            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -429,15 +433,15 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${version.plugin.core.surefire}</version>
                 </plugin>
-              <!--<plugin>-->
-              <!--<groupId>org.apache.maven.plugins</groupId>-->
-              <!--<artifactId>maven-verifier-plugin</artifactId>-->
-              <!--<version>${version.plugin.core.verifier}</version>-->
-              <!--</plugin>-->
+                <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-verifier-plugin</artifactId>-->
+                <!--<version>${version.plugin.core.verifier}</version>-->
+                <!--</plugin>-->
 
 
-              <!-- Maven packaging types/tools -->
-              <plugin>
+                <!-- Maven packaging types/tools -->
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-ear-plugin</artifactId>
                     <version>${version.plugin.package.ear}</version>
@@ -462,20 +466,20 @@
                     <artifactId>maven-acr-plugin</artifactId>
                     <version>${version.plugin.package.acr}</version>
                 </plugin>
-              <!--<plugin>-->
-              <!--<groupId>org.apache.maven.plugins</groupId>-->
-              <!--<artifactId>maven-shade-plugin</artifactId>-->
-              <!--<version>${version.plugin.package.shade}</version>-->
-              <!--</plugin>-->
-              <plugin>
+                <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-shade-plugin</artifactId>-->
+                <!--<version>${version.plugin.package.shade}</version>-->
+                <!--</plugin>-->
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${version.plugin.package.source}</version>
                 </plugin>
 
 
-              <!-- Maven reporting -->
-              <plugin>
+                <!-- Maven reporting -->
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-changelog-plugin</artifactId>
                     <version>${version.plugin.reporting.changelog}</version>
@@ -599,10 +603,10 @@
               <!--<version>${version.plugin.tools.plugin}</version>-->
               <!--</plugin>-->
               <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>${version.plugin.tools.release}</version>
-                </plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-release-plugin</artifactId>
+                  <version>${version.plugin.tools.release}</version>
+              </plugin>
               <!--<plugin>-->
               <!--<groupId>org.apache.maven.plugins</groupId>-->
               <!--<artifactId>maven-remote-resources-plugin</artifactId>-->
