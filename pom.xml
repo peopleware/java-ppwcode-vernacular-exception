@@ -100,7 +100,7 @@
     <!-- Meta information about the project -->
     <groupId>org.ppwcode.vernacular</groupId>
     <artifactId>exception-IV</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>ppwcode exception vernacular</name>
     <description>
@@ -121,7 +121,7 @@
         <url>https://github.com/peopleware/java-ppwcode-vernacular-exception</url>
         <connection>scm:git:https://github.com/peopleware/java-ppwcode-vernacular-exception.git</connection>
         <developerConnection>scm:git:https://github.com/peopleware/java-ppwcode-vernacular-exception.git</developerConnection>
-      <tag>release/1.0.0</tag>
+      <tag>HEAD</tag>
   </scm>
     <issueManagement>
         <system>GitHub</system>
