@@ -26,6 +26,16 @@
   </properties>
   <body>
 
+    <release version="IV v2.0.0" date="2016-07-12" description="revival">
+      <action dev="jand" type="add">
+        Reinstated ApplicationExceptionTransportException
+      </action>
+    </release>
+    <release version="IV v1.0.1" date="2016-07-12" description="revival">
+      <action dev="jand" type="update">
+        Build with good group- and artifact id.
+      </action>
+    </release>
     <release version="IV v1.0" date="2016-07-11" description="revival">
       <action dev="jand" type="update">
         Everything is changed. This revives this code base after almost 8 years.
